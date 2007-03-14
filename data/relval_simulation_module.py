@@ -146,10 +146,7 @@ def _simulate_QED(process, step, evt_type, energy, evtnumber):
                          )
                              
     process.simulation_step = cms.Path(process.psim)
-                                              
-    # Event Output                     
-    #process = common.event_output(process, outfile_name, step)
-   
+ 
     common.log( func_id+" Returning process...")
         
     return process 
@@ -189,10 +186,7 @@ def _simulate_QCD(process, step, evt_type, energy, evtnumber):
     
     # Event Output                     
     #process = common.event_output(process, outfile_name, step)                
- 
-            
-    common.log( func_id+" Returning process...")
-     
+    
     return process
  
 #---------------------------------
@@ -237,11 +231,7 @@ def _simulate_TAU(process, step, evt_type, energy, evtnumber):
                                 )   
     
     process.simulation_step = cms.Path(process.psim)
-    
-    # Event Output                     
-    #process = common.event_output(process, outfile_name, step)                
- 
-            
+             
     common.log( func_id+" Returning process...")
      
     return process    
@@ -361,11 +351,7 @@ def _simulate_HZZllll(process, step, evt_type, energy, evtnumber):
 
     
     process.simulation_step = cms.Path(process.psim)
-    
-    # Event Output                     
-    #process = common.event_output(process, outfile_name, step)                
- 
-            
+              
     common.log( func_id+" Returning process...")
      
     return process      
@@ -441,14 +427,9 @@ def _simulate_udscb_jets\
         process.udsfilter=udsfilter
         process.uds_filter=cms.Path(process.udsfilter)
         process.schedule.append(process.evt_filter)
-        process.simulation_step=cms.Path(process.psim)
-    else:    
-        process.simulation_step=cms.Path(process.psim)                        
    
-                                                                  
-    # Event Output                     
-    #process = common.event_output(process, outfile_name, step)                 
-    
+    process.simulation_step=cms.Path(process.psim)                        
+   
     common.log(func_id+" Returning process...")
      
     return process       
@@ -495,10 +476,7 @@ def _simulate_ttbar(process, step, evt_type, energy, evtnumber):
                                )  
     
     process.simulation_step = cms.Path(process.psim)
-    
-    # Event Output                     
-    #process=common.event_output(process, outfile_name, step)                  
-            
+          
     common.log(func_id+" Returning process...")
      
     return process    
@@ -560,10 +538,6 @@ def _simulate_ZEE(process, step, evt_type, energy, evtnumber):
                                )
                                
     process.simulation_step = cms.Path(process.psim)
-    
-    # Event Output                     
-    #process = common.event_output(process, outfile_name, step)                
- 
             
     common.log(func_id+" Returning process...")
      
@@ -674,10 +648,8 @@ def _simulate_BsJPhi(process, step, evt_type, energy, evtnumber):
     process.evt_filter=cms.Path(process.bs_filter)
     #add to the schedule!
     process.schedule.append(process.evt_filter) 
-                                             
-    # Event Output                    
-    #process = common.event_output\
-    #     (process, outfile_name, step, process.pf )         
+                                                 
+    process.simulation_step=cms.Path(process.psim)
             
     common.log( func_id+" Returning process...")
      
@@ -769,11 +741,7 @@ def _simulate_ZPJJ(process, step, evt_type, energy, evtnumber):
                                )
                                
     process.simulation_step = cms.Path(process.psim)
-    
-    # Event Output                     
-    #process = common.event_output(process, outfile_name, step)                
- 
-            
+      
     common.log( func_id+" Returning process...")
      
     return process                                                  

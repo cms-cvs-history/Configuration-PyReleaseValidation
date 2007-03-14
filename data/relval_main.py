@@ -81,10 +81,7 @@ else:
 if parameters.output_flag:
     process = common.event_output\
         (process, parameters.outfile_name, parameters.step)
-    process.schedule.append(process.outpath)
-  #  process.schedule=cms.Schedule(process.simulation_step,process.outpath)
-    print process.schedule
-    
+    process.schedule.append(process.outpath)  
                                                                         
 # Add metadata for production                                    
 process = includes.add_production_info(process) 

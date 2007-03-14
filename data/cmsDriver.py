@@ -141,9 +141,6 @@ if len(sys.argv)==1:
 options.evt_type = sys.argv[1]
 
 if not options.evt_type in type_energy_dict.keys():
-    print options.evt_type+": Unrecognised event type."+\
-          "Please choose a supported one in the list: "+\
-          str(types_list)+"."
     raise "Event Type: ","Unrecognised event type."
 
 if options.energy==None:
