@@ -136,8 +136,7 @@ parser.add_option("--prefix",
 
 # A simple check on the consistency of the arguments
 if len(sys.argv)==1:
-    print "No event type specified!"
-    sys.exit(1)
+    raise "Event Type: ", "No event type specified!"
 
 options.evt_type = sys.argv[1]
 
@@ -145,7 +144,7 @@ if not options.evt_type in type_energy_dict.keys():
     print options.evt_type+": Unrecognised event type."+\
           "Please choose a supported one in the list: "+\
           str(types_list)+"."
-    sys.exit(1)
+    raise "Event Type: ","Unrecognised event type."
 
 if options.energy==None:
   options.energy=type_energy_dict[options.evt_type]
@@ -228,7 +227,8 @@ config_module.write(cfgfile)
 config_module.close()
 
 # Prepare command execution
-command=options.prefix+" cmsRun relval_main.py"
+command=options.prefix+\
+" cmsRun $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/relval_main.py"
 print "Launching "+command+"..."
 sys.stdout.flush() 
 print os.system(command) # And Launch the Framework!

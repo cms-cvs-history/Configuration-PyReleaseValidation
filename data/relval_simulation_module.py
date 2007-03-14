@@ -824,8 +824,7 @@ def energy_split(energy):
             if int(high) > int(low):
                 return (low,high)
     
-    print "FATAL! Unrecognised energy format: " + energy
-    exit
+    raise "Energy Format: ","Unrecognised energy format."
     
 #-----------------------------------
 def user_pythia_ue_settings():

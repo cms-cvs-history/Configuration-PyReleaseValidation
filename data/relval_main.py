@@ -10,6 +10,10 @@
 
 __author__  = "Danilo Piparo"
 
+# 
+import sys
+sys.path.append(".")
+
 # Modules to include
 
 import FWCore.ParameterSet.Config as cms
