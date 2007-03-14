@@ -10,6 +10,12 @@
 
 __author__  = "Danilo Piparo"
 
+# Include in the path of the current directory.
+# This is to use the relval_parameters_module.py file present in the directory. 
+import sys
+sys.path.append(".")
+print sys.path
+
 # Modules to include
 
 import FWCore.ParameterSet.Config as cms
@@ -78,10 +84,7 @@ if parameters.output_flag:
     process = common.event_output\
         (process, parameters.outfile_name, parameters.step)
     process.schedule.append(process.outpath)
-  #  process.schedule=cms.Schedule(process.simulation_step,process.outpath)
-    print process.schedule
-    
-                                                                        
+                               
 # Add metadata for production                                    
 process = includes.add_production_info(process) 
 

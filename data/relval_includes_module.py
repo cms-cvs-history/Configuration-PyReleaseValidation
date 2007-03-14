@@ -103,7 +103,7 @@ def add_production_info(process):
     """
     process.configurationMetadata=cms.untracked.PSet\
               (
-               version=cms.untracked.string("$Revision: 1.3 $"),
+               version=cms.untracked.string("$Revision: 1.2 $"),
                name=cms.untracked.string("$Name:  $"),
                annotation=cms.untracked.string\
                                 ("PyRelVal")

@@ -52,8 +52,7 @@ def simulate(process, step, evt_type, energy, evtnumber):
     elif evt_type == "TAU":
        process = _simulate_TAU\
          (process, step, evt_type, energy, evtnumber)   
-         
-    
+            
     elif evt_type in ("HZZMUMUMUMU", "HZZEEEE"):
        process = _simulate_HZZllll\
          (process, step, evt_type, energy, evtnumber)
@@ -77,13 +76,11 @@ def simulate(process, step, evt_type, energy, evtnumber):
     elif evt_type == "BsJPHI":
        process = _simulate_BsJPhi\
          (process, step, evt_type, energy, evtnumber)            
- 
-   
-  
-             
+      
     else:
-      print "FATAL!\nType "+evt_type+" not yet implemented."
-      exit
+      #print "FATAL!\nType "+evt_type+" not yet implemented."
+      #exit
+      raise "Event type: ","event type not supported"
              
     common.log( func_id+" Returning process...")
     
@@ -824,8 +821,9 @@ def energy_split(energy):
             if int(high) > int(low):
                 return (low,high)
     
-    print "FATAL! Unrecognised energy format: " + energy
-    exit
+    #print "FATAL! Unrecognised energy format: " + energy
+    #exit
+    raise "Energy format: ","Unrecognised energy format."
     
 #-----------------------------------
 def user_pythia_ue_settings():
