@@ -104,12 +104,9 @@ def _simulate_QED(process, step, evt_type, energy, evtnumber):
                   "E-" :11, "E+" :-11,
                   "GAMMA":22}
     
-    # Energy boundaries are now set:
-    
-        
-    epsilon= 0.001
-    lower_energy = str ( int(energy) - epsilon) # We want a calculation and  
-    upper_energy = str ( int(energy) + epsilon) # the result as a string
+    # Energy boundaries are now set:      
+    lower_energy = ""
+    upper_energy = ""
     
     # Build the id string of the event name:
     id_string = evt_type+" pt"+energy+" nevts "+ str(evtnumber)
@@ -120,10 +117,16 @@ def _simulate_QED(process, step, evt_type, energy, evtnumber):
     if evt_type[:2]=="10":
         for i in range(10):
             part_id.append(py_id_dict[evt_type[2:]])
+        lower_energy,upper_energy=energy_split(energy) 
+      
     # Single lepton
     else:
         part_id.append(py_id_dict[evt_type])
-            
+        epsilon= 0.001
+        lower_energy = str ( int(energy) - epsilon) # We want a calculation and
+        upper_energy = str ( int(energy) + epsilon) # the result as a string   
+   
+    
     # Add the random generation service
     process = _random_generator_service(process)
     
@@ -789,14 +792,17 @@ def energy_split(energy):
         if energy.count(separator)==1:
             common.log( func_id+" Found separator in energy string...") 
             low,high = energy.split(separator)
-            if int(high) > int(low):
+            if float(high) > float(low):
                 return (low,high)
     
     raise "Energy Format: ","Unrecognised energy format."
     
 #-----------------------------------
 def user_pythia_ue_settings():
-            # Pythia settings for the event generation
+    """
+    The function simply returns a cms.vstring which is a summary of the 
+    Pythia settings for the event generation
+    """
     return cms.vstring(
           'MSTJ(11)=3',                                    
           'MSTJ(22)=2',     # Decay those unstable particles

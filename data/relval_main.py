@@ -10,7 +10,9 @@
 
 __author__  = "Danilo Piparo"
 
-# 
+# Let Python find the parameters module created locally in the current directory.
+# As long as the Python code cannot have any command line arguments since this could lead
+# to conflicts with cmsRun this is a way to input parameters.
 import sys
 sys.path.append(".")
 
@@ -33,7 +35,7 @@ import relval_simulation_module
 print "\nPython RelVal"
  
 # Istantiate the process
-process = cms.Process (parameters.process_name) #FIX maybe build one!!!!!
+process = cms.Process (parameters.process_name)
 
 # Add an empty Schedule
 process.schedule=cms.Schedule()

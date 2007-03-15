@@ -19,17 +19,18 @@ def print_options(options):
 
 # The supported evt types and default energies:
 qed_ene="10"
+qed_ene10="0.99_9.99"
 jet_en="50_120"
 type_energy_dict={"MU+":qed_ene,
                   "MU-":qed_ene,
                   "E+":qed_ene,
                   "E-":qed_ene,
                   "GAMMA":qed_ene,
-                  "10MU+":qed_ene,
-                  "10MU-":qed_ene,
-                  "10E+":qed_ene,
-                  "10E-":qed_ene,
-                  "10GAMMA":qed_ene,
+                  "10MU+":qed_ene10,
+                  "10MU-":qed_ene10,
+                  "10E+":qed_ene10,
+                  "10E-":qed_ene10,
+                  "10GAMMA":qed_ene10,
                   "QCD":"380_470",
                   "B_JETS":jet_en,"C_JETS":jet_en,"UDS_JETS":jet_en,
                   "B_JPSIPHI":"",
@@ -224,8 +225,21 @@ config_module.write(cfgfile)
 config_module.close()
 
 # Prepare command execution
-command=options.prefix+\
-" cmsRun $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/relval_main.py"
-print "Launching "+command+"..."
+cmssw_base=os.environ["CMSSW_BASE"]
+command=""
+arguments=[]
+pyrelvalmain=\
+cmssw_base+"/src/Configuration/PyReleaseValidation/data/relval_main.py"
+if options.prefix=="":
+    command="cmsRun"
+    arguments.append(command)
+    arguments.append(pyrelvalmain)
+else:
+    command=options.prefix
+    arguments.append(command)
+    arguments.append("cmsRun")
+    arguments.append(pyrelvalmain)
+print "Launching "+command+" "+str(arguments)+"..."
 sys.stdout.flush() 
-print os.system(command) # And Launch the Framework!
+#print os.system(command) # And Launch the Framework!
+os.execvpe(command, arguments, os.environ)

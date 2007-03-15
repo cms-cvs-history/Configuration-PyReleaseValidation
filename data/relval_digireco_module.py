@@ -28,7 +28,7 @@ def digitise(process, step, infile_name):
    
     # Disable IO when all the steps are to be performed at once.
     if not step == "ALL":    
-        process = _process_IO(process, infile_name, step)
+        process = common.event_input(process, infile_name)
     
     process.digitisation_step = cms.Path(process.pdigi)
         
@@ -46,9 +46,9 @@ def reconstruct (process, step, infile_name):
     common.log(func_id+" Entering ...")
 
     # Disable IO when all the steps are to be performed at once.
-    if not step == "ALL":    
-        process = _process_IO(process, infile_name, step)
-
+    if not step == "ALL":   
+        process = common.event_input(process, infile_name)
+        
     process.reconstruction_step = cms.Path (process.reconstruction)
             
     common.log(func_id+" Returning the process..")
