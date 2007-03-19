@@ -33,7 +33,7 @@ type_energy_dict={"MU+":qed_ene,
                   "10GAMMA":qed_ene10,
                   "QCD":"380_470",
                   "B_JETS":jet_en,"C_JETS":jet_en,"UDS_JETS":jet_en,
-                  "B_JPSIPHI":"",
+                  "BSJPSIPHI":"",
                   "ZPJJ":"",
                   "HZZEEEE":"","HZZMUMUMUMU":"",
                   "TTBAR":"",
@@ -112,6 +112,13 @@ parser.add_option("--no_output",
                   default=False,
                   dest="no_output_flag")
 
+parser.add_option("-p","--profiler_service",
+                  help="Equip the process with the profiler service "+\
+                       "by Vincenzo Innocente. First and the last events in "+\
+                       " the form <first>_<last>.",
+                  default="",
+                  dest="profiler_service_cuts")                                                    
+
 parser.add_option("--dump",
                   help="Dump the config file in the old config "+\
                        "language. It is printed on stdout.",
@@ -159,8 +166,8 @@ if options.filein=="" and not options.step in ("ALL","SIM"):
 if options.fileout=="":
     options.fileout=options.evt_type+"_"+options.energy+"_"+options.step+".root"
 
-if options.prefix == None:
-    options.prefix=""
+#if options.prefix == None:
+#    options.prefix=""
 
 # Print the options to screen
 print_options(options)
@@ -208,7 +215,9 @@ outfile_name='"""+options.dirout+options.fileout+"""'
 # The step: SIM DIGI RECO and ALL to do the 3 in one go.
 step='"""+options.step+"""'
 # Omit the output in a root file
-output_flag= """+str(not options.no_output_flag)+"""
+output_flag="""+str(not options.no_output_flag)+"""
+# Use the profiler service
+profiler_service_cuts='"""+options.profiler_service_cuts+"""'
 
 # Pyrelval parameters
 # Enable verbosity
@@ -226,20 +235,13 @@ config_module.close()
 
 # Prepare command execution
 cmssw_base=os.environ["CMSSW_BASE"]
-command=""
-arguments=[]
+command=['/bin/sh', '-c', 'exec ']
 pyrelvalmain=\
 cmssw_base+"/src/Configuration/PyReleaseValidation/data/relval_main.py"
-if options.prefix=="":
-    command="cmsRun"
-    arguments.append(command)
-    arguments.append(pyrelvalmain)
-else:
-    command=options.prefix
-    arguments.append(command)
-    arguments.append("cmsRun")
-    arguments.append(pyrelvalmain)
-print "Launching "+command+" "+str(arguments)+"..."
+if options.prefix!="": command[2] += options.prefix + ' '
+command[2] += 'cmsRun' + ' ' + pyrelvalmain
+print "Launching "+' '.join(command)+"..."
 sys.stdout.flush() 
 #print os.system(command) # And Launch the Framework!
-os.execvpe(command, arguments, os.environ)
+os.execvpe(command[0], command, os.environ)
+
