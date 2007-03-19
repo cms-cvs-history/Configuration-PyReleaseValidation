@@ -37,6 +37,11 @@ print "\nPython RelVal"
 # Istantiate the process
 process = cms.Process (parameters.process_name)
 
+# Add the Profiler Service if needed:
+#if parameters.prof_service_flag:
+if parameters.profiler_service_cuts!="":
+    process=common.profiler_service(process,parameters.profiler_service_cuts)
+
 # Add an empty Schedule
 process.schedule=cms.Schedule()
 
