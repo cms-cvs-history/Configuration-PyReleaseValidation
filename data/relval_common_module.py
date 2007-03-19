@@ -57,26 +57,42 @@ def message_logger(process):
     process.MessageLogger.cerr.default.limit = 10
     
     return process
-   
+
+#--------------------------------------------
+
+def profiler_service(process,evts_cuts):
+    """
+    A profiler service by Vincenzo Innocente.
+    """
+    
+    firstevent=int(evts_cuts.split("_")[0])
+    lastevent= int(evts_cuts.split("_")[1])
+    process.add_(cms.Service("ProfilerService"))
+    process.ProfilerService.firstEvent=cms.untracked.int32(firstevent)
+    process.ProfilerService.lastEvent=cms.untracked.int32(lastevent)
+    process.ProfilerService.paths=cms.untracked.vstring("ALL")
+    
+    return process
+                                
 #--------------------------------------------
 
 def log (message):
- """
- An oversimplified logger for debugging purposes.
- """
- if parameters.dbg_flag:
-  print message
+    """
+    An oversimplified logger for debugging purposes.
+    """
+    if parameters.dbg_flag:
+        print message
 
 #--------------------------------------------
 
 def print_dict(dict):
- '''
- A simple function to show the options of the program.
- ''' 
- dictkeys = dict.keys()
- dictkeys.sort()
- print "\n"
- print "Parameters |--------------------\n"
- for key in dictkeys:
-  print key +": "+ str( dict[key]) 
- print "\n----------------------\n"
+    '''
+    A simple function to show the options of the program.
+    ''' 
+    dictkeys = dict.keys()
+    dictkeys.sort()
+    print "\n"
+    print "Parameters |--------------------\n"
+    for key in dictkeys:
+        print key +": "+ str( dict[key]) 
+    print "\n----------------------\n"
