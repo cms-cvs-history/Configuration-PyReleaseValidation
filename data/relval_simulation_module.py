@@ -74,7 +74,7 @@ def simulate(process, step, evt_type, energy, evtnumber):
        process = _simulate_ZPJJ\
          (process, step, evt_type, energy, evtnumber)
          
-    elif evt_type == "BsJPHI":
+    elif evt_type == "BSJPSIPHI":
        process = _simulate_BsJPhi\
          (process, step, evt_type, energy, evtnumber)            
  
@@ -82,8 +82,7 @@ def simulate(process, step, evt_type, energy, evtnumber):
   
              
     else:
-      print "FATAL!\nType "+evt_type+" not yet implemented."
-      exit
+      raise "Event type: ","Type not yet implemented."
              
     common.log( func_id+" Returning process...")
     
@@ -428,7 +427,7 @@ def _simulate_udscb_jets\
 
         udsfilter=cms.EDFilter("JetFlavourFilter", jetType = cms.int32(1) )
         process.udsfilter=udsfilter
-        process.uds_filter=cms.Path(process.udsfilter)
+        process.evt_filter=cms.Path(process.udsfilter)
         process.schedule.append(process.evt_filter)
    
     process.simulation_step=cms.Path(process.psim)                        
@@ -444,11 +443,8 @@ def _simulate_ttbar(process, step, evt_type, energy, evtnumber):
     Here the settings for the ttbar pairs are added to the process.
     """
       
-    func_id = mod_id+"[_simulate_tau]"
+    func_id = mod_id+"[_simulate_ttbar]"
     common.log(func_id+" Entering... ")      
-    
-    # Recover the energies from the string:
-    upper_energy, lower_energy = energy_split(energy)
     
     # Add the random generation service
     process = _random_generator_service(process)   
@@ -647,7 +643,7 @@ def _simulate_BsJPhi(process, step, evt_type, energy, evtnumber):
                           hadronEtaMax=cms.double(+2.4),
                           hadronPtMin=cms.double(0.8)
                          )
-    process.bsfilter = bsfilter
+    process.bs_filter = bsfilter
     process.evt_filter=cms.Path(process.bs_filter)
     #add to the schedule!
     process.schedule.append(process.evt_filter) 
@@ -755,16 +751,16 @@ def _random_generator_service(process):
     """
     Function that adds to the process the random generator service.
     """
-    func_id = mod_id+"[_random_generator_service]"
+    func_id=mod_id+"[_random_generator_service]"
     common.log( func_id+" Entering... ")
     
     process.add_(cms.Service("RandomNumberGeneratorService"))
-    process.RandomNumberGeneratorService.sourceSeed  = \
+    process.RandomNumberGeneratorService.sourceSeed=\
                                                 cms.untracked.uint32(123456789)
-    process.RandomNumberGeneratorService.moduleSeeds =\
-                    cms.PSet(VtxSmeared = cms.untracked.uint32(98765432), 
-                             g4SimHits = cms.untracked.uint32(11), 
-                             mix = cms.untracked.uint32(12345)
+    process.RandomNumberGeneratorService.moduleSeeds=\
+                    cms.PSet(VtxSmeared=cms.untracked.uint32(98765432), 
+                             g4SimHits=cms.untracked.uint32(11), 
+                             mix=cms.untracked.uint32(12345)
                             )
     
     common.log( func_id+" Returning process...")
@@ -798,6 +794,7 @@ def energy_split(energy):
     raise "Energy Format: ","Unrecognised energy format."
     
 #-----------------------------------
+
 def user_pythia_ue_settings():
     """
     The function simply returns a cms.vstring which is a summary of the 
