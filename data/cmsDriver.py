@@ -234,14 +234,18 @@ config_module.write(cfgfile)
 config_module.close()
 
 # Prepare command execution
+
 cmssw_base=os.environ["CMSSW_BASE"]
+# set the PYTHONPATH environmental variable
+pyrelvalcodedir=cmssw_base+"/src/Configuration/PyReleaseValidation/data"
+os.environ["PYTHONPATH"]+=":"+pyrelvalcodedir
+
 command=['/bin/sh', '-c', 'exec ']
-pyrelvalmain=\
-cmssw_base+"/src/Configuration/PyReleaseValidation/data/relval_main.py"
+pyrelvalmain=pyrelvalcodedir+"/relval_main.py"
 if options.prefix!="": command[2] += options.prefix + ' '
 command[2] += 'cmsRun' + ' ' + pyrelvalmain
 print "Launching "+' '.join(command)+"..."
 sys.stdout.flush() 
-#print os.system(command) # And Launch the Framework!
+# And Launch the Framework!
 os.execvpe(command[0], command, os.environ)
 
