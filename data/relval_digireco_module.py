@@ -30,7 +30,7 @@ def digitise(process, step, infile_name):
     if not step == "ALL":    
         process = common.event_input(process, infile_name)
     
-    process.digitisation_step = cms.Path(process.pdigi)
+    #process.digitisation_step = cms.Path(process.pdigi)
         
     common.log(func_id+" Returning the process..")
     
@@ -49,7 +49,7 @@ def reconstruct (process, step, infile_name):
     if not step == "ALL":   
         process = common.event_input(process, infile_name)
         
-    process.reconstruction_step = cms.Path (process.reconstruction)
+    #process.reconstruction_step = cms.Path (process.reconstruction)
             
     common.log(func_id+" Returning the process..")
     

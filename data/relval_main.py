@@ -58,31 +58,40 @@ if parameters.step == "ALL" or parameters.step =="SIM" :
                                               parameters.evt_type,
                                               parameters.energy,
                                               parameters.evtnumber)
+    process.simulation_step = cms.Path(process.psim)
+    process.schedule.append(process.simulation_step)
+                                              
 # The Digitisation:
 if parameters.step == "ALL" or parameters.step =="DIGI" :
    process=relval_digireco_module.digitise(process,
                                            parameters.step,
                                            parameters.infile_name)
+   process.digitisation_step=cms.Path(process.pdigi)
+   process.schedule.append(process.digitisation_step)
+                                                                                      
 # The Reconstruction:
 if parameters.step == "ALL" or parameters.step =="RECO" :
     process=relval_digireco_module.reconstruct(process,
                                                parameters.step,
                                                parameters.infile_name)
+    process.reconstruction_step=cms.Path(process.reconstruction)
+    process.schedule.append(process.reconstruction_step)                                              
+
 # Build an appropriate schedule                                                
                             
-if parameters.step == "SIM":
-    process.schedule.append(process.simulation_step)
-
-elif parameters.step == "DIGI":
-    process.schedule.append(process.digitisation_step)
-
-elif parameters.step == "RECO":
-    process.schedule.append(process.reconstruction_step)
-    
-else:
-    process.schedule.append(process.simulation_step)
-    process.schedule.append(process.digitisation_step)
-    process.schedule.append(process.reconstruction_step)
+#if parameters.step == "SIM":
+#    process.schedule.append(process.simulation_step)
+# 
+# elif parameters.step == "DIGI":
+#     process.schedule.append(process.digitisation_step)
+# 
+# elif parameters.step == "RECO":
+#     process.schedule.append(process.reconstruction_step)
+#     
+# else:
+#     process.schedule.append(process.simulation_step)
+#     process.schedule.append(process.digitisation_step)
+#     process.schedule.append(process.reconstruction_step)
                                                      
 # Add the output on a root file if requested
 if parameters.output_flag:

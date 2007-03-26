@@ -147,7 +147,7 @@ def _simulate_QED(process, step, evt_type, energy, evtnumber):
                          Verbosity = cms.untracked.int32(0)
                          )
                              
-    process.simulation_step = cms.Path(process.psim)
+    #process.simulation_step = cms.Path(process.psim)
  
     common.log( func_id+" Returning process...")
         
@@ -184,11 +184,8 @@ def _simulate_QCD(process, step, evt_type, energy, evtnumber):
                                                        "CKIN(4)="+lower_energy))
                                 )
      
-    process.simulation_step = cms.Path(process.psim)
-    
-    # Event Output                     
-    #process = common.event_output(process, outfile_name, step)                
-    
+    #process.simulation_step = cms.Path(process.psim)
+                      
     return process
  
 #---------------------------------
@@ -232,7 +229,7 @@ def _simulate_TAU(process, step, evt_type, energy, evtnumber):
                                                        "MDME(90,1)=0"))
                                 )   
     
-    process.simulation_step = cms.Path(process.psim)
+    #process.simulation_step = cms.Path(process.psim)
              
     common.log( func_id+" Returning process...")
      
@@ -352,7 +349,7 @@ def _simulate_HZZllll(process, step, evt_type, energy, evtnumber):
                       )
 
     
-    process.simulation_step = cms.Path(process.psim)
+    #process.simulation_step = cms.Path(process.psim)
               
     common.log( func_id+" Returning process...")
      
@@ -416,21 +413,12 @@ def _simulate_udscb_jets\
                                )   
 
     if evt_type == "UDS_JETS":
-        
-#         udsfilter = cms.EDFilter("JetFlavourFilter", jetType = cms.int32(1) ) 
-#         process.uds_filter = udsfilter
-#         #cucina a caso
-#         #process.uds_filter_sequence=cms.Sequence(process.uds_filter)
-#         process.simulation_step = cms.Path\
-#               ( process.uds_filter + process.psim)
-              
-
         udsfilter=cms.EDFilter("JetFlavourFilter", jetType = cms.int32(1) )
         process.udsfilter=udsfilter
         process.evt_filter=cms.Path(process.udsfilter)
         process.schedule.append(process.evt_filter)
    
-    process.simulation_step=cms.Path(process.psim)                        
+    #process.simulation_step=cms.Path(process.psim)                        
    
     common.log(func_id+" Returning process...")
      
@@ -474,7 +462,7 @@ def _simulate_ttbar(process, step, evt_type, energy, evtnumber):
                                 ) 
                                )  
     
-    process.simulation_step = cms.Path(process.psim)
+    #process.simulation_step = cms.Path(process.psim)
           
     common.log(func_id+" Returning process...")
      
@@ -536,7 +524,7 @@ def _simulate_ZEE(process, step, evt_type, energy, evtnumber):
                                pythiaZee=user_param_sets )
                                )
                                
-    process.simulation_step = cms.Path(process.psim)
+    #process.simulation_step = cms.Path(process.psim)
             
     common.log(func_id+" Returning process...")
      
@@ -648,7 +636,7 @@ def _simulate_BsJPhi(process, step, evt_type, energy, evtnumber):
     #add to the schedule!
     process.schedule.append(process.evt_filter) 
                                                  
-    process.simulation_step=cms.Path(process.psim)
+   # process.simulation_step=cms.Path(process.psim)
             
     common.log( func_id+" Returning process...")
      
@@ -739,7 +727,7 @@ def _simulate_ZPJJ(process, step, evt_type, energy, evtnumber):
                                myParameters = user_param_sets)
                                )
                                
-    process.simulation_step = cms.Path(process.psim)
+    #process.simulation_step = cms.Path(process.psim)
       
     common.log( func_id+" Returning process...")
      
