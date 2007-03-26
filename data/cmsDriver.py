@@ -6,7 +6,12 @@ import optparse
 import sys
 import os
 
+#---------------------------------------------------------
+
 def print_options(options):
+    """
+    Prints on screen the options specified in the command line.
+    """
     opt_dictionary=options.__dict__
     print "\n"
     print "The configuration parameters |-------------"
@@ -16,6 +21,7 @@ def print_options(options):
         print key+" "+" "+str(opt_dictionary[key])
     print "-------------------------------------------"
 
+#---------------------------------------------------------
 
 # The supported evt types and default energies:
 qed_ene="10"
@@ -137,8 +143,13 @@ parser.add_option("--silent",
 parser.add_option("--prefix",
                   help="Specify a prefix to the cmsRun command.",
                   default="",
-                  dest="prefix")                                    
-                  
+                  dest="prefix")  
+                                                    
+parser.add_option("--no_exec",
+                  help="Do not exec cmsrun. Just prepare the parameters module",
+                  action="store_true",
+                  default=False,
+                  dest="no_exec_flag")                    
 
 (options,args) = parser.parse_args() # by default the arg is sys.argv[1:]
 
@@ -175,20 +186,14 @@ print_options(options)
 cfgfile="""
 #############################################################
 #                                                           #
-#              relval_parameters_module                     #
+#             + relval_parameters_module +                  #
 #                                                           #
-#  This module contains a dictionary in which               #
-#  the parameters relevant for the process are stored.      #
-#  The parameters are:                                      #
-#   - Type of the events          (string)                  #
-#   - Number of the events        (int)                     # 
-#   - Energy of the events        (string)                  #
-#   - input and output files      (string)                  #
-#   - Step: SIM DIGI RECO ALL     (string)                  #
 #  The supported types are:                                 #
+#                                                           #
 #   - QCD (energy in the form min_max)                      #
-#   - B_JETS, C_JETS (energy in the form min_max for cuts)  #
+#   - B_JETS, C_JETS, UDS_JETS (energy in the form min_max) #
 #   - TTBAR                                                 #
+#   - BSJPSIPHI                                             #
 #   - MU+,MU-,E+,E-,GAMMA,10MU+,10E-...                     #
 #   - TAU (energy in the form min_max for cuts)             #
 #   - HZZEEEE, HZZMUMUMUMU                                  #
@@ -229,7 +234,8 @@ dump_cfg_flag="""+str(options.dump_cfg_flag)+"""
 #print cfgfile # Test line!
 
 # Write down the configuration in a Python module
-config_module=file("./relval_parameters_module.py","w")
+config_module_name="./relval_parameters_module.py" 
+config_module=file(config_module_name,"w")
 config_module.write(cfgfile)
 config_module.close()
 
@@ -242,10 +248,19 @@ os.environ["PYTHONPATH"]+=":"+pyrelvalcodedir
 
 command=['/bin/sh', '-c', 'exec ']
 pyrelvalmain=pyrelvalcodedir+"/relval_main.py"
-if options.prefix!="": command[2] += options.prefix + ' '
+if options.prefix!="": 
+    command[2] += options.prefix + ' '
 command[2] += 'cmsRun' + ' ' + pyrelvalmain
-print "Launching "+' '.join(command)+"..."
 sys.stdout.flush() 
-# And Launch the Framework!
-os.execvpe(command[0], command, os.environ)
 
+# And Launch the Framework or just dump the parameters module
+if options.no_exec_flag:
+    config_module=file(config_module_name,"r")
+    print config_module.read()
+    config_module.close()
+    print "Parameters module created."
+    sys.exit(0)
+
+print "Launching "+' '.join(command)+"..."
+os.execvpe(command[0], command, os.environ) # Launch
+    
