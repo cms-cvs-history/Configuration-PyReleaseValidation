@@ -123,8 +123,8 @@ parser.add_option("-p","--profiler_service",
                        "by Vincenzo Innocente. First and the last events in "+\
                        " the form <first>_<last>.",
                   default="",
-                  dest="profiler_service_cuts")                                                    
-
+                  dest="profiler_service_cuts")
+                  
 parser.add_option("--dump",
                   help="Dump the config file in the old config "+\
                        "language. It is printed on stdout.",
@@ -259,7 +259,7 @@ if options.no_exec_flag:
     print config_module.read()
     config_module.close()
     print "Parameters module created."
-    sys.exit(0)
+    sys.exit(0) # Exits without launching cmsRun
 
 print "Launching "+' '.join(command)+"..."
 os.execvpe(command[0], command, os.environ) # Launch

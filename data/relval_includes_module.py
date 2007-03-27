@@ -18,17 +18,21 @@ import relval_common_module as common
 mod_id = "[relval_includes_module]"
 #--------------------------------------------------- 
 
-def add_includes(process, msg_logger_flag=True):
+def add_includes(process):
     """Function to add the includes to the process.
-    The msg_logger_flag allow to decide whether to put the message logger or not.
     It returns a process enriched with the includes.
     """
     func_id = mod_id+"[add_includes]"
-    common.log( func_id+" Entering... ")
-   
-    fake_conditions=\
-            "Configuration/StandardSequences/data/FakeConditions.cff"
-    process.extend( cms.include(fake_conditions) )
+    common.log(func_id+" Entering... ")
+    
+    # Services.cfi
+    services="Configuration/ReleaseValidation/services/Services.cfi"
+    process.extend(cms.include(services))
+    common.log(func_id+" Process extended with "+services)
+    
+    # Fake conditions 
+    fake_conditions="Configuration/StandardSequences/data/FakeConditions.cff"
+    process.extend(cms.include(fake_conditions))
     common.log(func_id+" Process extended with "+fake_conditions)
   
     # The mixingnopileup.cff file
@@ -48,12 +52,12 @@ def add_includes(process, msg_logger_flag=True):
     # The Simulation.cff file
     # This file has been partially translated into Python so to avoid the
     # conflicts risen by the inclusion of cffs with interdipendencies.
-    process.extend(cms.include\
-    ("SimG4Core/Configuration/data/SimG4Core.cff"))
-    process.extend(cms.include\
-    ("SimGeneral/TrackingAnalysis/data/trackingtruth.cfi"))
-    process.extend(cms.include\
-    ("Configuration/StandardSequences/data/Digi.cff"))     
+    simulation_includes_set=("SimG4Core/Configuration/data/SimG4Core.cff",
+                             "SimGeneral/TrackingAnalysis/data/trackingtruth.cfi",
+                             "Configuration/StandardSequences/data/Digi.cff")
+    for file in simulation_includes_set:                             
+        process.extend(cms.include(file))
+           
     process.psim=cms.Sequence(process.VtxSmeared+process.g4SimHits)
     process.pdigi=cms.Sequence(process.mix+\
                                process.doAllDigi+\
@@ -64,7 +68,7 @@ def add_includes(process, msg_logger_flag=True):
     process.extend(cms.include\
     ("Configuration/StandardSequences/data/Reconstruction.cff")) 
     
-    # Options
+    # The file FWCore/Framework/test/cmsExceptionsFatalOption.cff:
     options=cms.untracked.PSet\
                (Rethrow=cms.untracked.vstring(
                 "Unknown",
@@ -87,27 +91,8 @@ def add_includes(process, msg_logger_flag=True):
                 "NotFound"),
           wantSummary=cms.untracked.bool(True),
           makeTriggerResults=cms.untracked.bool(True) )
-    
-    # Message logger
-    if msg_logger_flag:
-        process = common.message_logger(process)
-    
+        
     common.log(func_id+ " Returning process...")
     return process
  
-#--------------------------------------------------- 
 
-def add_production_info(process):
-    """
-    Add useful info for the production
-    """
-    process.configurationMetadata=cms.untracked.PSet\
-              (
-               version=cms.untracked.string("$Revision: 1.1.2.1 $"),
-               name=cms.untracked.string("$Name:  $"),
-               annotation=cms.untracked.string\
-                                ("PyRelVal")
-              )
-    return process
-   
-#---------------------------------------------------
