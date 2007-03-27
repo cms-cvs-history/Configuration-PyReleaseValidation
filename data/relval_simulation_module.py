@@ -1,19 +1,16 @@
-###################################################
-#                                                 #
-#       relval_simulation_module                  #
-#                                                 #  
-#  This module is a collection of the simulation  # 
-#  procedues.                                     #
-#                                                 #
-###################################################
-
-
-
+######################################################
+#                                                    #
+#       relval_simulation_module                     #
+#                                                    #  
+#  This module is a collection of the simulation     # 
+#  procedues. The random number service is built     #
+#  by the function random_generator_service(energy)  #
+#                                                    #
+######################################################
 
 import FWCore.ParameterSet.Config as cms
 
 import relval_common_module as common
-import relval_parameters_module as parameters
 
 from math import pi as PI
 
@@ -28,7 +25,7 @@ ETA_MIN=-2.5
 # list of the supported processes:
 
 
-def simulate(process, step, evt_type, energy, evtnumber):
+def simulate(step, evt_type, energy, evtnumber):
     """
     This function calls all the other functions specific for
     an event evt_type.
@@ -42,55 +39,52 @@ def simulate(process, step, evt_type, energy, evtnumber):
     # QED
     if evt_type in ("MU+","MU-","E+","E-","GAMMA") or\
        evt_type[:2]== "10":
-       process = _simulate_QED\
-         (process, step, evt_type, energy, evtnumber)
+       source=_simulate_QED\
+         (step, evt_type, energy, evtnumber)
     
     elif evt_type == "QCD":
-       process = _simulate_QCD\
-         (process, step, evt_type, energy, evtnumber)
+       source=_simulate_QCD\
+         (step, evt_type, energy, evtnumber)
     
     elif evt_type == "TAU":
-       process = _simulate_TAU\
-         (process, step, evt_type, energy, evtnumber)   
+       source=_simulate_TAU\
+         (step, evt_type, energy, evtnumber)   
          
     
     elif evt_type in ("HZZMUMUMUMU", "HZZEEEE"):
-       process = _simulate_HZZllll\
-         (process, step, evt_type, energy, evtnumber)
+       source=_simulate_HZZllll\
+         (step, evt_type, energy, evtnumber)
      
     elif evt_type in ("B_JETS", "C_JETS", "UDS_JETS"):
-       process = _simulate_udscb_jets\
-         (process, step, evt_type, energy, evtnumber)        
+       source=_simulate_udscb_jets\
+         (step, evt_type, energy, evtnumber)        
      
     elif evt_type == "TTBAR":
-       process = _simulate_ttbar\
-         (process, step, evt_type, energy, evtnumber) 
+       source=_simulate_ttbar\
+         (step, evt_type, energy, evtnumber) 
          
     elif evt_type == "ZEE":
-       process = _simulate_ZEE\
-         (process, step, evt_type, energy, evtnumber)          
+       source=_simulate_ZEE\
+         (step, evt_type, energy, evtnumber)          
          
     elif evt_type == "ZPJJ":
-       process = _simulate_ZPJJ\
-         (process, step, evt_type, energy, evtnumber)
+       source=_simulate_ZPJJ\
+         (step, evt_type, energy, evtnumber)
          
     elif evt_type == "BSJPSIPHI":
-       process = _simulate_BsJPhi\
-         (process, step, evt_type, energy, evtnumber)            
+       source=_simulate_BsJPhi\
+         (step, evt_type, energy, evtnumber)            
  
-   
-  
-             
     else:
       raise "Event type: ","Type not yet implemented."
              
-    common.log( func_id+" Returning process...")
+    common.log( func_id+" Returning Source")
     
-    return process
+    return source
 
 #------------------------------       
 
-def _simulate_QED(process, step, evt_type, energy, evtnumber):
+def _simulate_QED(step, evt_type, energy, evtnumber):
     """
     Here the settings for the simple generation of a muon, electron or gamma
     are stated.
@@ -112,7 +106,8 @@ def _simulate_QED(process, step, evt_type, energy, evtnumber):
 
     # Build the partID string
     part_id = cms.untracked.vint32 ()
-    # EXPERIMENTAL!! Try to implement 10 leptons!
+    
+    # 10 Leptons
     if evt_type[:2]=="10":
         for i in range(10):
             part_id.append(py_id_dict[evt_type[2:]])
@@ -125,72 +120,63 @@ def _simulate_QED(process, step, evt_type, energy, evtnumber):
         lower_energy = str ( int(energy) - epsilon) # We want a calculation and
         upper_energy = str ( int(energy) + epsilon) # the result as a string   
    
-    
-    # Add the random generation service
-    process = _random_generator_service(process)
-    
-    process.source = cms.Source(
-                         "FlatRandomPtGunSource",
-                         psethack = cms.string(id_string),
-                         firstRun = cms.untracked.uint32(1),
-                         maxEvents = cms.untracked.int32\
-                                                     (parameters.evtnumber),
-                         PGunParameters = cms.untracked.PSet\
-                               (PartID = part_id,
-                                MinEta = cms.untracked.double(ETA_MAX),
-                                MaxEta = cms.untracked.double(ETA_MIN),
-                                MinPhi = cms.untracked.double(-PI),
-                                MaxPhi = cms.untracked.double(PI),
-                                MinPt  = cms.untracked.double(lower_energy),
-                                MaxPt  = cms.untracked.double(upper_energy) 
-                               ),
-                         Verbosity = cms.untracked.int32(0)
-                         )
-                             
-    #process.simulation_step = cms.Path(process.psim)
+    # Build the process source
+    source = cms.Source("FlatRandomPtGunSource",
+                        psethack = cms.string(id_string),
+                        firstRun = cms.untracked.uint32(1),
+                        maxEvents = cms.untracked.int32\
+                                                    (evtnumber),
+                        PGunParameters = cms.untracked.PSet\
+                              (PartID = part_id,
+                               MinEta = cms.untracked.double(ETA_MAX),
+                               MaxEta = cms.untracked.double(ETA_MIN),
+                               MinPhi = cms.untracked.double(-PI),
+                               MaxPhi = cms.untracked.double(PI),
+                               MinPt  = cms.untracked.double(lower_energy),
+                               MaxPt  = cms.untracked.double(upper_energy) 
+                              ),
+                        Verbosity = cms.untracked.int32(0)
+                       )
  
-    common.log( func_id+" Returning process...")
+    common.log( func_id+" Returning source...")
         
-    return process 
+    return source 
    
 #---------------------------
     
-def _simulate_QCD(process, step, evt_type, energy, evtnumber):
+def _simulate_QCD(step, evt_type, energy, evtnumber):
     """
     Here the settings for the generation of QCD events 
     """
     func_id = mod_id+"[_simulate_QCD]"
     common.log( func_id+" Entering... ")   
-    
-    # Add the random generation service
-    process = _random_generator_service(process)
         
     # Recover the energies from the string:
     upper_energy, lower_energy = energy_split(energy)
-       
-    process.source = cms.Source('PythiaSource',
-                                maxEvents = cms.untracked.int32\
-                                                (int(parameters.evtnumber)),
-                                pythiaPylistVerbosity = cms.untracked.int32(0),
-                                pythiaHepMCVerbosity =cms.untracked.bool(False),
-                                maxEventsToPrint = cms.untracked.int32(0),
-                                PythiaParameters = cms.PSet\
-                                 (parameterSets = cms.vstring\
-                                                   ("pythiaUESettings",
-                                                    "processParameters"),
-                                  pythiaUESettings = user_pythia_ue_settings(),
-                                  processParameters = cms.vstring("MSEL=1",
-                                                       "CKIN(3)="+upper_energy,
-                                                       "CKIN(4)="+lower_energy))
-                                )
+    
+    # Build the process source   
+    source = cms.Source("PythiaSource",
+                        maxEvents = cms.untracked.int32\
+                                              (int(evtnumber)),
+                               pythiaPylistVerbosity = cms.untracked.int32(0),
+                               pythiaHepMCVerbosity =cms.untracked.bool(False),
+                               maxEventsToPrint = cms.untracked.int32(0),
+                               PythiaParameters = cms.PSet\
+                                (parameterSets = cms.vstring\
+                                                  ("pythiaUESettings",
+                                                   "processParameters"),
+                                 pythiaUESettings = user_pythia_ue_settings(),
+                                 processParameters = cms.vstring("MSEL=1",
+                                                      "CKIN(3)="+upper_energy,
+                                                      "CKIN(4)="+lower_energy))
+                        )
      
-    #process.simulation_step = cms.Path(process.psim)
-                      
-    return process
+    common.log( func_id+" Returning Source...")                 
+    return source
  
 #---------------------------------
 
-def _simulate_TAU(process, step, evt_type, energy, evtnumber):
+def _simulate_TAU(step, evt_type, energy, evtnumber):
     """    
     Here the settings for the generation of Tau events 
     """
@@ -200,44 +186,38 @@ def _simulate_TAU(process, step, evt_type, energy, evtnumber):
     
     # Recover the energies from the string:
     upper_energy, lower_energy = energy_split(energy)
-    
-    # Add the random generation service
-    process = _random_generator_service(process)   
-    
-    process.source = cms.Source('PythiaSource',
-                                maxEvents = cms.untracked.int32\
-                                                (int(parameters.evtnumber)),
-                                ParticleID = cms.untracked.int32 (-15),
-                                DoubleParticle = cms.untracked.bool (True),
-                                pythiaVerbosity =cms.untracked.bool(False),
-                                Ptmin = cms.untracked.double (lower_energy),
-                                Ptmax = cms.untracked.double (upper_energy),
-                                Etamin = cms.untracked.double (ETA_MIN),
-                                Etamax = cms.untracked.double(ETA_MAX),
-                                Phimin = cms.untracked.double(0),
-                                Phimax = cms.untracked.double(360),
-                                
-                                PythiaParameters = cms.PSet\
+      
+    # Build the process source
+    source=cms.Source("PythiaSource",
+                      maxEvents = cms.untracked.int32\
+                                          (int(evtnumber)),
+                      ParticleID = cms.untracked.int32 (-15),
+                      DoubleParticle = cms.untracked.bool (True),
+                      pythiaVerbosity =cms.untracked.bool(False),
+                      Ptmin = cms.untracked.double (lower_energy),
+                      Ptmax = cms.untracked.double (upper_energy),
+                      Etamin = cms.untracked.double (ETA_MIN),
+                      Etamax = cms.untracked.double(ETA_MAX),
+                      Phimin = cms.untracked.double(0),
+                      Phimax = cms.untracked.double(360),
+                      PythiaParameters = cms.PSet\
                                  (parameterSets = cms.vstring\
                                                    ("pythiaUESettings",
                                                     "pythiaTauJets"),
-                                  pythiaUESettings = user_pythia_ue_settings(),
-                                  # Tau jets (config by A. Nikitenko)
-                                  # No tau -> electron
-                                  # No tau -> muon
-                                  pythiaTauJets = cms.vstring("MDME(89,1)=0",
-                                                       "MDME(90,1)=0"))
-                                )   
+                      pythiaUESettings = user_pythia_ue_settings(),
+                      # Tau jets (config by A. Nikitenko)
+                      # No tau -> electron
+                      # No tau -> muon
+                      pythiaTauJets = cms.vstring("MDME(89,1)=0", "MDME(90,1)=0"))
+                      )   
     
-    #process.simulation_step = cms.Path(process.psim)
-             
-    common.log( func_id+" Returning process...")
+    common.log( func_id+" Returning Source...")
      
-    return process    
+    return source    
 
 #---------------------------------
 
-def _simulate_HZZllll(process, step, evt_type, energy, evtnumber):
+def _simulate_HZZllll(step, evt_type, energy, evtnumber):
     """    
     Here the settings for the generation of Higgs->ZZ->ll events 
     The energy parameter is not used. According to the evt_type ("HZZMUMUMUMU" 
@@ -333,32 +313,26 @@ def _simulate_HZZllll(process, step, evt_type, energy, evtnumber):
         "MDME(225,1)=1",           #Higgs decay into Z Z",
         "MDME(226,1)=0",           #Higgs decay into W W"
         ) 
-        
-    
-    # Add the random generation service
-    process = _random_generator_service(process)
-       
-    process.source = cms.Source('PythiaSource',
-                       maxEvents = cms.untracked.int32\
-                                       (int(parameters.evtnumber)),
-                       pythiaVerbosity =cms.untracked.bool(False),
-                       PythiaParameters = cms.PSet\
-                         (parameterSets = cms.vstring(user_param_sets),
-                          pythiaHZZllll = params
-                         )     
-                      )
 
-    
-    #process.simulation_step = cms.Path(process.psim)
-              
-    common.log( func_id+" Returning process...")
+    # Build the process source   
+    source=cms.Source('PythiaSource',
+                      maxEvents = cms.untracked.int32\
+                                     (int(evtnumber)),
+                      pythiaVerbosity =cms.untracked.bool(False),
+                      PythiaParameters = cms.PSet\
+                       (parameterSets = cms.vstring(user_param_sets),
+                        pythiaHZZllll = params
+                       )     
+                     )
+
+    common.log( func_id+" Returning Source...")
      
-    return process      
+    return source      
 
 #---------------------------------
 
 def _simulate_udscb_jets\
-        (process, step, evt_type, energy, evtnumber):
+        (step, evt_type, energy, evtnumber):
     """
     Here the settings necessary to udscb jets generation are added. According
     to the flavour the Pythia parameters are changed slightly.
@@ -396,37 +370,26 @@ def _simulate_udscb_jets\
                               )
     pythia_jet_settings+=pythia_common
     
-    # Add the random generation service
-    process = _random_generator_service(process)   
-  
-    process.source = cms.Source('PythiaSource',
-                                maxEvents = cms.untracked.int32\
-                                                (int(parameters.evtnumber)),
-                                pythiaVerbosity =cms.untracked.bool(False),
-                                PythiaParameters = cms.PSet\
-                                 (parameterSets = cms.vstring\
-                                                   ("pythiaUESettings",
-                                                    "pythiaJets"),
-                                  pythiaUESettings = user_pythia_ue_settings(),
-                                  pythiaJets = pythia_jet_settings
-                                )
-                               )   
-
-    if evt_type == "UDS_JETS":
-        udsfilter=cms.EDFilter("JetFlavourFilter", jetType = cms.int32(1) )
-        process.udsfilter=udsfilter
-        process.evt_filter=cms.Path(process.udsfilter)
-        process.schedule.append(process.evt_filter)
+    # Build the process source
+    source=cms.Source('PythiaSource',
+                      maxEvents = cms.untracked.int32\
+                                        (int(evtnumber)),
+                      pythiaVerbosity =cms.untracked.bool(False),
+                      PythiaParameters = cms.PSet\
+                               (parameterSets = cms.vstring\
+                                                   ("pythiaUESettings","pythiaJets"),
+                                pythiaUESettings = user_pythia_ue_settings(),
+                                pythiaJets = pythia_jet_settings
+                               )
+                     )                       
    
-    #process.simulation_step=cms.Path(process.psim)                        
-   
-    common.log(func_id+" Returning process...")
+    common.log(func_id+" Returning Source...")
      
-    return process       
+    return source
 
 #-----------------------------------
     
-def _simulate_ttbar(process, step, evt_type, energy, evtnumber):
+def _simulate_ttbar(step, evt_type, energy, evtnumber):
     """
     Here the settings for the ttbar pairs are added to the process.
     """
@@ -434,17 +397,14 @@ def _simulate_ttbar(process, step, evt_type, energy, evtnumber):
     func_id = mod_id+"[_simulate_ttbar]"
     common.log(func_id+" Entering... ")      
     
-    # Add the random generation service
-    process = _random_generator_service(process)   
-    
-    process.source = cms.Source('PythiaSource',
-                               maxEvents = cms.untracked.int32\
-                                               (int(parameters.evtnumber)),
-                               pythiaPylistVerbosity=cms.untracked.int32(0),
-                               pythiaHepMCVerbosity=cms.untracked.bool(False),
-                               maxEventsToPrint = cms.untracked.int32(0), 
-                                
-                               PythiaParameters = cms.PSet\
+    # Build the process source    
+    source=cms.Source('PythiaSource',
+                      maxEvents = cms.untracked.int32\
+                                        (int(evtnumber)),
+                      pythiaPylistVerbosity=cms.untracked.int32(0),
+                      pythiaHepMCVerbosity=cms.untracked.bool(False),
+                      maxEventsToPrint = cms.untracked.int32(0),                       
+                      PythiaParameters = cms.PSet\
                                 (parameterSets = cms.vstring\
                                                    ("pythiaUESettings",
                                                     "processParameters"),
@@ -460,17 +420,15 @@ def _simulate_ttbar(process, step, evt_type, energy, evtnumber):
                                      "PMAS(6,1)=175" # top mass
                                      )
                                 ) 
-                               )  
-    
-    #process.simulation_step = cms.Path(process.psim)
-          
-    common.log(func_id+" Returning process...")
+                      )  
+
+    common.log(func_id+" Returning Source...")
      
-    return process    
+    return source   
  
 #---------------------------------
 
-def _simulate_ZEE(process, step, evt_type, energy, evtnumber):
+def _simulate_ZEE(step, evt_type, energy, evtnumber):
     """
     Here the settings for the Z ee simulation are added to the process.
     Energy parameter is not used.
@@ -478,9 +436,6 @@ def _simulate_ZEE(process, step, evt_type, energy, evtnumber):
       
     func_id = mod_id+"[_simulate_ZEE]"
     common.log( func_id+" Entering... ")      
-   
-    # Add the random generation service
-    process = _random_generator_service(process)   
 
     user_param_sets = cms.vstring(
                  "MSEL = 11 ",           
@@ -515,34 +470,30 @@ def _simulate_ZEE(process, step, evt_type, energy, evtnumber):
                  "CKIN( 1) = 40.",            #(D=2. GeV)
                  "CKIN( 2) = -1.",            #(D=-1. GeV)      \
                  )     
-    
-    process.source = cms.Source('PythiaSource',
-                               maxEvents = cms.untracked.int32\
-                                               (int(parameters.evtnumber)),  
-                               PythiaParameters = cms.PSet\
-                                (parameterSets = cms.vstring("pythiaZee"),
-                               pythiaZee=user_param_sets )
-                               )
-                               
-    #process.simulation_step = cms.Path(process.psim)
-            
-    common.log(func_id+" Returning process...")
+                 
+    # Build the process source
+    source=cms.Source('PythiaSource',
+                      maxEvents = cms.untracked.int32\
+                                         (int(evtnumber)),  
+                      PythiaParameters = cms.PSet\
+                               (parameterSets = cms.vstring("pythiaZee"),
+                                pythiaZee=user_param_sets )
+                     )
+
+    common.log(func_id+" Returning Source...")
      
-    return process   
+    return source   
     
 #---------------------------------
 
-def _simulate_BsJPhi(process, step, evt_type, energy, evtnumber):
+def _simulate_BsJPhi(step, evt_type, energy, evtnumber):
     """
     Here the settings for the Bs ->J Phi decay simulation of the are added to
     the process. 
     """
        
     func_id=mod_id+"[_simulate_BsJPhi]"
-    common.log(func_id+" Entering... ")      
-   
-    # Add the random generation service
-    process=_random_generator_service(process)                 
+    common.log(func_id+" Entering... ")                    
 
     myParameters = cms.vstring(
         # MSEL=1 is best, but MSEL=5 is faster, so handy for debugging.
@@ -606,55 +557,36 @@ def _simulate_BsJPhi(process, step, evt_type, energy, evtnumber):
         'MDME(664,1)=0',
         'MDME(665,1)=0',
         'MDME(666,1)=0') # phi->K+K-
-        
-    process.source=cms.Source('PythiaSource',
-                              maxEvents = cms.untracked.int32\
-                                            (int(parameters.evtnumber)),
-                              pythiaPylistVerbosity=cms.untracked.int32(1),
-                              pythiaHepMCVerbosity=cms.untracked.bool(False),
-                              maxEventsToPrint = cms.untracked.int32(0), 
-                              PythiaParameters = cms.PSet\
-                                (parameterSets = cms.vstring\
-                                                ("pythiaUESettings",
-                                                 "processParameters"),
-                                 pythiaUESettings = user_pythia_ue_settings(),
-                                 processParameters =  myParameters)
-                             )
-    # Enable the bs filter:                       
-    bsfilter=cms.EDFilter("BsJpsiPhiFilter",
-                          leptonType=cms.int32(13),
-                          leptonEtaMin=cms.double(-2.4),
-                          leptonEtaMax=cms.double(+2.4),
-                          leptonPtMin=cms.double(2.0),
-                          hadronType=cms.int32(321),
-                          hadronEtaMin=cms.double(-2.4),
-                          hadronEtaMax=cms.double(+2.4),
-                          hadronPtMin=cms.double(0.8)
-                         )
-    process.bs_filter = bsfilter
-    process.evt_filter=cms.Path(process.bs_filter)
-    #add to the schedule!
-    process.schedule.append(process.evt_filter) 
-                                                 
-   # process.simulation_step=cms.Path(process.psim)
+    
+    # Build the process source    
+    source=cms.Source('PythiaSource',
+                      maxEvents = cms.untracked.int32\
+                                        (int(evtnumber)),
+                      pythiaPylistVerbosity=cms.untracked.int32(1),
+                      pythiaHepMCVerbosity=cms.untracked.bool(False),
+                      maxEventsToPrint = cms.untracked.int32(0), 
+                      PythiaParameters = cms.PSet\
+                            (parameterSets = cms.vstring\
+                                            ("pythiaUESettings",
+                                             "processParameters"),
+                             pythiaUESettings = user_pythia_ue_settings(),
+                             processParameters =  myParameters)
+                     )
             
-    common.log( func_id+" Returning process...")
+    common.log( func_id+" Returning Source...")
      
-    return process                        
+    return source                        
               
 #---------------------------------
 
-def _simulate_ZPJJ(process, step, evt_type, energy, evtnumber):
+def _simulate_ZPJJ(step, evt_type, energy, evtnumber):
     """
     Here the settings for the Zprime to JJ simulation are added to the
     process. 
     """
     
     func_id=mod_id+"[_simulate_ZPJJ]"
-    common.log(func_id+" Entering... ")      
-   
-    # Add the random generation service
-    process=_random_generator_service(process)    
+    common.log(func_id+" Entering... ")       
     
     user_param_sets=cms.vstring(
 	    'PMAS(32,1)= 700.',            # mass of Zprime',
@@ -714,46 +646,44 @@ def _simulate_ZPJJ(process, step, evt_type, energy, evtnumber):
    	    'MDME(310,1)= 0',            # weird neutral higgs HA'
     )
     
-    process.source = cms.Source('PythiaSource',
-                               maxEvents = cms.untracked.int32\
-                                               (int(parameters.evtnumber)),
-                               pythiaVerbosity = cms.untracked.bool (False),
-                               PythiaParameters = cms.PSet\
-                                (parameterSets = cms.vstring("pythiaDefault",
-                                                             "myParameters"),
-                               pythiaDefault= cms.vstring \
-                                 ("PMAS(5,1)=4.8" ,# b quark mass
-                                  "PMAS(6,1)=172.3" ), #t quark mass
-                               myParameters = user_param_sets)
-                               )
+    # Build the process source
+    source=cms.Source('PythiaSource',
+                      maxEvents = cms.untracked.int32\
+                                          (int(evtnumber)),
+                      pythiaVerbosity = cms.untracked.bool (False),
+                      PythiaParameters = cms.PSet\
+                           (parameterSets = cms.vstring("pythiaDefault",
+                                                        "myParameters"),
+                            pythiaDefault= cms.vstring \
+                               ("PMAS(5,1)=4.8" ,# b quark mass
+                                "PMAS(6,1)=172.3" ), #t quark mass
+                            myParameters = user_param_sets)
+                     )
                                
-    #process.simulation_step = cms.Path(process.psim)
-      
-    common.log( func_id+" Returning process...")
+    common.log( func_id+" Returning Source...")
      
-    return process                                                  
+    return source                                                
                                                
 #---------------------------------
 
-def _random_generator_service(process):
+def random_generator_service():
     """
     Function that adds to the process the random generator service.
     """
     func_id=mod_id+"[_random_generator_service]"
     common.log( func_id+" Entering... ")
-    
-    process.add_(cms.Service("RandomNumberGeneratorService"))
-    process.RandomNumberGeneratorService.sourceSeed=\
-                                                cms.untracked.uint32(123456789)
-    process.RandomNumberGeneratorService.moduleSeeds=\
-                    cms.PSet(VtxSmeared=cms.untracked.uint32(98765432), 
-                             g4SimHits=cms.untracked.uint32(11), 
-                             mix=cms.untracked.uint32(12345)
-                            )
-    
-    common.log( func_id+" Returning process...")
 
-    return (process)
+    randomgen_service=cms.Service("RandomNumberGeneratorService",
+                                  sourceSeed=cms.untracked.uint32(123456789),
+                                  moduleSeeds=cms.PSet(VtxSmeared=cms.untracked.uint32(98765432), 
+                                                       g4SimHits=cms.untracked.uint32(11), 
+                                                       mix=cms.untracked.uint32(12345)
+                                                      )
+                                 )
+
+    common.log(func_id+" Returning Service...")
+
+    return (randomgen_service)
     
 #-----------------------------------
 
@@ -777,10 +707,39 @@ def energy_split(energy):
             common.log( func_id+" Found separator in energy string...") 
             low,high = energy.split(separator)
             if float(high) > float(low):
+                common.log(func_id+" Returning Energy...")
                 return (low,high)
     
     raise "Energy Format: ","Unrecognised energy format."
-    
+
+#-----------------------------------
+
+def build_filter(evt_type):
+    """
+    Builds the filter for "BSJPSIPHI" and "UDS_JETS" and returns the
+    EDFilter.
+    """
+    func_id = mod_id+"[build_split]"
+    common.log( func_id+" Entering... ") 
+
+    if evt_type=="BSJPSIPHI":
+        bsfilter=cms.EDFilter("BsJpsiPhiFilter",
+                              leptonType=cms.int32(13),
+                              leptonEtaMin=cms.double(-2.4),
+                              leptonEtaMax=cms.double(+2.4),
+                              leptonPtMin=cms.double(2.0),
+                              hadronType=cms.int32(321),
+                              hadronEtaMin=cms.double(-2.4),
+                              hadronEtaMax=cms.double(+2.4),
+                              hadronPtMin=cms.double(0.8)
+                             )
+        common.log(func_id+" Returning BsJpsiPhiFilter...")
+        return bsfilter
+    elif evt_type=="UDS_JETS":
+        udsfilter=cms.EDFilter("JetFlavourFilter", jetType = cms.int32(1) )
+        common.log(func_id+" Returning JetFlavourFilter...")
+        return udsfilter
+            
 #-----------------------------------
 
 def user_pythia_ue_settings():
