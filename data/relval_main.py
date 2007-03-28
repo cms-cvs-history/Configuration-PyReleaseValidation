@@ -32,7 +32,6 @@ import relval_simulation_module
 
 print "\nPython RelVal"
  
-# Istantiate the process
 process = cms.Process (parameters.process_name)
 
 # Add the Profiler Service if needed:
@@ -40,7 +39,6 @@ process = cms.Process (parameters.process_name)
 if parameters.profiler_service_cuts!="":
      process=extend(common.build_profiler_service(parameters.profiler_service_cuts))
 
-# Add an empty Schedule
 process.schedule=cms.Schedule()
 
 # Enrich the process with the features described in the relval_includes_module.
@@ -72,23 +70,24 @@ if parameters.step in ("ALL","SIM"):
     process.schedule.append(process.simulation_step)
                                               
 # The Digitisation and Reconstruction:
-if parameters.step in ("ALL","DIGI","RECO"):
-    if not parameters.step=="ALL": # input file only if a single step is selected.
-        process.source = common.event_input(parameters.infile_name)   
-    if parameters.step in ("ALL","DIGI"):
-        process.digitisation_step=cms.Path(process.pdigi)
-        process.schedule.append(process.digitisation_step)   
-    if parameters.step in ("ALL","RECO"):
-        # Choose between reconstruction algorithms.
-        if parameters.evt_type in ("QCD","TTBAR"):
-            process.reconstruction_step=cms.Path(process.reconstruction_plusRS_plus_GSF)
-        else:
-            process.reconstruction_step=cms.Path(process.reconstruction)
-        process.schedule.append(process.reconstruction_step)     
-        # One last item must be added to the schedule for the photon:
-        if parameters.evt_type=="GAMMA":
-            process.photonconversion=cms.Path(process.convertedPhotonSequence)
-            process.schedule.append(process.photonconversion)   
+else: # The input is a file
+    process.source = common.event_input(parameters.infile_name) 
+ 
+if parameters.step in ("ALL","DIGI"):
+    process.digitisation_step=cms.Path(process.pdigi)
+    process.schedule.append(process.digitisation_step)
+       
+if parameters.step in ("ALL","RECO"):
+    # Choose between reconstruction algorithms.
+    if parameters.evt_type in ("QCD","TTBAR"):
+        process.reconstruction_step=cms.Path(process.reconstruction)
+    else:
+        process.reconstruction_step=cms.Path(process.reconstruction_plusRS_plus_GSF)
+    process.schedule.append(process.reconstruction_step)     
+    # One last item must be added to the schedule for the photon:
+    if parameters.evt_type=="GAMMA":
+        process.photonconversion=cms.Path(process.convertedPhotonSequence)
+        process.schedule.append(process.photonconversion)   
                                              
 # Add the output on a root file if requested
 if parameters.output_flag:
