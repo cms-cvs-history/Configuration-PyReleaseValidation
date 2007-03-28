@@ -76,7 +76,7 @@ def simulate(step, evt_type, energy, evtnumber):
          (step, evt_type, energy, evtnumber)            
  
     else:
-      raise "Event type: ","Type not yet implemented."
+      raise "Event type","Type not yet implemented."
              
     common.log( func_id+" Returning Source")
     
@@ -719,7 +719,7 @@ def build_filter(evt_type):
     Builds the filter for "BSJPSIPHI" and "UDS_JETS" and returns the
     EDFilter.
     """
-    func_id = mod_id+"[build_split]"
+    func_id = mod_id+"[build_filter]"
     common.log( func_id+" Entering... ") 
 
     if evt_type=="BSJPSIPHI":

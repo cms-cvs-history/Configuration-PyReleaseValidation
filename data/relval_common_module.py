@@ -168,8 +168,8 @@ def build_production_info():
     """
     prod_info=cms.untracked.PSet\
               (
-               version=cms.untracked.string("$Revision: 1.2 $"),
-               name=cms.untracked.string("$Name:  $"),
+               version=cms.untracked.string("$Revision: 1.4 $"),
+               name=cms.untracked.string("$Name: V00-01-00 $"),
                annotation=cms.untracked.string\
                                 ("PyRelVal")
               )

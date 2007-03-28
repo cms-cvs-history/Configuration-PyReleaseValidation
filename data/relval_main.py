@@ -59,7 +59,7 @@ if parameters.step in ("ALL","SIM"):
     process.add_(relval_simulation_module.random_generator_service())
     # Add a flavour filter if this is the case:
     if parameters.evt_type in ("BSJPSIPHI","UDS_JETS"):
-        process.flav_filter=relval_simulation_module.add_filter(parameters.evt_type)
+        process.flav_filter=relval_simulation_module.build_filter(parameters.evt_type)
         process.flavfilter=cms.Path(process.flav_filter)
         process.schedule.append(process.flavfilter)
     # Builds the source for the process
