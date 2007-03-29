@@ -19,14 +19,20 @@ import relval_parameters_module as parameters
 import cPickle
 import os
 
-packagedir=os.environ["CMSSW_BASE"]+"/src/Configuration/PyReleaseValidation/data/"
 # This just simplifies the use of the logger
 mod_id = "[relval_common_module]"
 
 #------------------------
 
-def _include_files(includes_set):
-    
+def include_files(includes_set):
+    """
+    It takes a string or a list of strings and returns a list of 
+    FWCore.ParameterSet.parseConfig._ConfigReturn objects.
+    In the package directory it creates ASCII files in which the objects are coded. If 
+    the files exist already it sympli loads them.
+     
+    """
+    packagedir=os.environ["CMSSW_BASE"]+"/src/Configuration/PyReleaseValidation/data/"
     #Trasform the includes_set in a list of lists
     if not isinstance(includes_set,list):
         includes_set=[includes_set]
@@ -34,7 +40,7 @@ def _include_files(includes_set):
         for i in range(len(includes_set)):
             includes_set[i]=[includes_set[i]]
     
-    func_id=mod_id+"[_include_files]"
+    func_id=mod_id+"[include_files]"
     for item in includes_set:
         item.append(packagedir+os.path.basename(item[0])[:-4]+".pkl")
         if not os.path.exists(item[1]):
@@ -64,11 +70,11 @@ def add_includes(process):
     
     # Services.cfi
     services="Configuration/ReleaseValidation/data/Services.cfi"
-    process.extend(_include_files(services)[0])
+    process.extend(include_files(services)[0])
     
     # Fake conditions 
     fake_conditions="Configuration/StandardSequences/data/FakeConditions.cff"
-    process.extend(_include_files(fake_conditions)[0])
+    process.extend(include_files(fake_conditions)[0])
   
     # The mixingnopileup.cff file
     process.mix=cms.EDFilter("MixingModule",bunchspace=cms.int32(25))
@@ -87,14 +93,12 @@ def add_includes(process):
     # The Simulation.cff file
     # This file has been partially translated into Python so to avoid the
     # conflicts risen by the inclusion of cffs with interdipendencies.
-    # The presence of pickled object files of the 
-    # FWCore.ParameterSet.parseConfig._ConfigReturn objects is checked. 
-    # If they are absent they are created.
+
     simulation_includes_set=["SimG4Core/Configuration/data/SimG4Core.cff",
                              "SimGeneral/TrackingAnalysis/data/trackingtruth.cfi",
                              "Configuration/StandardSequences/data/Digi.cff"]
 
-    for obj in _include_files(simulation_includes_set):
+    for obj in include_files(simulation_includes_set):
         process.extend(obj)
                 
     process.psim=cms.Sequence(process.VtxSmeared+process.g4SimHits)
@@ -106,7 +110,7 @@ def add_includes(process):
     
     # The Reconstruction.cff file
     reconstruction="Configuration/StandardSequences/data/Reconstruction.cff" 
-    process.extend(_include_files(reconstruction)[0])
+    process.extend(include_files(reconstruction)[0])
     #process.extend\
     #(cms.include("Configuration/StandardSequences/data/Reconstruction.cff" ))
     # The file FWCore/Framework/test/cmsExceptionsFatalOption.cff:
@@ -156,7 +160,7 @@ def event_output(process, outfile_name, step, evt_filter=None):
     Function that enriches the process so to produce an output.
     """ 
     # Event content
-    content=_include_files("Configuration/EventContent/data/EventContent.cff")[0]
+    content=include_files("Configuration/EventContent/data/EventContent.cff")[0]
     process.extend(content)
     process.out_step = cms.OutputModule\
                     ("PoolOutputModule",
@@ -206,7 +210,7 @@ def build_production_info():
     """
     prod_info=cms.untracked.PSet\
               (
-               version=cms.untracked.string("$Revision: 1.5 $"),
+               version=cms.untracked.string("$Revision: 1.6 $"),
                name=cms.untracked.string("$Name:  $"),
                annotation=cms.untracked.string\
                                 ("PyRelVal")
