@@ -40,6 +40,7 @@ type_energy_dict={"MU+":qed_ene,
                   "QCD":"380_470",
                   "B_JETS":jet_en,"C_JETS":jet_en,"UDS_JETS":jet_en,
                   "BSJPSIPHI":"",
+                  "ZEE":"",
                   "ZPJJ":"",
                   "HZZEEEE":"","HZZMUMUMUMU":"",
                   "TTBAR":"",
@@ -171,7 +172,7 @@ if options.energy==None:
 prec_step = {"ALL":"","SIM":"","DIGI":"SIM","RECO":"DIGI"}
 
 if options.filein=="" and not options.step in ("ALL","SIM"):
-    options.filein=options.evt_type+"_"+options.energy+\
+    options.filein="file:"+options.evt_type+"_"+options.energy+\
     "_"+prec_step[options.step]+".root"
 
 if options.fileout=="":
@@ -230,8 +231,6 @@ dbg_flag=True
 # Dump the oldstyle cfg file.
 dump_cfg_flag="""+str(options.dump_cfg_flag)+"""
 """
-
-#print cfgfile # Test line!
 
 # Write down the configuration in a Python module
 config_module_name="./relval_parameters_module.py" 

@@ -148,7 +148,7 @@ def event_input(infile_name, maxEvents=-1):
     """ 
     pr_source = cms.Source("PoolSource",
                            fileNames = cms.untracked.vstring\
-                                     (("file:"+infile_name)),
+                                     ((infile_name)),
                            maxEvents = cms.untracked.int32(-1)
                           )
     return pr_source
@@ -210,7 +210,7 @@ def build_production_info():
     """
     prod_info=cms.untracked.PSet\
               (
-               version=cms.untracked.string("$Revision: 1.6 $"),
+               version=cms.untracked.string("$Revision: 1.7 $"),
                name=cms.untracked.string("$Name:  $"),
                annotation=cms.untracked.string\
                                 ("PyRelVal")
