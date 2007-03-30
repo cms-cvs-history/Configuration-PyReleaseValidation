@@ -12,7 +12,7 @@ __author__  = "Danilo Piparo"
 
 # Let Python find the parameters module created locally in the current directory.
 # As long as the Python code cannot have any command line arguments since this could lead
-# to conflicts with cmsRun this is a way to input parameters.
+# to conflicts with cmsRun this is a way to input 
 import sys
 sys.path.append(".") # necessary to find the relval_parameters_module created by CMSdriver
 
@@ -20,7 +20,10 @@ sys.path.append(".") # necessary to find the relval_parameters_module created by
 
 import FWCore.ParameterSet.Config as cms
 
-import relval_parameters_module as parameters
+#import relval_parameters_module as parameters
+#Try to eliminate the problem of the _commonsequence without the import
+execfile("relval_parameters_module.py")
+
 import relval_common_module as common
 import relval_simulation_module
 
@@ -32,12 +35,12 @@ import relval_simulation_module
 
 print "\nPython RelVal"
  
-process = cms.Process (parameters.process_name)
+process = cms.Process (process_name)
 
 # Add the Profiler Service if needed:
-#if parameters.prof_service_flag:
-if parameters.profiler_service_cuts!="":
-     process=extend(common.build_profiler_service(parameters.profiler_service_cuts))
+#if prof_service_flag:
+if profiler_service_cuts!="":
+     process=extend(common.build_profiler_service(profiler_service_cuts))
 
 process.schedule=cms.Schedule()
 
@@ -52,54 +55,54 @@ Here we choose to make the process work only for one of the three steps
 (SIM DIGI RECO) or for the whole chain (ALL)
 """
 # The Simuation:
-if parameters.step in ("ALL","SIM"):
+if step in ("ALL","SIM"):
     # The random generator service    
     process.add_(relval_simulation_module.random_generator_service())
     # Add a flavour filter if this is the case:
-    if parameters.evt_type in ("BSJPSIPHI","UDS_JETS"):
-        process.flav_filter=relval_simulation_module.build_filter(parameters.evt_type)
+    if evt_type in ("BSJPSIPHI","UDS_JETS"):
+        process.flav_filter=relval_simulation_module.build_filter(evt_type)
         process.flavfilter=cms.Path(process.flav_filter)
         process.schedule.append(process.flavfilter)
     # Builds the source for the process
-    process.source=relval_simulation_module.simulate(parameters.step,
-                                                     parameters.evt_type,
-                                                     parameters.energy,
-                                                     parameters.evtnumber)
+    process.source=relval_simulation_module.simulate(step,
+                                                     evt_type,
+                                                     energy,
+                                                     evtnumber)
     # Enrich the schedule with simulation
     process.simulation_step = cms.Path(process.psim)
     process.schedule.append(process.simulation_step)
                                               
 # The Digitisation and Reconstruction:
 else: # The input is a file
-    process.source = common.event_input(parameters.infile_name) 
+    process.source = common.event_input(infile_name) 
  
-if parameters.step in ("ALL","DIGI"):
+if step in ("ALL","DIGI"):
     process.digitisation_step=cms.Path(process.pdigi)
     process.schedule.append(process.digitisation_step)
        
-if parameters.step in ("ALL","RECO"):
+if step in ("ALL","RECO"):
     # Choose between reconstruction algorithms.
-    if parameters.evt_type in ("QCD","TTBAR"):
+    if evt_type in ("QCD","TTBAR"):
         process.reconstruction_step=cms.Path(process.reconstruction)
     else:
         process.reconstruction_step=cms.Path(process.reconstruction_plusRS_plus_GSF)
     process.schedule.append(process.reconstruction_step)     
     # One last item must be added to the schedule for the photon:
-    if parameters.evt_type=="GAMMA":
+    if evt_type=="GAMMA":
         process.photonconversion=cms.Path(process.convertedPhotonSequence)
         process.schedule.append(process.photonconversion)   
                                              
 # Add the output on a root file if requested
-if parameters.output_flag:
+if output_flag:
     process = common.event_output\
-        (process, parameters.outfile_name, parameters.step)
+        (process, outfile_name, step)
     process.schedule.append(process.outpath)  
                                                                         
 # Add metadata for production                                    
 #process.configurationMetadata=includes.build_production_info() #Not in the 140pre1
 
 # print to screen the config file in the old language
-if parameters.dump_cfg_flag:
+if dump_cfg_flag:
     print process.dumpConfig()
        
 # A sober separator between the python program and CMSSW    
