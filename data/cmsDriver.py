@@ -55,9 +55,11 @@ usage=\
 """%prog <TYPE> [options].
 The supported event types are: """+str(types_list)+""".
 Examples:
-cmsRun.py QCD
-cmsRun.py 10MU+ -e 45 -n 100 --no_output
-cmsRun.py B_JETS -s DIGI -e 40_130 -n 50 --filein MYSIMJETS --fileout MYDIGIJETS
+%prog QCD
+%prog 10MU+ -e 45 -n 100 --no_output
+%prog B_JETS -s DIGI -e 40_130 -n 50 --filein MYSIMJETS --fileout MYDIGIJETS
+%prog GAMMA -s DIGI --filein myGAMMA.root --dirout rfio:$CASTOR_HOME/test/
+%prog GAMMA -s RECO --dirin rfio:$CASTOR_HOME/test/ --fileout myGAMMAreco.root
 """
 parser = optparse.OptionParser(usage)
 
@@ -172,14 +174,12 @@ if options.energy==None:
 prec_step = {"ALL":"","SIM":"","DIGI":"SIM","RECO":"DIGI"}
 
 if options.filein=="" and not options.step in ("ALL","SIM"):
-    options.filein="file:"+options.evt_type+"_"+options.energy+\
-    "_"+prec_step[options.step]+".root"
+    options.filein=options.evt_type+"_"+options.energy+\
+     "_"+prec_step[options.step]+".root"
 
 if options.fileout=="":
-    options.fileout=options.evt_type+"_"+options.energy+"_"+options.step+".root"
-
-#if options.prefix == None:
-#    options.prefix=""
+    options.fileout=options.evt_type+"_"+options.energy+\
+     "_"+options.step+".root"
 
 # Print the options to screen
 print_options(options)
