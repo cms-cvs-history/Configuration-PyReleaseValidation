@@ -188,7 +188,7 @@ def build_message_logger():
 
 #--------------------------------------------
 
-def build_profiler_service(process,evts_cuts):
+def build_profiler_service(evts_cuts):
     """
     A profiler service by Vincenzo Innocente.
     """
@@ -210,18 +210,19 @@ def build_production_info():
     """
     prod_info=cms.untracked.PSet\
               (
-               version=cms.untracked.string("$Revision: 1.7 $"),
+               version=cms.untracked.string("$Revision: 1.8 $"),
                name=cms.untracked.string("$Name:  $"),
                annotation=cms.untracked.string\
                                 ("PyRelVal")
               )
     return prod_info 
-                                   
+
 #--------------------------------------------
 
 def log (message):
     """
     An oversimplified logger. This is designed for debugging the PyReleaseValidation
     """
-    if parameters.dbg_flag:
+    #if parameters.dbg_flag:
+    if True:    
         print message
