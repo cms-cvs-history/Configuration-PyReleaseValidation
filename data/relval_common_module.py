@@ -16,11 +16,12 @@ import FWCore.ParameterSet.Config as cms
 
 import relval_parameters_module as parameters
 
-import cPickle
-import os
+import cPickle 
+import os # To check the existance of pkl objects files
+import sys # to get current funcname
 
 # This just simplifies the use of the logger
-mod_id = "[relval_common_module]"
+mod_id="["+os.path.basename(sys._getframe().f_code.co_filename)[:-3]+"]"
 
 #------------------------
 
@@ -33,28 +34,26 @@ def include_files(includes_set):
      
     """
     packagedir=os.environ["CMSSW_BASE"]+"/src/Configuration/PyReleaseValidation/data/"
-    #Trasform the includes_set in a list of lists
+    #Trasform the includes_set in a list
     if not isinstance(includes_set,list):
         includes_set=[includes_set]
-    if not isinstance(includes_set[0],list):
-        for i in range(len(includes_set)):
-            includes_set[i]=[includes_set[i]]
     
+    object_list=[]    
     func_id=mod_id+"[include_files]"
-    for item in includes_set:
-        item.append(packagedir+os.path.basename(item[0])[:-4]+".pkl")
-        if not os.path.exists(item[1]):
-          obj=cms.include(item[0])
-          file=open(item[1],"w")
+    for cff_file_name in includes_set:
+        pkl_file_name=packagedir+os.path.basename(cff_file_name)[:-4]+".pkl"
+        # if they do not exist, create pkl files.
+        if not os.path.exists(pkl_file_name):
+          obj=cms.include(cff_file_name)
+          file=open(pkl_file_name,"w")
           cPickle.dump(obj,file)   
           file.close()
-          log(func_id+" Pickle object for "+item[0]+" dumped as "+item[1]+"...")
-    
-    object_list=[]
-    for item in includes_set:                        
-        file=open(item[1],"r")
+          log(func_id+" Pickle object for "+cff_file_name+" dumped as "+pkl_file_name+"...")
+        # load the pkl files.                       
+        file=open(pkl_file_name,"r")
         object_list.append(cPickle.load(file))
-        log(func_id+" Pickle object for "+item[0]+" loaded ...")
+        file.close()
+        log(func_id+" Pickle object for "+cff_file_name+" loaded ...")
     
     return object_list
     
@@ -65,7 +64,7 @@ def add_includes(process):
     It returns a process enriched with the includes.
     """
     
-    func_id = mod_id+"[add_includes]"
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     log(func_id+" Entering... ")
     
     # Services.cfi
@@ -146,11 +145,13 @@ def event_input(infile_name, maxEvents=-1):
     """
     Returns the source for the process.
     """ 
-    pr_source = cms.Source("PoolSource",
-                           fileNames = cms.untracked.vstring\
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
+    pr_source=cms.Source("PoolSource",
+                         fileNames = cms.untracked.vstring\
                                      ((infile_name)),
-                           maxEvents = cms.untracked.int32(-1)
-                          )
+                         maxEvents = cms.untracked.int32(-1)
+                        )
+    log(func_id+" Adding PoolSource source ...")                         
     return pr_source
     
 #-----------------------------------------
@@ -159,6 +160,7 @@ def event_output(process, outfile_name, step, evt_filter=None):
     """
     Function that enriches the process so to produce an output.
     """ 
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     # Event content
     content=include_files("Configuration/EventContent/data/EventContent.cff")[0]
     process.extend(content)
@@ -172,6 +174,8 @@ def event_output(process, outfile_name, step, evt_filter=None):
     
     process.outpath = cms.EndPath(process.out_step)
     
+    log(func_id+" Adding PoolOutputModule ...") 
+    
     return process 
     
 #-----------------------------------------
@@ -180,18 +184,44 @@ def build_message_logger():
     """
     Function that returns the message logger service
     """
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
+    
     msg_logger=cms.include("FWCore/MessageService/data/MessageLogger.cfi")
     msg_logger.MessageLogger.cout.threshold = "ERROR"
     msg_logger.MessageLogger.cerr.default.limit = 10
     
+    log(func_id+" Returning Service...")
+        
     return msg_logger
 
 #--------------------------------------------
 
+def random_generator_service():
+    """
+    Function that adds to the process the random generator service.
+    """
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
+    
+    randomgen_service=cms.Service("RandomNumberGeneratorService",
+                                  sourceSeed=cms.untracked.uint32(123456789),
+                                  moduleSeeds=cms.PSet(VtxSmeared=cms.untracked.uint32(98765432), 
+                                                       g4SimHits=cms.untracked.uint32(11), 
+                                                       mix=cms.untracked.uint32(12345)
+                                                      )
+                                 )
+
+    log(func_id+" Returning Service...")
+
+    return (randomgen_service)
+    
+#---------------------------------------------------
+    
 def build_profiler_service(evts_cuts):
     """
     A profiler service by Vincenzo Innocente.
     """
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
+    
     firstevent=int(evts_cuts.split("_")[0])
     lastevent= int(evts_cuts.split("_")[1])
 
@@ -200,21 +230,48 @@ def build_profiler_service(evts_cuts):
                              lastEvent=cms.untracked.int32(lastevent),
                              paths=cms.untracked.vstring("ALL")                        
                             )
+                            
+    log(func_id+" Returning Service...")
+                                                        
     return prof_service
     
 #--------------------------------------------------- 
 
+def build_fpe_service(options="1110"):
+    """
+    A service for trapping floating point exceptions
+    """
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
+    
+    fpe_service=cms.Service("EnableFloatingPointExceptions",
+                            enableDivByZeroEx=cms.untracked.bool(bool(options[0])),
+                            enableInvalidEx=cms.untracked.bool(bool(options[1])),
+                            enableOverflowEx=cms.untracked.bool(bool(options[2])),
+                            enableUnderflowEx=cms.untracked.bool(bool(options[3]))
+                           )  
+    
+    log(func_id+" Returning Service...")
+                             
+    return fpe_service
+    
+#---------------------------------------------------
 def build_production_info():
     """
     Add useful info for the production.
     """
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
+    
     prod_info=cms.untracked.PSet\
               (
-               version=cms.untracked.string("$Revision: 1.8 $"),
+               version=cms.untracked.string("$Revision: 1.9 $"),
                name=cms.untracked.string("$Name:  $"),
                annotation=cms.untracked.string\
                                 ("PyRelVal")
               )
+    
+
+    log(func_id+" Adding Production info ...")              
+              
     return prod_info 
 
 #--------------------------------------------
@@ -226,3 +283,4 @@ def log (message):
     #if parameters.dbg_flag:
     if True:    
         print message
+                

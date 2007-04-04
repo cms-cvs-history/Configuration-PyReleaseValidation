@@ -13,17 +13,17 @@ import FWCore.ParameterSet.Config as cms
 import relval_common_module as common
 
 from math import pi as PI
+import os
+import sys
 
 #---------------------------------------------------
 # This just simplifies the use of the logger
-mod_id = "[relval_simulation_module]"
+mod_id="["+os.path.basename(sys._getframe().f_code.co_filename)[:-3]+"]"
 
 #----------------------------
 # Some useful constants:
 ETA_MAX=2.5
 ETA_MIN=-2.5
-# list of the supported processes:
-
 
 def simulate(step, evt_type, energy, evtnumber):
     """
@@ -148,7 +148,7 @@ def _simulate_QCD(step, evt_type, energy, evtnumber):
     """
     Here the settings for the generation of QCD events 
     """
-    func_id = mod_id+"[_simulate_QCD]"
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     common.log( func_id+" Entering... ")   
         
     # Recover the energies from the string:
@@ -181,7 +181,7 @@ def _simulate_TAU(step, evt_type, energy, evtnumber):
     Here the settings for the generation of Tau events 
     """
      
-    func_id = mod_id+"[_simulate_tau]"
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     common.log( func_id+" Entering... ")      
     
     # Recover the energies from the string:
@@ -223,7 +223,7 @@ def _simulate_HZZllll(step, evt_type, energy, evtnumber):
     The energy parameter is not used. According to the evt_type ("HZZMUMUMUMU" 
     or "HZZEEEE") the final state is chosen.
     """
-    func_id = mod_id+"[_simulate_HZZllll]"
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     common.log( func_id+" Entering... ")      
     
     # Choose between muon or electron decay of the Z
@@ -338,8 +338,7 @@ def _simulate_udscb_jets\
     to the flavour the Pythia parameters are changed slightly.
     For the time being the energy parameter is not used.
     """
-    
-    func_id = mod_id+"[_simulate_udscb_jets]"
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     common.log( func_id+" Entering... ")
     
     # Recover the energies from the string:
@@ -394,7 +393,7 @@ def _simulate_ttbar(step, evt_type, energy, evtnumber):
     Here the settings for the ttbar pairs are added to the process.
     """
       
-    func_id = mod_id+"[_simulate_ttbar]"
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     common.log(func_id+" Entering... ")      
     
     # Build the process source    
@@ -434,7 +433,7 @@ def _simulate_ZEE(step, evt_type, energy, evtnumber):
     Energy parameter is not used.
     """
       
-    func_id = mod_id+"[_simulate_ZEE]"
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     common.log( func_id+" Entering... ")      
 
     user_param_sets = cms.vstring(
@@ -492,7 +491,7 @@ def _simulate_BsJPhi(step, evt_type, energy, evtnumber):
     the process. 
     """
        
-    func_id=mod_id+"[_simulate_BsJPhi]"
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     common.log(func_id+" Entering... ")                    
 
     myParameters = cms.vstring(
@@ -585,7 +584,7 @@ def _simulate_ZPJJ(step, evt_type, energy, evtnumber):
     process. 
     """
     
-    func_id=mod_id+"[_simulate_ZPJJ]"
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     common.log(func_id+" Entering... ")       
     
     user_param_sets=cms.vstring(
@@ -663,28 +662,7 @@ def _simulate_ZPJJ(step, evt_type, energy, evtnumber):
     common.log( func_id+" Returning Source...")
      
     return source                                                
-                                               
-#---------------------------------
-
-def random_generator_service():
-    """
-    Function that adds to the process the random generator service.
-    """
-    func_id=mod_id+"[_random_generator_service]"
-    common.log( func_id+" Entering... ")
-
-    randomgen_service=cms.Service("RandomNumberGeneratorService",
-                                  sourceSeed=cms.untracked.uint32(123456789),
-                                  moduleSeeds=cms.PSet(VtxSmeared=cms.untracked.uint32(98765432), 
-                                                       g4SimHits=cms.untracked.uint32(11), 
-                                                       mix=cms.untracked.uint32(12345)
-                                                      )
-                                 )
-
-    common.log(func_id+" Returning Service...")
-
-    return (randomgen_service)
-    
+                                                   
 #-----------------------------------
 
 def energy_split(energy):
@@ -693,7 +671,7 @@ def energy_split(energy):
     bounds. It checks on its consistency. If the format is unknown 
     the program stops.
     """
-    func_id = mod_id+"[energy_split]"
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     common.log( func_id+" Entering... ") 
     
     separator_list = ["-", #fault tolerance is good
@@ -719,7 +697,7 @@ def build_filter(evt_type):
     Builds the filter for "BSJPSIPHI" and "UDS_JETS" and returns the
     EDFilter.
     """
-    func_id = mod_id+"[build_filter]"
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     common.log( func_id+" Entering... ") 
 
     if evt_type=="BSJPSIPHI":
@@ -737,6 +715,7 @@ def build_filter(evt_type):
         return bsfilter
     elif evt_type=="UDS_JETS":
         udsfilter=cms.EDFilter("JetFlavourFilter", jetType = cms.int32(1) )
+        
         common.log(func_id+" Returning JetFlavourFilter...")
         return udsfilter
             
@@ -747,6 +726,8 @@ def user_pythia_ue_settings():
     The function simply returns a cms.vstring which is a summary of the 
     Pythia settings for the event generation
     """
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
+    common.log(func_id+" Returning PythiaUE settings...")    
     return cms.vstring(
           'MSTJ(11)=3',                                    
           'MSTJ(22)=2',     # Decay those unstable particles
