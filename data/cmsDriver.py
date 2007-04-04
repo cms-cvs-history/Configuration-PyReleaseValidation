@@ -93,33 +93,24 @@ parser.add_option("--filein",
                    help="The infile name. If absent and necessary a "+\
                         "default value is assigned. "+\
                         "The form is <type>_<energy>_<step>.root.",
-                   default="",
+                   default="",#to be changed in the default form later
                    dest="filein")
 
 parser.add_option("--fileout",
                    help="The outfile name. If absent a default value is "+\
                         "assigned. The form is <type>_<energy>_<step>.root.",
-                   default="",
+                   default="", #to be changed in the default form later
                    dest="fileout")
                    
 parser.add_option( "--dirin",
-                   help="The infile directory. If absent the default value ./ is "+\
-                        "assigned.",
+                   help="The infile directory.",
                    default="",
                    dest="dirin")                    
 
 parser.add_option( "--dirout",
-                   help="The outfile directory. If absent the default value ./ is "+\
-                        "assigned.",
+                   help="The outfile directory.",
                    default="",
                    dest="dirout")                
-                   
-parser.add_option("--no_output",
-                  help="Do not write anything to disk. This is for "+\
-                       "benchmarking purposes.",
-                  action="store_true",
-                  default=False,
-                  dest="no_output_flag")
 
 parser.add_option("-p","--profiler_service",
                   help="Equip the process with the profiler service "+\
@@ -127,6 +118,26 @@ parser.add_option("-p","--profiler_service",
                        " the form <first>_<last>.",
                   default="",
                   dest="profiler_service_cuts")
+
+parser.add_option("--prefix",
+                  help="Specify a prefix to the cmsRun command.",
+                  default="",
+                  dest="prefix")  
+                   
+parser.add_option("--no_output",
+                  help="Do not write anything to disk. This is for "+\
+                       "benchmarking purposes.",
+                  action="store_true",
+                  default=False,
+                  dest="no_output_flag")
+                                                      
+parser.add_option("--fpe",
+                  help="Equip the process with the floating point exception service. "+\
+                       "For details see https://twiki.cern.ch/twiki/bin/"+\
+                       "view/CMS/SWGuideFloatingPointBehavior",
+                  action="store_true",
+                  default=False,
+                  dest="fpe_service_flag")                 
                   
 parser.add_option("--dump",
                   help="Dump the config file in the old config "+\
@@ -134,19 +145,6 @@ parser.add_option("--dump",
                   action="store_true",
                   default=False,
                   dest="dump_cfg_flag")
-
-parser.add_option("--silent",
-                  help="Do not write on screen the info about the "+\
-                       "Python configuration building action by "+\
-                       "PyRelVal.",
-                  action="store_false",
-                  default=True,
-                  dest="dbg_flag")
-
-parser.add_option("--prefix",
-                  help="Specify a prefix to the cmsRun command.",
-                  default="",
-                  dest="prefix")  
                                                     
 parser.add_option("--no_exec",
                   help="Do not exec cmsrun. Just prepare the parameters module",
@@ -160,7 +158,7 @@ parser.add_option("--no_exec",
 if len(sys.argv)==1:
     raise "Event Type: ", "No event type specified!"
 
-options.evt_type = sys.argv[1]
+options.evt_type=sys.argv[1]
 
 if not options.evt_type in type_energy_dict.keys():
     raise "Event Type: ","Unrecognised event type."
@@ -224,6 +222,8 @@ step='"""+options.step+"""'
 output_flag="""+str(not options.no_output_flag)+"""
 # Use the profiler service
 profiler_service_cuts='"""+options.profiler_service_cuts+"""'
+# Use the floating point exception module:
+fpe_service_flag="""+str(options.fpe_service_flag)+"""
 
 # Pyrelval parameters
 # Enable verbosity

@@ -38,10 +38,13 @@ print "\nPython RelVal"
 process = cms.Process (process_name)
 
 # Add the Profiler Service if needed:
-#if prof_service_flag:
 if profiler_service_cuts!="":
      process=extend(common.build_profiler_service(profiler_service_cuts))
 
+# Add the fpe service if needed:
+if  fpe_service_flag:
+    process.extend(common.build_fpe_service())     
+     
 process.schedule=cms.Schedule()
 
 # Enrich the process with the features described in the relval_includes_module.
@@ -57,7 +60,7 @@ Here we choose to make the process work only for one of the three steps
 # The Simuation:
 if step in ("ALL","SIM"):
     # The random generator service    
-    process.add_(relval_simulation_module.random_generator_service())
+    process.add_(common.random_generator_service())
     # Add a flavour filter if this is the case:
     if evt_type in ("BSJPSIPHI","UDS_JETS"):
         process.flav_filter=relval_simulation_module.build_filter(evt_type)
