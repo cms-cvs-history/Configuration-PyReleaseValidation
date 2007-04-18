@@ -58,8 +58,8 @@ Examples:
 %prog QCD
 %prog 10MU+ -e 45 -n 100 --no_output
 %prog B_JETS -s DIGI -e 40_130 -n 50 --filein MYSIMJETS --fileout MYDIGIJETS
-%prog GAMMA -s DIGI --filein myGAMMA.root --dirout rfio:$CASTOR_HOME/test/
-%prog GAMMA -s RECO --dirin rfio:$CASTOR_HOME/test/ --fileout myGAMMAreco.root
+%prog GAMMA -s DIGI --filein file:myGAMMA.root --dirout rfio:$CASTOR_HOME/test/
+%prog GAMMA -s RECO --dirin rfio:$CASTOR_HOME/test/ --fileout file:myGAMMAreco.root
 """
 parser = optparse.OptionParser(usage)
 
@@ -172,6 +172,8 @@ if options.energy==None:
 prec_step = {"ALL":"","SIM":"","DIGI":"SIM","RECO":"DIGI"}
 
 if options.filein=="" and not options.step in ("ALL","SIM"):
+    if options.dirin=="":
+        options.dirin="file:"
     options.filein=options.evt_type+"_"+options.energy+\
      "_"+prec_step[options.step]+".root"
 

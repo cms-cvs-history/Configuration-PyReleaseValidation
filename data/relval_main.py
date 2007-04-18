@@ -39,7 +39,7 @@ process = cms.Process (process_name)
 
 # Add the Profiler Service if needed:
 if profiler_service_cuts!="":
-     process=extend(common.build_profiler_service(profiler_service_cuts))
+     process.extend(common.build_profiler_service(profiler_service_cuts))
 
 # Add the fpe service if needed:
 if  fpe_service_flag:
