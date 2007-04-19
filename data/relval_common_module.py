@@ -14,7 +14,7 @@ __author__  = "Danilo Piparo"
 
 import FWCore.ParameterSet.Config as cms
 
-import relval_parameters_module as parameters
+#import relval_parameters_module as parameters
 
 import cPickle 
 import os # To check the existance of pkl objects files
@@ -279,7 +279,7 @@ def build_production_info():
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
     prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.10 $"),
+              (version=cms.untracked.string("$Revision: 1.12 $"),
                name=cms.untracked.string("$Name:  $"),
                annotation=cms.untracked.string("PyRelVal")
               )
