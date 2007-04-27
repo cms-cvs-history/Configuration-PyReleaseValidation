@@ -14,8 +14,6 @@ __author__  = "Danilo Piparo"
 
 import FWCore.ParameterSet.Config as cms
 
-#import relval_parameters_module as parameters
-
 import cPickle 
 import os # To check the existance of pkl objects files
 import sys # to get current funcname
@@ -86,73 +84,51 @@ def add_includes(process):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     log(func_id+" Entering... ")
     
-    # Services.cfi
-    services="Configuration/ReleaseValidation/data/Services.cfi"
-    process.extend(include_files(services)[0])
     
-    # Fake conditions 
-    fake_conditions="Configuration/StandardSequences/data/FakeConditions.cff"
-    process.extend(include_files(fake_conditions)[0])
-  
-    # The mixingnopileup.cff file translated in python
-    process.mix=cms.EDFilter("MixingModule",bunchspace=cms.int32(25))
-    log(func_id+" Process extended with MixingModule ...")
-    
-    # The Vtxsmeared.cff file
-    process.VtxSmeared=cms.EDFilter("GaussEvtVtxGenerator",
-                                    MeanX=cms.double(0.),
-                                    MeanY=cms.double(0.),
-                                    MeanZ=cms.double(0.),
-                                    SigmaX=cms.double(0.0015),
-                                    SigmaY=cms.double(0.0015),
-                                    SigmaZ=cms.double(5.3))  
-    log(func_id+" Process extended with GaussEvtVtxGenerator ...")      
+    # Services,fakeconditions,mixingnopileup,vtxsmeared.
+    for file in ("Configuration/ReleaseValidation/data/Services.cfi",
+                 "Configuration/StandardSequences/data/FakeConditions.cff",
+                 "Configuration/StandardSequences/data/MixingNoPileUp.cff",
+                 "Configuration/StandardSequences/data/VtxSmearedGauss.cff"):
+        process.extend(include_files(file)[0])
+        log(func_id+" Process extended with "+file+" ...")             
+        
+
+    # The file FWCore/Framework/test/cmsExceptionsFatalOption.cff:
+    fataloptions="FWCore/Framework/test/cmsExceptionsFatalOption.cff" 
+    fataloptions_inclobj=include_files(fataloptions)[0]
+    cms.options=cms.untracked.PSet\
+                (Rethrow=fataloptions_inclobj.Rethrow,
+                 wantSummary=cms.untracked.bool(True),
+                 makeTriggerResults=cms.untracked.bool(True) ) 
        
     # The Simulation.cff file
     # This file has been partially translated into Python so to avoid the
     # conflicts risen by the inclusion of cffs with interdipendencies.
 
     simulation_includes_set=["SimG4Core/Configuration/data/SimG4Core.cff",
-                             "SimGeneral/TrackingAnalysis/data/trackingtruth.cfi",
-                             "Configuration/StandardSequences/data/Digi.cff"]
-
+                             "SimGeneral/Configuration/data/SimGeneral.cff",
+                             "Configuration/StandardSequences/data/Digi.cff",
+                             "Configuration/StandardSequences/data/RecoSim.cff",
+                             "SimGeneral/HepPDTESSource/data/pythiapdt.cfi",
+                             "PhysicsTools/HepMCCandAlgos/data/genParticleCandidatesFast.cfi"]
     for obj in include_files(simulation_includes_set):
         process.extend(obj)
                 
     process.psim=cms.Sequence(process.VtxSmeared+process.g4SimHits)
     process.pdigi=cms.Sequence(process.mix+\
-                               process.doAllDigi+\
-                               process.trackingtruth)    
+                              process.doAllDigi+\
+                              process.trackingtruth)    
+    process.simulation=cms.Sequence(process.psim+\
+                                    process.pdigi+\
+                                    process.genParticleCandidates)
+    #process.extend(include_files("Configuration/StandardSequences/data/Simulation.cff")[0])
     log(func_id+" Process extended with Simulation ...")
     
     
     # The Reconstruction.cff file
     reconstruction="Configuration/StandardSequences/data/Reconstruction.cff" 
     process.extend(include_files(reconstruction)[0])
-
-    # The file FWCore/Framework/test/cmsExceptionsFatalOption.cff:
-    options=cms.untracked.PSet\
-               (Rethrow=cms.untracked.vstring(
-                "Unknown",
-                "ProductNotFound",
-                "DictionaryNotFound",
-                "InsertFailure",
-                "Configuration",
-                "LogicError",
-                "UnimplementedFeature",
-                "InvalidReference",
-                "NullPointerError",
-                "NoProductSpecified",
-                "EventTimeout",
-                "EventCorruption",
-                "ModuleFailure",
-                "ScheduleExecutionFailure",
-                "EventProcessorFailure",
-                "FileInPathError",
-                "FatalRootError",
-                "NotFound"),
-          wantSummary=cms.untracked.bool(True),
-          makeTriggerResults=cms.untracked.bool(True) )
         
     log(func_id+ " Returning process...")
     return process
@@ -280,7 +256,7 @@ def build_production_info():
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
     prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.13 $"),
+              (version=cms.untracked.string("$Revision: 1.14 $"),
                name=cms.untracked.string("$Name:  $"),
                annotation=cms.untracked.string("PyRelVal")
               )
