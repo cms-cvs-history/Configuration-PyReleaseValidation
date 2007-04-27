@@ -79,11 +79,11 @@ if step in ("ALL","SIM"):
 else: # The input is a file
     process.source = common.event_input(infile_name) 
  
-if step in ("ALL","DIGI"):
+if step in ("ALL","DIGI","DIGIRECO"):
     process.digitisation_step=cms.Path(process.pdigi)
     process.schedule.append(process.digitisation_step)
        
-if step in ("ALL","RECO"):
+if step in ("ALL","RECO","DIGIRECO"):
     # Choose between reconstruction algorithms.
     if evt_type in ("QCD","TTBAR"):
         process.reconstruction_step=cms.Path(process.reconstruction)
