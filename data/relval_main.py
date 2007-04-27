@@ -31,7 +31,7 @@ import relval_simulation_module
 
 # Here the process is built according to the settings in
 # the relval_parameters_module. All the objects built have in 
-# common the features described in the relval_includes_module.
+# common the features described in the relval_common_module.
 
 print "\nPython RelVal"
  
