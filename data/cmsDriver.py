@@ -75,6 +75,7 @@ parser.add_option("-s", "--step",
                         "SIM (Simulation), "+\
                         "DIGI (Digitisation), "+\
                         "RECO (Reconstruction), "+\
+                        "DIGIRECO (DigitisationReconstruction), "+\
                         "ALL (Simulation-Reconstruction-Digitisation).",
                    default="ALL",
                    dest="step")
@@ -169,7 +170,7 @@ if options.energy==None:
 # Build the IO files if necessary.
 # The default form of the files is:
 # <type>_<energy>_<step>.root
-prec_step = {"ALL":"","SIM":"","DIGI":"SIM","RECO":"DIGI"}
+prec_step = {"ALL":"","SIM":"","DIGI":"SIM","RECO":"DIGI","DIGIRECO":"SIM"}
 
 if options.filein=="" and not options.step in ("ALL","SIM"):
     if options.dirin=="":
