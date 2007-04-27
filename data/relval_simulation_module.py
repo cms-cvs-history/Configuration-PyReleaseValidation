@@ -31,7 +31,7 @@ def simulate(step, evt_type, energy, evtnumber):
     an event evt_type.
     """
    
-    func_id = mod_id+"[simulate]"
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     common.log( func_id+" Entering... ")
      
     # Build the switch cases:
@@ -41,16 +41,7 @@ def simulate(step, evt_type, energy, evtnumber):
        evt_type[:2]== "10":
        source=_simulate_QED\
          (step, evt_type, energy, evtnumber)
-    
-    elif evt_type == "QCD":
-       source=_simulate_QCD\
-         (step, evt_type, energy, evtnumber)
-    
-    elif evt_type == "TAU":
-       source=_simulate_TAU\
-         (step, evt_type, energy, evtnumber)   
-         
-    
+     
     elif evt_type in ("HZZMUMUMUMU", "HZZEEEE"):
        source=_simulate_HZZllll\
          (step, evt_type, energy, evtnumber)
@@ -58,22 +49,9 @@ def simulate(step, evt_type, energy, evtnumber):
     elif evt_type in ("B_JETS", "C_JETS", "UDS_JETS"):
        source=_simulate_udscb_jets\
          (step, evt_type, energy, evtnumber)        
-     
-    elif evt_type == "TTBAR":
-       source=_simulate_ttbar\
-         (step, evt_type, energy, evtnumber) 
-         
-    elif evt_type == "ZEE":
-       source=_simulate_ZEE\
-         (step, evt_type, energy, evtnumber)          
-         
-    elif evt_type == "ZPJJ":
-       source=_simulate_ZPJJ\
-         (step, evt_type, energy, evtnumber)
-         
-    elif evt_type == "BSJPSIPHI":
-       source=_simulate_BsJPhi\
-         (step, evt_type, energy, evtnumber)            
+    
+    elif evt_type in ("QCD","TAU","TTBAR","ZEE","ZPJJ","BSJPSIPHI"):
+        source=eval("_simulate_"+evt_type+"(step, evt_type, energy, evtnumber)")        
  
     else:
       raise "Event type","Type not yet implemented."
@@ -89,7 +67,7 @@ def _simulate_QED(step, evt_type, energy, evtnumber):
     Here the settings for the simple generation of a muon, electron or gamma
     are stated.
     """
-    func_id = mod_id+"[_simulate_QED]"
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     common.log( func_id+" Entering... ")
 
    # pythia ID: configure the ID of the particle through a dictionary
@@ -388,7 +366,7 @@ def _simulate_udscb_jets\
 
 #-----------------------------------
     
-def _simulate_ttbar(step, evt_type, energy, evtnumber):
+def _simulate_TTBAR(step, evt_type, energy, evtnumber):
     """
     Here the settings for the ttbar pairs are added to the process.
     """
@@ -485,7 +463,7 @@ def _simulate_ZEE(step, evt_type, energy, evtnumber):
     
 #---------------------------------
 
-def _simulate_BsJPhi(step, evt_type, energy, evtnumber):
+def _simulate_BSJPSIPHI(step, evt_type, energy, evtnumber):
     """
     Here the settings for the Bs ->J Phi decay simulation of the are added to
     the process. 
