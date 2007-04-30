@@ -2,7 +2,7 @@
 
 #Dummy script to run all integration tests
 
-NEVTS=10
+NEVTS=1
 STEP=ALL
 
 $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU+ -n$NEVTS -e1 -s$STEP
