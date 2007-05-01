@@ -9,139 +9,24 @@ import sys
 cmssw_base=os.environ["CMSSW_BASE"]
 cmsDriver_dir="/src/Configuration/PyReleaseValidation/data/"
 
+IgProf_aspects=("MEM_TOTAL","PERF_TICKS")
+noexec=False
 #######################################################################################   
-        
-def reco_and_benchmark(evt, args, profiler, cmssw_base, profiler_service_cuts):
-    """
-    Instrument the RECO step with the Profilerservice.
-    Make a static report with perreport.
-    """
-    print "[reco_and_benchmark] Entering..."
-    cmsDriver_args=args #The arguments for cmsDriver
-    
-    profiler_line=""
-    profiler_out_filename=""
-    
-    if profiler == "Valgrind":
-        profiler_line="valgrind --tool=callgrind"+\
-                      " --combine-dumps=yes"+\
-                      " --instr-atstart=no"+\
-                      " --dump-instr=yes"+\
-                      " --separate-recs=1"
-    
-    if profiler=="IgProf":
-        profiler_out_filename="igprof."+evt+".gz"
-        profiler_line="igprof -d -t cmsRun -mp -z -o "+profiler_out_filename
-                        
-    cmsDriver_command=cmssw_base+cmsDriver_dir+"cmsDriver.py" 
-    
-    # Start the execution of the performance measurement procedure
-   
-    #ProfilerService:
-    cmsDriver_args+="--profiler_service "+profiler_service_cuts+" "
-  
-    #Add the profiler as prefix:
-    cmsDriver_args+="--prefix \""+profiler_line+"\""
-    
-    #Execute command
-    print "[reco_and_benchmark] Running RECO step for "+evt+" ..."
-    command=cmsDriver_command+" "+cmsDriver_args
-    print command # testline
-    os.system(command)
-    
-    print "[reco_and_benchmark] Making profile with "+profiler+" ..."
-    
-    if profiler=="Valgrind":
-        # Find and Rename CallGrind Output
-        # This will work only with one report file per dir
-        profiler_out_filename=profiler+"."+evt+".out"
-        file_list=os.listdir(".")
-        search_string="callgrind.out."
-    
-        for file in file_list:
-            if file.find(search_string)!=-1:
-                print file
-                os.rename(file,profiler_out_filename)                            
-    
-    if profiler=="IgProf":
-        perfreport_igprof_output="IgProf."+evt+".out"
-        # make igprof output readable by perftool.
-        print "[reco_and_benchmark] Converting IgProf output to callgrind format..."
-        IgProf_conversion_command=\
-           "igprof-analyse -d -g -v -C -r MEM_TOTAL "+profiler_out_filename+" > "+perfreport_igprof_output
-        os.system(IgProf_conversion_command)
-        
-#---------------------------------
 
-def run_perfreport(proclabel,profiler):
-    """
-    Make a static report with Robin Moser tool.
-    https://twiki.cern.ch/twiki/bin/view/CMS/SWGuidePerfReport
-    """
-    
-    profiler_out_filename=profiler+"."+proclabel+".out"
-    reportdir=proclabel+"_"+profiler+"_report"
 
-    
-    perf_report_dir="~moserro/public/perfreport"
-    perfreport_command=perf_report_dir+"/perfreport"+\
-                    " -i "+profiler_out_filename+\
-                    " -d ~moserro/public/perfreport/allstandard.xml"+\
-                    " -o "+reportdir  
-            
-    # Run perfreport
-    ldlibpath=os.environ["LD_LIBRARY_PATH"]
-    # Workaround for incompatibilities with CMSSW env
-    os.environ["LD_LIBRARY_PATH"]="/afs/cern.ch/user/d/dpiparo/PerfSuite/perfreplibs"
-    
-    path=os.environ["PATH"] 
-    os.environ["PATH"]+=":"+perf_report_dir #Necessary to run perfreport.
-    
-    if not os.access(reportdir,os.F_OK):
-        os.mkdir(reportdir)
-    
-    print perfreport_command # testline
-    os.system (perfreport_command)
-    
-    #restore the environment
-    os.environ["LD_LIBRARY_PATH"]=ldlibpath
-    os.environ["PATH"]=path
 
-#---------------------------------
 
-def main(argv):
+#-------------------------------
 
-    argc=len(argv)
+def execute(string):
+    print "[execute] "+string+" ..."
+    if not noexec:
+        os.system (string)
     
-    # Number of events:
-    nevts=""
-    if argc>3:
-        nevts=argv[3]
-    else:
-        nevts="1"
-    # Prof service cuts:
-    profiler_service_cuts=""
-    if argc>4:
-        profiler_service_cuts=argv[4]
-    else:
-        profiler_service_cuts="3_13"
-        
-    # Choose the performance profiler:
-    # 1) IgProf
-    # 2) Valgrind
-    # 3) All
-    
-    profilers_dict={"1":"All",
-                    "2":"IgProf",
-                    "3":"Valgrind"}
-    profilers=[]
-    if argv[2]=="1":
-        for key in profilers_dict.keys()[1:]:
-            profilers.append(profilers_dict[key])                 
-    else:
-        profilers=[profilers_dict[argv[2]]]
-     
-    # The cmsDriver options to reproduce relval:
+#-------------------------------
+
+def build_rel_val_dict(choice,nevts):
+
     relval_dict={}
     
     #Build the dictionary according to the choice in the commandline:
@@ -156,9 +41,6 @@ def main(argv):
     # 9) QCD events (470/1000 GeV)
     # 10) Muon events
     # 11) Gamma and electron events
-
-    
-    choice=argv[1]
     
     fix_energy_evts={"1":("TAU","TTBAR","ZEE","BSJPSIPHI"),
                      "2":("ZPJJ","B_JETS","C_JETS","UDS_JETS"),
@@ -187,11 +69,164 @@ def main(argv):
         relval_dict["10MU"]="10MU- -n"+nevts+" -e1_10 -s"
     
     if choice=="11": # Gamma and Electrons evt
-        for gammaen in ("10","35"):
-            relval_dict["GAMMA"+gammaen]="GAMMA -n"+nevts+" -e"+gammaen+" -s"       
+        #for gammaen in ("10","35"):
+        #    relval_dict["GAMMA"+gammaen]="GAMMA -n"+nevts+" -e"+gammaen+" -s"       
         # Electrons
         relval_dict["E-"]="E- -n"+nevts+" -e35 -s"
+    
+    return relval_dict
 
+#-------------------------    
+            
+def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step):
+    """
+    Instrument the RECO step with the Profilerservice.
+    Make a static report with perreport.
+    """
+    print "[step_and_benchmark] Entering..."
+    cmsDriver_args=args #The arguments for cmsDriver
+    
+    profiler_line=""
+    profiler_out_filename=""
+    
+    # The profiler is IgProf. If a profile is already present in the directory, just skip!
+    if profiler is "IgProf":
+        profiler_out_filename=profiler+evt+".gz"
+        if os.path.exists(profiler_out_filename):
+            print "[step_and_benchmark] Skipping execution of IgProf:"+\
+                  "file "+profiler_out_filename+" already exists.\n"
+            return 0
+        profiler_line="igprof -d -t cmsRun -mp -pp -z -o "+profiler_out_filename
+    
+    if profiler in ("Valgrind","Patched_Valgrind"):
+        profiler_out_filename=profiler+"."+evt+".out"        
+        profiler_line="valgrind --tool=callgrind"
+        if profiler_service_cuts is not "":              
+            profiler_line+= " --combine-dumps=yes"+\
+                            " --instr-atstart=no"+\
+                            " --dump-instr=yes"+\
+                            " --separate-recs=1"
+            cmsDriver_args+="--profiler_service "+profiler_service_cuts+" "       
+        
+        if profiler is "Patched_Valgrind":
+            profiler_line+=" --fce="+profiler_out_filename
+                        
+    cmsDriver_command=cmssw_base+cmsDriver_dir+"cmsDriver.py" 
+    
+    # Start the execution of the performance measurement procedure
+  
+    #Add the profiler as prefix:
+    cmsDriver_args+="--prefix \""+profiler_line+"\""
+    
+    #Execute command
+    print "[reco_and_benchmark] Running step "+step+" for "+evt+" ..."
+    command=cmsDriver_command+" "+cmsDriver_args
+    execute(command)
+    
+    print "[reco_and_benchmark] Making profile with "+profiler+" ..."
+    
+    if profiler is "Valgrind":
+        # Find and Rename CallGrind Output
+        # This will work only with one report file per dir
+        file_list=os.listdir(".")
+        search_string="callgrind.out."
+    
+        for file in file_list:
+            if file.find(search_string)!=-1:
+                print file
+                os.rename(file,profiler_out_filename)                                                  
+                
+    if profiler is "IgProf":
+        # make igprof output readable by perftool.
+        print "[reco_and_benchmark] Converting IgProf output to callgrind format..."
+        for aspect in IgProf_aspects:
+            perfreport_igprof_output="IgProf."+aspect+"."+evt+".out"
+            IgProf_conversion_command=\
+                "igprof-analyse -d -g -v -C -r "+aspect+" "+profiler_out_filename+" > "+perfreport_igprof_output
+            execute(IgProf_conversion_command)
+        
+#---------------------------------
+
+def run_perfreport(proclabel,profiler,step):
+    """
+    Make a static report with Robin Moser tool.
+    https://twiki.cern.ch/twiki/bin/view/CMS/SWGuidePerfReport
+    """
+    
+    profiler_out_filename=profiler+"."+proclabel+".out"
+    reportdir=profiler_out_filename[:-4]+"_report"
+
+    
+    perf_report_dir="~moserro/public/perfreport"
+    perfreport_command=perf_report_dir+"/perfreport"+\
+                    " -i "+profiler_out_filename+\
+                    " -d ~moserro/public/perfreport/allstandard.xml"+\
+                    " -o "+reportdir  
+            
+    # Run perfreport
+    ldlibpath=os.environ["LD_LIBRARY_PATH"]
+    # Workaround for incompatibilities with CMSSW env
+    os.environ["LD_LIBRARY_PATH"]="/afs/cern.ch/user/d/dpiparo/PerfSuite/perfreplibs"
+    if profiler=="Patched_Valgrind":# Temporary patch!
+        print "[run_perfreport] Changing the envitonment for Patched Valgrind..."
+        os.environ["VALGRIND_LIB"]="/afs/cern.ch/user/m/moserro/public/vgfcelib"    
+    path=os.environ["PATH"] 
+    os.environ["PATH"]+=":"+perf_report_dir #Necessary to run perfreport.
+    
+    if not os.path.exists(reportdir):
+        os.mkdir(reportdir)
+    
+    print perfreport_command # testline
+    execute (perfreport_command)
+    
+    #restore the environment
+    os.environ["LD_LIBRARY_PATH"]=ldlibpath
+    os.environ["PATH"]=path
+
+#---------------------------------
+
+def main(argv):
+
+    argc=len(argv)
+    
+    # Choose the performance profiler:
+    # 1) IgProf
+    # 2) Valgrind
+    # 3) All
+    
+    profilers_dict={"1":"All",
+                    "2":"IgProf",
+                    "3":"Valgrind",
+                    "4":"Patched_Valgrind"}
+    profilers=[]
+    if argv[2]=="1":
+        for key in profilers_dict.keys()[1:]:
+            profilers.append(profilers_dict[key])                 
+    else:
+        profilers=[profilers_dict[argv[2]]]    
+    
+    # Step to profile:
+    prof_step=argv[3] 
+    stepset=("SIM","DIGI","RECO","ALL")
+    if prof_step not in stepset: 
+        raise "Unrecognised step!"
+    # Number of events:
+    nevts=""
+    if argc>4:
+        nevts=argv[4]
+    else:
+        nevts="1"
+    
+    # Prof service cuts:
+    profiler_service_cuts=""
+    if argc>5:
+        profiler_service_cuts=argv[5]
+    else:
+        profiler_service_cuts=""
+             
+    # The cmsDriver options to reproduce relval:
+    relval_dict=build_rel_val_dict(argv[1],nevts)
+    
     # Loop on the event types
     os.chdir("/tmp/")    
     for evt in relval_dict:
@@ -204,29 +239,39 @@ def main(argv):
         os.chdir(evt)
         
         # Loop on the steps
-        for step in ("SIM","DIGI"):
-            cmsDriver_command=cmssw_base+cmsDriver_dir+"cmsDriver.py "+relval_dict[evt]+step
-            print cmsDriver_command # testline
-            os.system(cmsDriver_command)
-    
-        for profiler in profilers: # for each profiler run reco,make a profile and a report
-            # Reconstruction with perfmeasurement
-            #set_CMSSW_env(cmssw_env)
-            reco_and_benchmark(evt,relval_dict[evt]+"RECO ",profiler,cmssw_base,profiler_service_cuts)
-            # make a static report
-            run_perfreport(evt,profiler)    
-                
-        #come back to main dir
+        for step in stepset[:-1]:# exclude all
+            if prof_step in (step,"ALL"):
+                for profiler in profilers: # for each profiler,make a profile and a report
+                    #step_and_benchmark(evt,relval_dict[evt]+\
+                    #    prof_step+" ",profiler,profiler_service_cuts,prof_step)
+                    # make a static report
+                    if profiler is "IgProf":
+                        for aspect in IgProf_aspects:
+                            run_perfreport(evt,profiler+"."+aspect,step)
+                    else:
+                        run_perfreport(evt,profiler,step)
+                if prof_step=="ALL":
+                    break
+            else:
+                cmsDriver_command=cmssw_base+cmsDriver_dir+"cmsDriver.py "+relval_dict[evt]+step
+                #print cmsDriver_command # testline
+                execute(cmsDriver_command)
+            if step==prof_step:
+                break
+       
+        #come back to main directory
         os.chdir("../")       
-        os.system("scp -r "+evt+" lxcms118:~/localscratch")
-        #os.system("rfcp -r "+evt+"/castor/cern.ch/user/d/dpiparo")
+        execute("scp -r "+evt+" lxcms118:~/localscratch/robin")
+        execute("rm -r "+evt)
+        #execute("rfcp -r "+evt+"/castor/cern.ch/user/d/dpiparo")
         
 #------------------------------------
 
 if __name__=="__main__":
     argc=len(sys.argv)
     usage="Usage:\n"+\
-              sys.argv[0]+" <event type code> <profiler code> [nevts] [prof_serv_cuts]\n\n"+\
+              sys.argv[0]+" <event type code> <profiler code> <step to profile>"+\
+              " [nevts] [prof_serv_cuts]\n\n"+\
               "Event codes:\n"+\
               "1.  tau,ttbar,zee,bsjphi\n"+\
               "2.  Jet Events\n"+\
@@ -241,12 +286,16 @@ if __name__=="__main__":
               "11. Gamma and electron events\n"+\
               "Profiler codes:\n"+\
               "1. All\n"+\
-              "2. IgProf\n"+\
-              "3. Valgrind\n"
-    if argc<3:
+              "2. IgProf MEM\n"+\
+              "3. Valgrind\n"+\
+              "4. Patched Valgrind\n"+\
+              "Steps to profile:\n"+\
+              "SIM\nDIGI\nRECO\nALL\n"
+              
+    if argc<4:
         print usage
         raise "Too few arguments!"
-    if argc>5:
+    if argc>6:
         print usage
         raise "Too many arguments!"
          
