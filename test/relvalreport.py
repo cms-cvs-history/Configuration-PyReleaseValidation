@@ -133,7 +133,8 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step):
     
         for file in file_list:
             if file.find(search_string)!=-1:
-                print file
+                print "[step_and_benchmark] Renaming "+file+" into"+\
+                       profiler_out_filename+"...\n" 
                 os.rename(file,profiler_out_filename)                                                  
                 
     if profiler is "IgProf":
@@ -176,7 +177,6 @@ def run_perfreport(proclabel,profiler,step):
     if not os.path.exists(reportdir):
         os.mkdir(reportdir)
     
-    print perfreport_command # testline
     execute (perfreport_command)
     
     #restore the environment
@@ -242,8 +242,8 @@ def main(argv):
         for step in stepset[:-1]:# exclude all
             if prof_step in (step,"ALL"):
                 for profiler in profilers: # for each profiler,make a profile and a report
-                    #step_and_benchmark(evt,relval_dict[evt]+\
-                    #    prof_step+" ",profiler,profiler_service_cuts,prof_step)
+                    step_and_benchmark(evt,relval_dict[evt]+\
+                        prof_step+" ",profiler,profiler_service_cuts,prof_step)
                     # make a static report
                     if profiler is "IgProf":
                         for aspect in IgProf_aspects:
@@ -286,7 +286,7 @@ if __name__=="__main__":
               "11. Gamma and electron events\n"+\
               "Profiler codes:\n"+\
               "1. All\n"+\
-              "2. IgProf MEM\n"+\
+              "2. IgProf\n"+\
               "3. Valgrind\n"+\
               "4. Patched Valgrind\n"+\
               "Steps to profile:\n"+\
