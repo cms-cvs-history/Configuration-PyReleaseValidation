@@ -151,7 +151,12 @@ parser.add_option("--no_exec",
                   help="Do not exec cmsrun. Just prepare the parameters module",
                   action="store_true",
                   default=False,
-                  dest="no_exec_flag")                    
+                  dest="no_exec_flag")   
+                  
+parser.add_option("--subststep3",
+                  help="Sobstitute the \"p3\" sequence with userdefined names.Use ONLY commas to separate values.",
+                  default="",
+                  dest="newstep3")                                     
 
 (options,args) = parser.parse_args() # by default the arg is sys.argv[1:]
 
@@ -181,6 +186,11 @@ if options.filein=="" and not options.step in ("ALL","SIM"):
 if options.fileout=="":
     options.fileout=options.evt_type+"_"+options.energy+\
      "_"+options.step+".root"
+
+#prepare new step3 list:
+newstep3list=[]
+if options.newstep3!="":
+    newstep3list=options.newstep3.split(",")    
 
 # Print the options to screen
 print_options(options)
@@ -227,6 +237,9 @@ output_flag="""+str(not options.no_output_flag)+"""
 profiler_service_cuts='"""+options.profiler_service_cuts+"""'
 # Use the floating point exception module:
 fpe_service_flag="""+str(options.fpe_service_flag)+"""
+# Substitute Step 3 sequence
+newstep3list="""+str(newstep3list)+"""
+
 
 # Pyrelval parameters
 # Enable verbosity
