@@ -11,10 +11,7 @@ cmsDriver_dir="/src/Configuration/PyReleaseValidation/data/"
 
 IgProf_aspects=("MEM_TOTAL","PERF_TICKS")
 noexec=False
-#######################################################################################   
-
-
-
+#######################################################################################  
 
 #-------------------------------
 
@@ -120,7 +117,10 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step):
     
     #Execute command
     print "[reco_and_benchmark] Running step "+step+" for "+evt+" ..."
-    command=cmsDriver_command+" "+cmsDriver_args
+    command=cmsDriver_command+" "+cmsDriver_args    
+    if profiler=="Patched_Valgrind":# Temporary patch!
+        print "[run_perfreport] Changing the envitonment for Patched Valgrind..."
+        os.environ["VALGRIND_LIB"]="/afs/cern.ch/user/m/moserro/public/vgfcelib"      
     execute(command)
     
     print "[reco_and_benchmark] Making profile with "+profiler+" ..."
@@ -143,7 +143,8 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step):
         for aspect in IgProf_aspects:
             perfreport_igprof_output="IgProf."+aspect+"."+evt+".out"
             IgProf_conversion_command=\
-                "igprof-analyse -d -g -v -C -r "+aspect+" "+profiler_out_filename+" > "+perfreport_igprof_output
+                "igprof-analyse -d -g -v -C -r "+aspect+" "+\
+                   profiler_out_filename+" > "+perfreport_igprof_output
             execute(IgProf_conversion_command)
         
 #---------------------------------
@@ -167,10 +168,7 @@ def run_perfreport(proclabel,profiler,step):
     # Run perfreport
     ldlibpath=os.environ["LD_LIBRARY_PATH"]
     # Workaround for incompatibilities with CMSSW env
-    os.environ["LD_LIBRARY_PATH"]="/afs/cern.ch/user/d/dpiparo/PerfSuite/perfreplibs"
-    if profiler=="Patched_Valgrind":# Temporary patch!
-        print "[run_perfreport] Changing the envitonment for Patched Valgrind..."
-        os.environ["VALGRIND_LIB"]="/afs/cern.ch/user/m/moserro/public/vgfcelib"    
+    os.environ["LD_LIBRARY_PATH"]="/afs/cern.ch/user/d/dpiparo/PerfSuite/perfreplibs"  
     path=os.environ["PATH"] 
     os.environ["PATH"]+=":"+perf_report_dir #Necessary to run perfreport.
     
