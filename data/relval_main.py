@@ -36,19 +36,19 @@ import relval_simulation_module
 print "\nPython RelVal"
  
 process = cms.Process (process_name)
-
-# Add the Profiler Service if needed:
-if profiler_service_cuts!="":
-    process.add_(common.build_profiler_service(profiler_service_cuts))
-
-# Add the fpe service if needed:
-if fpe_service_flag:
-    process.add_(common.build_fpe_service())     
-     
+         
 process.schedule=cms.Schedule()
 
 # Enrich the process with the features described in the relval_includes_module.
 process=common.add_includes(process)
+
+# Add the fpe service if needed:
+if fpe_service_flag:
+    process.add_(common.build_fpe_service()) 
+
+# Add the Profiler Service if needed:
+if profiler_service_cuts!="":
+    process.add_(common.build_profiler_service(profiler_service_cuts))
 
 # Add the Message Logger
 process.extend(common.build_message_logger())
