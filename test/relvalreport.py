@@ -8,7 +8,8 @@ import sys
 
 cmssw_base=os.environ["CMSSW_BASE"]
 cmsDriver_dir="/src/Configuration/PyReleaseValidation/data/"
-
+perf_report_dir="~moserro/public/perfreport/"
+    
 IgProf_aspects=("MEM_TOTAL","PERF_TICKS")
 noexec=False
 #######################################################################################  
@@ -149,7 +150,7 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step):
         
 #---------------------------------
 
-def run_perfreport(proclabel,profiler,step):
+def make_perfreport(proclabel,profiler,step):
     """
     Make a static report with Robin Moser tool.
     https://twiki.cern.ch/twiki/bin/view/CMS/SWGuidePerfReport
@@ -159,12 +160,15 @@ def run_perfreport(proclabel,profiler,step):
     reportdir=profiler_out_filename[:-4]+"_report"
 
     
-    perf_report_dir="~moserro/public/perfreport"
-    perfreport_command=perf_report_dir+"/perfreport"+\
+    perfreport_command="perfreport"+\
                     " -i "+profiler_out_filename+\
                     " -d ~moserro/public/perfreport/allstandard.xml"+\
                     " -o "+reportdir  
-            
+
+    run_perfreport_tool(reportdir,perfreport_command)                    
+#----------------------------------------------------
+                    
+def run_perfreport_tool(reportdir,perfreport_command):                          
     # Run perfreport
     ldlibpath=os.environ["LD_LIBRARY_PATH"]
     # Workaround for incompatibilities with CMSSW env
@@ -175,11 +179,32 @@ def run_perfreport(proclabel,profiler,step):
     if not os.path.exists(reportdir):
         os.mkdir(reportdir)
     
-    execute (perfreport_command)
+    execute (perf_report_dir+perfreport_command)
     
     #restore the environment
     os.environ["LD_LIBRARY_PATH"]=ldlibpath
     os.environ["PATH"]=path
+    
+#---------------------------------
+
+def run_edmsize(evt,step):
+    """
+    Run the edmsizetool and make a report with perfreporrt.
+    """
+    reportdir="Edm_size_report_"+evt+"_"+step
+    # find the outputfile
+    rootfilename=""
+    file_list=os.listdir(".")
+    search_string=step+".root"
+    print "search_string "+search_string
+    for file in file_list:
+        print file
+        if file.find(search_string)!=-1:
+            rootfilename=file
+            print "FOUND "+rootfilename
+    perfreportinput=rootfilename[:-4]+"txt"
+    execute("edmEventSize -o "+perfreportinput+" -d"+rootfilename)
+    perfreport_command="perfreport -e -i "+perfreportinput+" -d edmeventsize.xml -o "+reportdir
 
 #---------------------------------
 
@@ -243,11 +268,11 @@ def main(argv):
                     step_and_benchmark(evt,relval_dict[evt]+\
                         prof_step+" ",profiler,profiler_service_cuts,prof_step)
                     # make a static report
-                    if profiler is "IgProf":
-                        for aspect in IgProf_aspects:
-                            run_perfreport(evt,profiler+"."+aspect,step)
-                    else:
-                        run_perfreport(evt,profiler,step)
+                    #if profiler is "IgProf":
+                    #    for aspect in IgProf_aspects:
+                    #        make_perfreport(evt,profiler+"."+aspect,step)
+                    #else:
+                    #    run_perfreport(evt,profiler,step)
                 if prof_step=="ALL":
                     break
             else:
@@ -257,10 +282,12 @@ def main(argv):
             if step==prof_step:
                 break
        
+        run_edmsize(evt,step)
+                                
         #come back to main directory
         os.chdir("../")       
         execute("scp -r "+evt+" lxcms118:~/localscratch/robin")
-        execute("rm -r "+evt)
+        #execute("rm -r "+evt)
         #execute("rfcp -r "+evt+"/castor/cern.ch/user/d/dpiparo")
         
 #------------------------------------
