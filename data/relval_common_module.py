@@ -135,7 +135,7 @@ def add_includes(process):
 
 #-----------------------------------------
 
-def event_input(infile_name, maxEvents=-1):
+def event_input(infile_name):
     """
     Returns the source for the process.
     """ 
@@ -256,8 +256,8 @@ def build_production_info():
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
     prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.15 $"),
-               name=cms.untracked.string("$Name:  $"),
+              (version=cms.untracked.string("$Revision: 1.16 $"),
+               name=cms.untracked.string("$Name: V00-02-05 $"),
                annotation=cms.untracked.string("PyRelVal")
               )
     

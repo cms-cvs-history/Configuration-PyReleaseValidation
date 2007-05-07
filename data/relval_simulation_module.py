@@ -33,7 +33,7 @@ def simulate(step, evt_type, energy, evtnumber):
    
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     common.log( func_id+" Entering... ")
-     
+    
     # Build the switch cases:
     
     # QED
@@ -102,8 +102,8 @@ def _simulate_QED(step, evt_type, energy, evtnumber):
     source = cms.Source("FlatRandomPtGunSource",
                         psethack = cms.string(id_string),
                         firstRun = cms.untracked.uint32(1),
-                        maxEvents = cms.untracked.int32\
-                                                    (evtnumber),
+                        #maxEvents = cms.untracked.int32\
+                        #                            (evtnumber),
                         PGunParameters = cms.untracked.PSet\
                               (PartID = part_id,
                                MinEta = cms.untracked.double(ETA_MAX),
@@ -134,8 +134,8 @@ def _simulate_QCD(step, evt_type, energy, evtnumber):
     
     # Build the process source   
     source = cms.Source("PythiaSource",
-                        maxEvents = cms.untracked.int32\
-                                              (int(evtnumber)),
+#                         maxEvents = cms.untracked.int32\
+#                                               (int(evtnumber)),
                                pythiaPylistVerbosity = cms.untracked.int32(0),
                                pythiaHepMCVerbosity =cms.untracked.bool(False),
                                maxEventsToPrint = cms.untracked.int32(0),
@@ -167,8 +167,8 @@ def _simulate_TAU(step, evt_type, energy, evtnumber):
       
     # Build the process source
     source=cms.Source("PythiaSource",
-                      maxEvents = cms.untracked.int32\
-                                          (int(evtnumber)),
+#                       maxEvents = cms.untracked.int32\
+#                                           (int(evtnumber)),
                       ParticleID = cms.untracked.int32 (-15),
                       DoubleParticle = cms.untracked.bool (True),
                       pythiaVerbosity =cms.untracked.bool(False),
@@ -294,8 +294,8 @@ def _simulate_HZZllll(step, evt_type, energy, evtnumber):
 
     # Build the process source   
     source=cms.Source('PythiaSource',
-                      maxEvents = cms.untracked.int32\
-                                     (int(evtnumber)),
+#                       maxEvents = cms.untracked.int32\
+#                                      (int(evtnumber)),
                       pythiaVerbosity =cms.untracked.bool(False),
                       PythiaParameters = cms.PSet\
                        (parameterSets = cms.vstring(user_param_sets),
@@ -349,8 +349,8 @@ def _simulate_udscb_jets\
     
     # Build the process source
     source=cms.Source('PythiaSource',
-                      maxEvents = cms.untracked.int32\
-                                        (int(evtnumber)),
+#                       maxEvents = cms.untracked.int32\
+#                                         (int(evtnumber)),
                       pythiaVerbosity =cms.untracked.bool(False),
                       PythiaParameters = cms.PSet\
                                (parameterSets = cms.vstring\
@@ -376,8 +376,8 @@ def _simulate_TTBAR(step, evt_type, energy, evtnumber):
     
     # Build the process source    
     source=cms.Source('PythiaSource',
-                      maxEvents = cms.untracked.int32\
-                                        (int(evtnumber)),
+#                       maxEvents = cms.untracked.int32\
+#                                         (int(evtnumber)),
                       pythiaPylistVerbosity=cms.untracked.int32(0),
                       pythiaHepMCVerbosity=cms.untracked.bool(False),
                       maxEventsToPrint = cms.untracked.int32(0),                       
@@ -450,8 +450,8 @@ def _simulate_ZEE(step, evt_type, energy, evtnumber):
                  
     # Build the process source
     source=cms.Source('PythiaSource',
-                      maxEvents = cms.untracked.int32\
-                                         (int(evtnumber)),  
+#                       maxEvents = cms.untracked.int32\
+#                                          (int(evtnumber)),  
                       PythiaParameters = cms.PSet\
                                (parameterSets = cms.vstring("pythiaZee"),
                                 pythiaZee=user_param_sets )
@@ -537,8 +537,8 @@ def _simulate_BSJPSIPHI(step, evt_type, energy, evtnumber):
     
     # Build the process source    
     source=cms.Source('PythiaSource',
-                      maxEvents = cms.untracked.int32\
-                                        (int(evtnumber)),
+#                       maxEvents = cms.untracked.int32\
+#                                         (int(evtnumber)),
                       pythiaPylistVerbosity=cms.untracked.int32(1),
                       pythiaHepMCVerbosity=cms.untracked.bool(False),
                       maxEventsToPrint = cms.untracked.int32(0), 
@@ -625,8 +625,8 @@ def _simulate_ZPJJ(step, evt_type, energy, evtnumber):
     
     # Build the process source
     source=cms.Source('PythiaSource',
-                      maxEvents = cms.untracked.int32\
-                                          (int(evtnumber)),
+#                       maxEvents = cms.untracked.int32\
+#                                           (int(evtnumber)),
                       pythiaVerbosity = cms.untracked.bool (False),
                       PythiaParameters = cms.PSet\
                            (parameterSets = cms.vstring("pythiaDefault",

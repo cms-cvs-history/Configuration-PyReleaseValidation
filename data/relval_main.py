@@ -53,6 +53,9 @@ if profiler_service_cuts!="":
 # Add the Message Logger
 process.extend(common.build_message_logger())
 
+# Set the number of events with a top level PSet
+process.maxEvents=cms.untracked.PSet(input=cms.untracked.int32(evtnumber))
+
 """
 Here we choose to make the process work only for one of the three steps 
 (SIM DIGI RECO) or for the whole chain (ALL)
