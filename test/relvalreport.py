@@ -204,7 +204,9 @@ def run_edmsize(evt,step):
             print "FOUND "+rootfilename
     perfreportinput=rootfilename[:-4]+"txt"
     execute("edmEventSize -o "+perfreportinput+" -d"+rootfilename)
-    perfreport_command="perfreport -e -i "+perfreportinput+" -d edmeventsize.xml -o "+reportdir
+    
+    perfreport_command="perfreport -e -i "+perfreportinput+" -d "+perf_report_dir+"edmeventsize.xml -o "+reportdir
+    run_perfreport_tool(reportdir,perfreport_command)
 
 #---------------------------------
 
@@ -268,11 +270,11 @@ def main(argv):
                     step_and_benchmark(evt,relval_dict[evt]+\
                         prof_step+" ",profiler,profiler_service_cuts,prof_step)
                     # make a static report
-                    #if profiler is "IgProf":
-                    #    for aspect in IgProf_aspects:
-                    #        make_perfreport(evt,profiler+"."+aspect,step)
-                    #else:
-                    #    run_perfreport(evt,profiler,step)
+                    if profiler is "IgProf":
+                       for aspect in IgProf_aspects:
+                           make_perfreport(evt,profiler+"."+aspect,step)
+                    else:
+                       make_perfreport(evt,profiler,step)
                 if prof_step=="ALL":
                     break
             else:
@@ -287,7 +289,7 @@ def main(argv):
         #come back to main directory
         os.chdir("../")       
         execute("scp -r "+evt+" lxcms118:~/localscratch/robin")
-        #execute("rm -r "+evt)
+        execute("rm -r "+evt)
         #execute("rfcp -r "+evt+"/castor/cern.ch/user/d/dpiparo")
         
 #------------------------------------
