@@ -39,6 +39,7 @@ def build_rel_val_dict(choice,nevts):
     # 9) QCD events (470/1000 GeV)
     # 10) Muon events
     # 11) Gamma and electron events
+    # 12) CANDLE PROCESS
     
     fix_energy_evts={"1":("TAU","TTBAR","ZEE","BSJPSIPHI"),
                      "2":("ZPJJ","B_JETS","C_JETS","UDS_JETS"),
@@ -67,16 +68,19 @@ def build_rel_val_dict(choice,nevts):
         relval_dict["10MU"]="10MU- -n"+nevts+" -e1_10 -s"
     
     if choice=="11": # Gamma and Electrons evt
-        #for gammaen in ("10","35"):
-        #    relval_dict["GAMMA"+gammaen]="GAMMA -n"+nevts+" -e"+gammaen+" -s"       
+        for gammaen in ("10","35"):
+            relval_dict["GAMMA"+gammaen]="GAMMA -n"+nevts+" -e"+gammaen+" -s"       
         # Electrons
         relval_dict["E-"]="E- -n"+nevts+" -e35 -s"
     
+    if choice=="12": #Candle
+        relval_dict["CANDLE"]="QCD -n"+nevts+" -e20_30 -s" 
+        
     return relval_dict
 
 #-------------------------    
             
-def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step):
+def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_flag):
     """
     Instrument the RECO step with the Profilerservice.
     Make a static report with perreport.
@@ -118,7 +122,12 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step):
     
     #Execute command
     print "[reco_and_benchmark] Running step "+step+" for "+evt+" ..."
-    command=cmsDriver_command+" "+cmsDriver_args    
+    command=cmsDriver_command+" "+cmsDriver_args
+    
+    # Mute the output if required:
+    if output_flag is False:
+        command+=" --no_output"    
+    
     if profiler=="Patched_Valgrind":# Temporary patch!
         print "[run_perfreport] Changing the envitonment for Patched Valgrind..."
         os.environ["VALGRIND_LIB"]="/afs/cern.ch/user/m/moserro/public/vgfcelib"      
@@ -248,6 +257,13 @@ def main(argv):
         profiler_service_cuts=argv[5]
     else:
         profiler_service_cuts=""
+    
+    #Turn off the output
+    output_flag=True    
+    if argc>6:
+        if argv[6]=="0":
+            output_flag=False
+        
              
     # The cmsDriver options to reproduce relval:
     relval_dict=build_rel_val_dict(argv[1],nevts)
@@ -268,7 +284,7 @@ def main(argv):
             if prof_step in (step,"ALL"):
                 for profiler in profilers: # for each profiler,make a profile and a report
                     step_and_benchmark(evt,relval_dict[evt]+\
-                        prof_step+" ",profiler,profiler_service_cuts,prof_step)
+                        prof_step+" ",profiler,profiler_service_cuts,prof_step,output_flag)
                     # make a static report
                     if profiler is "IgProf":
                        for aspect in IgProf_aspects:
@@ -283,8 +299,10 @@ def main(argv):
                 execute(cmsDriver_command)
             if step==prof_step:
                 break
-       
-        run_edmsize(evt,step)
+        
+        # Prepare an eventsize report if the step is Reco.
+        if prof_step is "RECO":  
+            run_edmsize(evt,step)
                                 
         #come back to main directory
         os.chdir("../")       
@@ -298,7 +316,7 @@ if __name__=="__main__":
     argc=len(sys.argv)
     usage="Usage:\n"+\
               sys.argv[0]+" <event type code> <profiler code> <step to profile>"+\
-              " [nevts] [prof_serv_cuts]\n\n"+\
+              " [nevts] [prof_serv_cuts] [output_flag]\n\n"+\
               "Event codes:\n"+\
               "1.  tau,ttbar,zee,bsjphi\n"+\
               "2.  Jet Events\n"+\
@@ -317,12 +335,14 @@ if __name__=="__main__":
               "3. Valgrind\n"+\
               "4. Patched Valgrind\n"+\
               "Steps to profile:\n"+\
-              "SIM\nDIGI\nRECO\nALL\n"
+              "SIM\nDIGI\nRECO\nALL\n"+\
+              "Output options\n"+\
+              "0. off. Default value is on.\n"
               
-    if argc<4:
+    if argc<5:
         print usage
         raise "Too few arguments!"
-    if argc>6:
+    if argc>7:
         print usage
         raise "Too many arguments!"
          
