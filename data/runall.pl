@@ -12,7 +12,7 @@ Getopt::Long::config('bundling_override');
 my %options;
 GetOptions(\%options,'n=s');
 
-my $nT=$options{'n'} ? $options{'n'} : 1;
+my $nT=$options{'n'} ? $options{'n'} : 2;
 
 my $semaphore=new Thread::Semaphore;
 

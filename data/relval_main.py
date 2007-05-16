@@ -15,6 +15,7 @@ __author__  = "Danilo Piparo"
 # to conflicts with cmsRun this is a way to input 
 import sys
 import cPickle
+import os
 
 sys.path.append(".") # necessary to find the relval_parameters_module created by CMSdriver
 
@@ -27,7 +28,9 @@ import FWCore.ParameterSet.Config as cms
 execfile("relval_parameters_module.py")
 
 import relval_common_module as common
-import relval_simulation_module
+#import relval_simulation_module
+execfile(os.environ["CMSSW_BASE"]+\
+    "/src/Configuration/PyReleaseValidation/data/relval_simulation_module.py")
 
 #---------------------------------------------------
 
@@ -68,14 +71,11 @@ if step in ("ALL","SIM"):
     process.add_(common.random_generator_service())
     # Add a flavour filter if this is the case:
     if evt_type in ("BSJPSIPHI","UDS_JETS"):
-        process.flav_filter=relval_simulation_module.build_filter(evt_type)
+        process.flav_filter=build_filter(evt_type)
         process.flavfilter=cms.Path(process.flav_filter)
         process.schedule.append(process.flavfilter)
     # Builds the source for the process
-    process.source=relval_simulation_module.simulate(step,
-                                                     evt_type,
-                                                     energy,
-                                                     evtnumber)
+    process.source=simulate(step,evt_type,energy,evtnumber)
     # Enrich the schedule with simulation
     process.simulation_step = cms.Path(process.psim)
     process.schedule.append(process.simulation_step)

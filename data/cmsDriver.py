@@ -289,8 +289,8 @@ if options.no_exec_flag:
     print "Parameters module created."
     sys.exit(0) # Exits without launching cmsRun
 
-# # Remove existing pyc files:
-# os.system("rm "+cmssw_base+"/*pyc")    
+# Remove existing pyc files:
+#os.system("rm "+cmssw_base+"/*pyc")    
 
 print "Launching "+' '.join(command)+"..."
 os.execvpe(command[0], command, os.environ) # Launch
