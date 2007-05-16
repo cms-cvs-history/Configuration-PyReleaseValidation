@@ -8,8 +8,7 @@ import sys
 
 cmssw_base=os.environ["CMSSW_BASE"]
 cmsDriver_dir="/src/Configuration/PyReleaseValidation/data/"
-perf_report_dir="~moserro/public/perfreport/"
-    
+
 IgProf_aspects=("MEM_TOTAL","PERF_TICKS")
 noexec=False
 #######################################################################################  
@@ -39,7 +38,6 @@ def build_rel_val_dict(choice,nevts):
     # 9) QCD events (470/1000 GeV)
     # 10) Muon events
     # 11) Gamma and electron events
-    # 12) CANDLE PROCESS
     
     fix_energy_evts={"1":("TAU","TTBAR","ZEE","BSJPSIPHI"),
                      "2":("ZPJJ","B_JETS","C_JETS","UDS_JETS"),
@@ -68,19 +66,16 @@ def build_rel_val_dict(choice,nevts):
         relval_dict["10MU"]="10MU- -n"+nevts+" -e1_10 -s"
     
     if choice=="11": # Gamma and Electrons evt
-        for gammaen in ("10","35"):
-            relval_dict["GAMMA"+gammaen]="GAMMA -n"+nevts+" -e"+gammaen+" -s"       
+        #for gammaen in ("10","35"):
+        #    relval_dict["GAMMA"+gammaen]="GAMMA -n"+nevts+" -e"+gammaen+" -s"       
         # Electrons
         relval_dict["E-"]="E- -n"+nevts+" -e35 -s"
     
-    if choice=="12": #Candle
-        relval_dict["CANDLE"]="QCD -n"+nevts+" -e20_30 -s" 
-        
     return relval_dict
 
 #-------------------------    
             
-def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_flag):
+def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step):
     """
     Instrument the RECO step with the Profilerservice.
     Make a static report with perreport.
@@ -122,12 +117,7 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_
     
     #Execute command
     print "[reco_and_benchmark] Running step "+step+" for "+evt+" ..."
-    command=cmsDriver_command+" "+cmsDriver_args
-    
-    # Mute the output if required:
-    if output_flag is False:
-        command+=" --no_output"    
-    
+    command=cmsDriver_command+" "+cmsDriver_args    
     if profiler=="Patched_Valgrind":# Temporary patch!
         print "[run_perfreport] Changing the envitonment for Patched Valgrind..."
         os.environ["VALGRIND_LIB"]="/afs/cern.ch/user/m/moserro/public/vgfcelib"      
@@ -159,7 +149,7 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_
         
 #---------------------------------
 
-def make_perfreport(proclabel,profiler,step):
+def run_perfreport(proclabel,profiler,step):
     """
     Make a static report with Robin Moser tool.
     https://twiki.cern.ch/twiki/bin/view/CMS/SWGuidePerfReport
@@ -169,15 +159,12 @@ def make_perfreport(proclabel,profiler,step):
     reportdir=profiler_out_filename[:-4]+"_report"
 
     
-    perfreport_command="perfreport"+\
+    perf_report_dir="~moserro/public/perfreport"
+    perfreport_command=perf_report_dir+"/perfreport"+\
                     " -i "+profiler_out_filename+\
                     " -d ~moserro/public/perfreport/allstandard.xml"+\
                     " -o "+reportdir  
-
-    run_perfreport_tool(reportdir,perfreport_command)                    
-#----------------------------------------------------
-                    
-def run_perfreport_tool(reportdir,perfreport_command):                          
+            
     # Run perfreport
     ldlibpath=os.environ["LD_LIBRARY_PATH"]
     # Workaround for incompatibilities with CMSSW env
@@ -188,34 +175,11 @@ def run_perfreport_tool(reportdir,perfreport_command):
     if not os.path.exists(reportdir):
         os.mkdir(reportdir)
     
-    execute (perf_report_dir+perfreport_command)
+    execute (perfreport_command)
     
     #restore the environment
     os.environ["LD_LIBRARY_PATH"]=ldlibpath
     os.environ["PATH"]=path
-    
-#---------------------------------
-
-def run_edmsize(evt,step):
-    """
-    Run the edmsizetool and make a report with perfreporrt.
-    """
-    reportdir="Edm_size_report_"+evt+"_"+step
-    # find the outputfile
-    rootfilename=""
-    file_list=os.listdir(".")
-    search_string=step+".root"
-    print "search_string "+search_string
-    for file in file_list:
-        print file
-        if file.find(search_string)!=-1:
-            rootfilename=file
-            print "FOUND "+rootfilename
-    perfreportinput=rootfilename[:-4]+"txt"
-    execute("edmEventSize -o "+perfreportinput+" -d"+rootfilename)
-    
-    perfreport_command="perfreport -e -i "+perfreportinput+" -d "+perf_report_dir+"edmeventsize.xml -o "+reportdir
-    run_perfreport_tool(reportdir,perfreport_command)
 
 #---------------------------------
 
@@ -257,13 +221,6 @@ def main(argv):
         profiler_service_cuts=argv[5]
     else:
         profiler_service_cuts=""
-    
-    #Turn off the output
-    output_flag=True    
-    if argc>6:
-        if argv[6]=="0":
-            output_flag=False
-        
              
     # The cmsDriver options to reproduce relval:
     relval_dict=build_rel_val_dict(argv[1],nevts)
@@ -284,13 +241,13 @@ def main(argv):
             if prof_step in (step,"ALL"):
                 for profiler in profilers: # for each profiler,make a profile and a report
                     step_and_benchmark(evt,relval_dict[evt]+\
-                        prof_step+" ",profiler,profiler_service_cuts,prof_step,output_flag)
+                        prof_step+" ",profiler,profiler_service_cuts,prof_step)
                     # make a static report
                     if profiler is "IgProf":
-                       for aspect in IgProf_aspects:
-                           make_perfreport(evt,profiler+"."+aspect,step)
+                        for aspect in IgProf_aspects:
+                            run_perfreport(evt,profiler+"."+aspect,step)
                     else:
-                       make_perfreport(evt,profiler,step)
+                        run_perfreport(evt,profiler,step)
                 if prof_step=="ALL":
                     break
             else:
@@ -299,11 +256,7 @@ def main(argv):
                 execute(cmsDriver_command)
             if step==prof_step:
                 break
-        
-        # Prepare an eventsize report if the step is Reco.
-        if prof_step is "RECO":  
-            run_edmsize(evt,step)
-                                
+       
         #come back to main directory
         os.chdir("../")       
         execute("scp -r "+evt+" lxcms118:~/localscratch/robin")
@@ -316,7 +269,7 @@ if __name__=="__main__":
     argc=len(sys.argv)
     usage="Usage:\n"+\
               sys.argv[0]+" <event type code> <profiler code> <step to profile>"+\
-              " [nevts] [prof_serv_cuts] [output_flag]\n\n"+\
+              " [nevts] [prof_serv_cuts]\n\n"+\
               "Event codes:\n"+\
               "1.  tau,ttbar,zee,bsjphi\n"+\
               "2.  Jet Events\n"+\
@@ -335,14 +288,12 @@ if __name__=="__main__":
               "3. Valgrind\n"+\
               "4. Patched Valgrind\n"+\
               "Steps to profile:\n"+\
-              "SIM\nDIGI\nRECO\nALL\n"+\
-              "Output options\n"+\
-              "0. off. Default value is on.\n"
+              "SIM\nDIGI\nRECO\nALL\n"
               
-    if argc<5:
+    if argc<4:
         print usage
         raise "Too few arguments!"
-    if argc>7:
+    if argc>6:
         print usage
         raise "Too many arguments!"
          
