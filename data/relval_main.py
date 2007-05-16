@@ -14,6 +14,8 @@ __author__  = "Danilo Piparo"
 # As long as the Python code cannot have any command line arguments since this could lead
 # to conflicts with cmsRun this is a way to input 
 import sys
+import cPickle
+
 sys.path.append(".") # necessary to find the relval_parameters_module created by CMSdriver
 
 # Modules to include
@@ -89,7 +91,6 @@ if step in ("ALL","DIGI","DIGIRECO"):
 if step in ("ALL","RECO","DIGIRECO"):
     if newstep3list!=[]: #add user defined elements for reco
         for element in newstep3list:
-            print "test new element! "+ element
             exec("process."+element+"_step=cms.Path(process.sequences[element])")
             exec("process.schedule.append(process."+element+"_step)")
     else:
@@ -116,6 +117,13 @@ if output_flag:
 # print to screen the config file in the old language
 if dump_cfg_flag:
     print process.dumpConfig()
+    
+# dump a pickle object of the process on disk:
+if dump_pickle_flag:
+   print "Dumping process on disk as a pickle object..."
+   pickle_file=file(ext_process_name+".pkl","w")
+   cPickle.dump(process,pickle_file)
+   pickle_file.close()
        
 # A sober separator between the python program and CMSSW    
 print "And now The Framework -----------------------------"

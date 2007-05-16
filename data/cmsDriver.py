@@ -147,6 +147,12 @@ parser.add_option("--dump",
                   default=False,
                   dest="dump_cfg_flag")
                                                     
+parser.add_option("--dump_pickle",
+                  help="Dump a pickle object of the process.",
+                  action="store_true",
+                  default=False,
+                  dest="dump_pickle_flag")
+                  
 parser.add_option("--no_exec",
                   help="Do not exec cmsrun. Just prepare the parameters module",
                   action="store_true",
@@ -195,6 +201,9 @@ if options.newstep3!="":
 # Print the options to screen
 print_options(options)
 
+#set process name:
+ext_process_name=options.evt_type+options.energy+options.step
+
 cfgfile="""
 #############################################################
 #                                                           #
@@ -218,6 +227,7 @@ cfgfile="""
 
 # The name of the process
 process_name='""" +options.step+ """'
+ext_process_name='""" +ext_process_name+ """'
 # The type of the process. Please see the complete list of 
 # available processes.
 evt_type='"""+options.evt_type+"""'
@@ -246,6 +256,9 @@ newstep3list="""+str(newstep3list)+"""
 dbg_flag=True
 # Dump the oldstyle cfg file.
 dump_cfg_flag="""+str(options.dump_cfg_flag)+"""
+# Dump a pickle object of the process on disk.
+dump_pickle_flag="""+str(options.dump_pickle_flag)+"""
+
 """
 
 # Write down the configuration in a Python module
@@ -275,6 +288,9 @@ if options.no_exec_flag:
     config_module.close()
     print "Parameters module created."
     sys.exit(0) # Exits without launching cmsRun
+
+# # Remove existing pyc files:
+# os.system("rm "+cmssw_base+"/*pyc")    
 
 print "Launching "+' '.join(command)+"..."
 os.execvpe(command[0], command, os.environ) # Launch

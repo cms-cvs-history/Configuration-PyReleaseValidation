@@ -12,7 +12,7 @@ Getopt::Long::config('bundling_override');
 my %options;
 GetOptions(\%options,'n=s');
 
-my $nT=$options{'n'} ? $options{'n'} : 2;
+my $nT=$options{'n'} ? $options{'n'} : 1;
 
 my $semaphore=new Thread::Semaphore;
 
@@ -61,8 +61,6 @@ sub thread_sub {
 	    while (<F1> ) {
 		if ( $_ =~ /TrigReport Events total/ ) {
 		    $status=1;
-                    print "CICCIO!!";
-                    print "pasticio";
 		    my @sp=split(' ',$_);
 		    my $nP=$sp[7];
 		    $status=2 if ( $nP==0);
