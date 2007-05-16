@@ -118,7 +118,7 @@ def add_includes(process):
     process.psim=cms.Sequence(process.VtxSmeared+process.g4SimHits)
     process.pdigi=cms.Sequence(process.mix+\
                               process.doAllDigi+\
-                              process.trackingtruth)    
+                              process.trackingParticles)    
     process.simulation=cms.Sequence(process.psim+\
                                     process.pdigi+\
                                     process.genParticleCandidates)
@@ -256,7 +256,7 @@ def build_production_info():
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
     prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.17 $"),
+              (version=cms.untracked.string("$Revision: 1.18 $"),
                name=cms.untracked.string("$Name:  $"),
                annotation=cms.untracked.string("PyRelVal")
               )
