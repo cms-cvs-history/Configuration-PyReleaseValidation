@@ -145,7 +145,7 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_
             if file.find(search_string)!=-1:
                 print "[step_and_benchmark] Renaming "+file+" into"+\
                        profiler_out_filename+"...\n" 
-                os.rename(file,profiler_out_filename)                                                  
+                os.rename(file,profiler_out_filename)             
                 
     if profiler is "IgProf":
         # make igprof output readable by perftool.
@@ -174,7 +174,8 @@ def make_perfreport(proclabel,profiler,step):
                     " -d ~moserro/public/perfreport/allstandard.xml"+\
                     " -o "+reportdir  
 
-    run_perfreport_tool(reportdir,perfreport_command)                    
+    run_perfreport_tool(reportdir,perfreport_command)                
+        
 #----------------------------------------------------
                     
 def run_perfreport_tool(reportdir,perfreport_command):                          
@@ -214,7 +215,8 @@ def run_edmsize(evt,step):
     perfreportinput=rootfilename[:-4]+"txt"
     execute("edmEventSize -o "+perfreportinput+" -d"+rootfilename)
     
-    perfreport_command="perfreport -e -i "+perfreportinput+" -d "+perf_report_dir+"edmeventsize.xml -o "+reportdir
+    perfreport_command="perfreport -e -i "+perfreportinput+\
+        " -d "+perf_report_dir+"edmeventsize.xml -o "+reportdir
     run_perfreport_tool(reportdir,perfreport_command)
 
 #---------------------------------
@@ -329,6 +331,7 @@ if __name__=="__main__":
               "9.  QCD events (470/1000 GeV)\n"+\
               "10. Muon events\n"+\
               "11. Gamma and electron events\n"+\
+              "12. Standard Candle\n"+\
               "Profiler codes:\n"+\
               "1. All\n"+\
               "2. IgProf\n"+\
