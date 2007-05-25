@@ -63,13 +63,6 @@ Examples:
 """
 parser = optparse.OptionParser(usage)
 
-# Options of the script
-#parser.add_option("",
-                   #help="The type of the event(s) selected. "+\
-                        #"The currently available types are:\n"+\
-                        #str(types_list),
-                   #dest="evt_type")
-
 parser.add_option("-s", "--step",
                    help="The desired step. The possible values are: "+\
                         "SIM (Simulation), "+\
@@ -271,7 +264,7 @@ config_module.close()
 
 cmssw_base=os.environ["CMSSW_BASE"]
 # set the PYTHONPATH environmental variable
-pyrelvalcodedir=cmssw_base+"/src/Configuration/PyReleaseValidation/data"
+pyrelvalcodedir=cmssw_base+"/src/Configuration/PyReleaseValidation/data/"
 os.environ["PYTHONPATH"]+=":"+pyrelvalcodedir
 
 command=['/bin/sh', '-c', 'exec ']
@@ -290,7 +283,8 @@ if options.no_exec_flag:
     sys.exit(0) # Exits without launching cmsRun
 
 # Remove existing pyc files:
-#os.system("rm "+cmssw_base+"/*pyc")    
+os.system("rm "+pyrelvalcodedir+"*.pyc")    
+# A temporary ugly fix for a problem to investigate further.
 
 print "Launching "+' '.join(command)+"..."
 os.execvpe(command[0], command, os.environ) # Launch
