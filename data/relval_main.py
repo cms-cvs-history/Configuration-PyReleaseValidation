@@ -112,7 +112,7 @@ if output_flag:
     process.schedule.append(process.outpath)  
                                                                         
 # Add metadata for production                                    
-process.configurationMetadata=includes.build_production_info() 
+process.configurationMetadata=common.build_production_info() 
 
 # print to screen the config file in the old language
 if dump_cfg_flag:
