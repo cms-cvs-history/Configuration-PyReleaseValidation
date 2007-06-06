@@ -254,6 +254,9 @@ def build_production_info():
     Add useful info for the production.
     """
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
+    # Event content
+    content=include_files("Configuration/EventContent/data/EventContent.cff")[0]
+    process.extend(content)
     process.out_step=cms.OutputModule\
                    ("PoolOutputModule",
                     outputCommands=content.FEVTSIMEventContent.outputCommands,
