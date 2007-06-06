@@ -159,12 +159,11 @@ def event_output(process, outfile_name, step, evt_filter=None):
     content=include_files("Configuration/EventContent/data/EventContent.cff")[0]
     process.extend(content)
     process.out_step = cms.OutputModule\
-                    ("PoolOutputModule",
-                     outputCommands=content.FEVTSIMEventContent.outputCommands,
-                     fileName = cms.untracked.string(outfile_name),
-                     datasets = cms.untracked.PSet(dataset1 =cms.untracked.PSet\
-                                        (dataTier =cms.untracked.string(step)))
-                    )
+                   ("PoolOutputModule",
+                    outputCommands=content.FEVTSIMEventContent.outputCommands,
+                    fileName = cms.untracked.string(outfile_name),
+                    dataset = cms.untracked.PSet(dataTier =cms.untracked.string(step))
+                   ) 
     
     process.outpath = cms.EndPath(process.out_step)
     
@@ -254,16 +253,14 @@ def build_production_info():
     Add useful info for the production.
     """
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
-    # Event content
-    content=include_files("Configuration/EventContent/data/EventContent.cff")[0]
-    process.extend(content)
-    process.out_step=cms.OutputModule\
-                   ("PoolOutputModule",
-                    outputCommands=content.FEVTSIMEventContent.outputCommands,
-                    fileName = cms.untracked.string(outfile_name),
-                    dataset = cms.untracked.PSet(dataTier =cms.untracked.string(step))
-                   )     
     
+    prod_info=cms.untracked.PSet\
+              (version=cms.untracked.string("$Revision: 1.19 $"),
+               name=cms.untracked.string("$Name:  $"),
+               annotation=cms.untracked.string("PyRelVal")
+              )
+    
+
     log(func_id+" Adding Production info ...")              
               
     return prod_info 

@@ -9,9 +9,10 @@ import optparse
 
 cmssw_base=os.environ["CMSSW_BASE"]
 cmsDriver_dir="/src/Configuration/PyReleaseValidation/data/"
-perf_report_dir=""
+# An empty dir assumes the tool to be installed. Please see:
+#http://cmsdoc.cern.ch/~moserro/
+perf_report_dir="~moserro/public/perfreport/" 
     
-#IgProf_aspects=("MEM_TOTAL","PERF_TICKS")
 noexec=False
 #######################################################################################  
 
@@ -19,7 +20,7 @@ noexec=False
 
 def execute(string):
     """
-    Just prints a nice output
+    Prints a nice output. Do not execute if the noxec flag is True.
     """    
     print "[execute] "+string+" ..."
     if not noexec: # testing puroposes
@@ -105,7 +106,7 @@ def build_rel_val_dict(choice,nevts):
             
 def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_flag):
     """
-    Executes the cmsRun command
+    Executes the step selected in the commandline with the appropriate profiler.
     """
     print "[step_and_benchmark] Entering..."
     cmsDriver_args=args #The arguments for cmsDriver
@@ -120,13 +121,9 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_
         profiler_line=""
         profiler_out_filename=""
         
-        # The profiler is IgProf. If a profile is already present in the directory, just skip!
+        # The profiler is IgProf. 
         if profiler.find("IgProf")!=-1:
             profiler_out_filename=profiler+"."+evt+".gz"
-            #if os.path.exists(profiler_out_filename):
-            #    print "[step_and_benchmark] Skipping execution of IgProf:"+\
-            #          "file "+profiler_out_filename+" already exists.\n"
-            #   return 0
             profiler_line="igprof -d -t cmsRun "
             if profiler=="IgProf_perf":
                 profiler_line+=" -pp"
@@ -134,6 +131,7 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_
                 profiler_line+=" -mp" 
             profiler_line+=" -z -o "+profiler_out_filename
         
+        # The profiler is Valgrind. 
         if profiler in ("Valgrind","Patched_Valgrind"):
             profiler_out_filename=profiler+"."+evt+".out"        
             profiler_line="valgrind --tool=callgrind"
@@ -149,10 +147,10 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_
         
         # Start the execution of the performance measurement procedure
     
-        #Add the profiler as prefix:
+        # Add the profiler as prefix:
         cmsDriver_args+="--prefix \""+profiler_line+"\""
         
-        #Execute command
+        # Get Ready the command to execute
         print "[reco_and_benchmark] Running step "+step+" for "+evt+" ..."
         command=cmsDriver_command+" "+cmsDriver_args
         
@@ -161,25 +159,13 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_
             command+=" --no_output"    
         
         if profiler=="Patched_Valgrind":# Temporary patch!
-            print "[run_perfreport] Changing the envitonment for Patched Valgrind..."
+            print "[step_and_benchmark] Changing the envitonment for Patched Valgrind..."
             os.environ["VALGRIND_LIB"]="/afs/cern.ch/user/m/moserro/public/vgfcelib"      
         
         execute(command)
         
         print "[reco_and_benchmark] Making profile with "+profiler+" ..."
-        
-        if profiler is "Valgrind":
-            # Find and Rename CallGrind Output
-            # This will work only with one report file per dir
-            file_list=os.listdir(".")
-            search_string="callgrind.out."
-        
-            for file in file_list:
-                if file.find(search_string)!=-1:
-                    print "[step_and_benchmark] Renaming "+file+" into"+\
-                        profiler_out_filename+"...\n" 
-                    os.rename(file,profiler_out_filename)             
-                    
+                            
         if profiler.find("IgProf")!=-1:
             # make igprof output readable by perftool.
             print "[reco_and_benchmark] Converting IgProf output to callgrind format..."
@@ -192,7 +178,18 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_
                 IgProf_conversion_command += " MEM_TOTAL "         
             IgProf_conversion_command+=profiler_out_filename+" > "+perfreport_igprof_output
             execute(IgProf_conversion_command)
+            
+        if profiler is "Valgrind":
+            # Find and Rename CallGrind Output
+            # This will work only with one report file per dir
+            file_list=os.listdir(".")
+            search_string="callgrind.out."
         
+            for file in file_list:
+                if file.find(search_string)!=-1:
+                    print "[step_and_benchmark] Renaming "+file+" into"+\
+                        profiler_out_filename+"...\n" 
+                    os.rename(file,profiler_out_filename)         
 #---------------------------------
 
 def make_perfreport(proclabel,profiler,step):
@@ -341,8 +338,11 @@ if __name__=="__main__":
         raise ("Too few arguments!")
         
     usage="%prog <TYPECODE> [options].\n\n"+\
-          "The supported event codes are:\n"+event_codes 
-   
+          "The supported event codes are:\n"+event_codes+"\n"+\
+          "Examples:\n"+\
+          "relvalreport.py 12 -d CMSSW_140_Reports/ -n100 -p2 -sALL -e\n"+\
+          "relvalreport.py 12 -d CMSSW_140_Reports/ -n13 -p3 -sALL --profiler_service=2_12\n"
+
     parser = optparse.OptionParser(usage)
 
     parser.add_option("-p", "--profiler",
