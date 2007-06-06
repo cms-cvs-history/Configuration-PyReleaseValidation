@@ -68,7 +68,7 @@ Here we choose to make the process work only for one of the three steps
 # The Simuation:
 if step in ("ALL","SIM"):
     # The random generator service    
-#    process.add_(common.random_generator_service())
+    process.add_(common.random_generator_service())
     # Add a flavour filter if this is the case:
     if evt_type in ("BSJPSIPHI","UDS_JETS"):
         process.flav_filter=build_filter(evt_type)
@@ -112,7 +112,7 @@ if output_flag:
     process.schedule.append(process.outpath)  
                                                                         
 # Add metadata for production                                    
-#process.configurationMetadata=includes.build_production_info() #Not in the 140pre1
+process.configurationMetadata=includes.build_production_info() 
 
 # print to screen the config file in the old language
 if dump_cfg_flag:

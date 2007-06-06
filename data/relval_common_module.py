@@ -254,14 +254,13 @@ def build_production_info():
     Add useful info for the production.
     """
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
+    process.out_step=cms.OutputModule\
+                   ("PoolOutputModule",
+                    outputCommands=content.FEVTSIMEventContent.outputCommands,
+                    fileName = cms.untracked.string(outfile_name),
+                    dataset = cms.untracked.PSet(dataTier =cms.untracked.string(step))
+                   )     
     
-    prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.18 $"),
-               name=cms.untracked.string("$Name:  $"),
-               annotation=cms.untracked.string("PyRelVal")
-              )
-    
-
     log(func_id+" Adding Production info ...")              
               
     return prod_info 
@@ -272,7 +271,7 @@ def log (message):
     """
     An oversimplified logger. This is designed for debugging the PyReleaseValidation
     """
-    hour=time.asctime().split(" ")[3]
+    hour=time.asctime().split(" ")[4]
     #if parameters.dbg_flag:
     if True:    
         print "["+hour+"]"+message
