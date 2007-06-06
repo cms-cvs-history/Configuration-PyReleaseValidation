@@ -9,7 +9,7 @@ import optparse
 
 cmssw_base=os.environ["CMSSW_BASE"]
 cmsDriver_dir="/src/Configuration/PyReleaseValidation/data/"
-perf_report_dir="~moserro/public/perfreport/"
+perf_report_dir=""
     
 #IgProf_aspects=("MEM_TOTAL","PERF_TICKS")
 noexec=False
@@ -138,10 +138,10 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_
             profiler_out_filename=profiler+"."+evt+".out"        
             profiler_line="valgrind --tool=callgrind"
             if profiler_service_cuts is not "":              
-                profiler_line+= " --combine-dumps=yes"+\
-                                " --instr-atstart=no"+\
-                                " --dump-instr=yes"+\
-                                " --separate-recs=1"
+                profiler_line+= " --instr-atstart=no"#+\
+                                #" --combine-dumps=yes"+\
+                                #" --dump-instr=yes"+\
+                                #" --separate-recs=1"
                 cmsDriver_args+="--profiler_service "+profiler_service_cuts+" "       
             
             if profiler is "Patched_Valgrind":
@@ -210,7 +210,7 @@ def make_perfreport(proclabel,profiler,step):
                     " -d ~moserro/public/perfreport/allstandard.xml"+\
                     " -o "+reportdir  
 
-    run_perfreport_tool(reportdir,perfreport_command)                
+    run_perfreport_tool(os.path.abspath(reportdir),perfreport_command)                
         
 #----------------------------------------------------
                     
@@ -219,14 +219,15 @@ def run_perfreport_tool(reportdir,perfreport_command):
     ldlibpath=os.environ["LD_LIBRARY_PATH"]
     # Workaround for incompatibilities with CMSSW env
     os.environ["LD_LIBRARY_PATH"]="/afs/cern.ch/user/d/dpiparo/PerfSuite/perfreplibs"  
+    os.environ["LD_LIBRARY_PATH"]+="/lib"
     path=os.environ["PATH"] 
-    os.environ["PATH"]+=":"+perf_report_dir #Necessary to run perfreport.
-    
+    os.environ["PATH"]+=":"+perf_report_dir #Necessary to run perfreport.        
+        
     if not os.path.exists(reportdir):
-        os.mkdir(reportdir)
-    os.system("cd "+reportdir)
+        os.mkdir(reportdir)    
+       
     execute (perf_report_dir+perfreport_command)
-    os.system("cd ..")
+    #os.system("cd ..")
     #restore the environment
     os.environ["LD_LIBRARY_PATH"]=ldlibpath
     os.environ["PATH"]=path
@@ -242,22 +243,26 @@ def run_edmsize(evt,step):
     rootfilename=""
     file_list=os.listdir(".")
     search_string=step+".root"
-    print "search_string "+search_string
+    print "search_string: "+search_string
     found_flag=False 
     for file in file_list:
         if file.find(search_string)!=-1:
             rootfilename=file
-            print "FOUND "+rootfilename
+            print "Found "+rootfilename+" !"
             found_flag=True
     if not found_flag:
         raise ("No rootfile present!")
         
     perfreportinput=rootfilename[:-4]+"txt"
-    execute("edmEventSize -o "+perfreportinput+" -d"+rootfilename)
     
-    perfreport_command="perfreport -e -i "+perfreportinput+\
-        " -d "+perf_report_dir+"edmeventsize.xml -o ./"
-    run_perfreport_tool(reportdir,perfreport_command)
+    if not os.path.exists(reportdir):
+        os.mkdir(reportdir)    
+    
+    execute("edmEventSize -o "+reportdir+"/"+perfreportinput+" -d"+rootfilename)
+    
+    perfreport_command="perfreport -e -i "+os.path.abspath(reportdir)+"/"+perfreportinput+\
+        " -d ~moserro/public/perfreport/edmeventsize.xml -o "+ os.path.abspath(reportdir)
+    run_perfreport_tool(os.path.abspath(reportdir),perfreport_command)
 
 #---------------------------------
 
@@ -274,7 +279,7 @@ def main(typecode,options):
     profiler=profilers_dict[options.profiler]   
     
     # Step to profile:
-    stepset=("SIM","DIGI","RECO","ALL")
+    stepset=("SIM","DIGI","RECO","ALL","")
     if options.prof_step not in stepset: 
         raise "Unrecognised step!"
         
@@ -300,8 +305,10 @@ def main(typecode,options):
         # and enter it
         os.chdir(evt)
 
-        step_and_benchmark(evt,relval_dict[evt]+\
-            options.prof_step+" ",profiler,profiler_service_cuts,options.prof_step,output_flag)
+        if options.prof_step!="":
+            step_and_benchmark(evt,relval_dict[evt]+\
+                options.prof_step+" ",profiler,profiler_service_cuts,options.prof_step,output_flag)
+        
         #make a static report
         if options.profiler!="":
             make_perfreport(evt,profiler,options.prof_step)
@@ -339,15 +346,16 @@ if __name__=="__main__":
     parser = optparse.OptionParser(usage)
 
     parser.add_option("-p", "--profiler",
-                      help="Profilers are: All, IgProf_mem, IgProf_perf, "+\
-                           "Valgrind, Patched Valgrind.",
+                      help="Profilers are: IgProf_mem (1), IgProf_perf(2), "+\
+                           "Valgrind(3), Patched Valgrind(4).",
                       default="",
                       dest="profiler")
 
     parser.add_option("-s", "--step",
                       help="The steps are: ALL,SIM,DIGI,RECO.",
-                      default="ALL",
+                      default="",
                       dest="prof_step")
+                      
     parser.add_option("-n", "--number",
                       help="The number of evts. The default is 1.",
                       default="1",
