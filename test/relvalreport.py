@@ -12,7 +12,8 @@ cmsDriver_dir="/src/Configuration/PyReleaseValidation/data/"
 # An empty dir assumes the tool to be installed. Please see:
 #http://cmsdoc.cern.ch/~moserro/
 perf_report_dir="~moserro/public/perfreport/" 
-    
+cparser ="/afs/cern.ch/user/g/gpetrucc/scratch0/leaky/leaks/cparser.pl"
+
 noexec=False
 #######################################################################################  
 
@@ -88,8 +89,8 @@ def build_rel_val_dict(choice,nevts):
         relval_dict["10MU"]="10MU- -n"+nevts+" -e1_10 -s"
     
     if choice=="11": # Gamma and Electrons evt
-        for gammaen in ("10","35"):
-            relval_dict["GAMMA"+gammaen]="GAMMA -n"+nevts+" -e"+gammaen+" -s"       
+        #for gammaen in ("10","35"):
+        #    relval_dict["GAMMA"+gammaen]="GAMMA -n"+nevts+" -e"+gammaen+" -s"       
         # Electrons
         relval_dict["E-"]="E- -n"+nevts+" -e35 -s"
 
@@ -104,11 +105,13 @@ def build_rel_val_dict(choice,nevts):
 
 #-------------------------    
             
-def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_flag):
+def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_flag,util_flag):
     """
     Executes the step selected in the commandline with the appropriate profiler.
     """
     print "[step_and_benchmark] Entering..."
+    print "[reco_and_benchmark] Making profile with "+profiler+" ..."    
+    
     cmsDriver_args=args #The arguments for cmsDriver
     
     cmsDriver_command=cmssw_base+cmsDriver_dir+"cmsDriver.py"
@@ -134,7 +137,14 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_
         # The profiler is Valgrind. 
         if profiler in ("Valgrind","Patched_Valgrind"):
             profiler_out_filename=profiler+"."+evt+".out"        
-            profiler_line="valgrind --tool=callgrind"
+            valgrindmemcheck_out="valgrind_memcheck."+evt+".out" 
+            profiler_line="valgrind "
+            if util_flag:
+                profiler_line+=" --tool=memcheck --leak-check=yes "+\
+			" --show-reachable=yes --num-callers=20 "+\
+			" --track-fds=yes "
+            else:
+                profiler_line+=" --tool=callgrind "
             if profiler_service_cuts is not "":              
                 profiler_line+= " --instr-atstart=no"#+\
                                 #" --combine-dumps=yes"+\
@@ -162,9 +172,10 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_
             print "[step_and_benchmark] Changing the envitonment for Patched Valgrind..."
             os.environ["VALGRIND_LIB"]="/afs/cern.ch/user/m/moserro/public/vgfcelib"      
         
-        execute(command)
+        if util_flag:
+            command+=" 2>&1 |tee "+valgrindmemcheck_out
         
-        print "[reco_and_benchmark] Making profile with "+profiler+" ..."
+        execute(command)
                             
         if profiler.find("IgProf")!=-1:
             # make igprof output readable by perftool.
@@ -189,10 +200,12 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_
                 if file.find(search_string)!=-1:
                     print "[step_and_benchmark] Renaming "+file+" into"+\
                         profiler_out_filename+"...\n" 
-                    os.rename(file,profiler_out_filename)         
+                    os.system("cp "+file+" BACKUP"+file)    
+                    os.rename(file,profiler_out_filename)     
+                        
 #---------------------------------
 
-def make_perfreport(proclabel,profiler,step):
+def make_perfreport(proclabel,profiler,step,report_type="perfreport"):
     """
     Make a static report with Robin Moser tool.
     https://twiki.cern.ch/twiki/bin/view/CMS/SWGuidePerfReport
@@ -201,28 +214,35 @@ def make_perfreport(proclabel,profiler,step):
     profiler_out_filename=profiler+"."+proclabel+".out"
     reportdir=profiler_out_filename[:-4]+"_report"
 
+    if not os.path.exists(reportdir):
+        os.mkdir(reportdir)    
     
-    perfreport_command="perfreport"+\
-                    " -i "+profiler_out_filename+\
-                    " -d ~moserro/public/perfreport/allstandard.xml"+\
-                    " -o "+reportdir  
-
-    run_perfreport_tool(os.path.abspath(reportdir),perfreport_command)                
+    if report_type=="perfreport":
+        perfreport_command="perfreport"+\
+                        " -i "+profiler_out_filename+\
+                        " -d ~moserro/public/perfreport/allstandard.xml"+\
+                        " -o "+reportdir  
         
+        run_perfreport_tool(os.path.abspath(reportdir),perfreport_command)                
+    
+    if report_type=="util":
+        valgrindmemcheck_out="valgrind_memcheck."+proclabel+".out"
+        execute(cparser+" --preset +prod,-prod1 "+valgrindmemcheck_out+" > edproduce.html")
+        execute(cparser+" --preset +prod1 "+valgrindmemcheck_out+" > esproduce.html")
+        execute(cparser+" -t beginJob "+valgrindmemcheck_out+" > beginjob.html")        
+                
 #----------------------------------------------------
                     
 def run_perfreport_tool(reportdir,perfreport_command):                          
     # Run perfreport
+    
     ldlibpath=os.environ["LD_LIBRARY_PATH"]
     # Workaround for incompatibilities with CMSSW env
     os.environ["LD_LIBRARY_PATH"]="/afs/cern.ch/user/d/dpiparo/PerfSuite/perfreplibs"  
     os.environ["LD_LIBRARY_PATH"]+="/lib"
     path=os.environ["PATH"] 
     os.environ["PATH"]+=":"+perf_report_dir #Necessary to run perfreport.        
-        
-    if not os.path.exists(reportdir):
-        os.mkdir(reportdir)    
-       
+            
     execute (perf_report_dir+perfreport_command)
     #os.system("cd ..")
     #restore the environment
@@ -304,12 +324,16 @@ def main(typecode,options):
 
         if options.prof_step!="":
             step_and_benchmark(evt,relval_dict[evt]+\
-                options.prof_step+" ",profiler,profiler_service_cuts,options.prof_step,output_flag)
+                options.prof_step+" ",profiler,profiler_service_cuts,options.prof_step,output_flag,options.util_flag)
         
         #make a static report
         if options.profiler!="":
             make_perfreport(evt,profiler,options.prof_step)
         
+        # Run Utility perl scripts if requested
+        if options.util_flag and profiler.find("Valgrind")!=-1:
+            make_perfreport(evt,profiler,options.prof_step,"util")  
+            
         # Prepare an eventsize report if requested
         if options.edm_size_flag:  
             run_edmsize(evt,options.prof_step)
@@ -384,6 +408,12 @@ if __name__=="__main__":
                       action="store_true",
                       default=False,
                       dest="edm_size_flag")   
+                      
+    parser.add_option("-u","--utility_scripts",
+                      help="Launch utility Perl Scripts by Giovanni Petrucciani.",
+                      action="store_true",
+                      default=False,
+                      dest="util_flag")                       
 
     (options,args) = parser.parse_args()                           
     
