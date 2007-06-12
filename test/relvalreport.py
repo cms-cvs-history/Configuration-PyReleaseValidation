@@ -12,7 +12,7 @@ cmsDriver_dir="/src/Configuration/PyReleaseValidation/data/"
 # An empty dir assumes the tool to be installed. Please see:
 #http://cmsdoc.cern.ch/~moserro/
 perf_report_dir="~moserro/public/perfreport/" 
-cparser ="/afs/cern.ch/user/g/gpetrucc/scratch0/leaky/leaks/cparser.pl"
+cparser =cmssw_base+"/src/Utilities/ReleaseScripts/scripts/valgrindMemcheckParser.pl" 
 
 noexec=False
 #######################################################################################  
@@ -105,7 +105,7 @@ def build_rel_val_dict(choice,nevts):
 
 #-------------------------    
             
-def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_flag,util_flag):
+def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_flag):
     """
     Executes the step selected in the commandline with the appropriate profiler.
     """
@@ -118,7 +118,6 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_
     
     if profiler=="":
         execute(cmsDriver_command+" "+cmsDriver_args)
-        #print ""
     
     else:
         profiler_line=""
@@ -128,23 +127,25 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_
         if profiler.find("IgProf")!=-1:
             profiler_out_filename=profiler+"."+evt+".gz"
             profiler_line="igprof -d -t cmsRun "
-            if profiler=="IgProf_perf":
+            if profiler is "IgProf_perf":
                 profiler_line+=" -pp"
             else:
                 profiler_line+=" -mp" 
             profiler_line+=" -z -o "+profiler_out_filename
         
         # The profiler is Valgrind. 
-        if profiler in ("Valgrind","Patched_Valgrind"):
+        if profiler in ("Valgrind","Patched_Valgrind","Memcheck_Valgrind"):
             profiler_out_filename=profiler+"."+evt+".out"        
             valgrindmemcheck_out="valgrind_memcheck."+evt+".out" 
             profiler_line="valgrind "
-            if util_flag:
+            
+            if profiler is "Memcheck_Valgrind":
                 profiler_line+=" --tool=memcheck --leak-check=yes "+\
-			" --show-reachable=yes --num-callers=20 "+\
-			" --track-fds=yes "
+			                   " --show-reachable=yes --num-callers=20 "+\
+			                   " --track-fds=yes "
             else:
                 profiler_line+=" --tool=callgrind "
+                
             if profiler_service_cuts is not "":              
                 profiler_line+= " --instr-atstart=no"#+\
                                 #" --combine-dumps=yes"+\
@@ -168,11 +169,11 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_
         if output_flag is False:
             command+=" --no_output"    
         
-        if profiler=="Patched_Valgrind":# Temporary patch!
+        if profiler is "Patched_Valgrind":# Temporary patch!
             print "[step_and_benchmark] Changing the envitonment for Patched Valgrind..."
             os.environ["VALGRIND_LIB"]="/afs/cern.ch/user/m/moserro/public/vgfcelib"      
         
-        if util_flag:
+        if profiler is "Memcheck_Valgrind":
             command+=" 2>&1 |tee "+valgrindmemcheck_out
         
         execute(command)
@@ -227,9 +228,12 @@ def make_perfreport(proclabel,profiler,step,report_type="perfreport"):
     
     if report_type=="util":
         valgrindmemcheck_out="valgrind_memcheck."+proclabel+".out"
-        execute(cparser+" --preset +prod,-prod1 "+valgrindmemcheck_out+" > edproduce.html")
-        execute(cparser+" --preset +prod1 "+valgrindmemcheck_out+" > esproduce.html")
-        execute(cparser+" -t beginJob "+valgrindmemcheck_out+" > beginjob.html")        
+        execute(cparser+" --preset +prod,-prod1 "+valgrindmemcheck_out+\
+                " > "+reportdir+"/edproduce.html")
+        execute(cparser+" --preset +prod1 "+valgrindmemcheck_out+\
+                " > "+reportdir+"/esproduce.html")
+        execute(cparser+" -t beginJob "+valgrindmemcheck_out+\
+                " > "+reportdir+"/beginjob.html")        
                 
 #----------------------------------------------------
                     
@@ -283,17 +287,11 @@ def run_edmsize(evt,step):
 
 #---------------------------------
 
-def main(typecode,options):
+def principal(typecode,options):
  
     print_options(options)
-    
-    profilers_dict={"1":"IgProf_mem",
-                    "2":"IgProf_perf",
-                    "3":"Valgrind",
-                    "4":"Patched_Valgrind",
-                    "":""}
-                    
-    profiler=profilers_dict[options.profiler]   
+                        
+    profiler=options.profiler
     
     # Step to profile:
     stepset=("SIM","DIGI","RECO","ALL","")
@@ -324,14 +322,14 @@ def main(typecode,options):
 
         if options.prof_step!="":
             step_and_benchmark(evt,relval_dict[evt]+\
-                options.prof_step+" ",profiler,profiler_service_cuts,options.prof_step,output_flag,options.util_flag)
+                options.prof_step+" ",profiler,profiler_service_cuts,options.prof_step,output_flag)
         
         #make a static report
         if options.profiler!="":
             make_perfreport(evt,profiler,options.prof_step)
         
         # Run Utility perl scripts if requested
-        if options.util_flag and profiler.find("Valgrind")!=-1:
+        if profiler=="Memcheck_Valgrind":
             make_perfreport(evt,profiler,options.prof_step,"util")  
             
         # Prepare an eventsize report if requested
@@ -344,7 +342,11 @@ def main(typecode,options):
 #------------------------------------
 
 if __name__=="__main__":
-    
+  
+    if len(sys.argv) < 2:
+        raise ("Too few arguments!")
+  
+        
     event_codes="1.  tau,ttbar,zee,bsjphi\n"+\
                 "2.  Jet Events\n"+\
                 "3.  Higgs Events\n"+\
@@ -357,10 +359,7 @@ if __name__=="__main__":
                 "10. Muon events\n"+\
                 "11. Gamma and electron events\n"+\
                 "12. Standard Candle\n"
-   
-    if len(sys.argv) < 2:
-        raise ("Too few arguments!")
-        
+          
     usage="%prog <TYPECODE> [options].\n\n"+\
           "The supported event codes are:\n"+event_codes+"\n"+\
           "Examples:\n"+\
@@ -370,8 +369,8 @@ if __name__=="__main__":
     parser = optparse.OptionParser(usage)
 
     parser.add_option("-p", "--profiler",
-                      help="Profilers are: IgProf_mem (1), IgProf_perf(2), "+\
-                           "Valgrind(3), Patched Valgrind(4).",
+                      help="Profilers are: IgProf_mem, IgProf_perf, "+\
+                           "Valgrind, Patched Valgrind, Memcheck_Valgrind.",
                       default="",
                       dest="profiler")
 
@@ -407,19 +406,30 @@ if __name__=="__main__":
                       help="Make an EDM Size Report.",
                       action="store_true",
                       default=False,
-                      dest="edm_size_flag")   
-                      
-    parser.add_option("-u","--utility_scripts",
-                      help="Launch utility Perl Scripts by Giovanni Petrucciani.",
-                      action="store_true",
-                      default=False,
-                      dest="util_flag")                       
+                      dest="edm_size_flag")                      
 
     (options,args) = parser.parse_args()                           
     
     # FAULT CONTROL
     if options.dirout=="":
         raise ("Specify at least one output directory!")                          
-                           
-    main(sys.argv[1],options)    
+    
+    prof_set=("IgProf_mem",
+              "IgProf_perf",
+              "Valgrind",
+              "Patched_Valgrind",
+              "Memcheck_Valgrind",
+              "")
+        
+    if not options.profiler in prof_set:
+        raise ("Profiler not Recognised")
+    
+    if not os.path.exists(cparser) and options.profiler is "Memcheck_Valgrind":
+        print cparser + " does not exist please check.\n"
+        raise("ValGrindMemcheckParser not found!")
+        
+
+    
+                                         
+    principal(sys.argv[1],options)    
     
