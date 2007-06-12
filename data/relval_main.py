@@ -68,7 +68,7 @@ Here we choose to make the process work only for one of the three steps
 # The Simuation:
 if step in ("ALL","SIM"):
     # The random generator service    
-    process.add_(common.random_generator_service())
+    #process.add_(common.random_generator_service())
     # Add a flavour filter if this is the case:
     if evt_type in ("BSJPSIPHI","UDS_JETS"):
         process.flav_filter=build_filter(evt_type)
@@ -101,9 +101,9 @@ if step in ("ALL","RECO","DIGIRECO"):
             process.reconstruction_step=cms.Path(process.reconstruction_plusRS_plus_GSF)
         process.schedule.append(process.reconstruction_step)     
         # One last item must be added to the schedule for the photon:
-        if evt_type=="GAMMA":
-            process.photonconversion=cms.Path(process.convertedPhotonSequence)
-            process.schedule.append(process.photonconversion)   
+#        if evt_type=="GAMMA":
+#            process.photonconversion=cms.Path(process.convertedPhotonSequence)
+#            process.schedule.append(process.photonconversion)   
                                              
 # Add the output on a root file if requested
 if output_flag:

@@ -84,16 +84,6 @@ def add_includes(process):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     log(func_id+" Entering... ")
     
-    
-    # Services,fakeconditions,mixingnopileup,vtxsmeared.
-    for file in ("Configuration/ReleaseValidation/data/Services.cfi",
-                 "Configuration/StandardSequences/data/FakeConditions.cff",
-                 "Configuration/StandardSequences/data/MixingNoPileUp.cff",
-                 "Configuration/StandardSequences/data/VtxSmearedGauss.cff"):
-        process.extend(include_files(file)[0])
-        log(func_id+" Process extended with "+file+" ...")             
-        
-
     # The file FWCore/Framework/test/cmsExceptionsFatalOption.cff:
     fataloptions="FWCore/Framework/test/cmsExceptionsFatalOption.cff" 
     fataloptions_inclobj=include_files(fataloptions)[0]
@@ -101,7 +91,16 @@ def add_includes(process):
                 (Rethrow=fataloptions_inclobj.Rethrow,
                  wantSummary=cms.untracked.bool(True),
                  makeTriggerResults=cms.untracked.bool(True) ) 
-       
+                      
+    
+    # Services,fakeconditions,mixingnopileup,vtxsmeared.
+    for file in ("Configuration/ReleaseValidation/data/Services.cfi",
+                 "Configuration/StandardSequences/data/FakeConditions.cff",
+                 "Configuration/StandardSequences/data/MixingNoPileUp.cff",
+                 "Configuration/StandardSequences/data/VtxSmearedGauss.cff"):
+        process.extend(include_files(file)[0])
+        log(func_id+" Process extended with "+file+" ...")                      
+    
     # The Simulation.cff file
     # This file has been partially translated into Python so to avoid the
     # conflicts risen by the inclusion of cffs with interdipendencies.
@@ -114,22 +113,23 @@ def add_includes(process):
                              "PhysicsTools/HepMCCandAlgos/data/genParticleCandidatesFast.cfi"]
     for obj in include_files(simulation_includes_set):
         process.extend(obj)
-                
-    process.psim=cms.Sequence(process.VtxSmeared+process.g4SimHits)
-    process.pdigi=cms.Sequence(process.mix+\
-                              process.doAllDigi+\
-                              process.trackingParticles)    
-    process.simulation=cms.Sequence(process.psim+\
-                                    process.pdigi+\
-                                    process.genParticleCandidates)
-    #process.extend(include_files("Configuration/StandardSequences/data/Simulation.cff")[0])
-    log(func_id+" Process extended with Simulation ...")
-    
+
     
     # The Reconstruction.cff file
     reconstruction="Configuration/StandardSequences/data/Reconstruction.cff" 
-    process.extend(include_files(reconstruction)[0])
-        
+    process.extend(include_files(reconstruction)[0])             
+                        
+    process.psim=cms.Sequence (process.VtxSmeared+process.g4SimHits)
+    process.pdigi=cms.Sequence(process.mix+\
+                               process.doAllDigi+\
+                               process.trackingParticles)    
+    process.simulation=cms.Sequence (process.psim+\
+                                     process.pdigi+\
+                                     process.genParticleCandidates)
+    
+    #process.extend(include_files("Configuration/StandardSequences/data/Simulation.cff")[0])
+    #log(func_id+" Process extended with Simulation ...")
+                
     log(func_id+ " Returning process...")
     return process
 
@@ -255,7 +255,7 @@ def build_production_info():
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
     prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.22 $"),
+              (version=cms.untracked.string("$Revision: 1.23 $"),
                name=cms.untracked.string("$Name:  $"),
                annotation=cms.untracked.string("PyRelVal")
               )

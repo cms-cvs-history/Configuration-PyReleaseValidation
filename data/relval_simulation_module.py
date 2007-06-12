@@ -50,8 +50,7 @@ def simulate(step, evt_type, energy, evtnumber):
          (step, evt_type, energy, evtnumber)        
     
     elif evt_type in ("QCD","TAU","TTBAR","ZEE","ZPJJ","BSJPSIPHI"):
-        source=eval("_simulate_"+evt_type+"(step, evt_type, energy, evtnumber)")        
- 
+        source=eval("_simulate_"+evt_type+"(step, evt_type, energy, evtnumber)") 
     else:
       raise "Event type","Type not yet implemented."
              
