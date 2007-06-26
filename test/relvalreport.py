@@ -127,7 +127,7 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_
         if profiler.find("IgProf")!=-1:
             profiler_out_filename=profiler+"."+evt+".gz"
             profiler_line="igprof -d -t cmsRun "
-            if profiler is "IgProf_perf":
+            if profiler=="IgProf_perf":
                 profiler_line+=" -pp"
             else:
                 profiler_line+=" -mp" 
@@ -139,21 +139,21 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_
             valgrindmemcheck_out="valgrind_memcheck."+evt+".out" 
             profiler_line="valgrind "
             
-            if profiler is "Memcheck_Valgrind":
+            if profiler=="Memcheck_Valgrind":
                 profiler_line+=" --tool=memcheck --leak-check=yes "+\
 			                   " --show-reachable=yes --num-callers=20 "+\
 			                   " --track-fds=yes "
             else:
                 profiler_line+=" --tool=callgrind "
                 
-            if profiler_service_cuts is not "":              
+            if profiler_service_cuts!="":              
                 profiler_line+= " --instr-atstart=no"#+\
                                 #" --combine-dumps=yes"+\
                                 #" --dump-instr=yes"+\
                                 #" --separate-recs=1"
                 cmsDriver_args+="--profiler_service "+profiler_service_cuts+" "       
             
-            if profiler is "Patched_Valgrind":
+            if profiler=="Patched_Valgrind":
                 profiler_line+=" --fce="+profiler_out_filename 
         
         # Start the execution of the performance measurement procedure
@@ -166,14 +166,14 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_
         command=cmsDriver_command+" "+cmsDriver_args
         
         # Mute the output if required:
-        if output_flag is False:
+        if output_flag==False:
             command+=" --no_output"    
         
-        if profiler is "Patched_Valgrind":# Temporary patch!
+        if profiler=="Patched_Valgrind":# Temporary patch!
             print "[step_and_benchmark] Changing the envitonment for Patched Valgrind..."
             os.environ["VALGRIND_LIB"]="/afs/cern.ch/user/m/moserro/public/vgfcelib"      
         
-        if profiler is "Memcheck_Valgrind":
+        if profiler=="Memcheck_Valgrind":
             command+=" 2>&1 |tee "+valgrindmemcheck_out
         
         execute(command)
@@ -191,7 +191,7 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_
             IgProf_conversion_command+=profiler_out_filename+" > "+perfreport_igprof_output
             execute(IgProf_conversion_command)
             
-        if profiler is "Valgrind":
+        if profiler=="Valgrind":
             # Find and Rename CallGrind Output
             # This will work only with one report file per dir
             file_list=os.listdir(".")
@@ -227,6 +227,8 @@ def make_perfreport(proclabel,profiler,step,report_type="perfreport"):
         run_perfreport_tool(os.path.abspath(reportdir),perfreport_command)                
     
     if report_type=="util":
+        # SET PERL ENVIRONMENT:
+        os.environ["PERL5LIB"]="/afs/cern.ch/user/d/dpiparo/w0/PERLlibs/5.8.0"
         valgrindmemcheck_out="valgrind_memcheck."+proclabel+".out"
         execute(cparser+" --preset +prod,-prod1 "+valgrindmemcheck_out+\
                 " > "+reportdir+"/edproduce.html")
@@ -424,7 +426,7 @@ if __name__=="__main__":
     if not options.profiler in prof_set:
         raise ("Profiler not Recognised")
     
-    if not os.path.exists(cparser) and options.profiler is "Memcheck_Valgrind":
+    if not os.path.exists(cparser) and options.profiler=="Memcheck_Valgrind":
         print cparser + " does not exist please check.\n"
         raise("ValGrindMemcheckParser not found!")
         

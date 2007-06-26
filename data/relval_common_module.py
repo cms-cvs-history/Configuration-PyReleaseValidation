@@ -85,8 +85,7 @@ def add_includes(process):
     log(func_id+" Entering... ")
     
     for file in include_files(["Configuration/ReleaseValidation/data/Services.cff",
-                              "Configuration/StandardSequences/data/FakeConditions.cff",
-                              "FWCore/MessageService/data/MessageLogger.cfi"]):
+                              "Configuration/StandardSequences/data/FakeConditions.cff"]):
         process.extend(file)
     
     # The file FWCore/Framework/test/cmsExceptionsFatalOption.cff:
@@ -96,7 +95,9 @@ def add_includes(process):
                 (Rethrow=fataloptions_inclobj.Rethrow,
                  wantSummary=cms.untracked.bool(True),
                  makeTriggerResults=cms.untracked.bool(True) ) 
-                      
+                 
+    process.extend(include_files("FWCore/MessageService/data/MessageLogger.cfi")[0])                  
+    
     process.extend(include_files("Configuration/PyReleaseValidation/data/incl_summary.cff")[0])
 
     #process.extend(include_files("Configuration/StandardSequences/data/MixingLowLumiPileUp.cff")[0]) 
@@ -226,7 +227,7 @@ def build_production_info(evt_type, energy, evtnumber):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
     prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.24 $"),
+              (version=cms.untracked.string("$Revision: 1.25 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+" energy:"+str(energy)+" nevts:"+str(evtnumber))
               )

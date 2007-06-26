@@ -283,7 +283,7 @@ if options.no_exec_flag:
     sys.exit(0) # Exits without launching cmsRun
 
 # Remove existing pyc files:
-os.system("rm "+pyrelvalcodedir+"*.pyc")    
+os.system("rm -f "+pyrelvalcodedir+"*.pyc")    
 # A temporary ugly fix for a problem to investigate further.
 
 print "Launching "+' '.join(command)+"..."
