@@ -56,7 +56,7 @@ if profiler_service_cuts!="":
     process.add_(common.build_profiler_service(profiler_service_cuts))
 
 # Add the Message Logger
-process.extend(common.build_message_logger())
+#process.extend(common.build_message_logger())
 
 # Set the number of events with a top level PSet
 process.maxEvents=cms.untracked.PSet(input=cms.untracked.int32(evtnumber))
