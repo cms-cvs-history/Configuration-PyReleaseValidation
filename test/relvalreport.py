@@ -43,7 +43,7 @@ def print_options(options):
     print "-------------------------------------------"
 
 #---------------------------------------------------------
-def build_rel_val_dict(choice,nevts):
+def build_rel_val_dict(choice,nevts,newstep3):
     """
     Builds a root for the cmsDriver.py commands according to the event 
     categories selected. The categories are:
@@ -77,27 +77,31 @@ def build_rel_val_dict(choice,nevts):
               "7":("170_230","230_300"),
               "8":("300_380","380_470"),
               "9":("470_600","600_800","800_1000")}
-                 
+    
+    new_reco_seq=""               
+    if newstep3!="":
+        new_reco_seq=" --substep3 "+newstep3              
+                           
     if choice in ("4","5","6","7","8","9"): # QCD evts
         for qcden in qcd_evts[choice]:
-            relval_dict["QCD"+qcden]="QCD -n"+nevts+" -e"+qcden+" -s"        
+            relval_dict["QCD"+qcden]="QCD -n"+nevts+" -e"+qcden+new_reco_seq+" -s"      
     
     if choice=="10": # Muons evts
         for sign in ("+","-"):
             for muen in ("1","10","100"):
-                relval_dict["MU"+sign+muen]="MU"+sign+" -n"+nevts+" -e"+muen+" -s"
-        relval_dict["10MU"]="10MU- -n"+nevts+" -e1_10 -s"
+                relval_dict["MU"+sign+muen]="MU"+sign+" -n"+nevts+" -e"+muen+new_reco_seq+" -s"
+        relval_dict["10MU"]="10MU- -n"+nevts+new_reco_seq+" -e1_10 -s"
     
     if choice=="11": # Gamma and Electrons evt
-        #for gammaen in ("10","35"):
-        #    relval_dict["GAMMA"+gammaen]="GAMMA -n"+nevts+" -e"+gammaen+" -s"       
+        for gammaen in ("10","35"):
+            relval_dict["GAMMA"+gammaen]="GAMMA -n"+nevts+" -e"+gammaen+new_reco_seq+" -s"       
         # Electrons
-        relval_dict["E-"]="E- -n"+nevts+" -e35 -s"
+        relval_dict["E-"]="E- -n"+nevts+new_reco_seq+" -e35 -s"
 
     # Our Candle -------------------------------------------------
              
     if choice=="12":
-        relval_dict["CANDLE"]="QCD -n"+nevts+" -e20_30 -s" 
+        relval_dict["CANDLE"]="QCD -n"+nevts+new_reco_seq+" -e20_30 -s" 
     
     # ------------------------------------------------------------        
              
@@ -105,7 +109,7 @@ def build_rel_val_dict(choice,nevts):
 
 #-------------------------    
             
-def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_flag):
+def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_flag, newstep3):
     """
     Executes the step selected in the commandline with the appropriate profiler.
     """
@@ -310,7 +314,7 @@ def principal(typecode,options):
     output_flag=not options.no_output_flag
         
     # The cmsDriver options to reproduce relval:
-    relval_dict=build_rel_val_dict(typecode,nevts)
+    relval_dict=build_rel_val_dict(typecode,nevts,options.newstep3)
     
     # Loop on the event types
     os.chdir(options.dirout)    
@@ -324,7 +328,7 @@ def principal(typecode,options):
 
         if options.prof_step!="":
             step_and_benchmark(evt,relval_dict[evt]+\
-                options.prof_step+" ",profiler,profiler_service_cuts,options.prof_step,output_flag)
+                options.prof_step+" ",profiler,profiler_service_cuts,options.prof_step,output_flag,options.newstep3)
         
         #make a static report
         if options.profiler!="":
@@ -410,6 +414,11 @@ if __name__=="__main__":
                       default=False,
                       dest="edm_size_flag")                      
 
+    parser.add_option("--substep3",
+                      help="Replace reconstruction sequence.",
+                      default="",
+                      dest="newstep3")                        
+                      
     (options,args) = parser.parse_args()                           
     
     # FAULT CONTROL
