@@ -96,7 +96,7 @@ if step in ("ALL","RECO","DIGIRECO"):
     else:
         # Choose between reconstruction algorithms.
         if evt_type in ("QCD","TTBAR"):
-            process.reconstruction_step=cms.Path(process.reconstruction)
+            process.reconstruction_step=cms.Path(process.reconstruction_plusRS)
         else:
             process.reconstruction_step=cms.Path(process.reconstruction_plusRS_plus_GSF)
         process.schedule.append(process.reconstruction_step)     

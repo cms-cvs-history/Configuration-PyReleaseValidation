@@ -152,7 +152,7 @@ parser.add_option("--no_exec",
                   default=False,
                   dest="no_exec_flag")   
                   
-parser.add_option("--subststep3",
+parser.add_option("--substep3",
                   help="Sobstitute the \"p3\" sequence with userdefined names.Use ONLY commas to separate values.",
                   default="",
                   dest="newstep3")                                     
