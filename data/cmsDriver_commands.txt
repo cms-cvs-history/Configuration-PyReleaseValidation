@@ -1,33 +1,33 @@
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU+ -n1 -e1 --dump_pickle --no_exec
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU- -n1 -e1  --dump_pickle --no_exec
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e380_470 --dump_pickle --no_exec
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU+ -n1 -e10 --dump_pickle --no_exec
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py HZZMUMUMUMU -n1 --dump_pickle --no_exec
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py E- -n1 -e35 --dump_pickle --no_exec
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py TAU -n1 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU- -n1 -e100 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e300_380 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py UDS_JETS -n1 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU- -n1 -e10 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e120_170 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py 10MU- -n1 -e1_10 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py ZPJJ -n1 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e170_230 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py B_JETS -n1 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py HZZEEEE -n1 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU+ -n1 -e100 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e800_1000 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py GAMMA -n1 -e35 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py GAMMA -n1 -e10 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py TTBAR -n1 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py C_JETS -n1 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e50_80 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e80_120 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e15_20 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py ZEE -n1 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e230_300 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e470_600 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e600_800 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e20_30 --dump_pickle --no_exec 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py BSJPSIPHI -n1 --dump_pickle --no_exec
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e30_50 --dump_pickle --no_exec 
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU+ -n1 -e1 --dump_pickle 
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU- -n1 -e1  --dump_pickle 
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e380_470 --dump_pickle 
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU+ -n1 -e10 --dump_pickle 
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py HZZMUMUMUMU -n1 --dump_pickle 
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py E- -n1 -e35 --dump_pickle 
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py TAU -n1 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU- -n1 -e100 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e300_380 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py UDS_JETS -n1 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU- -n1 -e10 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e120_170 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py 10MU- -n1 -e1_10 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py ZPJJ -n1 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e170_230 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py B_JETS -n1 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py HZZEEEE -n1 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU+ -n1 -e100 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e800_1000 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py GAMMA -n1 -e35 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py GAMMA -n1 -e10 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py TTBAR -n1 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py C_JETS -n1 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e50_80 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e80_120 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e15_20 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py ZEE -n1 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e230_300 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e470_600 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e600_800 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e20_30 --dump_pickle  
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py BSJPSIPHI -n1 --dump_pickle 
+$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -n1 -e30_50 --dump_pickle  
