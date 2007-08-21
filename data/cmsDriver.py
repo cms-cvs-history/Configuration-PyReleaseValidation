@@ -267,11 +267,15 @@ cmssw_base=os.environ["CMSSW_BASE"]
 pyrelvalcodedir=cmssw_base+"/src/Configuration/PyReleaseValidation/data/"
 os.environ["PYTHONPATH"]+=":"+pyrelvalcodedir
 
+executable='cmsRun'
+if options.dump_pickle_flag:
+    executable='python'
+
 command=['/bin/sh', '-c', 'exec ']
 pyrelvalmain=pyrelvalcodedir+"/relval_main.py"
 if options.prefix!="": 
     command[2] += options.prefix + ' '
-command[2] += 'cmsRun' + ' ' + pyrelvalmain
+command[2] += executable + ' ' + pyrelvalmain
 sys.stdout.flush() 
 
 # And Launch the Framework or just dump the parameters module
