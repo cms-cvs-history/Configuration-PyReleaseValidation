@@ -46,7 +46,7 @@ type_energy_dict={"MU+":qed_ene,
                   "TTBAR":"",
                   "TAU":"20_420",
                   "SINGLE_TAU":"35",
-                  "MINBIAS"}
+                  "MINBIAS":""}
 
 # Sorted list of available types for the user help.
 types_list=type_energy_dict.keys()
@@ -86,9 +86,8 @@ parser.add_option("-e", "--energy",
                          "assigned according to the event type.",
                    dest="energy") 
 
-parser.add_option("--L1"
-                  help="Enable the L1 trigger emulation."
-                  dest=""
+parser.add_option("--L1",
+                  help="Enable the L1 trigger emulation.",
                   action="store_true",
                   default=False,
                   dest="L1_flag")                   
@@ -238,7 +237,7 @@ evt_type='"""+options.evt_type+"""'
 # energy in the form "Emin_Emax"
 energy='"""+options.energy+"""'
 # The L1 trigger emulation
-L1_flag='"""+options.L1_flag+"""'
+L1_flag="""+str(options.L1_flag)+"""
 # Number of evts to generate
 evtnumber="""+options.number+"""
 # Input and output file names

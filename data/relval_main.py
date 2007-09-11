@@ -101,12 +101,13 @@ if step in ("ALL","RECO","DIGIRECO","DIGIPURECO"):
             process.reconstruction_step=cms.Path(process.reconstruction_plusRS_plus_GSF)
         process.schedule.append(process.reconstruction_step)     
 
-# L1 trigger        
+# L1 trigger      
 if L1_flag:
+    common.log("Adding L1 emulation... ")
     process.L1_emulation = cms.Path(process.L1Emulator)
     process.schedule.append(process.L1_Emulation)
-       
-                                                     
+
+                                             
 # Add the output on a root file if requested
 if output_flag:
     process = common.event_output\

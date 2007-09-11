@@ -51,7 +51,8 @@ def simulate(step, evt_type, energy, evtnumber):
     
     elif evt_type in ("QCD","TAU","SINGLE_TAU","TTBAR","ZPJJ","BSJPSIPHI","MINBIAS"):
         source=eval("_simulate_"+evt_type+"(step, evt_type, energy, evtnumber)") 
-    elif evt_type in ("ZEE","ZTT","ZMUMU")
+    
+    elif evt_type in ("ZEE","ZTT","ZMUMU"):
         source=_simulate_Zll\
          (step, evt_type, energy, evtnumber)
     
