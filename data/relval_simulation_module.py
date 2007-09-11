@@ -49,7 +49,7 @@ def simulate(step, evt_type, energy, evtnumber):
        source=_simulate_udscb_jets\
          (step, evt_type, energy, evtnumber)        
     
-    elif evt_type in ("QCD","TAU","SINGLE_TAU","TTBAR","ZPJJ","BSJPSIPHI"):
+    elif evt_type in ("QCD","TAU","SINGLE_TAU","TTBAR","ZPJJ","BSJPSIPHI","MINBIAS"):
         source=eval("_simulate_"+evt_type+"(step, evt_type, energy, evtnumber)") 
     elif evt_type in ("ZEE","ZTT","ZMUMU")
         source=_simulate_Zll\
@@ -140,19 +140,17 @@ def _simulate_QCD(step, evt_type, energy, evtnumber):
     
     # Build the process source   
     source = cms.Source("PythiaSource",
-#                         maxEvents = cms.untracked.int32\
-#                                               (int(evtnumber)),
-                               pythiaPylistVerbosity = cms.untracked.int32(0),
-                               pythiaHepMCVerbosity =cms.untracked.bool(False),
-                               maxEventsToPrint = cms.untracked.int32(0),
-                               PythiaParameters = cms.PSet\
-                                (parameterSets = cms.vstring\
-                                                  ("pythiaUESettings",
-                                                   "processParameters"),
-                                 pythiaUESettings = user_pythia_ue_settings(),
-                                 processParameters = cms.vstring("MSEL=1",
-                                                      "CKIN(3)="+upper_energy,
-                                                      "CKIN(4)="+lower_energy))
+                        pythiaPylistVerbosity = cms.untracked.int32(0),
+                        pythiaHepMCVerbosity =cms.untracked.bool(False),
+                        maxEventsToPrint = cms.untracked.int32(0),
+                        PythiaParameters = cms.PSet\
+                        (parameterSets = cms.vstring\
+                                            ("pythiaUESettings",
+                                            "processParameters"),
+                            pythiaUESettings = user_pythia_ue_settings(),
+                            processParameters = cms.vstring("MSEL=1",
+                                                "CKIN(3)="+upper_energy,
+                                                "CKIN(4)="+lower_energy))
                         )
      
     common.log( func_id+" Returning Source...")                 
@@ -160,6 +158,43 @@ def _simulate_QCD(step, evt_type, energy, evtnumber):
  
 #---------------------------------
 
+def _simulate_MINBIAS(step, evt_type, energy, evtnumber):
+    """
+    Settings for MINBIAS events generation
+    """
+    
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
+    common.log( func_id+" Entering... ")     
+    
+    # Build the process source   
+    source = cms.Source("PythiaSource",
+                        pythiaPylistVerbosity = cms.untracked.int32(0),
+                        pythiaHepMCVerbosity =cms.untracked.bool(False),
+                        maxEventsToPrint = cms.untracked.int32(0),
+                        PythiaParameters = cms.PSet\
+                        (parameterSets = cms.vstring\
+                                            ("pythiaUESettings",
+                                             "processParameters"),
+                            pythiaUESettings = user_pythia_ue_settings(),
+                            processParameters = cms.vstring(
+                                                "MSEL=0",
+                                                "MSUB(11)=1",
+                                                "MSUB(12)=1",
+                                                "MSUB(13)=1",
+                                                "MSUB(28)=1",
+                                                "MSUB(53)=1",
+                                                "MSUB(68)=1",
+                                                "MSUB(92)=1",
+                                                "MSUB(93)=1",
+                                                "MSUB(94)=1",
+                                                "MSUB(95)=1"))
+                        )
+    common.log( func_id+" Returning Source...")                 
+    
+    return source   
+    
+#-------------    
+            
 def _simulate_TAU(step, evt_type, energy, evtnumber):
     """    
     Here the settings for the generation of Tau events 

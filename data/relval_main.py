@@ -45,7 +45,7 @@ process = cms.Process (process_name)
 process.schedule=cms.Schedule()
 
 # Enrich the process with the features described in the relval_includes_module.
-process=common.add_includes(process)
+process=common.add_includes(process,step)
 
 # Add the fpe service if needed:
 if fpe_service_flag:
@@ -84,23 +84,29 @@ if step in ("ALL","SIM"):
 else: # The input is a file
     process.source = common.event_input(infile_name) 
  
-if step in ("ALL","DIGI","DIGIRECO"):
+if step in ("ALL","DIGI","DIGIRECO","DIGIPURECO"):
     process.digitisation_step=cms.Path(process.pdigi)
     process.schedule.append(process.digitisation_step)
        
-if step in ("ALL","RECO","DIGIRECO"):
+if step in ("ALL","RECO","DIGIRECO","DIGIPURECO"):
     if newstep3list!=[]: #add user defined elements for reco
         for element in newstep3list:
             exec("process."+element+"_step=cms.Path(process.sequences[element])")
             exec("process.schedule.append(process."+element+"_step)")
     else:
         # Choose between reconstruction algorithms.
-        if evt_type in ("QCD","TTBAR","B_JETS"):
+        if evt_type in ("QCD","TTBAR","B_JETS","MINBIAS"):
             process.reconstruction_step=cms.Path(process.reconstruction_plusRS)
         else:
             process.reconstruction_step=cms.Path(process.reconstruction_plusRS_plus_GSF)
         process.schedule.append(process.reconstruction_step)     
-                                             
+
+# L1 trigger        
+if L1_flag:
+    process.L1_emulation = cms.Path(process.L1Emulator)
+    process.schedule.append(process.L1_Emulation)
+       
+                                                     
 # Add the output on a root file if requested
 if output_flag:
     process = common.event_output\

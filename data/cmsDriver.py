@@ -45,7 +45,8 @@ type_energy_dict={"MU+":qed_ene,
                   "HZZEEEE":"","HZZMUMUMUMU":"",
                   "TTBAR":"",
                   "TAU":"20_420",
-                  "SINGLE_TAU":"35"}
+                  "SINGLE_TAU":"35",
+                  "MINBIAS"}
 
 # Sorted list of available types for the user help.
 types_list=type_energy_dict.keys()
@@ -70,6 +71,7 @@ parser.add_option("-s", "--step",
                         "DIGI (Digitisation), "+\
                         "RECO (Reconstruction), "+\
                         "DIGIRECO (DigitisationReconstruction), "+\
+                        "DIGIPURECO (DigitisationReconstruction+ Pileup at low lumi), "+\
                         "ALL (Simulation-Reconstruction-Digitisation).",
                    default="ALL",
                    dest="step")
@@ -84,6 +86,13 @@ parser.add_option("-e", "--energy",
                          "assigned according to the event type.",
                    dest="energy") 
 
+parser.add_option("--L1"
+                  help="Enable the L1 trigger emulation."
+                  dest=""
+                  action="store_true",
+                  default=False,
+                  dest="L1_flag")                   
+                   
 parser.add_option("--filein",
                    help="The infile name. If absent and necessary a "+\
                         "default value is assigned. "+\
@@ -228,6 +237,8 @@ evt_type='"""+options.evt_type+"""'
 # The energy in GeV. Some of the tipes require an
 # energy in the form "Emin_Emax"
 energy='"""+options.energy+"""'
+# The L1 trigger emulation
+L1_flag='"""+options.L1_flag+"""'
 # Number of evts to generate
 evtnumber="""+options.number+"""
 # Input and output file names

@@ -76,7 +76,7 @@ def include_files(includes_set):
     
 #------------------------
 
-def add_includes(process):
+def add_includes(process,step):
     """Function to add the includes to the process.
     It returns a process enriched with the includes.
     """
@@ -87,8 +87,11 @@ def add_includes(process):
     
     process.extend(include_files("Configuration/ReleaseValidation/data/Services.cff")[0])
 
-    process.extend(include_files("Configuration/PyReleaseValidation/data/incl_summary.cff")[0])   
-
+    if step!="DIGIPURECO":
+        process.extend(include_files("Configuration/PyReleaseValidation/data/incl_summary.cff")[0])   
+    else:
+        process.extend(include_files("Configuration/PyReleaseValidation/data/incl_summary_digiPU.cff")[0])   
+    
     # The file FWCore/Framework/test/cmsExceptionsFatalOption.cff:
     fataloptions="FWCore/Framework/test/cmsExceptionsFatalOption.cff" 
     fataloptions_inclobj=include_files(fataloptions)[0]
