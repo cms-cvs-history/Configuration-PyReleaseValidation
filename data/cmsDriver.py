@@ -44,7 +44,8 @@ type_energy_dict={"MU+":qed_ene,
                   "ZPJJ":"",
                   "HZZEEEE":"","HZZMUMUMUMU":"",
                   "TTBAR":"",
-                  "TAU":"20_420"}
+                  "TAU":"20_420",
+                  "SINGLE_TAU":"35"}
 
 # Sorted list of available types for the user help.
 types_list=type_energy_dict.keys()

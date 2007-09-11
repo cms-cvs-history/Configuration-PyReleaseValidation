@@ -41,7 +41,7 @@ def simulate(step, evt_type, energy, evtnumber):
        source=_simulate_QED\
          (step, evt_type, energy, evtnumber)
      
-    elif evt_type in ("HZZMUMUMUMU", "HZZEEEE"):
+    elif evt_type in ("HZZMUMUMUMU", "HZZEEEE", "HZZTTTT", "HZZLLLL"):
        source=_simulate_HZZllll\
          (step, evt_type, energy, evtnumber)
      
@@ -49,8 +49,12 @@ def simulate(step, evt_type, energy, evtnumber):
        source=_simulate_udscb_jets\
          (step, evt_type, energy, evtnumber)        
     
-    elif evt_type in ("QCD","TAU","TTBAR","ZEE","ZPJJ","BSJPSIPHI"):
+    elif evt_type in ("QCD","TAU","SINGLE_TAU","TTBAR","ZPJJ","BSJPSIPHI"):
         source=eval("_simulate_"+evt_type+"(step, evt_type, energy, evtnumber)") 
+    elif evt_type in ("ZEE","ZTT","ZMUMU")
+        source=_simulate_Zll\
+         (step, evt_type, energy, evtnumber)
+    
     else:
       raise "Event type","Type not yet implemented."
              
@@ -82,7 +86,8 @@ def _simulate_QED(step, evt_type, energy, evtnumber):
 
     # Build the partID string
     part_id = cms.untracked.vint32 ()
-    
+
+    is_single = False
     # 10 Leptons
     if evt_type[:2]=="10":
         for i in range(10):
@@ -91,17 +96,20 @@ def _simulate_QED(step, evt_type, energy, evtnumber):
       
     # Single lepton
     else:
+        is_single = True
         part_id.append(py_id_dict[evt_type])
         epsilon= 0.001
         lower_energy = str ( int(energy) - epsilon) # We want a calculation and
         upper_energy = str ( int(energy) + epsilon) # the result as a string   
    
     # Build the process source
+    if is_single and py_id_dict[evt_type]!="GAMMA":
+        # Add the corresponding opposite sign particle.IE if e+ add e-.
+        part_id.append(-1*part_id[0])
+        
     source = cms.Source("FlatRandomPtGunSource",
                         psethack = cms.string(id_string),
                         firstRun = cms.untracked.uint32(1),
-                        #maxEvents = cms.untracked.int32\
-                        #                            (evtnumber),
                         PGunParameters = cms.untracked.PSet\
                               (PartID = part_id,
                                MinEta = cms.untracked.double(ETA_MAX),
@@ -165,8 +173,6 @@ def _simulate_TAU(step, evt_type, energy, evtnumber):
       
     # Build the process source
     source=cms.Source("PythiaSource",
-#                       maxEvents = cms.untracked.int32\
-#                                           (int(evtnumber)),
                       ParticleID = cms.untracked.int32 (-15),
                       DoubleParticle = cms.untracked.bool (True),
                       pythiaVerbosity =cms.untracked.bool(False),
@@ -190,7 +196,38 @@ def _simulate_TAU(step, evt_type, energy, evtnumber):
     common.log( func_id+" Returning Source...")
      
     return source    
+    
+#---------------------------------
 
+def _simulate_SINGLE_TAU(step,evt_type, energy, evtnumber):
+
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
+    common.log( func_id+" Entering... ")
+    
+    # Energy boundaries are now set:      
+    lower_energy = ""
+    upper_energy = ""
+    
+    lower_energy,upper_energy = energy_split (energy) 
+    
+    source = cms.Source("FlatRandomPtGunSource",
+                        psethack = cms.string(evt_type),
+                        firstRun = cms.untracked.uint32(1),
+                        PGunParameters = cms.untracked.PSet\
+                              (PartID = (15,-15),
+                               MinEta = cms.untracked.double(ETA_MAX),
+                               MaxEta = cms.untracked.double(ETA_MIN),
+                               MinPhi = cms.untracked.double(-PI),
+                               MaxPhi = cms.untracked.double(PI),
+                               MinPt  = cms.untracked.double(lower_energy),
+                               MaxPt  = cms.untracked.double(upper_energy) 
+                              ),
+                        Verbosity = cms.untracked.int32(0)
+                       )
+ 
+    common.log( func_id+" Returning source...")
+        
+    return source 
 #---------------------------------
 
 def _simulate_HZZllll(step, evt_type, energy, evtnumber):
@@ -202,16 +239,19 @@ def _simulate_HZZllll(step, evt_type, energy, evtnumber):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     common.log( func_id+" Entering... ")      
     
-    # Choose between muon or electron decay of the Z
-    user_param_sets = ""
+    # Choose between muon, tau or electron decay of the Z
+    user_param_sets = "HZZllll"
     electron_flag = "0"
     muon_flag = "0"
-    if evt_type == "HZZMUMUMUMU":
-        user_param_sets = "pythiaHZZllll"
+    tau_flag = "0"
+    if evt_type == "HZZEEEE":
         electron_flag = "1"
-    else:
-        user_param_sets = "pythiaHZZllll"
+    elif evt_type == "HZZMUMUMUMU":
         muon_flag = "1"    
+    elif evt_type == "HZZTTTT":
+        tau_flag = "1"
+    else:
+        electron_flag=muon_flag=tau_flag= "1"
    
     # Prepare The Pythia params  
     params = cms.vstring(
@@ -265,11 +305,11 @@ def _simulate_HZZllll(step, evt_type, energy, evtnumber):
         "MDME(177,1)=0",           #Z decay into c cbar",
         "MDME(178,1)=0",           #Z decay into b bbar",
         "MDME(179,1)=0",           #Z decay into t tbar",
-        "MDME(182,1)="+electron_flag,           #Z decay into e- e+",
+        "MDME(182,1)=%s" %electron_flag,#Z decay into e- e+",
         "MDME(183,1)=0",           #Z decay into nu_e nu_ebar",
-        "MDME(184,1)=0"+muon_flag,           #Z decay into mu- mu+",
+        "MDME(184,1)=%s" %muon_flag,#Z decay into mu- mu+",
         "MDME(185,1)=0",           #Z decay into nu_mu nu_mubar",
-        "MDME(186,1)=0",           #Z decay into tau- tau+",
+        "MDME(186,1)=%s" %tau_flag,#Z decay into tau- tau+",
         "MDME(187,1)=0",          #Z decay into nu_tau nu_taubar",
         "MDME(210,1)=0",           #Higgs decay into dd",
         "MDME(211,1)=0",           #Higgs decay into uu",
@@ -347,9 +387,7 @@ def _simulate_udscb_jets\
     
     # Build the process source
     source=cms.Source('PythiaSource',
-#                       maxEvents = cms.untracked.int32\
-#                                         (int(evtnumber)),
-                      pythiaVerbosity =cms.untracked.bool(False),
+                      pythiaVerbosity =cms.untracked.bool(True),
                       PythiaParameters = cms.PSet\
                                (parameterSets = cms.vstring\
                                                    ("pythiaUESettings","pythiaJets"),
@@ -403,7 +441,7 @@ def _simulate_TTBAR(step, evt_type, energy, evtnumber):
  
 #---------------------------------
 
-def _simulate_ZEE(step, evt_type, energy, evtnumber):
+def _simulate_Zll(step, evt_type, energy, evtnumber):
     """
     Here the settings for the Z ee simulation are added to the process.
     Energy parameter is not used.
@@ -412,7 +450,21 @@ def _simulate_ZEE(step, evt_type, energy, evtnumber):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     common.log( func_id+" Entering... ")      
 
-    user_param_sets = cms.vstring(
+    # Choose between muon or electron decay of the Z
+    user_param_sets = "pythiaZll"
+    electron_flag = "0"
+    muon_flag = "0"
+    tau_flag = "0"
+    if evt_type == "ZEE":
+        electron_flag = "1"
+    elif evt_type == "ZMUMU":
+        muon_flag = "1"    
+    elif evt_type == "ZTT":
+        tau_flag = "1"
+    else:
+        electron_flag=muon_flag=tau_flag= "1"    
+    
+    pythia_param_sets = cms.vstring(
                  "MSEL = 11 ",           
                  "MDME( 174,1) = 0",            #Z decay into d dbar",
                  "MDME( 175,1) = 0",            #Z decay into u ubar",
@@ -420,11 +472,11 @@ def _simulate_ZEE(step, evt_type, energy, evtnumber):
                  "MDME( 177,1) = 0",            #Z decay into c cbar",
                  "MDME( 178,1) = 0",            #Z decay into b bbar",
                  "MDME( 179,1) = 0",            #Z decay into t tbar",
-                 "MDME( 182,1) = 1",            #Z decay into e- e+",
+                 "MDME( 182,1) = %s" %electron_flag,#Z decay into e- e+",
                  "MDME( 183,1) = 0",            #Z decay into nu_e nu_ebar",
-                 "MDME( 184,1) = 0",            #Z decay into mu- mu+",
+                 "MDME( 184,1) = %s" %muon_flag,#Z decay into mu- mu+",
                  "MDME( 185,1) = 0",            #Z decay into nu_mu nu_mubar",
-                 "MDME( 186,1) = 0",            #Z decay into tau- tau+",
+                 "MDME( 186,1) = %s" %tau_flag, #Z decay into tau- tau+",
                  "MDME( 187,1) = 0",            #Z decay into nu_tau nu_taubar",
                  "MSTJ( 11) = 3",    #Choice of the fragmentation function",
                  "MSTP( 2) = 1",            #which order running alphaS",
@@ -447,12 +499,10 @@ def _simulate_ZEE(step, evt_type, energy, evtnumber):
                  )     
                  
     # Build the process source
-    source=cms.Source('PythiaSource',
-#                       maxEvents = cms.untracked.int32\
-#                                          (int(evtnumber)),  
+    source=cms.Source('PythiaSource', 
                       PythiaParameters = cms.PSet\
-                               (parameterSets = cms.vstring("pythiaZee"),
-                                pythiaZee=user_param_sets )
+                               (parameterSets = cms.vstring(user_param_sets),
+                                pythiaZll=pythia_param_sets )
                      )
 
     common.log(func_id+" Returning Source...")

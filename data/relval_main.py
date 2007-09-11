@@ -95,15 +95,11 @@ if step in ("ALL","RECO","DIGIRECO"):
             exec("process.schedule.append(process."+element+"_step)")
     else:
         # Choose between reconstruction algorithms.
-        if evt_type in ("QCD","TTBAR"):
+        if evt_type in ("QCD","TTBAR","B_JETS"):
             process.reconstruction_step=cms.Path(process.reconstruction_plusRS)
         else:
             process.reconstruction_step=cms.Path(process.reconstruction_plusRS_plus_GSF)
         process.schedule.append(process.reconstruction_step)     
-        # One last item must be added to the schedule for the photon:
-#        if evt_type=="GAMMA":
-#            process.photonconversion=cms.Path(process.convertedPhotonSequence)
-#            process.schedule.append(process.photonconversion)   
                                              
 # Add the output on a root file if requested
 if output_flag:

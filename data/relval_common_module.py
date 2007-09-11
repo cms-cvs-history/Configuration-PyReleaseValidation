@@ -84,17 +84,11 @@ def add_includes(process):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     log(func_id+" Entering... ")
         
-#    for file in include_files(["Configuration/ReleaseValidation/data/Services.cff",
-#                               "Configuration/StandardSequences/data/FakeConditions.cff"]):
-#        process.extend(file)
     
     process.extend(include_files("Configuration/ReleaseValidation/data/Services.cff")[0])
 
     process.extend(include_files("Configuration/PyReleaseValidation/data/incl_summary.cff")[0])   
 
-    #process.extend(include_files("Configuration/ReleaseValidation/data/Services.cff")[0])
-    #process.extend(include_files("Configuration/StandardSequences/data/FakeConditions.cff")[0])
-        
     # The file FWCore/Framework/test/cmsExceptionsFatalOption.cff:
     fataloptions="FWCore/Framework/test/cmsExceptionsFatalOption.cff" 
     fataloptions_inclobj=include_files(fataloptions)[0]
@@ -104,11 +98,7 @@ def add_includes(process):
                  makeTriggerResults=cms.untracked.bool(True) ) 
                  
     process.extend(include_files("FWCore/MessageService/data/MessageLogger.cfi")[0])                  
-        
-    #process.extend(include_files("Configuration/PyReleaseValidation/data/incl_summary.cff")[0])
-    
-    #process.extend(include_files("Configuration/StandardSequences/data/MixingLowLumiPileUp.cff")[0]) 
-                    
+                       
     log(func_id+ " Returning process...")
     return process
 
@@ -234,7 +224,7 @@ def build_production_info(evt_type, energy, evtnumber):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
     prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.27 $"),
+              (version=cms.untracked.string("$Revision: 1.28 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+" energy:"+str(energy)+" nevts:"+str(evtnumber))
               )
@@ -250,7 +240,7 @@ def log (message):
     """
     An oversimplified logger. This is designed for debugging the PyReleaseValidation
     """
-    hour=time.asctime().split(" ")[4]
+    hour=time.asctime().split(" ")[3]
     #if parameters.dbg_flag:
     if True:    
         print "["+hour+"]"+message
