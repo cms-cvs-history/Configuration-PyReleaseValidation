@@ -240,17 +240,16 @@ def _simulate_SINGLE_TAU(step,evt_type, energy, evtnumber):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     common.log( func_id+" Entering... ")
     
-    # Energy boundaries are now set:      
-    lower_energy = ""
-    upper_energy = ""
-    
-    lower_energy,upper_energy = energy_split (energy) 
-    
+    # Energy boundaries are now set:
+    epsilon=0.0001
+    energy=23
+    upper_energy=float(energy)+epsilon
+    lower_energy=float(energy)-epsilon
     source = cms.Source("FlatRandomPtGunSource",
-                        psethack = cms.string(evt_type),
+                        psethack = cms.string(evt_type+step),
                         firstRun = cms.untracked.uint32(1),
                         PGunParameters = cms.untracked.PSet\
-                              (PartID = (15,-15),
+                              (PartID = cms.untracked.vint32(15,-15),
                                MinEta = cms.untracked.double(ETA_MAX),
                                MaxEta = cms.untracked.double(ETA_MIN),
                                MinPhi = cms.untracked.double(-PI),
@@ -259,7 +258,9 @@ def _simulate_SINGLE_TAU(step,evt_type, energy, evtnumber):
                                MaxPt  = cms.untracked.double(upper_energy) 
                               ),
                         Verbosity = cms.untracked.int32(0)
-                       )
+                       )    
+
+            
  
     common.log( func_id+" Returning source...")
         
@@ -276,7 +277,7 @@ def _simulate_HZZllll(step, evt_type, energy, evtnumber):
     common.log( func_id+" Entering... ")      
     
     # Choose between muon, tau or electron decay of the Z
-    user_param_sets = "HZZllll"
+    user_param_sets = "pythiaHZZllll"
     electron_flag = "0"
     muon_flag = "0"
     tau_flag = "0"

@@ -104,9 +104,10 @@ if step in ("ALL","RECO","DIGIRECO","DIGIPURECO"):
 # L1 trigger      
 if L1_flag:
     common.log("Adding L1 emulation... ")
-    process.L1_emulation = cms.Path(process.L1Emulator)
+    process.L1_Emulation = cms.Path(process.L1Emulator)
     process.schedule.append(process.L1_Emulation)
-
+    outfile_name=outfile_name[:-5]+"_L1.root"
+    ext_process_name+="_L1"
                                              
 # Add the output on a root file if requested
 if output_flag:

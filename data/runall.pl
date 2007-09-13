@@ -16,7 +16,7 @@ my $nT=$options{'n'} ? $options{'n'} : 2;
 
 my $semaphore=new Thread::Semaphore;
 
-my $cmsDriver_commands="cmsDriver_commands.txt";
+my $cmsDriver_commands="pippo";
 open(DAT, $cmsDriver_commands) || die("Could not open file!");
 my @cfgs=<DAT>;
 
