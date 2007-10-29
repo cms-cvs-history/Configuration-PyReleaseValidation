@@ -182,19 +182,6 @@ def step_and_benchmark(evt, args, profiler, profiler_service_cuts, step, output_
         
         execute(command)
                             
-#        if profiler.find("IgProf")!=-1:
-#            # make igprof output readable by perftool.
-#            print "[reco_and_benchmark] Converting IgProf output to callgrind format..."
-#            perfreport_igprof_output=profiler+"."+evt+".out"
-#            IgProf_conversion_command="igprof-analyse -d -g -v -C -r "
-#            print "------------------"+profiler
-#            if profiler=="IgProf_perf":
-#                IgProf_conversion_command += " PERF_TICKS "
-#            else:
-#                IgProf_conversion_command += " MEM_TOTAL "         
-#            IgProf_conversion_command+=profiler_out_filename+" > "+perfreport_igprof_output
-#            execute(IgProf_conversion_command)
-            
         if profiler=="Valgrind":
             # Find and Rename CallGrind Output
             # This will work only with one report file per dir
