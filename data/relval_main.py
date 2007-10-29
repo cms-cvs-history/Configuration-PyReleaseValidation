@@ -108,6 +108,7 @@ if L1_flag:
     process.schedule.append(process.L1_Emulation)
     outfile_name=outfile_name[:-5]+"_L1.root"
     ext_process_name+="_L1"
+
                                              
 # Add the output on a root file if requested
 if output_flag:

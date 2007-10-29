@@ -84,7 +84,6 @@ def add_includes(process,step):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     log(func_id+" Entering... ")
         
-    
     process.extend(include_files("Configuration/ReleaseValidation/data/Services.cff")[0])
 
     if step!="DIGIPURECO":
@@ -92,16 +91,17 @@ def add_includes(process,step):
     else:
         process.extend(include_files("Configuration/PyReleaseValidation/data/incl_summary_digiPU.cff")[0])   
     
+
     # The file FWCore/Framework/test/cmsExceptionsFatalOption.cff:
     fataloptions="FWCore/Framework/test/cmsExceptionsFatalOption.cff" 
     fataloptions_inclobj=include_files(fataloptions)[0]
-    cms.options=cms.untracked.PSet\
-                (Rethrow=fataloptions_inclobj.Rethrow,
-                 wantSummary=cms.untracked.bool(True),
-                 makeTriggerResults=cms.untracked.bool(True) ) 
+    process.options=cms.untracked.PSet\
+                    (Rethrow=fataloptions_inclobj.Rethrow,
+                     wantSummary=cms.untracked.bool(True),
+                     makeTriggerResults=cms.untracked.bool(True) ) 
                  
     process.extend(include_files("FWCore/MessageService/data/MessageLogger.cfi")[0])                  
-                       
+
     log(func_id+ " Returning process...")
     return process
 
@@ -114,9 +114,7 @@ def event_input(infile_name):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     pr_source=cms.Source("PoolSource",
                          fileNames = cms.untracked.vstring\
-                                     ((infile_name)),
-                         #maxEvents = cms.untracked.int32(-1)
-                        )
+                                     ((infile_name)))                        )
     log(func_id+" Adding PoolSource source ...")                         
     return pr_source
     
@@ -227,7 +225,7 @@ def build_production_info(evt_type, energy, evtnumber):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
     prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.28 $"),
+              (version=cms.untracked.string("$Revision: 1.30 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+" energy:"+str(energy)+" nevts:"+str(evtnumber))
               )
