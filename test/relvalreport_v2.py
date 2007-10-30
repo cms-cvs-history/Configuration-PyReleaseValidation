@@ -3,14 +3,23 @@
 r'''
 Relvalreport_v2: a script to run performance tests and produce reports in a automated way.
 '''
-# Configuration parameters:
+
+
+# Configuration parameters:#############################################################
 
 # Perfreport 3 and 2 coordinates:
-PR3='~/w0/perfreport3installation/bin/perfreport'# executable
-PERFREPORT3_PATH='/afs/cern.ch/user/d/dpiparo/w0/perfreport3installation/share/perfreport' #path to xmls
+PR3_BASE='/afs/cern.ch/user/d/dpiparo/w0/perfreport3installation/'
+PR3=PR3_BASE+'/bin/perfreport'# executable
+PERFREPORT3_PATH=PR3_BASE+'/share/perfreport' #path to xmls
 
-PR2='~/w0/perfreport2.1installation/bin/perfreport'# executable
-PERFREPORT2_PATH='/afs/cern.ch/user/d/dpiparo/w0/perfreport2.1installation/share/perfreport' #path to xmls
+PR2_BASE='/afs/cern.ch/user/d/dpiparo/w0/perfreport2.1installation/'
+PR2=PR2_BASE+'/bin/perfreport'# executable
+PERFREPORT2_PATH=PR2_BASE+'/share/perfreport' #path to xmls
+
+########################################################################################
+
+
+
 
 # Library to include to run valgrind fce
 VFCE_LIB='/afs/cern.ch/user/m/moserro/public/vgfcelib' 
@@ -303,6 +312,7 @@ def principal(options):
         profiler=''
         reportdir=options.output
         IgProf_counter=options.IgProf_counter
+        multiple_mem_profiles=False
         
         if options.infile!='': # we have a list of commands
             profile_name='%s_%s'%(meta,options.profile_name)            
