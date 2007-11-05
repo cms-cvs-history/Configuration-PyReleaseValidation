@@ -61,7 +61,7 @@ process.maxEvents=cms.untracked.PSet(input=cms.untracked.int32(evtnumber))
 # Add the ReleaseValidation PSet
 process.ReleaseValidation=cms.untracked.PSet(totalNumberOfEvents=cms.untracked.int32(5000),
                                              eventsPerJob=cms.untracked.int32(250),
-                                             primaryDatasetName="RelVal"+ext_process_name)
+                                             primaryDatasetName=cms.untracked.string("RelVal"+ext_process_name))
 
 """
 Here we choose to make the process work only for one of the four steps 
