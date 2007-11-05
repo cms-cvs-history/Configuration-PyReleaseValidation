@@ -24,33 +24,46 @@ def print_options(options):
 #---------------------------------------------------------
 
 # The supported evt types and default energies:
-qed_ene="10"
-qed_ene10="0.99_9.99"
+#energies in GeV!
+pgun_ene="10"
 jet_en="50_120"
-type_energy_dict={"MU+":qed_ene,
-                  "MU-":qed_ene,
-                  "E+":qed_ene,
-                  "E-":qed_ene,
-                  "GAMMA":qed_ene,
-                  "10MU+":qed_ene10,
-                  "10MU-":qed_ene10,
-                  "10E+":qed_ene10,
-                  "10E-":qed_ene10,
-                  "10GAMMA":qed_ene10,
+heavy_higgs="190"
+light_higgs="120"
+ZP_mass="1000"
+type_energy_dict={"MU+":pgun_ene,
+                  "MU-":pgun_ene,
+                  "E":pgun_ene,
+                  "DIE":pgun_ene,
+                  "TAU":pgun_ene,
+                  "PI+":pgun_ene,
+                  "PI-":pgun_ene,
+                  "PI0":pgun_ene,
+                  "GAMMA":pgun_ene,
+                  #
                   "QCD":"380_470",
+                  "TTBAR":"",
+                  "MINBIAS":"",           
+                  #
                   "B_JETS":jet_en,
                   "C_JETS":jet_en,
-                  "UDS_JETS":jet_en,
-                  "BSJPSIPHI":"",
+                  #
                   "ZEE":"",
                   "ZMUMU":"",
                   "ZTT":"",
+                  #
                   "ZPJJ":"",
-                  "HZZEEEE":"","HZZMUMUMUMU":"","HZZTTTT":"",
-                  "TTBAR":"",
-                  "TAU":"20_420",
-                  "SINGLE_TAU":"35",
-                  "MINBIAS":""}
+                  "ZPEE":ZP_mass,
+                  "ZPMUMU":ZP_mass,
+                  "ZPTT":ZP_mass,
+                  #
+                  "HZZEEEE":heavy_higgs,
+                  "HZZMUMUMUMU":heavy_higgs,
+                  "HZZTTTT":heavy_higgs,
+                  "HZZLLLL":heavy_higgs,
+                  "HGG":light_higgs,
+                  #
+                  "RS1GG":"",
+                  "H+T":""}
 
 # Sorted list of available types for the user help.
 types_list=type_energy_dict.keys()
@@ -71,7 +84,9 @@ parser = optparse.OptionParser(usage)
 
 parser.add_option("-s", "--step",
                    help="The desired step. The possible values are: "+\
+                        "GEN (Generation),"+\
                         "SIM (Simulation), "+\
+                        "GENSIM (Generation+Simulation)"+\
                         "DIGI (Digitisation), "+\
                         "RECO (Reconstruction), "+\
                         "DIGIRECO (DigitisationReconstruction), "+\
@@ -90,12 +105,18 @@ parser.add_option("-e", "--energy",
                          "assigned according to the event type.",
                    dest="energy") 
 
-parser.add_option("--L1",
-                  help="Enable the L1 trigger emulation.",
+parser.add_option("-a","--analysis",
+                  help="Enable the analysis.",
                   action="store_true",
                   default=False,
-                  dest="L1_flag")                   
-                   
+                  dest="analysis_flag")                   
+
+parser.add_option("--PU",
+                  help="Enable the pile up.",
+                  action="store_true",
+                  default=False,
+                  dest="PU_flag")                     
+                                     
 parser.add_option("--filein",
                    help="The infile name. If absent and necessary a "+\
                         "default value is assigned. "+\
@@ -126,6 +147,14 @@ parser.add_option("-p","--profiler_service",
                   default="",
                   dest="profiler_service_cuts")
 
+parser.add_option("--fpe",
+                  help="Equip the process with the floating point exception service. "+\
+                       "For details see https://twiki.cern.ch/twiki/bin/"+\
+                       "view/CMS/SWGuideFloatingPointBehavior",
+                  action="store_true",
+                  default=False,
+                  dest="fpe_service_flag")                        
+                  
 parser.add_option("--prefix",
                   help="Specify a prefix to the cmsRun command.",
                   default="",
@@ -137,16 +166,9 @@ parser.add_option("--no_output",
                   action="store_true",
                   default=False,
                   dest="no_output_flag")
-                                                      
-parser.add_option("--fpe",
-                  help="Equip the process with the floating point exception service. "+\
-                       "For details see https://twiki.cern.ch/twiki/bin/"+\
-                       "view/CMS/SWGuideFloatingPointBehavior",
-                  action="store_true",
-                  default=False,
-                  dest="fpe_service_flag")                 
+                                                                    
                   
-parser.add_option("--dump",
+parser.add_option("--dump_cfg",
                   help="Dump the config file in the old config "+\
                        "language. It is printed on stdout.",
                   action="store_true",
@@ -158,7 +180,13 @@ parser.add_option("--dump_pickle",
                   action="store_true",
                   default=False,
                   dest="dump_pickle_flag")
-                  
+
+parser.add_option("--dump_DSetName",
+                  help="Dump the primary datasetname.",
+                  action="store_true",
+                  default=False,
+                  dest="dump_dsetname_flag")                  
+                                    
 parser.add_option("--no_exec",
                   help="Do not exec cmsrun. Just prepare the parameters module",
                   action="store_true",
@@ -187,9 +215,9 @@ if options.energy==None:
 # Build the IO files if necessary.
 # The default form of the files is:
 # <type>_<energy>_<step>.root
-prec_step = {"ALL":"","SIM":"","DIGI":"SIM","RECO":"DIGI","DIGIRECO":"SIM"}
+prec_step = {"ALL":"","GEN":"","SIM":"GEN","DIGI":"SIM","RECO":"DIGI","DIGIRECO":"SIM"}
 
-if options.filein=="" and not options.step in ("ALL","SIM"):
+if options.filein=="" and not options.step in ("ALL","GEN"):
     if options.dirin=="":
         options.dirin="file:"
     options.filein=options.evt_type+"_"+options.energy+\
@@ -205,11 +233,17 @@ if options.newstep3!="":
     newstep3list=options.newstep3.split(",")    
 
 # Print the options to screen
-print_options(options)
+if not options.dump_dsetname_flag:
+    print_options(options)  
 
 #set process name:
 ext_process_name=options.evt_type+options.energy+options.step
 
+
+if options.dump_dsetname_flag:
+    print ext_process_name
+    sys.exit(0) # no need to go further
+    
 cfgfile="""
 #############################################################
 #                                                           #
@@ -240,8 +274,8 @@ evt_type='"""+options.evt_type+"""'
 # The energy in GeV. Some of the tipes require an
 # energy in the form "Emin_Emax"
 energy='"""+options.energy+"""'
-# The L1 trigger emulation
-L1_flag="""+str(options.L1_flag)+"""
+# The PU
+PU_flag="""+str(options.PU_flag)+"""
 # Number of evts to generate
 evtnumber="""+options.number+"""
 # Input and output file names
@@ -257,7 +291,8 @@ profiler_service_cuts='"""+options.profiler_service_cuts+"""'
 fpe_service_flag="""+str(options.fpe_service_flag)+"""
 # Substitute Step 3 sequence
 newstep3list="""+str(newstep3list)+"""
-
+# The anlaysis
+analysis_flag="""+str(options.analysis_flag)+"""
 
 # Pyrelval parameters
 # Enable verbosity
@@ -266,6 +301,8 @@ dbg_flag=True
 dump_cfg_flag="""+str(options.dump_cfg_flag)+"""
 # Dump a pickle object of the process on disk.
 dump_pickle_flag="""+str(options.dump_pickle_flag)+"""
+#Dump the dataset Name
+dump_dsetname_flag="""+str(options.dump_dsetname_flag)+"""
 
 """
 
