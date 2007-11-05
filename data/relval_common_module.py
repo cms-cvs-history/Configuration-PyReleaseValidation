@@ -76,7 +76,7 @@ def include_files(includes_set):
     
 #------------------------
 
-def add_includes(process,step):
+def add_includes(process,PU_flag):
     """Function to add the includes to the process.
     It returns a process enriched with the includes.
     """
@@ -84,17 +84,14 @@ def add_includes(process,step):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     log(func_id+" Entering... ")
         
-    process.extend(include_files("Configuration/ReleaseValidation/data/Services.cff")[0])
-
-    if step!="DIGIPURECO":
-        process.extend(include_files("Configuration/PyReleaseValidation/data/incl_summary.cff")[0])   
-    else:
-        process.extend(include_files("Configuration/PyReleaseValidation/data/incl_summary_digiPU.cff")[0])   
+    for included_fragment in include_files(["Configuration/ReleaseValidation/data/Services.cff"]): 
+        process.extend(included_fragment)
     
 
     # The file FWCore/Framework/test/cmsExceptionsFatalOption.cff:
     fataloptions="FWCore/Framework/test/cmsExceptionsFatalOption.cff" 
     fataloptions_inclobj=include_files(fataloptions)[0]
+    
     process.options=cms.untracked.PSet\
                     (Rethrow=fataloptions_inclobj.Rethrow,
                      wantSummary=cms.untracked.bool(True),
@@ -102,6 +99,11 @@ def add_includes(process,step):
                  
     process.extend(include_files("FWCore/MessageService/data/MessageLogger.cfi")[0])                  
 
+    if PU_flag:
+        process.extend(include_files("Configuration/PyReleaseValidation/data/incl_summary_PU.cff")[0])   
+    else:
+        process.extend(include_files("Configuration/PyReleaseValidation/data/incl_summary.cff")[0])   
+    
     log(func_id+ " Returning process...")
     return process
 
@@ -141,42 +143,6 @@ def event_output(process, outfile_name, step, evt_filter=None):
     
     return process 
  
-#-----------------------------------------
-
-def random_generator_service():
-    """
-    Function that adds to the process the random generator service.
-    """
-    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
-    
-    randomgen_service=cms.Service("RandomNumberGeneratorService",
-                                  sourceSeed=cms.untracked.uint32(123456789),
-                                  moduleSeeds=cms.PSet(VtxSmeared=cms.untracked.uint32(98765432), 
-                                                       g4SimHits=cms.untracked.uint32(11), 
-                                                       mix=cms.untracked.uint32(12345)
-                                                      )
-                                 )
-
-    log(func_id+" Returning Service...")
-
-    return (randomgen_service)
-    
-#---------------------------------------------------
-
-def build_message_logger():
-    """
-    Function that returns the message logger service
-    """
-    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
-    
-    msg_logger=cms.include("FWCore/MessageService/data/MessageLogger.cfi")
-    msg_logger.MessageLogger.cout.threshold = "ERROR"
-    msg_logger.MessageLogger.cerr.default.limit = 10
-    
-    log(func_id+" Returning Service...")
-        
-    return msg_logger
-
 #--------------------------------------------
     
 def build_profiler_service(evts_cuts):
@@ -225,7 +191,7 @@ def build_production_info(evt_type, energy, evtnumber):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
     prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.31 $"),
+              (version=cms.untracked.string("$Revision: 1.32 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+" energy:"+str(energy)+" nevts:"+str(evtnumber))
               )
@@ -241,7 +207,7 @@ def log (message):
     """
     An oversimplified logger. This is designed for debugging the PyReleaseValidation
     """
-    hour=time.asctime().split(" ")[3]
+    hour=time.asctime().split(" ")[4]
     #if parameters.dbg_flag:
     if True:    
         print "["+hour+"]"+message

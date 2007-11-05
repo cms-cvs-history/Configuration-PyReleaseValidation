@@ -30,7 +30,7 @@ execfile("relval_parameters_module.py")
 import relval_common_module as common
 #import relval_simulation_module
 execfile(os.environ["CMSSW_BASE"]+\
-    "/src/Configuration/PyReleaseValidation/data/relval_simulation_module.py")
+    "/src/Configuration/PyReleaseValidation/data/relval_generation_module.py")
 
 #---------------------------------------------------
 
@@ -45,7 +45,7 @@ process = cms.Process (process_name)
 process.schedule=cms.Schedule()
 
 # Enrich the process with the features described in the relval_includes_module.
-process=common.add_includes(process,step)
+process=common.add_includes(process,PU_flag)
 
 # Add the fpe service if needed:
 if fpe_service_flag:
@@ -55,35 +55,35 @@ if fpe_service_flag:
 if profiler_service_cuts!="":
     process.add_(common.build_profiler_service(profiler_service_cuts))
 
-# Add the Message Logger
-#process.extend(common.build_message_logger())
-
 # Set the number of events with a top level PSet
 process.maxEvents=cms.untracked.PSet(input=cms.untracked.int32(evtnumber))
 
+# Add the ReleaseValidation PSet
+process.ReleaseValidation=cms.untracked.PSet(totalNumberOfEvents=cms.untracked.int32(5000),
+                                             eventsPerJob=cms.untracked.int32(250),
+                                             primaryDatasetName="RelVal"+ext_process_name)
+
 """
-Here we choose to make the process work only for one of the three steps 
-(SIM DIGI RECO) or for the whole chain (ALL)
+Here we choose to make the process work only for one of the four steps 
+(GEN,SIM DIGI RECO) or for the whole chain (ALL)
 """
-# The Simuation:
-if step in ("ALL","SIM"):
-    # The random generator service    
-    #process.add_(common.random_generator_service())
-    # Add a flavour filter if this is the case:
-    if evt_type in ("BSJPSIPHI","UDS_JETS"):
-        process.flav_filter=build_filter(evt_type)
-        process.flavfilter=cms.Path(process.flav_filter)
-        process.schedule.append(process.flavfilter)
+
+
+
+# The Generation:
+if step in ("ALL","GEN","GENSIM"):
     # Builds the source for the process
-    process.source=simulate(step,evt_type,energy,evtnumber)
-    # Enrich the schedule with simulation
-    process.simulation_step = cms.Path(process.psim)
-    process.schedule.append(process.simulation_step)
-                                              
-# The Digitisation and Reconstruction:
+    process.source=generate(step,evt_type,energy,evtnumber)
+                                                  
+# The Simulation, Digitisation and Reconstruction:
 else: # The input is a file
     process.source = common.event_input(infile_name) 
- 
+
+if step in ("ALL","SIM","GENSIM"):
+    # Enrich the schedule with simulation
+    process.simulation_step = cms.Path(process.psim)
+    process.schedule.append(process.simulation_step)    
+     
 if step in ("ALL","DIGI","DIGIRECO","DIGIPURECO"):
     process.digitisation_step=cms.Path(process.pdigi)
     process.schedule.append(process.digitisation_step)
@@ -94,21 +94,20 @@ if step in ("ALL","RECO","DIGIRECO","DIGIPURECO"):
             exec("process."+element+"_step=cms.Path(process.sequences[element])")
             exec("process.schedule.append(process."+element+"_step)")
     else:
-        # Choose between reconstruction algorithms.
-        if evt_type in ("QCD","TTBAR","B_JETS","MINBIAS"):
-            process.reconstruction_step=cms.Path(process.reconstruction_plusRS)
-        else:
-            process.reconstruction_step=cms.Path(process.reconstruction_plusRS_plus_GSF)
+        process.reconstruction_step=cms.Path(process.reconstruction_plusRS_plus_GSF)
         process.schedule.append(process.reconstruction_step)     
 
 # L1 trigger      
-if L1_flag:
-    common.log("Adding L1 emulation... ")
-    process.L1_Emulation = cms.Path(process.L1Emulator)
-    process.schedule.append(process.L1_Emulation)
-    outfile_name=outfile_name[:-5]+"_L1.root"
-    ext_process_name+="_L1"
+common.log("Adding L1 emulation... ")
+process.L1_Emulation = cms.Path(process.L1Emulator)
+process.schedule.append(process.L1_Emulation)
 
+# Analysis
+if analysis_flag:
+    common.log("Adding Analysis... ")
+    common.include_files("Configuration/StandardSequences/Analysis.cff")[0]
+    process.analysis_step=cms.Path(process.analysis)
+    process.schedule.append(process.analysis_step)
                                              
 # Add the output on a root file if requested
 if output_flag:
@@ -116,19 +115,23 @@ if output_flag:
         (process, outfile_name, step)
     process.schedule.append(process.outpath)  
                                                                         
+
 # Add metadata for production                                    
 process.configurationMetadata=common.build_production_info(evt_type, energy, evtnumber) 
+
 
 # print to screen the config file in the old language
 if dump_cfg_flag:
     print process.dumpConfig()
     
+
 # dump a pickle object of the process on disk:
 if dump_pickle_flag:
    print "Dumping process on disk as a pickle object..."
    pickle_file=file(ext_process_name+".pkl","w")
    cPickle.dump(process,pickle_file)
    pickle_file.close()
+   exit() # no need to launch the FW
        
 # A sober separator between the python program and CMSSW    
 print "And now The Framework -----------------------------"
