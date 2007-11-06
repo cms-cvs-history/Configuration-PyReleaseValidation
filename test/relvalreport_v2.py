@@ -28,7 +28,7 @@ VMPARSER='%s/src/Utilities/ReleaseScripts/scripts/valgrindMemcheckParser.pl' %os
 
 # Library to include to run valgrind fce
 VFCE_LIB='/afs/cern.ch/user/m/moserro/public/vgfcelib' 
-PERL5_LIBS='/afs/cern.ch/user/d/dpiparo/w0/PERLlibs/5.8.0'
+PERL5_LIB='/afs/cern.ch/user/d/dpiparo/w0/PERLlibs/5.8.0'
 
 # Profilers list
 PROFILERS=('ValgrindFCE',
@@ -210,7 +210,7 @@ class Profile:
         Launch Valgrind Memcheck profiler
         '''
         
-        profiler_line='valgrind --tool=memcheck '+\ 
+        profiler_line='valgrind --tool=memcheck '+\
                                '--leak-check=yes '+\
                                ' --show-reachable=yes '+\
                                '--num-callers=20 '+\
@@ -292,12 +292,13 @@ class Profile:
         # Profiler is Valgrind Memcheck
         if self.profiler=='Memcheck_Valgrind':
             # Three pages will be produced:
+            os.environ['PERL5LIB']=PERL5_LIB
             report_coordinates=(VMPARSER,self.profile_name,outdir)
             report_commands=('%s --preset +prod,-prod1 %s > %s/edproduce.html'\
                                 %report_coordinates,
-                             '%s --preset --preset +prod1 %s > %s/esproduce.html'\
+                             '%s --preset +prod1 %s > %s/esproduce.html'\
                                 %report_coordinates,
-                             '%s --preset -t beginJob %s > %s/beginjob.html'\
+                             '%s -t beginJob %s > %s/beginjob.html'\
                                 %report_coordinates)
             for command in report_commands:
                 execute(command)
