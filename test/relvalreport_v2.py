@@ -16,6 +16,11 @@ PR2_BASE='/afs/cern.ch/user/d/dpiparo/w0/perfreport2.1installation/'
 PR2=PR2_BASE+'/bin/perfreport'# executable
 PERFREPORT2_PATH=PR2_BASE+'/share/perfreport' #path to xmls
 
+# Valgrind Memcheck Parser coordinates:
+import os
+
+VMPARSER='%s/src/Utilities/ReleaseScripts/scripts/valgrindMemcheckParser.pl' %os.environ['CMSSW_BASE']
+
 ########################################################################################
 
 
@@ -23,12 +28,14 @@ PERFREPORT2_PATH=PR2_BASE+'/share/perfreport' #path to xmls
 
 # Library to include to run valgrind fce
 VFCE_LIB='/afs/cern.ch/user/m/moserro/public/vgfcelib' 
+PERL5_LIBS='/afs/cern.ch/user/d/dpiparo/w0/PERLlibs/5.8.0'
 
 # Profilers list
 PROFILERS=('ValgrindFCE',
            'IgProf_perf',
            'IgProf_mem',
-           'Edm_Size')
+           'Edm_Size',
+           'Memcheck_Valgrind')
 
 # name of the executable to benchmark. It can be different from cmsRun in future           
 EXECUTABLE='cmsRun'
@@ -38,7 +45,7 @@ EXEC=True
 DEBUG=True
 
            
-import os           
+           
 import time   
 import optparse 
 
@@ -130,6 +137,8 @@ class Profile:
             return self._profile_igprof()    
         elif self.profiler=='Edm_Size':
             return self._profile_edmsize()
+        elif self.profiler=='Memcheck_Valgrind':
+            return self._profile_Memcheck_Valgrind()
         else:
             raise('No %s profiler found!' %self.profiler)
     #------------------------------------------------------------------
@@ -195,7 +204,21 @@ class Profile:
                             %(self.profile_name,self.command)
         
         return execute(profiler_line)
-    
+
+    def _profile_Memcheck_Valgrind(self):
+        '''
+        Launch Valgrind Memcheck profiler
+        '''
+        
+        profiler_line='valgrind --tool=memcheck '+\ 
+                               '--leak-check=yes '+\
+                               ' --show-reachable=yes '+\
+                               '--num-callers=20 '+\
+                               '--track-fds=yes '+\
+                               '%s 2>&1 |tee %s' %(self.command,self.profile_name)
+        
+        return execute(profiler_line)
+                
     #-------------------------------------------------------------------
     def make_report(self,
                     fill_db=False,
@@ -264,8 +287,21 @@ class Profile:
                 perfreport_command='%s -fe -i %s -a -o %s' \
                                             %(PR3,self.profile_name,db_name)             
 
-            execute(perfreport_command)        
-
+            execute(perfreport_command)    
+            
+        # Profiler is Valgrind Memcheck
+        if self.profiler=='Memcheck_Valgrind':
+            # Three pages will be produced:
+            report_coordinates=(VMPARSER,self.profile_name,outdir)
+            report_commands=('%s --preset +prod,-prod1 %s > %s/edproduce.html'\
+                                %report_coordinates,
+                             '%s --preset --preset +prod1 %s > %s/esproduce.html'\
+                                %report_coordinates,
+                             '%s --preset -t beginJob %s > %s/beginjob.html'\
+                                %report_coordinates)
+            for command in report_commands:
+                execute(command)
+                                                    
 #############################################################################################
 
 def principal(options):
@@ -362,11 +398,14 @@ def principal(options):
         multiple_mem_profiles=False
         # make report if needed   
         if options.report:
-            logger('Creating report for command %d using %s ...' \
-                                            %(commands_counter,profiler))     
             if exit_code!=0:
                 logger('Halting report creation procedure: unexpected exit code %n from %s ...' \
-                                            %(exit_code,profiler))                 
+                                            %(exit_code,profiler))
+                sys.exit()   
+                                                        
+            logger('Creating report for command %d using %s ...' \
+                                            %(commands_counter,profiler))     
+              
                                             
             # Write into the db instead of producing html if this is the case:
             if options.db:
@@ -497,7 +536,10 @@ if __name__=="__main__":
     
     if options.command!='' and options.infile!='':
         raise('-c and -i options cannot coexist!')    
-        
+    
+    if options.profiler=='Memcheck_Valgrind' and not os.path.exists(VMPARSER):
+        raise('Couldn\'t find Valgrind Memcheck Parser Script! Please install it from Utilities/ReleaseScripts.')
+            
     if options.executable!='':
         globals()['EXECUTABLE']=options.executable
     
