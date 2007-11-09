@@ -8,7 +8,7 @@
 #                                                 #
 ###################################################
 
-__author__  = "Danilo Piparo"
+__author__="Danilo Piparo"
 
 # Let Python find the parameters module created locally in the current directory.
 # As long as the Python code cannot have any command line arguments since this could lead

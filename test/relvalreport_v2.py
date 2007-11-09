@@ -19,7 +19,7 @@ PERFREPORT2_PATH=PR2_BASE+'/share/perfreport' #path to xmls
 # Valgrind Memcheck Parser coordinates:
 import os
 
-VMPARSER='%s/src/Utilities/ReleaseScripts/scripts/valgrindMemcheckParser.pl' %os.environ['CMSSW_BASE']
+VMPARSER='%s/src/Utilities/ReleaseScripts/scripts/valgrindMemcheckParser.pl' %os.environ['CMSSW_RELEASE_BASE']
 
 ########################################################################################
 
@@ -48,6 +48,27 @@ DEBUG=True
            
 import time   
 import optparse 
+import sys
+
+
+#######################################################################
+#TO BE EXTRACTED!!
+def analyse_prof_sim(outfile1,outfile2,outfile3,profile_name):
+    
+    commands_list=(\
+    'igprof-analyse -d -v -g --value peak -r MEM_LIVE %s > %s'\
+                                    %(self.profile_name,outfile1),
+    
+    'igprof-segment edm::EDProducer::doProduce < %s |tee  %s' %(outfile1,outfile2),
+    
+    'igprof-segment edm::EDProducer::doBeginJob < %s |tee %s' %(outfile1,outfile3),
+    
+    'igprof-analyse -d -v -g -r MEM_LIVE %s >! %s'\
+                                    %(self.profile_name,outfile1)
+                  )
+    
+    for command in commands_list:
+        execute(command)
 
 #######################################################################
 
@@ -73,6 +94,8 @@ def execute(command):
             if exit_code!=0:
                 logger('*** Seems like "%s" encountered problems.' %command)
             return exit_code
+        else:
+            return 0
             
 #######################################################################            
             
@@ -103,11 +126,18 @@ class Candles_file:
                 if candle[-1]=='\n': #remove trail \n if it's there
                     candle=candle[:-1] 
                 splitted_candle=candle.split('@@@') #separate
-
+                
+                
                 command=splitted_candle[0]
                 profiler=splitted_candle[1].strip(' \t')
                 meta=splitted_candle[2].strip(' \t')        
-                self.commands_profilers_meta_list.append([command,profiler,meta])
+                info=[command,profiler,meta]
+                if len(splitted_candle)==4:     
+                    info.append(True)
+                else:
+                    info.append(False)
+                    
+                self.commands_profilers_meta_list.append(info)
                 
     #----------------------------------------------------------------------
         
@@ -257,21 +287,31 @@ class Profile:
         
         # Profiler is IgProf:
         if self.profiler.find('IgProf')!=-1:
-            uncompressed_profile_name=self.profile_name[:-3]+'_uncompressed'
-            execute('gzip -d -c %s > %s' %(self.profile_name,uncompressed_profile_name))
-            perfreport_command=''
-            # Switch for filling the db
-            if not fill_db:
-                os.environ["PERFREPORT_PATH"]='%s/' %PERFREPORT2_PATH
-                perfreport_command='%s -fi -y %s -i %s -o %s' \
-                                %(PR2,IgProf_option,uncompressed_profile_name,outdir)
+            if IgProf_option!='ANALYSE':
+                uncompressed_profile_name=self.profile_name[:-3]+'_uncompressed'
+                execute('gzip -d -c %s > %s' %(self.profile_name,uncompressed_profile_name))
+                perfreport_command=''
+                # Switch for filling the db
+                if not fill_db:
+                    os.environ["PERFREPORT_PATH"]='%s/' %PERFREPORT2_PATH
+                    perfreport_command='%s -fi -y %s -i %s -o %s' \
+                                    %(PR2,IgProf_option,uncompressed_profile_name,outdir)
+                else:
+                    os.environ["PERFREPORT_PATH"]='%s/' %PERFREPORT3_PATH
+                    perfreport_command='%s -fi -m \'scram_cmssw_version_string,%s\' -y %s -i %s %s -o %s' \
+                                    %(PR3,metastring,IgProf_option,uncompressed_profile_name,db_option,db_name)            
+                
+                execute(perfreport_command)
+                execute('rm  %s' %uncompressed_profile_name)
+                
             else:
-                os.environ["PERFREPORT_PATH"]='%s/' %PERFREPORT3_PATH
-                perfreport_command='%s -fi -m \'scram_cmssw_version_string,%s\' -y %s -i %s %s -o %s' \
-                                %(PR3,metastring,IgProf_option,uncompressed_profile_name,db_option,db_name)            
-            
-            execute(perfreport_command)
-            execute('rm  %s' %uncompressed_profile_name)
+                outfile1='%s/mem.res' %outdir
+                outfile2='%s/doProduce_output.txt' %outdir
+                outfile3='%s/doBeginJob_output.txt' %outdir
+                
+                analyse_prof_sim(outfile1,outfile2,outfile3,self.profile_name)
+
+                             
             
         # Profiler is EdmSize:        
         if self.profiler=='Edm_Size':
@@ -317,7 +357,7 @@ def principal(options):
     # We have only one
     if options.infile=='':
         logger('Single command found...')
-        commands_profilers_meta_list.append([options.command,'',''])
+        commands_profilers_meta_list.append([options.command,'','',False])
     
     # We have more: we parse the list of candles    
     else:
@@ -335,9 +375,11 @@ def principal(options):
     len_commands_profilers_meta_list=len(commands_profilers_meta_list)    
     
     commands_counter=1
-    for command,profiler_opt,meta in commands_profilers_meta_list:
-        
+    precedent_profile_name=''
+    for command,profiler_opt,meta,reuseprofile in commands_profilers_meta_list:
+                  
         exit_code=0
+        precedent_reuseprofile=False
         
         logger('Processing command %d/%d' \
                     %(commands_counter,len_commands_profilers_meta_list))
@@ -357,8 +399,7 @@ def principal(options):
             
             reportdir='%s_%s' %(meta,options.output)
             reportdir=clean_name(reportdir)
-            
-            multiple_mem_profiles=False            
+                       
             # profiler is igprof: we need to disentangle the profiler and the counter
             if profiler_opt.find('.')!=-1 and \
                profiler_opt.find('IgProf')!=-1:
@@ -369,7 +410,7 @@ def principal(options):
                     
             elif profiler_opt.find('MEM_TOTAL')!=-1 or\
                  profiler_opt.find('MEM_LIVE')!=-1 or\
-                 profiler_opt.find('MEM_PEAK')!=-1:
+                 profiler_opt.find('MEM_PEAK')!=-1: 
                 profiler,IgProf_counter=['IgProf_mem',profiler_opt]
                 multiple_mem_profiles=True
 
@@ -385,24 +426,38 @@ def principal(options):
             reportdir=options.output
             profiler=options.profiler
 
-        # istantiate a Profile object        
+        
+        
+        # istantiate a Profile object    
+        if precedent_profile_name!='':
+            logger('Reusing precedent profile: %s ...' %precedent_profile_name)
+            profile_name=precedent_profile_name
+            
         performance_profile=Profile(command,
                                     profiler,
                                     profile_name)   
 
         # make profile if needed
-        if options.profile and not multiple_mem_profiles:                                         
-            logger('Creating profile for command %d using %s ...' \
-                                            %(commands_counter,profiler))     
-            exit_code=performance_profile.make_profile()
+        if options.profile:                                         
+            if reuseprofile:
+                logger('Saving profile name to reuse it ...')
+                precedent_profile_name=profile_name
+            else:
+                precedent_profile_name=''                                
+            
+            if not precedent_reuseprofile:
+                logger('Creating profile for command %d using %s ...' \
+                                                %(commands_counter,profiler))     
+                exit_code=performance_profile.make_profile()
+            
+            
         
-        multiple_mem_profiles=False
         # make report if needed   
         if options.report:
             if exit_code!=0:
-                logger('Halting report creation procedure: unexpected exit code %n from %s ...' \
+                logger('Halting report creation procedure: unexpected exit code %s from %s ...' \
                                             %(exit_code,profiler))
-                sys.exit()   
+                #sys.exit(0)   
                                                         
             logger('Creating report for command %d using %s ...' \
                                             %(commands_counter,profiler))     
@@ -418,6 +473,7 @@ def principal(options):
                 performance_profile.make_report(outdir=reportdir,
                                                 IgProf_option=IgProf_counter)                                            
         commands_counter+=1                                                
+        precedent_reuseprofile=reuseprofile
         
         logger('Process ended on %s' %time.asctime())
     
