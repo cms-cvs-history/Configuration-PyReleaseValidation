@@ -18,8 +18,13 @@ PERFREPORT2_PATH=PR2_BASE+'/share/perfreport' #path to xmls
 
 # Valgrind Memcheck Parser coordinates:
 import os
-
 VMPARSER='%s/src/Utilities/ReleaseScripts/scripts/valgrindMemcheckParser.pl' %os.environ['CMSSW_RELEASE_BASE']
+
+# IgProf_Analysis coordinates:
+IGPROFANALYS='~dpiparo/public/IgProf_Analysis.py'
+
+# Timereport parser
+TIMEREPORTPARSER='~gbenelli/public/Danilo/TimeReport.pl'
 
 ########################################################################################
 
@@ -35,7 +40,8 @@ PROFILERS=('ValgrindFCE',
            'IgProf_perf',
            'IgProf_mem',
            'Edm_Size',
-           'Memcheck_Valgrind')
+           'Memcheck_Valgrind',
+           'Timereport_Parser')
 
 # name of the executable to benchmark. It can be different from cmsRun in future           
 EXECUTABLE='cmsRun'
@@ -50,29 +56,12 @@ import time
 import optparse 
 import sys
 
-
-#######################################################################
-#TO BE EXTRACTED!!
-def analyse_prof_sim(outfile1,outfile2,outfile3,profile_name):
-    
-    commands_list=(\
-    'igprof-analyse -d -v -g --value peak -r MEM_LIVE %s > %s'\
-                                    %(self.profile_name,outfile1),
-    
-    'igprof-segment edm::EDProducer::doProduce < %s |tee  %s' %(outfile1,outfile2),
-    
-    'igprof-segment edm::EDProducer::doBeginJob < %s |tee %s' %(outfile1,outfile3),
-    
-    'igprof-analyse -d -v -g -r MEM_LIVE %s >! %s'\
-                                    %(self.profile_name,outfile1)
-                  )
-    
-    for command in commands_list:
-        execute(command)
-
 #######################################################################
 
 def clean_name(name):
+    '''
+    Trivially removes an underscore if present as last char of a string
+    '''
     i=-1
     is_dirty=True
     while(is_dirty):
@@ -87,6 +76,7 @@ def clean_name(name):
 def execute(command):
         '''
         It executes command if the EXEC switch is True. 
+        Catches exitcodes different from 0.
         '''
         logger( '[execute] %s ' %command)
         if EXEC:
@@ -169,6 +159,10 @@ class Profile:
             return self._profile_edmsize()
         elif self.profiler=='Memcheck_Valgrind':
             return self._profile_Memcheck_Valgrind()
+        elif self.profiler=='Timereport_Parser':
+            return self._profile_Timereport_Parser()
+        elif self.profiler=='':
+            return self._profile_None()
         else:
             raise('No %s profiler found!' %self.profiler)
     #------------------------------------------------------------------
@@ -223,6 +217,7 @@ class Profile:
         return execute(profiler_line)
     
     #------------------------------------------------------------------
+    
     def _profile_edmsize(self):
         '''
         Launch edm size profiler
@@ -234,7 +229,9 @@ class Profile:
                             %(self.profile_name,self.command)
         
         return execute(profiler_line)
-
+   
+   #------------------------------------------------------------------
+   
     def _profile_Memcheck_Valgrind(self):
         '''
         Launch Valgrind Memcheck profiler
@@ -248,8 +245,26 @@ class Profile:
                                '%s 2>&1 |tee %s' %(self.command,self.profile_name)
         
         return execute(profiler_line)
-                
+        
     #-------------------------------------------------------------------
+    
+    def _profile_Timereport_Parser(self):
+        '''
+        Save the output of cmsRun on a file!
+        '''       
+        profiler_line='%s |tee %s' %(self.command,self.profile_name)
+        execute(profiler_line)
+    
+    #-------------------------------------------------------------------                    
+    
+    def _profile_None(self):
+        '''
+        Just Run the command!
+        '''
+        execute(self.command)
+    
+    #-------------------------------------------------------------------
+    
     def make_report(self,
                     fill_db=False,
                     db_name=None,
@@ -304,12 +319,9 @@ class Profile:
                 execute(perfreport_command)
                 execute('rm  %s' %uncompressed_profile_name)
                 
-            else:
-                outfile1='%s/mem.res' %outdir
-                outfile2='%s/doProduce_output.txt' %outdir
-                outfile3='%s/doBeginJob_output.txt' %outdir
+            else: #We use IgProf Analisys
+                execute('%s -o%s -i%s' %(IGPROFANALYS,outdir,self.profile_name))
                 
-                analyse_prof_sim(outfile1,outfile2,outfile3,self.profile_name)
 
                              
             
@@ -342,7 +354,13 @@ class Profile:
                                 %report_coordinates)
             for command in report_commands:
                 execute(command)
-                                                    
+    
+        if self.profiler=='Timereport_Parser':
+            execute('%s %s %s' %(TIMEREPORTPARSER,self.profile_name,outdir))
+        
+        if self.profiler=='':
+            pass                    
+                                                                
 #############################################################################################
 
 def principal(options):
