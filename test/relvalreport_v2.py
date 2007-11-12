@@ -252,7 +252,10 @@ class Profile:
         '''
         Save the output of cmsRun on a file!
         '''       
-        profiler_line='%s |tee %s' %(self.command,self.profile_name)
+        # a first maquillage about the profilename:
+        if self.profile_name[:-4]!='.log':
+            self.profile_name+='.log'
+        profiler_line='%s  2>&1 |tee %s' %(self.command,self.profile_name)
         execute(profiler_line)
     
     #-------------------------------------------------------------------                    
