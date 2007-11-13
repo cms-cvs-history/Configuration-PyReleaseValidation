@@ -191,7 +191,7 @@ def build_production_info(evt_type, energy, evtnumber):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
     prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.32 $"),
+              (version=cms.untracked.string("$Revision: 1.33 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+" energy:"+str(energy)+" nevts:"+str(evtnumber))
               )
@@ -207,7 +207,7 @@ def log (message):
     """
     An oversimplified logger. This is designed for debugging the PyReleaseValidation
     """
-    hour=time.asctime().split(" ")[4]
+    hour=time.asctime().split(" ")[3]
     #if parameters.dbg_flag:
     if True:    
         print "["+hour+"]"+message

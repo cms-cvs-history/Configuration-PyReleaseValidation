@@ -30,6 +30,7 @@ jet_en="50_120"
 heavy_higgs="190"
 light_higgs="120"
 ZP_mass="1000"
+gravitonmass="1500"
 type_energy_dict={"MU+":pgun_ene,
                   "MU-":pgun_ene,
                   "E":pgun_ene,
@@ -47,6 +48,10 @@ type_energy_dict={"MU+":pgun_ene,
                   "B_JETS":jet_en,
                   "C_JETS":jet_en,
                   #
+                  "WE":"",
+                  "WM":"",
+                  "WT":"",
+                  #
                   "ZEE":"",
                   "ZMUMU":"",
                   "ZTT":"",
@@ -62,8 +67,8 @@ type_energy_dict={"MU+":pgun_ene,
                   "HZZLLLL":heavy_higgs,
                   "HGG":light_higgs,
                   #
-                  "RS1GG":"",
-                  "H+T":""}
+                  "RS1GG":gravitonmass,
+                  "HpT":""}
 
 # Sorted list of available types for the user help.
 types_list=type_energy_dict.keys()
@@ -224,9 +229,18 @@ if options.filein=="" and not options.step in ("ALL","GEN"):
      "_"+prec_step[options.step]+".root"
 
 if options.fileout=="":
-    options.fileout=options.evt_type+"_"+options.energy+\
-     "_"+options.step+".root"
+    options.fileout=options.evt_type+"_"+\
+                    options.energy+\
+                    "_"+options.step
+    if options.PU_flag:
+        options.fileout+="_PU"
+    if options.analysis_flag:
+        options.fileout+="_ana"    
+    options.fileout+=".root"
 
+
+     
+     
 #prepare new step3 list:
 newstep3list=[]
 if options.newstep3!="":

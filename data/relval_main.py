@@ -94,7 +94,7 @@ if step in ("ALL","RECO","DIGIRECO","DIGIPURECO"):
             exec("process."+element+"_step=cms.Path(process.sequences[element])")
             exec("process.schedule.append(process."+element+"_step)")
     else:
-        process.reconstruction_step=cms.Path(process.reconstruction_plusRS_plus_GSF)
+        process.reconstruction_step=cms.Path(process.reconstruction_plusRS)
         process.schedule.append(process.reconstruction_step)     
 
 # L1 trigger      
@@ -105,7 +105,6 @@ process.schedule.append(process.L1_Emulation)
 # Analysis
 if analysis_flag:
     common.log("Adding Analysis... ")
-    common.include_files("Configuration/StandardSequences/Analysis.cff")[0]
     process.analysis_step=cms.Path(process.analysis)
     process.schedule.append(process.analysis_step)
                                              

@@ -48,7 +48,7 @@ def generate(step, evt_type, energy, evtnumber):
        source=_generate_udscb_jets\
          (step, evt_type, energy, evtnumber)        
     
-    elif evt_type in ("QCD","TTBAR","ZPJJ","ZPEE","MINBIAS","RS1GG","H+T"):
+    elif evt_type in ("QCD","TTBAR","ZPJJ","MINBIAS","RS1GG","HpT"):
         source=eval("_generate_"+evt_type+"(step, evt_type, energy, evtnumber)") 
     
     elif evt_type in ("ZEE","ZTT","ZMUMU"):
@@ -321,7 +321,7 @@ def _generate_Higgs(step, evt_type, energy, evtnumber):
                       pythiaVerbosity =cms.untracked.bool(False),
                       PythiaParameters = cms.PSet\
                        (parameterSets = cms.vstring('PythiaUESettings','processParameters'),
-                        pythiaUESettings = user_pythia_ue_settings(),
+                        PythiaUESettings = user_pythia_ue_settings(),
                         processParameters=params
                        )     
                      )
@@ -487,7 +487,7 @@ def _generate_Zll(step, evt_type, energy, evtnumber):
                       filterEfficiency = cms.untracked.double(1),    
                       PythiaParameters = cms.PSet\
                                (parameterSets = cms.vstring('PythiaUESettings','processParameters'),
-                                pythiaUESettings=user_pythia_ue_settings(),
+                                PythiaUESettings=user_pythia_ue_settings(),
                                 processParameters=pythia_param_sets )
                      )
 
@@ -524,7 +524,7 @@ def _generate_Wl(step, evt_type, energy, evtnumber):
                       filterEfficiency = cms.untracked.double(1),
                       PythiaParameters = cms.PSet\
                                (parameterSets = cms.vstring('PythiaUESettings','processParameters'),
-                                pythiaUESettings=user_pythia_ue_settings(),
+                                PythiaUESettings=user_pythia_ue_settings(),
                                 processParameters=cms.vstring('MSEL=0    !User defined processes',
                                                               'MSUB(2)     = 1',#    !W production 
                                                               'MDME(190,1) = 0',#    !W decay into dbar u 
@@ -595,11 +595,12 @@ def _generate_ZPll(step, evt_type, energy, evtnumber):
                       filterEfficiency = cms.untracked.double(1),    
                       PythiaParameters = cms.PSet\
                                (parameterSets = cms.vstring('PythiaUESettings','processParameters'),
+                                PythiaUESettings=user_pythia_ue_settings(),
                                 processParameters=\
                                     cms.vstring('MSEL       = 0    ', 
                                                 'MSUB(141)  = 1    ',#  !ff  gamma z0 Z0', 
                                                 'MSTP(44)   = 3    ',#  !only select the Z process', 
-                                                'PMAS(32,1) = 4000.',#  !mass of Zprime', 
+                                                'PMAS(32,1) = %s' %energy,#  !mass of Zprime', 
                                                 'CKIN(1)    = 400  ',#  !(D=2. GeV)', 
                                                 'MDME(289,1)= 0    ',#  !d dbar', 
                                                 'MDME(290,1)= 0    ',#  !u ubar', 
@@ -611,9 +612,9 @@ def _generate_ZPll(step, evt_type, energy, evtnumber):
                                                 'MDME(296,1)= 0    ',# !4th gen Q Qbar', 
                                                 'MDME(297,1)= %s ' %electron_flag,#  !e e', 
                                                 'MDME(298,1)= 0    ',#  !neutrino e e', 
-                                                'MDME(299,1)= %e ' %muon_flag,#  ! mu mu', 
+                                                'MDME(299,1)= %s ' %muon_flag,#  ! mu mu', 
                                                 'MDME(300,1)= 0    ',#  !neutrino mu mu', 
-                                                'MDME(301,1)= %e    ' %tau_flag,#  !tau tau', 
+                                                'MDME(301,1)= %s    ' %tau_flag,#  !tau tau', 
                                                 'MDME(302,1)= 0    ',#  !neutrino tau tau', 
                                                 'MDME(303,1)= 0    ',#  !4th generation lepton', 
                                                 'MDME(304,1)= 0    ',#  !4th generation neutrino', 
@@ -649,11 +650,12 @@ def _generate_RS1GG(step, evt_type, energy, evtnumber):
                       filterEfficiency = cms.untracked.double(1),    
                       PythiaParameters = cms.PSet\
                                (parameterSets = cms.vstring('PythiaUESettings','processParameters'),
+                                PythiaUESettings=user_pythia_ue_settings(),
                                 processParameters=\
                                     cms.vstring('MSEL=0   ', 
                                                 'MSUB(391)   =1   ', 
                                                 'MSUB(392)   =1   ', 
-                                                'PMAS(347,1) =1500. ',# ! minv ', 
+                                                'PMAS(347,1) = %s ' %energy,# ! minv ', 
                                                 'PARP(50)    = 0.54 ',# ! 0.54 == c=0.1', 
                                                 'MDME(4158,1)=0   ',
                                                 'MDME(4159,1)=0   ',
@@ -688,7 +690,7 @@ def _generate_RS1GG(step, evt_type, energy, evtnumber):
     return source                     
 #-----------------------------------
 
-def _generate_RS1GG(step, evt_type, energy, evtnumber):
+def _generate_HpT(step, evt_type, energy, evtnumber):
     """
     Here the settings for the RS1 graviton into gamma gamma.
     """
@@ -698,13 +700,13 @@ def _generate_RS1GG(step, evt_type, energy, evtnumber):
     
     # Build the process source
     source=cms.Source("PythiaSource",
+                      pythiaPylistVerbosity = cms.untracked.int32(0),
                       pythiaHepMCVerbosity = cms.untracked.bool(False),
                       maxEventsToPrint = cms.untracked.int32(0),
-                      pythiaPylistVerbosity = cms.untracked.int32(0),
                       filterEfficiency = cms.untracked.double(1.0),
-                      parameterSets = cms.vstring('pythiaUESettings', 'processParameters', 'pythiaMSSMmhmax'),
                       PythiaParameters = cms.PSet(\
-                       pythiaUESettings=user_pythia_ue_settings(),
+                       parameterSets = cms.vstring('PythiaUESettings', 'processParameters', 'pythiaMSSMmhmax'),
+                       PythiaUESettings=user_pythia_ue_settings(),
                        processParameters=cms.vstring\
                                ('MSEL = 0       ',#         ! user control', 
                                 'MSUB(401) = 1  ',#         ! gg->tbH+ Registered by Alexandre.Nikitenko@cern.ch', 
