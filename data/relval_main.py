@@ -130,7 +130,7 @@ if dump_pickle_flag:
    pickle_file=file(ext_process_name+".pkl","w")
    cPickle.dump(process,pickle_file)
    pickle_file.close()
-   exit() # no need to launch the FW
+   sys.exit() # no need to launch the FW
        
 # A sober separator between the python program and CMSSW    
 print "And now The Framework -----------------------------"
