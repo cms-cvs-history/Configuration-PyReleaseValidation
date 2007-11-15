@@ -98,7 +98,7 @@ if step in ("ALL","RECO","DIGIRECO","DIGIPURECO"):
         process.schedule.append(process.reconstruction_step)     
 
 # L1 trigger      
-if step in in ("ALL","RECO","DIGIRECO","DIGIPURECO"):
+if step in ("ALL","RECO","DIGIRECO","DIGIPURECO"):
     common.log("Adding L1 emulation... ")
     process.L1_Emulation = cms.Path(process.L1Emulator)
     process.schedule.append(process.L1_Emulation)
