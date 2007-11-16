@@ -56,6 +56,14 @@ import time
 import optparse 
 import sys
 
+
+#######################################################################
+def red(string):
+    return '%s%s%s' %('\033[1;31m',string,'\033[1;0m')    
+def green(string):
+    return '%s%s%s' %('\033[1;32m',string,'\033[1;0m') 
+def yellow(string):
+    return '%s%s%s' %('\033[1;33m',string,'\033[1;0m')     
 #######################################################################
 
 def clean_name(name):
@@ -78,11 +86,11 @@ def execute(command):
         It executes command if the EXEC switch is True. 
         Catches exitcodes different from 0.
         '''
-        logger( '[execute] %s ' %command)
+        logger('%s %s ' %(green('[execute]'),command))
         if EXEC:
             exit_code=os.system(command)
             if exit_code!=0:
-                logger('*** Seems like "%s" encountered problems.' %command)
+                logger(red('*** Seems like "%s" encountered problems.' %command))
             return exit_code
         else:
             return 0
@@ -93,7 +101,7 @@ def logger(message,level=0):
     '''
     level=0 output, level 1 debug.
     '''                  
-    message='[RelValreport ] %s' %message
+    message='%s %s' %(yellow('[RelValreport]'),message)
     if level==0:
         print message
     if level==1 and DEBUG:
@@ -397,10 +405,10 @@ def principal(options):
     
     commands_counter=1
     precedent_profile_name=''
+    precedent_reuseprofile=False
     for command,profiler_opt,meta,reuseprofile in commands_profilers_meta_list:
                   
         exit_code=0
-        precedent_reuseprofile=False
         
         logger('Processing command %d/%d' \
                     %(commands_counter,len_commands_profilers_meta_list))
@@ -412,15 +420,15 @@ def principal(options):
         profiler=''
         reportdir=options.output
         IgProf_counter=options.IgProf_counter
-        multiple_mem_profiles=False
+           
         
         if options.infile!='': # we have a list of commands
-            profile_name='%s_%s'%(meta,options.profile_name)            
-            profile_name=clean_name(profile_name)
-            
+
             reportdir='%s_%s' %(meta,options.output)
-            reportdir=clean_name(reportdir)
-                       
+            reportdir=clean_name(reportdir)                        
+         
+            profile_name=clean_name('%s_%s'%(meta,options.profile_name))
+                    
             # profiler is igprof: we need to disentangle the profiler and the counter
             if profiler_opt.find('.')!=-1 and \
                profiler_opt.find('IgProf')!=-1:
@@ -433,7 +441,7 @@ def principal(options):
                  profiler_opt.find('MEM_LIVE')!=-1 or\
                  profiler_opt.find('MEM_PEAK')!=-1: 
                 profiler,IgProf_counter=['IgProf_mem',profiler_opt]
-                multiple_mem_profiles=True
+
 
                 if profile_name[-3:]!='.gz':
                     profile_name+='.gz'
@@ -441,7 +449,14 @@ def principal(options):
             # profiler is not igprof
             else:
                 profiler=profiler_opt
-        
+            
+            if precedent_reuseprofile:
+                profile_name=precedent_profile_name
+            if reuseprofile:
+                precedent_profile_name=profile_name 
+
+                                
+                        
         else: # we have a single command: easy job!
             profile_name=options.profile_name
             reportdir=options.output
@@ -453,7 +468,8 @@ def principal(options):
         if precedent_profile_name!='':
             logger('Reusing precedent profile: %s ...' %precedent_profile_name)
             profile_name=precedent_profile_name
-            
+
+                
         performance_profile=Profile(command,
                                     profiler,
                                     profile_name)   
@@ -478,25 +494,24 @@ def principal(options):
             if exit_code!=0:
                 logger('Halting report creation procedure: unexpected exit code %s from %s ...' \
                                             %(exit_code,profiler))
-                #sys.exit(0)   
-                                                        
-            logger('Creating report for command %d using %s ...' \
-                                            %(commands_counter,profiler))     
-              
-                                            
-            # Write into the db instead of producing html if this is the case:
-            if options.db:
-                performance_profile.make_report(fill_db=True,
-                                                db_name=options.output,
-                                                metastring=meta,
-                                                IgProf_option=IgProf_counter)
-            else:
-                performance_profile.make_report(outdir=reportdir,
-                                                IgProf_option=IgProf_counter)                                            
+            else:   
+                logger('Creating report for command %d using %s ...' \
+                                                %(commands_counter,profiler))     
+                
+                                                
+                # Write into the db instead of producing html if this is the case:
+                if options.db:
+                    performance_profile.make_report(fill_db=True,
+                                                    db_name=options.output,
+                                                    metastring=meta,
+                                                    IgProf_option=IgProf_counter)
+                else:
+                    performance_profile.make_report(outdir=reportdir,
+                                                    IgProf_option=IgProf_counter)
         commands_counter+=1                                                
         precedent_reuseprofile=reuseprofile
         
-        logger('Process ended on %s' %time.asctime())
+        logger('Process ended on %s\n' %time.asctime())
     
     logger('Procedure finished on %s' %time.asctime())      
 
@@ -596,7 +611,13 @@ if __name__=="__main__":
                       default='',
                       dest='executable')                               
               
-                      
+    # Debug options
+    parser.add_option('--noexec',
+                      help='Do not exec commands, just display them!',
+                      action='store_true',
+                      default=False,
+                      dest='noexec')   
+                                        
     (options,args) = parser.parse_args()
     
     # FAULT CONTROLS
@@ -621,6 +642,9 @@ if __name__=="__main__":
     if options.executable!='':
         globals()['EXECUTABLE']=options.executable
     
+    if options.noexec:
+        globals()['EXEC']=False
+        
     logger('Procedure started on %s' %time.asctime())                               
     
     logger('Script options: %s' %str(options.__dict__),1)
