@@ -279,6 +279,7 @@ class Profile:
     def make_report(self,
                     fill_db=False,
                     db_name=None,
+                    tmp_dir=None,
                     outdir=None,
                     IgProf_option=None,
                     metastring=None):
@@ -286,6 +287,7 @@ class Profile:
         Make a performance report with perfreport 3 or 2. PR2 will be no longer supported in future.
         '''
 
+        
         if outdir==None or outdir==self.profile_name:
             outdir=self.profile_name+'_outdir'            
         
@@ -298,17 +300,31 @@ class Profile:
             if not os.path.exists(db_name):
                 db_option='-A'
         
+        
+        tmp_switch=''
+        if tmp_dir!=None:
+            execute('mkdir %s' %tmp_dir)
+            ' -t %s' %tmp_dir
+        
         # Profiler is ValgrindFCE:
         if self.profiler=='ValgrindFCE':
             perfreport_command=''
             # Switch for filling the db
             if not fill_db:
                 os.environ["PERFREPORT_PATH"]='%s/' %PERFREPORT2_PATH
-                perfreport_command='%s -ff -i %s -o %s' %(PR2,self.profile_name,outdir)
+                perfreport_command='%s %s -ff -i %s -o %s' %(PR2,
+                                                             tmp_switch,
+                                                             self.profile_name,
+                                                             outdir)
             else:
                 os.environ["PERFREPORT_PATH"]='%s/' %PERFREPORT3_PATH
-                perfreport_command='%s -ff -m \'scram_cmssw_version_string,%s\' -i %s %s -o %s' \
-                                                    %(PR3,metastring,self.profile_name,db_option,db_name)
+                perfreport_command='%s %s -ff -m \'scram_cmssw_version_string,%s\' -i %s %s -o %s' \
+                                                    %(PR3,
+                                                      tmp_switch,
+                                                      metastring,
+                                                      self.profile_name,
+                                                      db_option,
+                                                      db_name)
             execute(perfreport_command)
         
         # Profiler is IgProf:
@@ -320,12 +336,21 @@ class Profile:
                 # Switch for filling the db
                 if not fill_db:
                     os.environ["PERFREPORT_PATH"]='%s/' %PERFREPORT2_PATH
-                    perfreport_command='%s -fi -y %s -i %s -o %s' \
-                                    %(PR2,IgProf_option,uncompressed_profile_name,outdir)
+                    perfreport_command='%s %s -fi -y %s -i %s -o %s' \
+                                    %(PR2,
+                                      tmp_switch,
+                                      IgProf_option,
+                                      uncompressed_profile_name,
+                                      outdir)
                 else:
                     os.environ["PERFREPORT_PATH"]='%s/' %PERFREPORT3_PATH
-                    perfreport_command='%s -fi -m \'scram_cmssw_version_string,%s\' -y %s -i %s %s -o %s' \
-                                    %(PR3,metastring,IgProf_option,uncompressed_profile_name,db_option,db_name)            
+                    perfreport_command='%s %s -fi -m \'scram_cmssw_version_string,%s\' -y %s -i %s %s -o %s' \
+                                    %(PR3,
+                                      tmp_switch,
+                                      metastring,
+                                      IgProf_option,
+                                      uncompressed_profile_name,
+                                      db_option,db_name)            
                 
                 execute(perfreport_command)
                 execute('rm  %s' %uncompressed_profile_name)
@@ -342,16 +367,25 @@ class Profile:
             if not fill_db:
                 os.environ["PERFREPORT_PATH"]='%s/' \
                                             %PERFREPORT2_PATH
-                perfreport_command='%s -fe -i %s -o %s' \
-                                            %(PR2,self.profile_name,outdir)
+                perfreport_command='%s %s -fe -i %s -o %s' \
+                                            %(PR2,
+                                              tmp_switch,
+                                              self.profile_name,
+                                              outdir)
             else:
                 os.environ["PERFREPORT_PATH"]='%s/' \
                                             %PERFREPORT3_PATH
-                perfreport_command='%s -fe -i %s -a -o %s' \
-                                            %(PR3,self.profile_name,db_name)             
+                perfreport_command='%s %s -fe -i %s -a -o %s' \
+                                            %(PR3,
+                                              tmp_switch,
+                                              self.profile_name,
+                                              db_name)             
 
             execute(perfreport_command)    
-            
+        
+        if tmp_dir!='':
+            execute('rm -r %s' %tmp_dir)
+                
         # Profiler is Valgrind Memcheck
         if self.profiler=='Memcheck_Valgrind':
             # Three pages will be produced:
@@ -504,9 +538,11 @@ def principal(options):
                     performance_profile.make_report(fill_db=True,
                                                     db_name=options.output,
                                                     metastring=meta,
+                                                    tmp_dir=options.pr_temp,
                                                     IgProf_option=IgProf_counter)
                 else:
                     performance_profile.make_report(outdir=reportdir,
+                                                    tmp_dir=options.pr_temp,
                                                     IgProf_option=IgProf_counter)
         commands_counter+=1                                                
         precedent_reuseprofile=reuseprofile
@@ -556,6 +592,11 @@ if __name__=="__main__":
                       help='Command to profile. If specified the infile is ignored.' ,
                       default='',
                       dest='command') 
+                      
+    parser.add_option('-t',
+                      help='The temp directory to store the PR service files. Default is PR_TEMP Ignored if PR is not used.',
+                      default='PR_TEMP',
+                      dest='pr_temp')
     
     #Flags                      
                       
