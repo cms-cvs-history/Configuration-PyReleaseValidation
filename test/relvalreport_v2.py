@@ -596,7 +596,7 @@ if __name__=="__main__":
     parser.add_option('-t',
                       help='The temp directory to store the PR service files. Default is PR_TEMP Ignored if PR is not used.',
                       default='PR_TEMP',
-                      dest='pr_temp')
+                      dest='')
     
     #Flags                      
                       
