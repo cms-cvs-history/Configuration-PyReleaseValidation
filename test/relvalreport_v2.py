@@ -21,10 +21,10 @@ import os
 VMPARSER='%s/src/Utilities/ReleaseScripts/scripts/valgrindMemcheckParser.pl' %os.environ['CMSSW_RELEASE_BASE']
 
 # IgProf_Analysis coordinates:
-IGPROFANALYS='~dpiparo/public/IgProf_Analysis.py'
+IGPROFANALYS='/src/Configuration/PyReleaseValidation/test/IgProf_Analysis.py'%os.environ['CMSSW_BASE']
 
 # Timereport parser
-TIMEREPORTPARSER='~gbenelli/public/Danilo/TimeReport.pl'
+TIMEREPORTPARSER='/src/Configuration/PyReleaseValidation/test/TimeReport.pl'%os.environ['CMSSW_BASE']
 
 ########################################################################################
 
@@ -47,7 +47,7 @@ PROFILERS=('ValgrindFCE',
 EXECUTABLE='cmsRun'
 
 # Command execution and debug switches
-EXEC=True
+EXEC=False
 DEBUG=True
 
            
@@ -300,11 +300,11 @@ class Profile:
             if not os.path.exists(db_name):
                 db_option='-A'
         
-        
-        tmp_switch=''
-        if tmp_dir!=None:
+        # temp in the local dir for PR
+        tmp_switch=''    
+        if tmp_dir!='':
             execute('mkdir %s' %tmp_dir)
-            ' -t %s' %tmp_dir
+            tmp_switch=' -t %s' %tmp_dir
         
         # Profiler is ValgrindFCE:
         if self.profiler=='ValgrindFCE':
@@ -531,8 +531,7 @@ def principal(options):
             else:   
                 logger('Creating report for command %d using %s ...' \
                                                 %(commands_counter,profiler))     
-                
-                                                
+                                               
                 # Write into the db instead of producing html if this is the case:
                 if options.db:
                     performance_profile.make_report(fill_db=True,
@@ -688,7 +687,9 @@ if __name__=="__main__":
         
     logger('Procedure started on %s' %time.asctime())                               
     
-    logger('Script options: %s' %str(options.__dict__),1)
+    logger('Script options:')
+    for key,val in options.__dict__.items():
+        logger ('\t\t%s = %s' %(key, str(val)))
     
     principal(options)
                 
