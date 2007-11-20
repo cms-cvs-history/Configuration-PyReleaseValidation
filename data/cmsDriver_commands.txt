@@ -1,80 +1,79 @@
-# Relval samples $Revision: 1.6 $
-NEVTS=-n1
-DUMP_PICKLE=--dump_pickle
+# Relval samples $Revision: 1.7 $
 
 # QCD, Minbias and b,c,uds jets, ttbar
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD $NEVTS -e30_50 $DUMP_PICKLE
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD $NEVTS -e50_80 $DUMP_PICKLE  
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD $NEVTS -e80_120 $DUMP_PICKLE  
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD $NEVTS -e120_170 $DUMP_PICKLE 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD $NEVTS -e170_230 $DUMP_PICKLE 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD $NEVTS -e3000_3500 $DUMP_PICKLE 
+QCD_Pt_30_50     @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -e30_50 --relval 5000,250
+QCD_Pt_50_80     @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -e50_80 --relval 5000,250  
+QCD_Pt_80_120    @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -e80_120  --relval 5000,250
+QCD_Pt_120_170   @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -e120_170  --relval 5000,250
+QCD_Pt_170_230   @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -e170_230  --relval 5000,250
+QCD_Pt_230_300   @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -e230_300  --relval 5000,250
+QCD_Pt_3000_3500 @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py QCD -e3000_3500 --relval 5000,250 
 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MINBIAS $NEVTS $DUMP_PICKLE 
+Minbias @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MINBIAS  --relval 5000,250
 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py B_JETS $NEVTS $DUMP_PICKLE  
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py C_JETS $NEVTS $DUMP_PICKLE   
+BJets_Pt_50_120 @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py B_JETS --relval 5000,250
+CJets_Pt_50_120 @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py C_JETS --relval 5000,250
 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py TTBAR $NEVTS $DUMP_PICKLE  
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py TTBAR $NEVTS --PU $DUMP_PICKLE
+TTbar              @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py TTBAR --relval 5000,250  
+TTbarLowLumiPileup @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py TTBAR --PU --relval 5000,250 
 
 # Muons - and +
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU- $NEVTS -e1  $DUMP_PICKLE 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU- $NEVTS -e10 $DUMP_PICKLE  
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU- $NEVTS -e100 $DUMP_PICKLE
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU- $NEVTS -e1000 $DUMP_PICKLE
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU+ $NEVTS -e1  $DUMP_PICKLE 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU+ $NEVTS -e10 $DUMP_PICKLE  
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU+ $NEVTS -e100 $DUMP_PICKLE
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU+ $NEVTS -e1000 $DUMP_PICKLE
+SingleMuMinusPt1    @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU- -e1 --relval 5000,250
+SingleMuMinusPt10   @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU- -e10 --relval 5000,250  
+SingleMuMinusPt100  @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU- -e100 --relval 5000,250
+SingleMuMinusPt1000 @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU- -e1000 --relval 5000,250
+SingleMuPlusPt1     @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU+ -e1 --relval 5000,250  
+SingleMuPlusPt10    @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU+ -e10 --relval 5000,250  
+SingleMuPlusPt100   @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU+ -e100 --relval 5000,250
+SingleMuPlusPt1000  @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py MU+ -e1000 --relval 5000,250
 
 # Electrons
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py E $NEVTS -e10 $DUMP_PICKLE 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py E $NEVTS -e35 $DUMP_PICKLE 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py E $NEVTS -e1000 $DUMP_PICKLE 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py DIE $NEVTS $DUMP_PICKLE 
+SingleElectronE10   @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py E -e10 --relval 5000,250 
+SingleElectronE35   @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py E -e35 --relval 5000,250 
+SingleElectronE1000 @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py E -e1000 --relval 5000,250 
+DiElectron_Pt_5_100 @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py DIE -e5_100 --relval 5000,250
 
 # Taus 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py TAU -e35 $NEVTS $DUMP_PICKLE  
+SingleTaupt35 @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py TAU -e35 --relval 5000,250  
 
 #Pions
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py PI+ $NEVTS -e1 $DUMP_PICKLE 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py PI+ $NEVTS -e10 $DUMP_PICKLE 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py PI+ $NEVTS -e100 $DUMP_PICKLE 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py PI+ $NEVTS -e1000 $DUMP_PICKLE 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py PI- $NEVTS -e1 $DUMP_PICKLE 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py PI- $NEVTS -e10 $DUMP_PICKLE 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py PI- $NEVTS -e100 $DUMP_PICKLE 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py PI- $NEVTS -e1000 $DUMP_PICKLE
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py PI0 $NEVTS -e20 $DUMP_PICKLE
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py PI0 $NEVTS -e35 $DUMP_PICKLE
+SinglePiPlusPt1     @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py PI+ -e1 --relval 5000,250
+SinglePiPlusPt10    @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py PI+ -e10 --relval 5000,250 
+SinglePiPlusPt100   @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py PI+ -e100 --relval 5000,250 
+SinglePiPlusPt1000  @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py PI+ -e1000 --relval 5000,250 
+SinglePiMinusPt1    @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py PI- -e1 --relval 5000,250 
+SinglePiMinusPt10   @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py PI- -e10 --relval 5000,250 
+SinglePiMinusPt100  @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py PI- -e100 --relval 5000,250 
+SinglePiMinusPt1000 @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py PI- -e1000 --relval 5000,250 
+SinglePiZeroPt35    @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py PI0 -e20 --relval 5000,250
+SinglePiZeroPt20    @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py PI0 -e35 --relval 5000,250 
 
 # Photons
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py GAMMA $NEVTS -e5 $DUMP_PICKLE  
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py GAMMA $NEVTS -e10 $DUMP_PICKLE  
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py GAMMA $NEVTS -e35 $DUMP_PICKLE  
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py GAMMA $NEVTS -e1000 $DUMP_PICKLE  
+SingleGammaE5    @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py GAMMA -e5 --relval 5000,250
+SingleGammaE10   @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py GAMMA -e10 --relval 5000,250  
+SingleGammaE35   @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py GAMMA -e35 --relval 5000,250  
+SingleGammaE1000 @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py GAMMA -e1000 --relval 5000,250  
 
 # W Boson
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py WE $NEVTS $DUMP_PICKLE 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py WM $NEVTS $DUMP_PICKLE 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py WT $NEVTS $DUMP_PICKLE 
+WE @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py WE --relval 5000,250 
+WM @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py WM --relval 5000,250 
+WT @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py WT --relval 5000,250 
 
 # Z Boson
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py ZEE $NEVTS $DUMP_PICKLE 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py ZMUMU $NEVTS $DUMP_PICKLE 
-$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py ZMUMU -a $NEVTS $DUMP_PICKLE 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py ZTT $NEVTS $DUMP_PICKLE 
+ZEE       @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py ZEE --relval 5000,250 
+ZMUMU     @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py ZMUMU --relval 5000,250 
+No_Pickle @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py ZMUMU -a  
+ZTT       @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py ZTT --relval 5000,250 
 
 # Higgs(es)
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py HZZLLLL $NEVTS $DUMP_PICKLE
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py HGG $NEVTS $DUMP_PICKLE 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py H+T $NEVTS $DUMP_PICKLE
+HiggsZZ4LM190        @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py HZZLLLL --relval 5000,250  
+HiggsGammaGammaM120  @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py HGG --relval 5000,250  
+HiggsChargedTausM200 @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py HpT --relval 5000,250 
 
-# Zprime JJ
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py ZPJJ $NEVTS $DUMP_PICKLE   
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py ZPEE -e1000. $NEVTS $DUMP_PICKLE 
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py ZPEE -e4000. $NEVTS $DUMP_PICKLE 
+# Zprime
+ZPrimeJJM700  @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py ZPJJ --relval 5000,250    
+ZPrimeEEM1000 @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py ZPEE -e1000. --relval 5000,250  
+ZPrimeEEM4000 @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py ZPEE -e4000. --relval 5000,250  
 
 #Graviton
-#$CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py RS1GG  $NEVTS $DUMP_PICKLE   
+RS1GravitonGammaM1500 @@@ $CMSSW_BASE/src/Configuration/PyReleaseValidation/data/cmsDriver.py RS1GG --relval 5000,250    

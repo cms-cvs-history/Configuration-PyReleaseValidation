@@ -27,6 +27,7 @@ def print_options(options):
 #energies in GeV!
 pgun_ene="10"
 jet_en="50_120"
+die_en="5_120"
 heavy_higgs="190"
 light_higgs="120"
 ZP_mass="1000"
@@ -34,7 +35,7 @@ gravitonmass="1500"
 type_energy_dict={"MU+":pgun_ene,
                   "MU-":pgun_ene,
                   "E":pgun_ene,
-                  "DIE":pgun_ene,
+                  "DIE":die_en,
                   "TAU":pgun_ene,
                   "PI+":pgun_ene,
                   "PI-":pgun_ene,
@@ -104,7 +105,12 @@ parser.add_option("-n", "--number",
                    help="The number of evts. The default is 1.",
                    default="1",
                    dest="number")
-
+                   
+parser.add_option("--relval",
+                   help="Set total number of events and events per job in the ReleaseValidation PSet as <tot_num>,<evts_per_job>.",
+                   default="5000,250",
+                   dest="relval")                   
+                
 parser.add_option("-e", "--energy",
                    help="The event energy. If absent, a default value is "+\
                          "assigned according to the event type.",
@@ -182,9 +188,8 @@ parser.add_option("--dump_cfg",
                                                     
 parser.add_option("--dump_pickle",
                   help="Dump a pickle object of the process.",
-                  action="store_true",
-                  default=False,
-                  dest="dump_pickle_flag")
+                  default='',
+                  dest="dump_pickle")
 
 parser.add_option("--dump_DSetName",
                   help="Dump the primary datasetname.",
@@ -292,6 +297,8 @@ energy='"""+options.energy+"""'
 PU_flag="""+str(options.PU_flag)+"""
 # Number of evts to generate
 evtnumber="""+options.number+"""
+# The ReleaseValidation PSet
+releasevalidation=("""+options.relval+""")
 # Input and output file names
 infile_name='"""+options.dirin+options.filein+"""'
 outfile_name='"""+options.dirout+options.fileout+"""'
@@ -314,7 +321,7 @@ dbg_flag=True
 # Dump the oldstyle cfg file.
 dump_cfg_flag="""+str(options.dump_cfg_flag)+"""
 # Dump a pickle object of the process on disk.
-dump_pickle_flag="""+str(options.dump_pickle_flag)+"""
+dump_pickle='"""+str(options.dump_pickle)+"""'
 #Dump the dataset Name
 dump_dsetname_flag="""+str(options.dump_dsetname_flag)+"""
 
@@ -334,7 +341,7 @@ pyrelvalcodedir=cmssw_base+"/src/Configuration/PyReleaseValidation/data/"
 os.environ["PYTHONPATH"]+=":"+pyrelvalcodedir
 
 executable='cmsRun'
-if options.dump_pickle_flag:
+if options.dump_pickle!='':
     executable='python'
 
 command=['/bin/sh', '-c', 'exec ']

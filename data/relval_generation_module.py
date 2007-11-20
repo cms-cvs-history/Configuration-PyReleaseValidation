@@ -101,10 +101,15 @@ def _generate_PGUN(step, evt_type, energy, evtnumber):
     part_id = cms.untracked.vint32 ()
 
     part_id.append(py_id_dict[evt_type])
-    epsilon= 0.001
-    lower_energy = str ( int(energy) - epsilon) # We want a calculation and
-    upper_energy = str ( int(energy) + epsilon) # the result as a string   
-   
+    upper_energy=''
+    lower_energy=''
+    if energy.find('_')!=-1:
+        upper_energy,lower_energy=energy_split(energy)
+    else:    
+        epsilon= 0.001
+        lower_energy = str ( int(energy) - epsilon) # We want a calculation and
+        upper_energy = str ( int(energy) + epsilon) # the result as a string   
+    
     # Build the process source
     if evt_type in ("TAU","E"):
         # Add the corresponding opposite sign particle. Only for taus and es.

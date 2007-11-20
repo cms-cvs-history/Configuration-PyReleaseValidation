@@ -14,7 +14,7 @@ __author__  = "Danilo Piparo"
 
 import FWCore.ParameterSet.Config as cms
 
-import cPickle 
+import pickle 
 import os # To check the existance of pkl objects files
 import sys # to get current funcname
 import time
@@ -63,12 +63,12 @@ def include_files(includes_set):
         if not pkl_file_exists or cff_age>pkl_age:
           obj=cms.include(cf_file_name)
           file=open(pkl_file_name,"w")
-          cPickle.dump(obj,file)   
+          pickle.dump(obj,file)   
           file.close()
           log(func_id+" Pickle object for "+cf_file_fullpath+" dumped as "+pkl_file_name+"...")
         # load the pkl files.                       
         file=open(pkl_file_name,"r")
-        object_list.append(cPickle.load(file))
+        object_list.append(pickle.load(file))
         file.close()
         log(func_id+" Pickle object for "+cf_file_fullpath+" loaded ...")
     
@@ -191,7 +191,7 @@ def build_production_info(evt_type, energy, evtnumber):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
     prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.33 $"),
+              (version=cms.untracked.string("$Revision: 1.34 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+" energy:"+str(energy)+" nevts:"+str(evtnumber))
               )

@@ -14,7 +14,7 @@ __author__="Danilo Piparo"
 # As long as the Python code cannot have any command line arguments since this could lead
 # to conflicts with cmsRun this is a way to input 
 import sys
-import cPickle
+import pickle
 import os
 
 sys.path.append(".") # necessary to find the relval_parameters_module created by CMSdriver
@@ -59,9 +59,13 @@ if profiler_service_cuts!="":
 process.maxEvents=cms.untracked.PSet(input=cms.untracked.int32(evtnumber))
 
 # Add the ReleaseValidation PSet
-process.ReleaseValidation=cms.untracked.PSet(totalNumberOfEvents=cms.untracked.int32(5000),
-                                             eventsPerJob=cms.untracked.int32(250),
-                                             primaryDatasetName=cms.untracked.string("RelVal"+ext_process_name))
+totnumevts,evtsperjob=releasevalidation
+dsetname="RelVal"+ext_process_name
+if dump_pickle!='':
+    dsetname=dump_pickle
+process.ReleaseValidation=cms.untracked.PSet(totalNumberOfEvents=cms.untracked.int32(totnumevts),
+                                             eventsPerJob=cms.untracked.int32(evtsperjob),
+                                             primaryDatasetName=cms.untracked.string(dsetname))
 
 """
 Here we choose to make the process work only for one of the four steps 
@@ -126,10 +130,10 @@ if dump_cfg_flag:
     
 
 # dump a pickle object of the process on disk:
-if dump_pickle_flag:
+if dump_pickle!='':
    print "Dumping process on disk as a pickle object..."
-   pickle_file=file(ext_process_name+".pkl","w")
-   cPickle.dump(process,pickle_file)
+   pickle_file=file(dump_pickle,"w")
+   pickle.dump(process,pickle_file)
    pickle_file.close()
    sys.exit() # no need to launch the FW
        
