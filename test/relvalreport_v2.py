@@ -21,10 +21,10 @@ import os
 VMPARSER='%s/src/Utilities/ReleaseScripts/scripts/valgrindMemcheckParser.pl' %os.environ['CMSSW_RELEASE_BASE']
 
 # IgProf_Analysis coordinates:
-IGPROFANALYS='/src/Configuration/PyReleaseValidation/test/IgProf_Analysis.py'%os.environ['CMSSW_BASE']
+IGPROFANALYS='%s/src/Configuration/PyReleaseValidation/test/IgProf_Analysis.py'%os.environ['CMSSW_BASE']
 
 # Timereport parser
-TIMEREPORTPARSER='/src/Configuration/PyReleaseValidation/test/TimeReport.pl'%os.environ['CMSSW_BASE']
+TIMEREPORTPARSER='%s/src/Configuration/PyReleaseValidation/test/TimeReport.pl'%os.environ['CMSSW_BASE']
 
 ########################################################################################
 
@@ -47,7 +47,7 @@ PROFILERS=('ValgrindFCE',
 EXECUTABLE='cmsRun'
 
 # Command execution and debug switches
-EXEC=False
+EXEC=True
 DEBUG=True
 
            
