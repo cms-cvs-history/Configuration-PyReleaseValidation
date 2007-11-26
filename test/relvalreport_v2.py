@@ -11,6 +11,8 @@ Relvalreport_v2: a script to run performance tests and produce reports in a auto
 PR3_BASE='/afs/cern.ch/user/d/dpiparo/w0/perfreport3installation/'
 PR3=PR3_BASE+'/bin/perfreport'# executable
 PERFREPORT3_PATH=PR3_BASE+'/share/perfreport' #path to xmls
+#PR3_PRODUCER_PLUGIN=PR3_BASE+'/lib/libcmssw_by_producer.so' #plugin for fpage
+PR3_PRODUCER_PLUGIN='/afs/cern.ch/user/d/dpiparo/w0/pr3/perfreport/plugins/cmssw_by_producer/libcmssw_by_producer.so'
 
 PR2_BASE='/afs/cern.ch/user/d/dpiparo/w0/perfreport2.1installation/'
 PR2=PR2_BASE+'/bin/perfreport'# executable
@@ -25,6 +27,10 @@ IGPROFANALYS='%s/src/Configuration/PyReleaseValidation/test/IgProf_Analysis.py'%
 
 # Timereport parser
 TIMEREPORTPARSER='%s/src/Configuration/PyReleaseValidation/test/TimeReport.pl'%os.environ['CMSSW_BASE']
+
+# makeSkimDriver
+MAKESKIMDRIVERDIR='%s/src/Configuration/EventContent/test' %os.environ['CMSSW_BASE']
+MAKESKIMDRIVER='%s/makeSkimDriver.py'%MAKESKIMDRIVERDIR
 
 ########################################################################################
 
@@ -118,25 +124,97 @@ class Candles_file:
         self.commands_profilers_meta_list=[]    
     
         candlesfile=open(filename,'r')
-        for candle in candlesfile.readlines():
-            # Some parsing of the file
-            if candle[0]!='#' and candle.strip(' \n\t')!='': # if not a comment or an empty line
-                if candle[-1]=='\n': #remove trail \n if it's there
-                    candle=candle[:-1] 
-                splitted_candle=candle.split('@@@') #separate
-                
-                
-                command=splitted_candle[0]
-                profiler=splitted_candle[1].strip(' \t')
-                meta=splitted_candle[2].strip(' \t')        
-                info=[command,profiler,meta]
-                if len(splitted_candle)==4:     
-                    info.append(True)
-                else:
-                    info.append(False)
+        
+        if filename[-3:]=='xml':
+            command=''
+            profiler=''
+            meta=''
+            db_meta=''
+            reuse=False    
+            
+            from xml.dom import minidom
+            
+            # parse the config
+            xmldoc = minidom.parse(filename)
+            
+            # get the candles
+            candles_list = xmldoc.getElementsByTagName('candle')
+            
+            # a list of dictionaries to store the info
+            candles_dict_list=[]
+            
+            for candle in candles_list:
+                info_dict={}
+                for child in candle.childNodes:# iteration over candle node children
+                    if not child.__dict__.has_key('nodeName'):# if just a text node skip!
+                        #print 'CONTINUE!'
+                        continue
+                    # We pick the info from the node
+                    tag_name=child.tagName
+                    #print 'Manipulating a %s ...'%tag_name
+                    data=child.firstChild.data
+                    #print 'Found the data: %s !' %data
+                    # and we put it in the dictionary
+                    info_dict[tag_name]=data
+                # to store it in a list
+                candles_dict_list.append(info_dict)
+            
+            # and now process what was parsed
+                        
+            for candle_dict in candles_dict_list:
+                # compulsory params!!
+                command=candle_dict['command']
+                profiler=candle_dict['profiler']
+                meta=candle_dict['meta']
+                # other params
+                try:
+                    db_meta=candle_dict['db_meta']
+                except:
+                    db_meta=None
+                try:
+                    reuse=candle_dict['reuse']
+                except:
+                    reuse=False    
+                            
+                self.commands_profilers_meta_list.append([command,profiler,meta,reuse,db_meta])
+        
+        # The file is a plain ASCII
+        else:
+            for candle in candlesfile.readlines():
+                # Some parsing of the file
+                if candle[0]!='#' and candle.strip(' \n\t')!='': # if not a comment or an empty line
+                    if candle[-1]=='\n': #remove trail \n if it's there
+                        candle=candle[:-1] 
+                    splitted_candle=candle.split('@@@') #separate
                     
-                self.commands_profilers_meta_list.append(info)
-                
+                    # compulsory fields
+                    command=splitted_candle[0]
+                    profiler=splitted_candle[1].strip(' \t')
+                    meta=splitted_candle[2].strip(' \t')        
+                    info=[command,profiler,meta]
+                    
+                    # FIXME: AN .ini or xml config??
+                    # do we have something more?
+                    len_splitted_candle=len(splitted_candle)
+                    reuse=False
+                    if len_splitted_candle>3:
+                        # is it a reuse statement?
+                        if 'reuse' in splitted_candle[3]:
+                            reuse=True
+                        info.append(reuse)
+                    else:
+                        info.append(reuse)               
+                    
+                    # we have one more field or we hadn't a reuse in the last one    
+                    if len_splitted_candle>4 or (len_splitted_candle>3 and not reuse):
+                        cmssw_scram_version_string=splitted_candle[-1].strip(' \t')
+                        info.append(cmssw_scram_version_string)
+                    else:
+                        info.append(None)
+    
+                        
+                    self.commands_profilers_meta_list.append(info)
+                    
     #----------------------------------------------------------------------
         
     def get_commands_profilers_meta_list(self):
@@ -163,7 +241,7 @@ class Profile:
             return self._profile_valgrindfce()
         elif self.profiler.find('IgProf')!=-1:
             return self._profile_igprof()    
-        elif self.profiler=='Edm_Size':
+        elif self.profiler.find('Edm_Size')!=-1:
             return self._profile_edmsize()
         elif self.profiler=='Memcheck_Valgrind':
             return self._profile_Memcheck_Valgrind()
@@ -233,6 +311,25 @@ class Profile:
         # In this case we replace the name to be clear
         input_rootfile=self.command
         
+        # Skim the content if requested!
+        if '.' in self.profiler:
+            
+            clean_profiler_name,options=self.profiler.split('.')
+            content,nevts=options.split(',')
+            outfilename='%s_%s.root'%(os.path.basename(self.command)[:-6],content)
+            oldpypath=os.environ['PYTHONPATH']
+            os.environ['PYTHONPATH']+=':%s' %MAKESKIMDRIVERDIR
+            execute('%s -i %s -o %s --outputcommands %s -n %s' %(MAKESKIMDRIVER,
+                                                                 self.command,
+                                                                 outfilename,
+                                                                 content,
+                                                                 nevts)) 
+            os.environ['PYTHONPATH']=oldpypath
+            #execute('rm %s' %outfilename)
+            self.command=outfilename
+            self.profiler=clean_profiler_name
+                                                                                                        
+        
         profiler_line='edmEventSize -o %s -d %s'\
                             %(self.profile_name,self.command)
         
@@ -263,6 +360,7 @@ class Profile:
         # a first maquillage about the profilename:
         if self.profile_name[:-4]!='.log':
             self.profile_name+='.log'
+        
         profiler_line='%s  2>&1 |tee %s' %(self.command,self.profile_name)
         execute(profiler_line)
     
@@ -290,8 +388,7 @@ class Profile:
         
         if outdir==None or outdir==self.profile_name:
             outdir=self.profile_name+'_outdir'            
-        
-        #print '--------------OUTDIR',outdir            
+                  
         if not os.path.exists(outdir) and not fill_db:
             execute('mkdir %s' %outdir)
         
@@ -318,9 +415,10 @@ class Profile:
                                                              outdir)
             else:
                 os.environ["PERFREPORT_PATH"]='%s/' %PERFREPORT3_PATH
-                perfreport_command='%s %s -ff -m \'scram_cmssw_version_string,%s\' -i %s %s -o %s' \
+                perfreport_command='%s %s -n5000 -u%s  -ff  -m \'scram_cmssw_version_string,%s\' -i %s %s -o %s' \
                                                     %(PR3,
                                                       tmp_switch,
+                                                      PR3_PRODUCER_PLUGIN,
                                                       metastring,
                                                       self.profile_name,
                                                       db_option,
@@ -344,9 +442,10 @@ class Profile:
                                       outdir)
                 else:
                     os.environ["PERFREPORT_PATH"]='%s/' %PERFREPORT3_PATH
-                    perfreport_command='%s %s -fi -m \'scram_cmssw_version_string,%s\' -y %s -i %s %s -o %s' \
+                    perfreport_command='%s %s -n5000 -u%s  -fi -m \'scram_cmssw_version_string,%s\' -y %s -i %s %s -o %s' \
                                     %(PR3,
                                       tmp_switch,
+                                      PR3_PRODUCER_PLUGIN,
                                       metastring,
                                       IgProf_option,
                                       uncompressed_profile_name,
@@ -362,7 +461,7 @@ class Profile:
                              
             
         # Profiler is EdmSize:        
-        if self.profiler=='Edm_Size':
+        if 'Edm_Size' in self.profiler:
             perfreport_command=''
             if not fill_db:
                 os.environ["PERFREPORT_PATH"]='%s/' \
@@ -375,9 +474,10 @@ class Profile:
             else:
                 os.environ["PERFREPORT_PATH"]='%s/' \
                                             %PERFREPORT3_PATH
-                perfreport_command='%s %s -fe -i %s -a -o %s' \
+                perfreport_command='%s %s -n5000 -u%s -fe -i %s -a -o %s' \
                                             %(PR3,
                                               tmp_switch,
+                                              PR3_PRODUCER_PLUGIN,
                                               self.profile_name,
                                               db_name)             
 
@@ -399,7 +499,8 @@ class Profile:
                                 %report_coordinates)
             for command in report_commands:
                 execute(command)
-    
+        
+        # Profiler is TimeReport parser
         if self.profiler=='Timereport_Parser':
             execute('%s %s %s' %(TIMEREPORTPARSER,self.profile_name,outdir))
         
@@ -440,7 +541,7 @@ def principal(options):
     commands_counter=1
     precedent_profile_name=''
     precedent_reuseprofile=False
-    for command,profiler_opt,meta,reuseprofile in commands_profilers_meta_list:
+    for command,profiler_opt,meta,reuseprofile,db_metastring in commands_profilers_meta_list:
                   
         exit_code=0
         
@@ -480,6 +581,13 @@ def principal(options):
                 if profile_name[-3:]!='.gz':
                     profile_name+='.gz'
             
+            # Profiler is Timereport_Parser
+            elif profiler_opt=='Timereport_Parser':
+                # a first maquillage about the profilename:
+                if profile_name[:-4]!='.log':
+                    profile_name+='.log'
+                profiler=profiler_opt
+                        
             # profiler is not igprof
             else:
                 profiler=profiler_opt
@@ -536,7 +644,7 @@ def principal(options):
                 if options.db:
                     performance_profile.make_report(fill_db=True,
                                                     db_name=options.output,
-                                                    metastring=meta,
+                                                    metastring=db_metastring,
                                                     tmp_dir=options.pr_temp,
                                                     IgProf_option=IgProf_counter)
                 else:
@@ -545,6 +653,8 @@ def principal(options):
                                                     IgProf_option=IgProf_counter)
         commands_counter+=1                                                
         precedent_reuseprofile=reuseprofile
+        if not precedent_reuseprofile:
+            precedent_profile_name=''
         
         logger('Process ended on %s\n' %time.asctime())
     
@@ -687,9 +797,12 @@ if __name__=="__main__":
         
     logger('Procedure started on %s' %time.asctime())                               
     
-    logger('Script options:')
-    for key,val in options.__dict__.items():
-        logger ('\t\t%s = %s' %(key, str(val)))
+    if options.infile == '':
+        logger('Script options:')
+        for key,val in options.__dict__.items():
+            if val!='':
+                logger ('\t\t|- %s = %s' %(key, str(val)))
+                logger ('\t\t|')
     
     principal(options)
                 
