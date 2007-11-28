@@ -8,6 +8,11 @@
 import os
 import time
 
+def execute(command):
+    print '[IgAnalysis] %s ...' %command
+    exitstate=os.system(command)
+    return exitstate
+    
 def analyse_prof_sim(profile_name,outdir):
     
     # A way of formatting strings similar to the c++ one                 
@@ -19,7 +24,7 @@ def analyse_prof_sim(profile_name,outdir):
     #A first manipulation of the profile
     command='igprof-analyse -d -v -g --value peak -r MEM_LIVE %s > %s'\
                                     %(profile_name,dummyfile)
-    os.system(command) #we use the method system of the object os tu run a command
+    #execute(command) #we use the method system of the object os tu run a command
     
     # now let's execute the segment and analyse commands                                                                
     commands_list=(\
@@ -32,8 +37,8 @@ def analyse_prof_sim(profile_name,outdir):
                   )
     
     for command in commands_list: #no iterator can be clearer than this one
-        print command
-        #os.system(command)
+        #print command
+        execute(command)
         
     # Now for every plain ascii file we make an html:
     titlestring='<b>Report executed with release %s on %s.</b>\n<br>\n<hr>\n'\
@@ -58,7 +63,7 @@ def analyse_prof_sim(profile_name,outdir):
         html_file.close()
 
     # compress all the plain txt files!
-    os.system('pushd %s;gzip *txt;popd' %outdir)
+    execute('pushd %s;gzip *txt;popd' %outdir)
                 
 #-------------------------------------------------------------------------------
 

@@ -358,11 +358,11 @@ class Profile:
         Save the output of cmsRun on a file!
         '''       
         # a first maquillage about the profilename:
-        if self.profile_name[:-4]!='.log':
+        if self.profile_name[-4:]!='.log':
             self.profile_name+='.log'
         
         profiler_line='%s  2>&1 |tee %s' %(self.command,self.profile_name)
-        execute(profiler_line)
+        return execute(profiler_line)
     
     #-------------------------------------------------------------------                    
     
@@ -500,6 +500,7 @@ class Profile:
             for command in report_commands:
                 execute(command)
         
+                
         # Profiler is TimeReport parser
         if self.profiler=='Timereport_Parser':
             execute('%s %s %s' %(TIMEREPORTPARSER,self.profile_name,outdir))
