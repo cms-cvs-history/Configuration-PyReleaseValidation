@@ -28,14 +28,14 @@ IGPROFANALYS='%s/src/Configuration/PyReleaseValidation/test/IgProf_Analysis.py'%
 # Timereport parser
 TIMEREPORTPARSER='%s/src/Configuration/PyReleaseValidation/test/TimeReport.pl'%os.environ['CMSSW_BASE']
 
+# Simple memory parser
+SIMPLEMEMPARSER='%s/src/Configuration/PyReleaseValidation/test/simplememchecker_parser.py' %os.environ['CMSSW_BASE']
+
 # makeSkimDriver
 MAKESKIMDRIVERDIR='%s/src/Configuration/EventContent/test' %os.environ['CMSSW_BASE']
 MAKESKIMDRIVER='%s/makeSkimDriver.py'%MAKESKIMDRIVERDIR
 
 ########################################################################################
-
-
-
 
 # Library to include to run valgrind fce
 VFCE_LIB='/afs/cern.ch/user/m/moserro/public/vgfcelib' 
@@ -47,7 +47,8 @@ PROFILERS=('ValgrindFCE',
            'IgProf_mem',
            'Edm_Size',
            'Memcheck_Valgrind',
-           'Timereport_Parser')
+           'Timereport_Parser',
+           'SimpleMem_Parser')
 
 # name of the executable to benchmark. It can be different from cmsRun in future           
 EXECUTABLE='cmsRun'
@@ -247,6 +248,8 @@ class Profile:
             return self._profile_Memcheck_Valgrind()
         elif self.profiler=='Timereport_Parser':
             return self._profile_Timereport_Parser()
+        elif self.profiler=='SimpleMem_Parser':
+            return self._profile_SimpleMem_Parser()
         elif self.profiler=='':
             return self._profile_None()
         else:
@@ -354,16 +357,26 @@ class Profile:
     #-------------------------------------------------------------------
     
     def _profile_Timereport_Parser(self):
+        return self._save_output
+        
+    #-------------------------------------------------------------------
+    
+    def _profile_SimpleMem_Parser(self):
+        return self._save_output
+    
+    #-------------------------------------------------------------------
+        
+    def _save_output(self):
         '''
         Save the output of cmsRun on a file!
-        '''       
+        '''               
         # a first maquillage about the profilename:
         if self.profile_name[-4:]!='.log':
             self.profile_name+='.log'
         
         profiler_line='%s  2>&1 |tee %s' %(self.command,self.profile_name)
-        return execute(profiler_line)
-    
+        return execute(profiler_line)    
+
     #-------------------------------------------------------------------                    
     
     def _profile_None(self):
@@ -425,6 +438,8 @@ class Profile:
                                                       db_name)
             execute(perfreport_command)
         
+        #####################################################################            
+            
         # Profiler is IgProf:
         if self.profiler.find('IgProf')!=-1:
             if IgProf_option!='ANALYSE':
@@ -458,7 +473,7 @@ class Profile:
                 execute('%s -o%s -i%s' %(IGPROFANALYS,outdir,self.profile_name))
                 
 
-                             
+        #####################################################################                     
             
         # Profiler is EdmSize:        
         if 'Edm_Size' in self.profiler:
@@ -485,7 +500,9 @@ class Profile:
         
         if tmp_dir!='':
             execute('rm -r %s' %tmp_dir)
-                
+
+        #####################################################################    
+                            
         # Profiler is Valgrind Memcheck
         if self.profiler=='Memcheck_Valgrind':
             # Three pages will be produced:
@@ -500,11 +517,21 @@ class Profile:
             for command in report_commands:
                 execute(command)
         
+        #####################################################################                
                 
         # Profiler is TimeReport parser
         if self.profiler=='Timereport_Parser':
             execute('%s %s %s' %(TIMEREPORTPARSER,self.profile_name,outdir))
         
+        #####################################################################
+        
+        if self.profiler=='SimpleMem_Parser':
+            execute('%s %s %s' %(SIMPLEMEMPARSER,self.profile_name,outdir))
+            
+        #####################################################################
+        
+        # no profiler
+            
         if self.profiler=='':
             pass                    
                                                                 
