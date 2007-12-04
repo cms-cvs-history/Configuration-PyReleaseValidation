@@ -526,7 +526,7 @@ class Profile:
         #####################################################################
         
         if self.profiler=='SimpleMem_Parser':
-            execute('%s %s %s' %(SIMPLEMEMPARSER,self.profile_name,outdir))
+            execute('%s -i %s -o %s' %(SIMPLEMEMPARSER,self.profile_name,outdir))
             
         #####################################################################
         
