@@ -89,40 +89,42 @@ def manipulate_log(outdir,logfile_name,startevt):
     # dictionary of graphs!
     graph_dict={}
     for value in values_set:
-        graph_dict[value]=ROOT.TGraph(npoints)
-        graph_dict[value].SetMarkerStyle(8)
-        graph_dict[value].SetMarkerSize(.7)
-        graph_dict[value].SetMarkerColor(1)
-        graph_dict[value].SetLineWidth(3)
-        graph_dict[value].SetLineColor(2)        
-        graph_dict[value].SetTitle(value)
-
+        #graph_dict[value]
+        graph=ROOT.TGraph(npoints)
+        graph.SetMarkerStyle(8)
+        graph.SetMarkerSize(.7)
+        graph.SetMarkerColor(1)
+        graph.SetLineWidth(3)
+        graph.SetLineColor(2)        
+        graph.SetTitle(value)
+        graph.SetName('%s_graph' %value)
+        
     
         #fill the graphs
         point_counter=0
         for event_number,vals_dict in data:
-            graph_dict[value].SetPoint(point_counter,
+            graph.SetPoint(point_counter,
                                        event_number,
                                        vals_dict[value])
             point_counter+=1
         
-        graph_dict[value].GetXaxis().SetTitle("Event")
+        graph.GetXaxis().SetTitle("Event")
         last_event=data[-1][0]
-        graph_dict[value].GetXaxis().SetRangeUser(0,last_event+1)
-        graph_dict[value].GetYaxis().SetTitleOffset(1.3)
-        graph_dict[value].GetYaxis().SetTitle("MB")
+        graph.GetXaxis().SetRangeUser(0,last_event+1)
+        graph.GetYaxis().SetTitleOffset(1.3)
+        graph.GetYaxis().SetTitle("MB")
                           
         
             
         #print the graphs as files :)
-        mycanvas=ROOT.TCanvas()
+        mycanvas=ROOT.TCanvas('%s_canvas' %value)
         mycanvas.cd()
-        graph_dict[value].Draw("ALP")
+        graph.Draw("ALP")
     
         mycanvas.Print("%s/%s_graph.gif"%(outdir,value),"gif")
-
+        
         # write it on file
-        graph_dict[value].Write()
+        graph.Write()
         mycanvas.Write()
         
     myfile.Close() 
