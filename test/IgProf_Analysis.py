@@ -24,7 +24,7 @@ def analyse_prof_sim(profile_name,outdir):
     #A first manipulation of the profile
     command='igprof-analyse -d -v -g --value peak -r MEM_LIVE %s > %s'\
                                     %(profile_name,dummyfile)
-    #execute(command) #we use the method system of the object os tu run a command
+    execute(command) #we use the method system of the object os tu run a command
     
     # now let's execute the segment and analyse commands                                                                
     commands_list=(\
