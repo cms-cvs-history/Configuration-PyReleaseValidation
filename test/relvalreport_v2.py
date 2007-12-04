@@ -522,7 +522,7 @@ def principal(options):
     # We have only one
     if options.infile=='':
         logger('Single command found...')
-        commands_profilers_meta_list.append([options.command,'','',False])
+        commands_profilers_meta_list.append([options.command,'','',False,''])
     
     # We have more: we parse the list of candles    
     else:
