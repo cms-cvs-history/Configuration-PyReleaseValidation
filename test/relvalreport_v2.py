@@ -16,16 +16,6 @@ PR2_BASE='/afs/cern.ch/user/d/dpiparo/w0/perfreport2.1installation/'
 PR2=PR2_BASE+'/bin/perfreport'# executable
 PERFREPORT2_PATH=PR2_BASE+'/share/perfreport' #path to xmls
 
-# Valgrind Memcheck Parser coordinates:
-import os
-VMPARSER='%s/src/Utilities/ReleaseScripts/scripts/valgrindMemcheckParser.pl' %os.environ['CMSSW_RELEASE_BASE']
-
-# IgProf_Analysis coordinates:
-IGPROFANALYS='~dpiparo/public/IgProf_Analysis.py'
-
-# Timereport parser
-TIMEREPORTPARSER='~gbenelli/public/Danilo/TimeReport.pl'
-
 ########################################################################################
 
 
@@ -33,15 +23,12 @@ TIMEREPORTPARSER='~gbenelli/public/Danilo/TimeReport.pl'
 
 # Library to include to run valgrind fce
 VFCE_LIB='/afs/cern.ch/user/m/moserro/public/vgfcelib' 
-PERL5_LIB='/afs/cern.ch/user/d/dpiparo/w0/PERLlibs/5.8.0'
 
 # Profilers list
 PROFILERS=('ValgrindFCE',
            'IgProf_perf',
            'IgProf_mem',
-           'Edm_Size',
-           'Memcheck_Valgrind',
-           'Timereport_Parser')
+           'Edm_Size')
 
 # name of the executable to benchmark. It can be different from cmsRun in future           
 EXECUTABLE='cmsRun'
@@ -51,25 +38,13 @@ EXEC=True
 DEBUG=True
 
            
-           
+import os           
 import time   
 import optparse 
-import sys
 
-
-#######################################################################
-def red(string):
-    return '%s%s%s' %('\033[1;31m',string,'\033[1;0m')    
-def green(string):
-    return '%s%s%s' %('\033[1;32m',string,'\033[1;0m') 
-def yellow(string):
-    return '%s%s%s' %('\033[1;33m',string,'\033[1;0m')     
 #######################################################################
 
 def clean_name(name):
-    '''
-    Trivially removes an underscore if present as last char of a string
-    '''
     i=-1
     is_dirty=True
     while(is_dirty):
@@ -84,16 +59,13 @@ def clean_name(name):
 def execute(command):
         '''
         It executes command if the EXEC switch is True. 
-        Catches exitcodes different from 0.
         '''
-        logger('%s %s ' %(green('[execute]'),command))
+        logger( '[execute] %s ' %command)
         if EXEC:
             exit_code=os.system(command)
             if exit_code!=0:
-                logger(red('*** Seems like "%s" encountered problems.' %command))
+                logger('*** Seems like "%s" encountered problems.' %command)
             return exit_code
-        else:
-            return 0
             
 #######################################################################            
             
@@ -101,7 +73,7 @@ def logger(message,level=0):
     '''
     level=0 output, level 1 debug.
     '''                  
-    message='%s %s' %(yellow('[RelValreport]'),message)
+    message='[RelValreport ] %s' %message
     if level==0:
         print message
     if level==1 and DEBUG:
@@ -124,18 +96,11 @@ class Candles_file:
                 if candle[-1]=='\n': #remove trail \n if it's there
                     candle=candle[:-1] 
                 splitted_candle=candle.split('@@@') #separate
-                
-                
+
                 command=splitted_candle[0]
                 profiler=splitted_candle[1].strip(' \t')
                 meta=splitted_candle[2].strip(' \t')        
-                info=[command,profiler,meta]
-                if len(splitted_candle)==4:     
-                    info.append(True)
-                else:
-                    info.append(False)
-                    
-                self.commands_profilers_meta_list.append(info)
+                self.commands_profilers_meta_list.append([command,profiler,meta])
                 
     #----------------------------------------------------------------------
         
@@ -165,12 +130,6 @@ class Profile:
             return self._profile_igprof()    
         elif self.profiler=='Edm_Size':
             return self._profile_edmsize()
-        elif self.profiler=='Memcheck_Valgrind':
-            return self._profile_Memcheck_Valgrind()
-        elif self.profiler=='Timereport_Parser':
-            return self._profile_Timereport_Parser()
-        elif self.profiler=='':
-            return self._profile_None()
         else:
             raise('No %s profiler found!' %self.profiler)
     #------------------------------------------------------------------
@@ -225,7 +184,6 @@ class Profile:
         return execute(profiler_line)
     
     #------------------------------------------------------------------
-    
     def _profile_edmsize(self):
         '''
         Launch edm size profiler
@@ -237,49 +195,11 @@ class Profile:
                             %(self.profile_name,self.command)
         
         return execute(profiler_line)
-   
-   #------------------------------------------------------------------
-   
-    def _profile_Memcheck_Valgrind(self):
-        '''
-        Launch Valgrind Memcheck profiler
-        '''
-        
-        profiler_line='valgrind --tool=memcheck '+\
-                               '--leak-check=yes '+\
-                               ' --show-reachable=yes '+\
-                               '--num-callers=20 '+\
-                               '--track-fds=yes '+\
-                               '%s 2>&1 |tee %s' %(self.command,self.profile_name)
-        
-        return execute(profiler_line)
-        
-    #-------------------------------------------------------------------
-    
-    def _profile_Timereport_Parser(self):
-        '''
-        Save the output of cmsRun on a file!
-        '''       
-        # a first maquillage about the profilename:
-        if self.profile_name[:-4]!='.log':
-            self.profile_name+='.log'
-        profiler_line='%s  2>&1 |tee %s' %(self.command,self.profile_name)
-        execute(profiler_line)
-    
-    #-------------------------------------------------------------------                    
-    
-    def _profile_None(self):
-        '''
-        Just Run the command!
-        '''
-        execute(self.command)
     
     #-------------------------------------------------------------------
-    
     def make_report(self,
                     fill_db=False,
                     db_name=None,
-                    tmp_dir=None,
                     outdir=None,
                     IgProf_option=None,
                     metastring=None):
@@ -287,7 +207,6 @@ class Profile:
         Make a performance report with perfreport 3 or 2. PR2 will be no longer supported in future.
         '''
 
-        
         if outdir==None or outdir==self.profile_name:
             outdir=self.profile_name+'_outdir'            
         
@@ -300,66 +219,36 @@ class Profile:
             if not os.path.exists(db_name):
                 db_option='-A'
         
-        
-        tmp_switch=''
-        if tmp_dir!=None:
-            execute('mkdir %s' %tmp_dir)
-            ' -t %s' %tmp_dir
-        
         # Profiler is ValgrindFCE:
         if self.profiler=='ValgrindFCE':
             perfreport_command=''
             # Switch for filling the db
             if not fill_db:
                 os.environ["PERFREPORT_PATH"]='%s/' %PERFREPORT2_PATH
-                perfreport_command='%s %s -ff -i %s -o %s' %(PR2,
-                                                             tmp_switch,
-                                                             self.profile_name,
-                                                             outdir)
+                perfreport_command='%s -ff -i %s -o %s' %(PR2,self.profile_name,outdir)
             else:
                 os.environ["PERFREPORT_PATH"]='%s/' %PERFREPORT3_PATH
-                perfreport_command='%s %s -ff -m \'scram_cmssw_version_string,%s\' -i %s %s -o %s' \
-                                                    %(PR3,
-                                                      tmp_switch,
-                                                      metastring,
-                                                      self.profile_name,
-                                                      db_option,
-                                                      db_name)
+                perfreport_command='%s -ff -m \'scram_cmssw_version_string,%s\' -i %s %s -o %s' \
+                                                    %(PR3,metastring,self.profile_name,db_option,db_name)
             execute(perfreport_command)
         
         # Profiler is IgProf:
         if self.profiler.find('IgProf')!=-1:
-            if IgProf_option!='ANALYSE':
-                uncompressed_profile_name=self.profile_name[:-3]+'_uncompressed'
-                execute('gzip -d -c %s > %s' %(self.profile_name,uncompressed_profile_name))
-                perfreport_command=''
-                # Switch for filling the db
-                if not fill_db:
-                    os.environ["PERFREPORT_PATH"]='%s/' %PERFREPORT2_PATH
-                    perfreport_command='%s %s -fi -y %s -i %s -o %s' \
-                                    %(PR2,
-                                      tmp_switch,
-                                      IgProf_option,
-                                      uncompressed_profile_name,
-                                      outdir)
-                else:
-                    os.environ["PERFREPORT_PATH"]='%s/' %PERFREPORT3_PATH
-                    perfreport_command='%s %s -fi -m \'scram_cmssw_version_string,%s\' -y %s -i %s %s -o %s' \
-                                    %(PR3,
-                                      tmp_switch,
-                                      metastring,
-                                      IgProf_option,
-                                      uncompressed_profile_name,
-                                      db_option,db_name)            
-                
-                execute(perfreport_command)
-                execute('rm  %s' %uncompressed_profile_name)
-                
-            else: #We use IgProf Analisys
-                execute('%s -o%s -i%s' %(IGPROFANALYS,outdir,self.profile_name))
-                
-
-                             
+            uncompressed_profile_name=self.profile_name[:-3]+'_uncompressed'
+            execute('gzip -d -c %s > %s' %(self.profile_name,uncompressed_profile_name))
+            perfreport_command=''
+            # Switch for filling the db
+            if not fill_db:
+                os.environ["PERFREPORT_PATH"]='%s/' %PERFREPORT2_PATH
+                perfreport_command='%s -fi -y %s -i %s -o %s' \
+                                %(PR2,IgProf_option,uncompressed_profile_name,outdir)
+            else:
+                os.environ["PERFREPORT_PATH"]='%s/' %PERFREPORT3_PATH
+                perfreport_command='%s -fi -m \'scram_cmssw_version_string,%s\' -y %s -i %s %s -o %s' \
+                                %(PR3,metastring,IgProf_option,uncompressed_profile_name,db_option,db_name)            
+            
+            execute(perfreport_command)
+            execute('rm  %s' %uncompressed_profile_name)
             
         # Profiler is EdmSize:        
         if self.profiler=='Edm_Size':
@@ -367,45 +256,16 @@ class Profile:
             if not fill_db:
                 os.environ["PERFREPORT_PATH"]='%s/' \
                                             %PERFREPORT2_PATH
-                perfreport_command='%s %s -fe -i %s -o %s' \
-                                            %(PR2,
-                                              tmp_switch,
-                                              self.profile_name,
-                                              outdir)
+                perfreport_command='%s -fe -i %s -o %s' \
+                                            %(PR2,self.profile_name,outdir)
             else:
                 os.environ["PERFREPORT_PATH"]='%s/' \
                                             %PERFREPORT3_PATH
-                perfreport_command='%s %s -fe -i %s -a -o %s' \
-                                            %(PR3,
-                                              tmp_switch,
-                                              self.profile_name,
-                                              db_name)             
+                perfreport_command='%s -fe -i %s -a -o %s' \
+                                            %(PR3,self.profile_name,db_name)             
 
-            execute(perfreport_command)    
-        
-        if tmp_dir!='':
-            execute('rm -r %s' %tmp_dir)
-                
-        # Profiler is Valgrind Memcheck
-        if self.profiler=='Memcheck_Valgrind':
-            # Three pages will be produced:
-            os.environ['PERL5LIB']=PERL5_LIB
-            report_coordinates=(VMPARSER,self.profile_name,outdir)
-            report_commands=('%s --preset +prod,-prod1 %s > %s/edproduce.html'\
-                                %report_coordinates,
-                             '%s --preset +prod1 %s > %s/esproduce.html'\
-                                %report_coordinates,
-                             '%s -t beginJob %s > %s/beginjob.html'\
-                                %report_coordinates)
-            for command in report_commands:
-                execute(command)
-    
-        if self.profiler=='Timereport_Parser':
-            execute('%s %s %s' %(TIMEREPORTPARSER,self.profile_name,outdir))
-        
-        if self.profiler=='':
-            pass                    
-                                                                
+            execute(perfreport_command)        
+
 #############################################################################################
 
 def principal(options):
@@ -420,7 +280,7 @@ def principal(options):
     # We have only one
     if options.infile=='':
         logger('Single command found...')
-        commands_profilers_meta_list.append([options.command,'','',False])
+        commands_profilers_meta_list.append([options.command,'',''])
     
     # We have more: we parse the list of candles    
     else:
@@ -438,10 +298,8 @@ def principal(options):
     len_commands_profilers_meta_list=len(commands_profilers_meta_list)    
     
     commands_counter=1
-    precedent_profile_name=''
-    precedent_reuseprofile=False
-    for command,profiler_opt,meta,reuseprofile in commands_profilers_meta_list:
-                  
+    for command,profiler_opt,meta in commands_profilers_meta_list:
+        
         exit_code=0
         
         logger('Processing command %d/%d' \
@@ -454,15 +312,16 @@ def principal(options):
         profiler=''
         reportdir=options.output
         IgProf_counter=options.IgProf_counter
-           
+        multiple_mem_profiles=False
         
         if options.infile!='': # we have a list of commands
-
+            profile_name='%s_%s'%(meta,options.profile_name)            
+            profile_name=clean_name(profile_name)
+            
             reportdir='%s_%s' %(meta,options.output)
-            reportdir=clean_name(reportdir)                        
-         
-            profile_name=clean_name('%s_%s'%(meta,options.profile_name))
-                    
+            reportdir=clean_name(reportdir)
+            
+            multiple_mem_profiles=False            
             # profiler is igprof: we need to disentangle the profiler and the counter
             if profiler_opt.find('.')!=-1 and \
                profiler_opt.find('IgProf')!=-1:
@@ -473,9 +332,9 @@ def principal(options):
                     
             elif profiler_opt.find('MEM_TOTAL')!=-1 or\
                  profiler_opt.find('MEM_LIVE')!=-1 or\
-                 profiler_opt.find('MEM_PEAK')!=-1: 
+                 profiler_opt.find('MEM_PEAK')!=-1:
                 profiler,IgProf_counter=['IgProf_mem',profiler_opt]
-
+                multiple_mem_profiles=True
 
                 if profile_name[-3:]!='.gz':
                     profile_name+='.gz'
@@ -483,71 +342,44 @@ def principal(options):
             # profiler is not igprof
             else:
                 profiler=profiler_opt
-            
-            if precedent_reuseprofile:
-                profile_name=precedent_profile_name
-            if reuseprofile:
-                precedent_profile_name=profile_name 
-
-                                
-                        
+        
         else: # we have a single command: easy job!
             profile_name=options.profile_name
             reportdir=options.output
             profiler=options.profiler
 
-        
-        
-        # istantiate a Profile object    
-        if precedent_profile_name!='':
-            logger('Reusing precedent profile: %s ...' %precedent_profile_name)
-            profile_name=precedent_profile_name
-
-                
+        # istantiate a Profile object        
         performance_profile=Profile(command,
                                     profiler,
                                     profile_name)   
 
         # make profile if needed
-        if options.profile:                                         
-            if reuseprofile:
-                logger('Saving profile name to reuse it ...')
-                precedent_profile_name=profile_name
-            else:
-                precedent_profile_name=''                                
-            
-            if not precedent_reuseprofile:
-                logger('Creating profile for command %d using %s ...' \
-                                                %(commands_counter,profiler))     
-                exit_code=performance_profile.make_profile()
-            
-            
+        if options.profile and not multiple_mem_profiles:                                         
+            logger('Creating profile for command %d using %s ...' \
+                                            %(commands_counter,profiler))     
+            exit_code=performance_profile.make_profile()
         
+        multiple_mem_profiles=False
         # make report if needed   
         if options.report:
+            logger('Creating report for command %d using %s ...' \
+                                            %(commands_counter,profiler))     
             if exit_code!=0:
-                logger('Halting report creation procedure: unexpected exit code %s from %s ...' \
-                                            %(exit_code,profiler))
-            else:   
-                logger('Creating report for command %d using %s ...' \
-                                                %(commands_counter,profiler))     
-                
-                                                
-                # Write into the db instead of producing html if this is the case:
-                if options.db:
-                    performance_profile.make_report(fill_db=True,
-                                                    db_name=options.output,
-                                                    metastring=meta,
-                                                    tmp_dir=options.pr_temp,
-                                                    IgProf_option=IgProf_counter)
-                else:
-                    performance_profile.make_report(outdir=reportdir,
-                                                    tmp_dir=options.pr_temp,
-                                                    IgProf_option=IgProf_counter)
+                logger('Halting report creation procedure: unexpected exit code %n from %s ...' \
+                                            %(exit_code,profiler))                 
+                                            
+            # Write into the db instead of producing html if this is the case:
+            if options.db:
+                performance_profile.make_report(fill_db=True,
+                                                db_name=options.output,
+                                                metastring=meta,
+                                                IgProf_option=IgProf_counter)
+            else:
+                performance_profile.make_report(outdir=reportdir,
+                                                IgProf_option=IgProf_counter)                                            
         commands_counter+=1                                                
-        precedent_reuseprofile=reuseprofile
         
-        logger('Process ended on %s\n' %time.asctime())
+        logger('Process ended on %s' %time.asctime())
     
     logger('Procedure finished on %s' %time.asctime())      
 
@@ -592,11 +424,6 @@ if __name__=="__main__":
                       help='Command to profile. If specified the infile is ignored.' ,
                       default='',
                       dest='command') 
-                      
-    parser.add_option('-t',
-                      help='The temp directory to store the PR service files. Default is PR_TEMP Ignored if PR is not used.',
-                      default='',
-                      dest='pr_temp')
     
     #Flags                      
                       
@@ -652,13 +479,7 @@ if __name__=="__main__":
                       default='',
                       dest='executable')                               
               
-    # Debug options
-    parser.add_option('--noexec',
-                      help='Do not exec commands, just display them!',
-                      action='store_true',
-                      default=False,
-                      dest='noexec')   
-                                        
+                      
     (options,args) = parser.parse_args()
     
     # FAULT CONTROLS
@@ -676,16 +497,10 @@ if __name__=="__main__":
     
     if options.command!='' and options.infile!='':
         raise('-c and -i options cannot coexist!')    
-    
-    if options.profiler=='Memcheck_Valgrind' and not os.path.exists(VMPARSER):
-        raise('Couldn\'t find Valgrind Memcheck Parser Script! Please install it from Utilities/ReleaseScripts.')
-            
+        
     if options.executable!='':
         globals()['EXECUTABLE']=options.executable
     
-    if options.noexec:
-        globals()['EXEC']=False
-        
     logger('Procedure started on %s' %time.asctime())                               
     
     logger('Script options: %s' %str(options.__dict__),1)
