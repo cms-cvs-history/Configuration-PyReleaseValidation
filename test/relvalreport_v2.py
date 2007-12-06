@@ -357,12 +357,12 @@ class Profile:
     #-------------------------------------------------------------------
     
     def _profile_Timereport_Parser(self):
-        return self._save_output
+        return self._save_output()
         
     #-------------------------------------------------------------------
     
     def _profile_SimpleMem_Parser(self):
-        return self._save_output
+        return self._save_output()
     
     #-------------------------------------------------------------------
         
