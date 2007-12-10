@@ -44,15 +44,19 @@ MAKESKIMDRIVER='%s/makeSkimDriver.py'%MAKESKIMDRIVERDIR
 VFCE_LIB='/afs/cern.ch/user/m/moserro/public/vgfcelib' 
 PERL5_LIB='/afs/cern.ch/user/d/dpiparo/w0/PERLlibs/5.8.0'
 
+
+
+# the profilers that use the stout of the app..
+STDOUTPROFILERS=['Memcheck_Valgrind',
+                 'Timereport_Parser',
+                 'Timing_Parser',
+                 'SimpleMem_Parser']
 # Profilers list
-PROFILERS=('ValgrindFCE',
+PROFILERS=['ValgrindFCE',
            'IgProf_perf',
            'IgProf_mem',
-           'Edm_Size',
-           'Memcheck_Valgrind',
-           'Timereport_Parser',
-           'Timing_Parser',
-           'SimpleMem_Parser')
+           'Edm_Size']+STDOUTPROFILERS
+                            
 
 # name of the executable to benchmark. It can be different from cmsRun in future           
 EXECUTABLE='cmsRun'
@@ -526,15 +530,7 @@ class Profile:
                              '%s -t beginJob %s > %s/beginjob.html'\
                                 %report_coordinates)
             for command in report_commands:
-                execute(command)
-        
-        #####################################################################
-        
-        # Log manipulation for output saving """Profilers"""
-        
-        # a first maquillage about the profilename:
-        if self.profile_name[-4:]!='.log':
-            self.profile_name+='.log'        
+                execute(command)      
         
         #####################################################################                
                 
@@ -633,14 +629,15 @@ def principal(options):
             elif profiler_opt.find('MEM_TOTAL')!=-1 or\
                  profiler_opt.find('MEM_LIVE')!=-1 or\
                  profiler_opt.find('MEM_PEAK')!=-1: 
-                profiler,IgProf_counter=['IgProf_mem',profiler_opt]
+                profiler='IgProf_mem'
+                IgProf_counter=profiler_opt
 
 
                 if profile_name[-3:]!='.gz':
                     profile_name+='.gz'
             
             # Profiler is Timereport_Parser
-            elif profiler_opt=='Timereport_Parser':
+            elif profiler_opt in STDOUTPROFILERS:
                 # a first maquillage about the profilename:
                 if profile_name[:-4]!='.log':
                     profile_name+='.log'
