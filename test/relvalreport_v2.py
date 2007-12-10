@@ -31,6 +31,9 @@ TIMEREPORTPARSER='%s/src/Configuration/PyReleaseValidation/test/TimeReport.pl'%o
 # Simple memory parser
 SIMPLEMEMPARSER='%s/src/Configuration/PyReleaseValidation/test/simplememchecker_parser.py' %os.environ['CMSSW_BASE']
 
+# Timing Parser
+TIMINGPARSER='%s/src/Configuration/PyReleaseValidation/test/timing_parser.py' %os.environ['CMSSW_BASE']
+
 # makeSkimDriver
 MAKESKIMDRIVERDIR='%s/src/Configuration/EventContent/test' %os.environ['CMSSW_BASE']
 MAKESKIMDRIVER='%s/makeSkimDriver.py'%MAKESKIMDRIVERDIR
@@ -48,6 +51,7 @@ PROFILERS=('ValgrindFCE',
            'Edm_Size',
            'Memcheck_Valgrind',
            'Timereport_Parser',
+           'Timing_Parser',
            'SimpleMem_Parser')
 
 # name of the executable to benchmark. It can be different from cmsRun in future           
@@ -248,6 +252,8 @@ class Profile:
             return self._profile_Memcheck_Valgrind()
         elif self.profiler=='Timereport_Parser':
             return self._profile_Timereport_Parser()
+        elif self.profiler=='Timing_Parser':
+            return self._profile_Timing_Parser()        
         elif self.profiler=='SimpleMem_Parser':
             return self._profile_SimpleMem_Parser()
         elif self.profiler=='':
@@ -363,6 +369,11 @@ class Profile:
     
     def _profile_SimpleMem_Parser(self):
         return self._save_output()
+
+    #-------------------------------------------------------------------
+    
+    def _profile_Timing_Parser(self):
+        return self._save_output()     
     
     #-------------------------------------------------------------------
         
@@ -520,10 +531,21 @@ class Profile:
         #####################################################################                
                 
         # Profiler is TimeReport parser
+        
         if self.profiler=='Timereport_Parser':
             execute('%s %s %s' %(TIMEREPORTPARSER,self.profile_name,outdir))
-        
+
         #####################################################################
+        
+        # Profiler is Timing Parser            
+        
+        if self.profiler=='Timing_Parser':
+            execute('%s -i %s -o %s' %(TIMINGPARSER,self.profile_name,outdir))
+        
+                    
+        #####################################################################
+        
+        # Profiler is Simple memory parser
         
         if self.profiler=='SimpleMem_Parser':
             execute('%s -i %s -o %s' %(SIMPLEMEMPARSER,self.profile_name,outdir))
