@@ -64,9 +64,7 @@ EXECUTABLE='cmsRun'
 # Command execution and debug switches
 EXEC=True
 DEBUG=True
-
-           
-           
+ 
 import time   
 import optparse 
 import sys
@@ -117,10 +115,15 @@ def logger(message,level=0):
     level=0 output, level 1 debug.
     '''                  
     message='%s %s' %(yellow('[RelValreport]'),message)
+    
+    sys.stdout.flush()
+    
     if level==0:
         print message
     if level==1 and DEBUG:
         print message    
+    
+    sys.stdout.flush()
 
 #######################################################################
 
