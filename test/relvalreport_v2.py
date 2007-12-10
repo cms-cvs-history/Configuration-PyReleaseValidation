@@ -381,9 +381,9 @@ class Profile:
         '''
         Save the output of cmsRun on a file!
         '''               
-        # a first maquillage about the profilename:
-        if self.profile_name[-4:]!='.log':
-            self.profile_name+='.log'
+#         # a first maquillage about the profilename:
+#         if self.profile_name[-4:]!='.log':
+#             self.profile_name+='.log'
         
         profiler_line='%s  2>&1 |tee %s' %(self.command,self.profile_name)
         return execute(profiler_line)    
@@ -527,6 +527,14 @@ class Profile:
                                 %report_coordinates)
             for command in report_commands:
                 execute(command)
+        
+        #####################################################################
+        
+        # Log manipulation for output saving """Profilers"""
+        
+        # a first maquillage about the profilename:
+        if self.profile_name[-4:]!='.log':
+            self.profile_name+='.log'        
         
         #####################################################################                
                 
