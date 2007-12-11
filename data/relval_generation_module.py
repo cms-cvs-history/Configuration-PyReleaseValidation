@@ -90,12 +90,23 @@ def _generate_PGUN(step, evt_type, energy, evtnumber):
                   "PI-":-211,
                   "PI0":111}
     
+    # Build the id string of the event name:
+    id_string = evt_type+" "+energy+" nevts "+ str(evtnumber)    
+                  
+    # We have to check if we want to generate a particle with pt=X or Energy=X                  
+    pt_flag=True
+    if 'pt' in energy[0:2] or \
+       'Pt' in energy[0:2] or \
+       'PT' in energy[0:2]:
+        energy=energy[2:]
+    else:
+        pt_flag=False         
+                  
     # Energy boundaries are now set:      
     lower_energy = ""
     upper_energy = ""
     
-    # Build the id string of the event name:
-    id_string = evt_type+" pt"+energy+" nevts "+ str(evtnumber)
+
 
     # Build the partID string
     part_id = cms.untracked.vint32 ()
@@ -118,23 +129,42 @@ def _generate_PGUN(step, evt_type, energy, evtnumber):
     antip_flag=False
     if evt_type=="DIE":
         antip_flag=True  
-            
-    source = cms.Source("FlatRandomPtGunSource",
-                        psethack = cms.string(id_string),
-                        firstRun = cms.untracked.uint32(1),
-                        PGunParameters = cms.untracked.PSet\
-                              (PartID = part_id,
-                               MinEta = cms.untracked.double(ETA_MAX),
-                               MaxEta = cms.untracked.double(ETA_MIN),
-                               MinPhi = cms.untracked.double(-PI),
-                               MaxPhi = cms.untracked.double(PI),
-                               MinPt  = cms.untracked.double(lower_energy),
-                               MaxPt  = cms.untracked.double(upper_energy) 
-                              ),
-                        AddAntiParticle=cms.untracked.bool(antip_flag),
-                        Verbosity = cms.untracked.int32(0)
-                       )
- 
+    
+    if pt_flag:        
+        common.log( func_id+ "This is a pt particle gun ..." )
+        source = cms.Source("FlatRandomPtGunSource",
+                            psethack = cms.string(id_string),
+                            firstRun = cms.untracked.uint32(1),
+                            PGunParameters = cms.untracked.PSet\
+                                (PartID = part_id,
+                                MinEta = cms.untracked.double(ETA_MAX),
+                                MaxEta = cms.untracked.double(ETA_MIN),
+                                MinPhi = cms.untracked.double(-PI),
+                                MaxPhi = cms.untracked.double(PI),
+                                MinPt  = cms.untracked.double(lower_energy),
+                                MaxPt  = cms.untracked.double(upper_energy) 
+                                ),
+                            AddAntiParticle=cms.untracked.bool(antip_flag),
+                            Verbosity = cms.untracked.int32(0)
+                        )
+    else:
+        common.log( func_id+ " This is an Energy particle gun ..." )
+        source = cms.Source("FlatRandomEGunSource",
+                            psethack = cms.string(id_string),
+                            firstRun = cms.untracked.uint32(1),
+                            PGunParameters = cms.untracked.PSet\
+                                (PartID = part_id,
+                                MinEta = cms.untracked.double(ETA_MAX),
+                                MaxEta = cms.untracked.double(ETA_MIN),
+                                MinPhi = cms.untracked.double(-PI),
+                                MaxPhi = cms.untracked.double(PI),
+                                MinE = cms.untracked.double(lower_energy),
+                                MaxE = cms.untracked.double(upper_energy) 
+                                ),
+                            AddAntiParticle=cms.untracked.bool(antip_flag),
+                            Verbosity = cms.untracked.int32(0)
+                        )       
+                        
     common.log( func_id+" Returning source...")
         
     return source 
