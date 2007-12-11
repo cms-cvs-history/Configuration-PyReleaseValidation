@@ -1,4 +1,3 @@
-#include "Configuration/StandardSequences/data/FakeConditions.cff"
 include "Configuration/StandardSequences/data/FrontierConditions.cff"
 include "Configuration/StandardSequences/data/Generator.cff"
 include "Configuration/StandardSequences/data/Reconstruction.cff"
