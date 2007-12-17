@@ -28,10 +28,25 @@ import FWCore.ParameterSet.Config as cms
 execfile("relval_parameters_module.py")
 
 import relval_common_module as common
-#import relval_simulation_module
-execfile(os.environ["CMSSW_BASE"]+\
-    "/src/Configuration/PyReleaseValidation/data/relval_generation_module.py")
 
+# The priority with wich the generators module is seeked for..
+generator_module_name="relval_generation_module.py"
+generator_releasebase_location=os.environ["CMSSW_RELEASE_BASE"]+"/src/Configuration/Generator/test/"+generator_module_name
+generator_location=os.environ["CMSSW_BASE"]+"/src/Configuration/Generator/test/"+generator_module_name
+pyrelval_location=os.environ["CMSSW_BASE"]+"/src/Configuration/PyReleaseValidation/data/"+generator_module_name
+
+locations=(generator_releasebase_location,
+           generator_location,
+           pyrelval_location)
+           
+mod_location=""
+for location in locations:
+    if os.path.exists(location):
+        mod_location=location
+
+execfile(mod_location)
+
+    
 #---------------------------------------------------
 
 # Here the process is built according to the settings in
@@ -126,8 +141,8 @@ process.configurationMetadata=common.build_production_info(evt_type, energy, evt
 
 # print to screen the config file in the old language
 if dump_cfg_flag:
-    print process.dumpConfig()
-    
+    #print process.dumpConfig()
+    print process.dumpPython()
 
 # dump a pickle object of the process on disk:
 if dump_pickle!='':
