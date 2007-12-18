@@ -185,6 +185,13 @@ parser.add_option("--dump_cfg",
                   action="store_true",
                   default=False,
                   dest="dump_cfg_flag")
+
+parser.add_option("--dump_python",
+                  help="Dump the config file in python "+\
+                       "language. It is printed on stdout.",
+                  action="store_true",
+                  default=False,
+                  dest="dump_python_flag")
                                                     
 parser.add_option("--dump_pickle",
                   help="Dump a pickle object of the process.",
@@ -320,6 +327,8 @@ analysis_flag="""+str(options.analysis_flag)+"""
 dbg_flag=True
 # Dump the oldstyle cfg file.
 dump_cfg_flag="""+str(options.dump_cfg_flag)+"""
+# Dump the python cfg file.
+dump_python_flag="""+str(options.dump_python_flag)+"""
 # Dump a pickle object of the process on disk.
 dump_pickle='"""+str(options.dump_pickle)+"""'
 #Dump the dataset Name

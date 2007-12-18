@@ -141,7 +141,11 @@ process.configurationMetadata=common.build_production_info(evt_type, energy, evt
 
 # print to screen the config file in the old language
 if dump_cfg_flag:
-    #print process.dumpConfig()
+    print process.dumpConfig()
+
+# print to screen the config file in the python language
+if dump_python_flag:
+    print "import FWCore.ParameterSet.Config as cms"
     print process.dumpPython()
 
 # dump a pickle object of the process on disk:
