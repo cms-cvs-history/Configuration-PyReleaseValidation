@@ -188,10 +188,12 @@ parser.add_option("--dump_cfg",
 
 parser.add_option("--dump_python",
                   help="Dump the config file in python "+\
-                       "language. It is printed on stdout.",
-                  action="store_true",
-                  default=False,
-                  dest="dump_python_flag")
+                  "language in the file given as argument."+\
+                  "If absent and necessary a "+\
+                  "default value is assigned. "+\
+                  "The form is <type>_<energy>_<step>.py .",
+                  default="",
+                  dest="dump_python")
                                                     
 parser.add_option("--dump_pickle",
                   help="Dump a pickle object of the process.",
@@ -251,8 +253,17 @@ if options.fileout=="":
     options.fileout+=".root"
 
 
-     
-     
+# File where to dump the python cfg file
+if options.dump_python=="":
+    options.dump_python=options.evt_type+"_"+\
+                              options.energy+\
+                              "_"+options.step
+    if options.PU_flag:
+        options.dump_python+="_PU"
+    if options.analysis_flag:
+        options.dump_python+="_ana"
+    options.dump_python+=".py"
+    
 #prepare new step3 list:
 newstep3list=[]
 if options.newstep3!="":
@@ -328,7 +339,7 @@ dbg_flag=True
 # Dump the oldstyle cfg file.
 dump_cfg_flag="""+str(options.dump_cfg_flag)+"""
 # Dump the python cfg file.
-dump_python_flag="""+str(options.dump_python_flag)+"""
+dump_python='"""+"./"+options.dump_python+"""'
 # Dump a pickle object of the process on disk.
 dump_pickle='"""+str(options.dump_pickle)+"""'
 #Dump the dataset Name
@@ -367,6 +378,7 @@ if options.no_exec_flag:
     config_module.close()
     print "Parameters module created."
     sys.exit(0) # Exits without launching cmsRun
+
 
 # Remove existing pyc files:
 os.system("rm -f "+pyrelvalcodedir+"*.pyc")    

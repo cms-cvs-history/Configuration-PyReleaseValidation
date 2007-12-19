@@ -144,9 +144,11 @@ if dump_cfg_flag:
     print process.dumpConfig()
 
 # print to screen the config file in the python language
-if dump_python_flag:
-    print "import FWCore.ParameterSet.Config as cms"
-    print process.dumpPython()
+if dump_python!="":
+    pycfg=open(dump_python,'w') 
+    pycfg.write("import FWCore.ParameterSet.Config as cms \n")
+    pycfg.write(process.dumpPython())
+    pycfg.close()
 
 # dump a pickle object of the process on disk:
 if dump_pickle!='':
