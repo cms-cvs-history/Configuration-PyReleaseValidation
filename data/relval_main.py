@@ -138,20 +138,19 @@ if output_flag:
 # Add metadata for production                                    
 process.configurationMetadata=common.build_production_info(evt_type, energy, evtnumber) 
 
-
-# print to screen the config file in the old language
-if dump_cfg_flag:
-    print process.dumpConfig()
-
 # Add a last customisation of the process as specified in the file.
 if customisation_file!='':
     file=__import__(customisation_file[:-3])
     process=file.customise(process)
+
+# print to screen the config file in the old language
+if dump_cfg_flag:
+    print process.dumpConfig()
     
 # print to screen the config file in the python language
-if dump_python!="":
+if dump_python!='':
     pycfg=open(dump_python,'w') 
-    pycfg.write("import FWCore.ParameterSet.Config as cms \n")
+    pycfg.write('import FWCore.ParameterSet.Config as cms \n')
     pycfg.write(process.dumpPython())
     pycfg.close()
 
