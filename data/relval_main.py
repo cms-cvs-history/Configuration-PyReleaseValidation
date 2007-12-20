@@ -143,6 +143,11 @@ process.configurationMetadata=common.build_production_info(evt_type, energy, evt
 if dump_cfg_flag:
     print process.dumpConfig()
 
+# Add a last customisation of the process as specified in the file.
+if customisation_file!='':
+    file=__import__(customisation_file[:-3])
+    process=file.customise(process)
+    
 # print to screen the config file in the python language
 if dump_python!="":
     pycfg=open(dump_python,'w') 
