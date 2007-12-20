@@ -241,9 +241,16 @@ if options.energy==None:
 # Build the IO files if necessary.
 # The default form of the files is:
 # <type>_<energy>_<step>.root
-prec_step = {"ALL":"","GEN":"","SIM":"GEN","DIGI":"SIM","RECO":"DIGI","DIGIRECO":"SIM"}
+prec_step = {"ALL":"",
+             "GEN":"",
+             "SIM":"GEN",
+             "DIGI":"SIM",
+             "RECO":"DIGI",
+             "ANA":"RECO",
+             "DIGI2RAW":"DIGI"}
 
-if options.filein=="" and not options.step in ("ALL","GEN"):
+first_step=options.step.split(',')[0]             
+if options.filein=="" and not first_step in ("ALL","GEN"):
     if options.dirin=="":
         options.dirin="file:"
     options.filein=options.evt_type+"_"+options.energy+\
@@ -312,7 +319,7 @@ cfgfile="""
 # Process Parameters
 
 # The name of the process
-process_name='""" +options.step+ """'
+process_name='""" +options.step.replace(',','')+ """'
 ext_process_name='""" +ext_process_name+ """'
 # The type of the process. Please see the complete list of 
 # available processes.
@@ -329,8 +336,8 @@ releasevalidation=("""+options.relval+""")
 # Input and output file names
 infile_name='"""+options.dirin+options.filein+"""'
 outfile_name='"""+options.dirout+options.fileout+"""'
-# The step: SIM DIGI RECO and ALL to do the 3 in one go.
-step='"""+options.step+"""'
+# The step
+step='"""+str(options.step)+"""'
 # Omit the output in a root file
 output_flag="""+str(not options.no_output_flag)+"""
 # Use the profiler service
