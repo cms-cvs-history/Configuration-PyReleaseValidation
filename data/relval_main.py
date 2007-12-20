@@ -72,7 +72,7 @@ Here we choose to make the process work only for one of the four steps
 
 # parse the string containing the steps and make a list out of it
 if step=='ALL':
-    step='GEN,SIM,DIGI,DIGI2RAW,L1,RECO'
+    step='GEN,SIM,DIGI,L1,DIGI2RAW,RECO'
 step_list=step.split(',') # we split when we find a ','
 
 # a dict whose keys are the steps and the values are functions that modify the process
