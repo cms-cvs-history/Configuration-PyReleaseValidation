@@ -17,8 +17,6 @@ import sys
 import pickle
 import os
 
-sys.path.append(".") # necessary to find the relval_parameters_module created by CMSdriver
-
 # Modules to include
 
 import FWCore.ParameterSet.Config as cms
@@ -28,25 +26,10 @@ import FWCore.ParameterSet.Config as cms
 execfile("relval_parameters_module.py")
 
 import relval_common_module as common
+import relval_steps_module as steps 
 
-# The priority with wich the generators module is seeked for..
-generator_module_name="relval_generation_module.py"
-generator_releasebase_location=os.environ["CMSSW_RELEASE_BASE"]+"/src/Configuration/Generator/test/"+generator_module_name
-generator_location=os.environ["CMSSW_BASE"]+"/src/Configuration/Generator/test/"+generator_module_name
-pyrelval_location=os.environ["CMSSW_BASE"]+"/src/Configuration/PyReleaseValidation/data/"+generator_module_name
-
-locations=(generator_releasebase_location,
-           generator_location,
-           pyrelval_location)
-           
-mod_location=""
-for location in locations:
-    if os.path.exists(location):
-        mod_location=location
-
-execfile(mod_location)
-
-    
+sys.path.append(".") # necessary to find the relval_parameters_module created by CMSdriver
+   
 #---------------------------------------------------
 
 # Here the process is built according to the settings in
@@ -87,46 +70,34 @@ Here we choose to make the process work only for one of the four steps
 (GEN,SIM DIGI RECO) or for the whole chain (ALL)
 """
 
+# parse the string containing the steps and make a list out of it
+if step=='ALL':
+    step='GEN,SIM,DIGI,DIGI2RAW,L1,RECO'
+step_list=step.split(',') # we split when we find a ','
 
+# a dict whose keys are the steps and the values are functions that modify the process
+# in order to add the actual step..
+step_dict={'GEN':steps.gen,
+           'SIM':steps.sim,
+           'DIGI':steps.digi,
+           'RECO':steps.reco,
+           'L1':steps.l1_trigger,
+           'DIGI2RAW':steps.digi2raw,
+           'ANA':steps.ana}
 
-# The Generation:
-if step in ("ALL","GEN","GENSIM"):
-    # Builds the source for the process
-    process.source=generate(step,evt_type,energy,evtnumber)
-                                                  
-# The Simulation, Digitisation and Reconstruction:
-else: # The input is a file
+# we add a source even if gen is not present.
+if not 'GEN' in step_list:
     process.source = common.event_input(infile_name) 
-
-if step in ("ALL","SIM","GENSIM"):
-    # Enrich the schedule with simulation
-    process.simulation_step = cms.Path(process.psim)
-    process.schedule.append(process.simulation_step)    
-     
-if step in ("ALL","DIGI","DIGIRECO","DIGIPURECO"):
-    process.digitisation_step=cms.Path(process.pdigi)
-    process.schedule.append(process.digitisation_step)
-       
-if step in ("ALL","RECO","DIGIRECO","DIGIPURECO"):
-    if newstep3list!=[]: #add user defined elements for reco
-        for element in newstep3list:
-            exec("process."+element+"_step=cms.Path(process.sequences[element])")
-            exec("process.schedule.append(process."+element+"_step)")
-    else:
-        process.reconstruction_step=cms.Path(process.reconstruction_plusRS)
-        process.schedule.append(process.reconstruction_step)     
-
-# L1 trigger      
-if step in ("ALL","RECO","DIGIRECO","DIGIPURECO"):
-    common.log("Adding L1 emulation... ")
-    process.L1_Emulation = cms.Path(process.L1Emulator)
-    process.schedule.append(process.L1_Emulation)
+else:
+    process=steps.gen(process,step,evt_type,energy,evtnumber)           
+for step in step_list:
+    if step in ('ANA','GEN'):
+        continue
+    process=step_dict[step](process)                      
 
 # Analysis
-if analysis_flag:
-    common.log("Adding Analysis... ")
-    process.analysis_step=cms.Path(process.analysis)
-    process.schedule.append(process.analysis_step)
+if 'ANA' in step:
+    steps.ana(process)
                                              
 # Add the output on a root file if requested
 if output_flag:
