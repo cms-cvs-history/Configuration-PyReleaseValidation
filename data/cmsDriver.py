@@ -177,8 +177,7 @@ parser.add_option("--no_output",
                   action="store_true",
                   default=False,
                   dest="no_output_flag")
-                                                                    
-                  
+                                                                                      
 parser.add_option("--dump_cfg",
                   help="Dump the config file in the old config "+\
                        "language. It is printed on stdout.",
@@ -192,7 +191,8 @@ parser.add_option("--dump_python",
                   "If absent and necessary a "+\
                   "default value is assigned. "+\
                   "The form is <type>_<energy>_<step>.py .",
-                  default="",
+                  action="store_true",
+                  default=False,                  
                   dest="dump_python")
                                                     
 parser.add_option("--dump_pickle",
@@ -213,11 +213,18 @@ parser.add_option("--no_exec",
                   dest="no_exec_flag")   
                   
 parser.add_option("--substep3",
-                  help="Sobstitute the \"p3\" sequence with userdefined names.Use ONLY commas to separate values.",
+                  help="Substitute the \"p3\" sequence with userdefined names.Use ONLY commas to separate values.",
                   default="",
-                  dest="newstep3")                                     
+                  dest="newstep3")                                  
+                  
+parser.add_option("--customise",
+                  help="Specify the file where the code to modify the process object is stored.",
+                  default="",
+                  dest="customisation_file")                     
 
 (options,args) = parser.parse_args() # by default the arg is sys.argv[1:]
+
+print options.__dict__
 
 # A simple check on the consistency of the arguments
 if len(sys.argv)==1:
@@ -242,6 +249,7 @@ if options.filein=="" and not options.step in ("ALL","GEN"):
     options.filein=options.evt_type+"_"+options.energy+\
      "_"+prec_step[options.step]+".root"
 
+     
 if options.fileout=="":
     options.fileout=options.evt_type+"_"+\
                     options.energy+\
@@ -254,15 +262,16 @@ if options.fileout=="":
 
 
 # File where to dump the python cfg file
-if options.dump_python=="":
-    options.dump_python=options.evt_type+"_"+\
+python_config_filename=''
+if options.dump_python:
+    python_config_filename=options.evt_type+"_"+\
                               options.energy+\
                               "_"+options.step
     if options.PU_flag:
-        options.dump_python+="_PU"
+        python_config_filename+="_PU"
     if options.analysis_flag:
-        options.dump_python+="_ana"
-    options.dump_python+=".py"
+        python_config_filename+="_ana"
+    python_config_filename+=".py"
     
 #prepare new step3 list:
 newstep3list=[]
@@ -332,6 +341,8 @@ fpe_service_flag="""+str(options.fpe_service_flag)+"""
 newstep3list="""+str(newstep3list)+"""
 # The anlaysis
 analysis_flag="""+str(options.analysis_flag)+"""
+# Customisation_file
+customisation_file='"""+str(options.customisation_file)+"""'
 
 # Pyrelval parameters
 # Enable verbosity
@@ -339,7 +350,7 @@ dbg_flag=True
 # Dump the oldstyle cfg file.
 dump_cfg_flag="""+str(options.dump_cfg_flag)+"""
 # Dump the python cfg file.
-dump_python='"""+"./"+options.dump_python+"""'
+dump_python='"""+python_config_filename+"""'
 # Dump a pickle object of the process on disk.
 dump_pickle='"""+str(options.dump_pickle)+"""'
 #Dump the dataset Name
