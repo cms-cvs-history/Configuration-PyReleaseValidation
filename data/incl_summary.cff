@@ -1,5 +1,6 @@
 include "Configuration/StandardSequences/data/FrontierConditions.cff"
 include "Configuration/StandardSequences/data/Generator.cff"
+include "HLTrigger/Configuration/data/rawToDigi/DigiToRaw.cff"
 include "Configuration/StandardSequences/data/Reconstruction.cff"
 include "Configuration/StandardSequences/data/Simulation.cff"
 include "Configuration/StandardSequences/data/MixingNoPileUp.cff" 
