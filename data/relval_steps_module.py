@@ -74,7 +74,7 @@ def reco(process):
     '''
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
-    process.reconstruction_step=cms.Path(process.reconstruction_plusRS)
+    process.reconstruction_step=cms.Path(process.reconstruction_plusRS_plus_GSF)
     process.schedule.append(process.reconstruction_step)     
 
     common.log ('%s adding step ...'%func_id)
@@ -116,7 +116,6 @@ def digi2raw(process):
     process.digi2raw_step=cms.Path(process.DigiToRaw)
     process.schedule.append(process.digi2raw_step)
     
-    #common.log('FIXME: doing nothing!!!!!!!!')
     common.log ('%s adding step ...'%func_id)
     
     return process
