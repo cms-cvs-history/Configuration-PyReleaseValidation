@@ -39,7 +39,9 @@ def gen(process,step,evt_type,energy,evtnumber):
     
 
     process.source=generate(step,evt_type,energy,evtnumber)
-    
+    process.generation_step = cms.Path(process.pgen)
+    process.schedule.append(process.generation_step)
+        
     common.log ('%s adding step ...'%func_id)
     return process
     
