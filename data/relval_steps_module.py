@@ -4,6 +4,10 @@ import relval_common_module as common
 import os
 import sys 
 
+#import relval_parameters_module as parameters
+#Try to eliminate the problem of the _commonsequence without the import
+execfile("relval_parameters_module.py")
+
 # This just simplifies the use of the common.logger
 mod_id="["+os.path.basename(sys._getframe().f_code.co_filename)[:-3]+"]"
 
@@ -40,7 +44,8 @@ def gen(process,step,evt_type,energy,evtnumber):
 
     process.source=generate(step,evt_type,energy,evtnumber)
     process.generation_step = cms.Path(process.pgen)
-    process.schedule.append(process.generation_step)
+    if not user_schedule:
+        process.schedule.append(process.generation_step)
         
     common.log ('%s adding step ...'%func_id)
     return process
@@ -52,7 +57,8 @@ def sim(process):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
     process.simulation_step = cms.Path(process.psim)
-    process.schedule.append(process.simulation_step)  
+    if not user_schedule:
+        process.schedule.append(process.simulation_step)  
     
     common.log ('%s adding step ...'%func_id)
     return process
@@ -64,7 +70,8 @@ def digi(process):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
     process.digitisation_step=cms.Path(process.pdigi)
-    process.schedule.append(process.digitisation_step)
+    if not user_schedule:
+        process.schedule.append(process.digitisation_step)
     
     common.log ('%s adding step ...'%func_id)
     
@@ -77,7 +84,8 @@ def reco(process):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
     process.reconstruction_step=cms.Path(process.reconstruction_plusRS_plus_GSF)
-    process.schedule.append(process.reconstruction_step)     
+    if not user_schedule:
+        process.schedule.append(process.reconstruction_step)     
 
     common.log ('%s adding step ...'%func_id)
     
@@ -90,7 +98,8 @@ def l1_trigger(process):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
     process.L1_Emulation = cms.Path(process.L1Emulator)
-    process.schedule.append(process.L1_Emulation)
+    if not user_schedule:
+        process.schedule.append(process.L1_Emulation)
 
     common.log ('%s adding step ...'%func_id)
     
@@ -103,7 +112,8 @@ def ana(process):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
     process.analysis_step=cms.Path(process.analysis)
-    process.schedule.append(process.analysis_step)
+    if not user_schedule:
+        process.schedule.append(process.analysis_step)
 
     common.log ('%s adding step ...'%func_id)
     
@@ -116,7 +126,8 @@ def digi2raw(process):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
     process.digi2raw_step=cms.Path(process.DigiToRaw)
-    process.schedule.append(process.digi2raw_step)
+    if not user_schedule:
+        process.schedule.append(process.digi2raw_step)
     
     common.log ('%s adding step ...'%func_id)
     

@@ -98,12 +98,13 @@ for step in step_list:
 # Analysis
 if 'ANA' in step:
     steps.ana(process)
-                                             
+    
 # Add the output on a root file if requested
 if output_flag:
     process = common.event_output\
         (process, outfile_name, step)
-    process.schedule.append(process.outpath)  
+    if not user_schedule:
+        process.schedule.append(process.outpath)  
                                                                         
 
 # Add metadata for production                                    

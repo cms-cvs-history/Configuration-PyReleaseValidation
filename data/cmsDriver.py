@@ -222,6 +222,12 @@ parser.add_option("--customise",
                   default="",
                   dest="customisation_file")                     
 
+parser.add_option("--user_schedule",
+                  help="User defined schedule instead of the default one.",
+                  action="store_true",
+                  default=False,
+                  dest="user_schedule")
+
 (options,args) = parser.parse_args() # by default the arg is sys.argv[1:]
 
 print options.__dict__
@@ -350,6 +356,8 @@ newstep3list="""+str(newstep3list)+"""
 analysis_flag="""+str(options.analysis_flag)+"""
 # Customisation_file
 customisation_file='"""+str(options.customisation_file)+"""'
+# User defined schedule
+user_schedule="""+str(options.user_schedule)+"""
 
 # Pyrelval parameters
 # Enable verbosity
