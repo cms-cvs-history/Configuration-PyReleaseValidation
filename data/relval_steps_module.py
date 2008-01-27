@@ -83,7 +83,7 @@ def reco(process):
     '''
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
-    process.reconstruction_step=cms.Path(process.reconstruction_plusRS_plus_GSF)
+    process.reconstruction_step=cms.Path(process.reconstruction_plusRS)
     if not user_schedule:
         process.schedule.append(process.reconstruction_step)     
 
