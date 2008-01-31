@@ -269,7 +269,8 @@ def _generate_Higgs(step, evt_type, energy, evtnumber):
         z_flag="1"
     elif evt_type == "HGG":
         gamma_flag="1"    
-    
+
+  
     # Prepare The Pythia params  
     params = cms.vstring(
         "PMAS(25,1)=%s" %energy,      #mass of Higgs",
@@ -278,35 +279,13 @@ def _generate_Higgs(step, evt_type, energy, evtnumber):
         #(0, then use MSUB) and some preprogrammed alternative: QCD hight pT
         #processes (1, then ISUB=11, 12, 13, 28, 53, 68), QCD low pT processes
         #(2, then ISUB=11, #12, 13, 28, 53, 68, 91, 92, 94, 95)",
-        "MSTJ(11)=3",              #Choice of the fragmentation function",
-        "MSTJ(41)=1",              #Switch off Pythia QED bremsshtrahlung",
-        "MSTP(51)=7",             #structure function chosen",
-        "MSTP(61)=0",              # no initial-state showers", 
-        "MSTP(71)=0",              # no final-state showers", 
-        "MSTP(81)=0",              # no multiple interactions", 
-        "MSTP(111)=0",             # no hadronization", 
-        "MSTU(21)=1",              
+        "MSTP(25)=2",                       
         #Check on possible errors during program
         #execution",
         "MSUB(102)=1",             #ggH",
         "MSUB(123)=1",             #ZZ fusion to H",
         "MSUB(124)=1",             #WW fusion to H",
-        "PARP(82)=1.9",            #pt cutoff for multiparton interactions",
-        "PARP(83)=0.5",            
-        #Multiple interactions: matter distrbn parameter Registered by
-        #Chris.Seez@cern.ch",
-        "PARP(84)=0.4",            
-        #Multiple interactions: matter distribution parameter Registered
-        #by Chris.Seez@cern.ch",
-        "PARP(90)=0.16",           
-        #Multiple interactions: rescaling power
-        #Registered by Chris.Seez@cern.ch",
-        "CKIN(45)=5.",             
-        #high mass cut on m2 in 2 to 2 process
-        #Registered by Chris.Seez@cern.ch",
-        "MSTP(25)=2",              
-        #Angular decay correlations in
-        #H->ZZ->4fermions Registered by Alexandre.Nikitenko@cern.ch",
+        "CKIN(45)=5.",                       
         "CKIN(46)=150.",           
         #high mass cut on secondary resonance m1 in
         #2->1->2 process Registered by Alexandre.Nikitenko@cern.ch",
