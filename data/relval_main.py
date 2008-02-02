@@ -63,7 +63,7 @@ if dump_pickle!='':
     dsetname=dump_pickle
 process.ReleaseValidation=cms.untracked.PSet(totalNumberOfEvents=cms.untracked.int32(totnumevts),
                                              eventsPerJob=cms.untracked.int32(evtsperjob),
-                                             primaryDatasetName=cms.untracked.string(dsetname))
+                                             primaryDatasetName=cms.untracked.string(dsetname.replace('.pkl','')))
 
 """
 Here we choose to make the process work only for one of the four steps 
