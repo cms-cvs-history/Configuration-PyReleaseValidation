@@ -17,10 +17,12 @@ generator_module_name="relval_generation_module.py"
 generator_releasebase_location=os.environ["CMSSW_RELEASE_BASE"]+"/src/Configuration/Generator/test/"+generator_module_name
 generator_location=os.environ["CMSSW_BASE"]+"/src/Configuration/Generator/test/"+generator_module_name
 pyrelval_location=os.environ["CMSSW_BASE"]+"/src/Configuration/PyReleaseValidation/data/"+generator_module_name
+pyrelval_release_location=os.environ["CMSSW_RELEASE_BASE"]+"/src/Configuration/PyReleaseValidation/data/"+generator_module_name
 
 locations=(generator_releasebase_location,
         generator_location,
-        pyrelval_location)
+        pyrelval_location,
+        pyrelval_release_location)
         
 mod_location=""
 for location in locations:
