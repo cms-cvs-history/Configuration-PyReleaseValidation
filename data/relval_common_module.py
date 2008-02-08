@@ -33,7 +33,7 @@ def include_files(includes_set):
     """
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
         
-    packagedir=os.environ["CMSSW_BASE"]+"/src/Configuration/PyReleaseValidation/data/"
+    packagedir="./"
     #Trasform the includes_set in a list
     if not isinstance(includes_set,list):
         includes_set=[includes_set]
@@ -191,7 +191,7 @@ def build_production_info(evt_type, energy, evtnumber):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
     prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.36 $"),
+              (version=cms.untracked.string("$Revision: 1.37 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+" energy:"+str(energy)+" nevts:"+str(evtnumber))
               )
