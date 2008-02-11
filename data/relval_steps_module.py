@@ -85,11 +85,7 @@ def reco(process):
     '''
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
-# conv sequence is broken in 200pre1 candidate, so turn off for now
-# RS sequence should be off by default (if I understand Shahrams instructions
-#
-#    process.reconstruction_step=cms.Path(process.reconstruction_plusRS)
-    process.reconstruction_step=cms.Path(process.reconstruction_woRS_woConv)
+    process.reconstruction_step=cms.Path(process.reconstruction_plusRS)
     if not user_schedule:
         process.schedule.append(process.reconstruction_step)     
 
