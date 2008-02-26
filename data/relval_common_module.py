@@ -84,7 +84,7 @@ def add_includes(process,PU_flag):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     log(func_id+" Entering... ")
         
-    for included_fragment in include_files(["Configuration/ReleaseValidation/data/Services.cff"]): 
+    for included_fragment in include_files(["Configuration/StandardSequences/data/Services.cff"]): 
         process.extend(included_fragment)
     
 
@@ -191,7 +191,7 @@ def build_production_info(evt_type, energy, evtnumber):
     func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
     
     prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.38 $"),
+              (version=cms.untracked.string("$Revision: 1.39 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+" energy:"+str(energy)+" nevts:"+str(evtnumber))
               )
