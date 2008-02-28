@@ -107,6 +107,20 @@ def l1_trigger(process):
     
     return process            
     
+def postreco_gen(process):
+    '''
+    Enrich the schedule with post-reconstruction generator
+    '''
+    func_id=mod_id+"["+sys._getframe().f_code.co_name+"]"
+    
+    process.postreco_generator_step=cms.Path(process.postreco_generator)
+    if not user_schedule:
+        process.schedule.append(process.postreco_generator_step)     
+
+    common.log ('%s adding step ...'%func_id)
+    
+    return process            
+
 def ana(process):
     '''
     Enrich the schedule with analysis
