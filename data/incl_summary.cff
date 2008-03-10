@@ -8,6 +8,8 @@ include "Configuration/StandardSequences/data/Simulation.cff"
 include "Configuration/StandardSequences/data/MixingNoPileUp.cff" 
 include "Configuration/StandardSequences/data/VtxSmearedBetafuncEarlyCollision.cff" 
 include "Configuration/StandardSequences/data/L1Emulator.cff"
-include "Configuration/StandardSequences/data/PostRecoGenerator.cff"
+include "Configuration/StandardSequences/data/OfflineDQM.cff"
+//to be checked - comment out for now
+//include "Configuration/StandardSequences/data/PostRecoGenerator.cff"
 //include "Configuration/StandardSequences/data/Analysis.cff"
 
