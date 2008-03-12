@@ -86,6 +86,15 @@ step_dict={'GEN':steps.gen,
            'ANA':steps.ana,
            'DQM':steps.offlinedqm}
 
+dataTier_dict={'GEN':'GEN',
+               'SIM':'SIM',
+               'DIGI':'DIGI',
+               'RECO':'RECO',
+               'L1':'L1',
+               'DIGI2RAW':'DIGI2RAW',
+               'ANA':'RECO',
+               'DQM':'RECO'}
+    
 # we add a source even if gen is not present.
 if not 'GEN' in step_list:
     process.source = common.event_input(infile_name) 
@@ -103,7 +112,7 @@ if 'ANA' in step:
 # Add the output on a root file if requested
 if output_flag:
     process = common.event_output\
-        (process, outfile_name, step)
+        (process, outfile_name, dataTier_dict[step])
     if not user_schedule:
         process.schedule.append(process.outpath)  
                                                                         
