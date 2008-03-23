@@ -1,0 +1,12 @@
+include "Configuration/StandardSequences/data/Geometry.cff"
+include "Configuration/StandardSequences/data/MagneticField.cff"
+include "Configuration/StandardSequences/data/FakeConditions.cff"
+include "Configuration/StandardSequences/data/Generator.cff"
+include "Configuration/StandardSequences/data/RawToDigi.cff"
+include "Configuration/StandardSequences/data/Reconstruction.cff"
+include "Configuration/StandardSequences/data/VtxSmearedBetafuncEarlyCollision.cff" 
+//include "Configuration/StandardSequences/data/L1Emulator.cff"
+include "Configuration/StandardSequences/data/OfflineDQM.cff"
+include "Configuration/StandardSequences/data/PostRecoGenerator.cff"
+//include "Configuration/StandardSequences/data/Analysis.cff"
+
