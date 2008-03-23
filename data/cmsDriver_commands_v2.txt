@@ -1,46 +1,46 @@
-SingleMuPt10 @@@ cmsDriver.py  SingleMuPt10.cfi -n 10 --relval 10000,100
-SingleMuPt100 @@@ cmsDriver.py  SingleMuPt100.cfi -n 10 --relval 10000,100
-SingleMuPt1000 @@@ cmsDriver.py  SingleMuPt1000.cfi -n 10 --relval 10000,100
-SinglePiPt1 @@@ cmsDriver.py  SinglePiPt1.cfi -n 10 --relval 10000,100
-SinglePiPt10 @@@ cmsDriver.py  SinglePiPt10.cfi -n 10 --relval 10000,100
-SinglePiPt100 @@@ cmsDriver.py  SinglePiPt100.cfi -n 10 --relval 10000,100
-SingleElectronPt10 @@@ cmsDriver.py  SingleElectronPt10.cfi -n 10 --relval 10000,100
-SingleElectronPt35 @@@ cmsDriver.py  SingleElectronPt35.cfi -n 10 --relval 10000,100
-SingleElectronPt1000 @@@ cmsDriver.py  SingleElectronPt1000.cfi -n 10 --relval 10000,100
-SingleGammaPt10 @@@ cmsDriver.py  SingleGammaPt10.cfi -n 10 --relval 10000,100
-SingleGammaPt35 @@@ cmsDriver.py  SingleGammaPt35.cfi -n 10 --relval 10000,100
-SingleGammaPt1000 @@@ cmsDriver.py  SingleGammaPt1000.cfi -n 10 --relval 10000,100
-MinBias @@@ cmsDriver.py  PythiaMinBias.cfi -n 10 --relval 10000,100
-WE @@@ cmsDriver.py  WE.cfi -n 10 --relval 10000,100
-WM @@@ cmsDriver.py  WM.cfi -n 10 --relval 10000,100
-ZEE @@@ cmsDriver.py  ZEE.cfi -n 10 --relval 10000,100
-ZMM @@@ cmsDriver.py  ZMM.cfi -n 10 --relval 10000,100
-ZTT @@@ cmsDriver.py  ZTT.cfi -n 10 --relval 10000,100
-BJets_Pt_50_120 @@@ cmsDriver.py  BJets_Pt_50_120.cfi -n 10 --relval 10000,100
-TTbar @@@ cmsDriver.py  TTbar.cfi -n 10 --relval 10000,100
-HiggsChargedTausM200 @@@ cmsDriver.py  H200ChargedTaus.cfi -n 10 --relval 10000,100
-QCD_Pt_80_120 @@@ cmsDriver.py  QCD_Pt_80_120.cfi -n 10 --relval 30000,100
-QCD_Pt_3000_3500 @@@ cmsDriver.py  QCD_Pt_3000_3500.cfi -n 10 --relval 10000,100
-SingleGammaE120EHCAL @@@ cmsDriver.py  SingleGammaE120EHCAL.cfi -n 10 --relval 25000,100
-SinglePiPt60EHCAL @@@ cmsDriver.py  SinglePiPt60EHCAL.cfi -n 10 --relval 25000,100
-SinglePiE30HCAL @@@ cmsDriver.py  SinglePiE30HCAL.cfi -n 10 --relval 50000,100
-SinglePiE500HCAL @@@ cmsDriver.py  SinglePiE500HCAL.cfi -n 10 --relval 5000,100 
-SingleMuPt10 @@@ cmsDriver.py  SingleMuPt10.cfi -n 10 --relval 25000,100
-SinglePiPt10 @@@ cmsDriver.py  SinglePiPt10.cfi -n 10 --relval 25000,100
-SinglePi0E10 @@@ cmsDriver.py  SinglePi0E10.cfi -n 10 --relval 25000,100
-QCD_Pt_50_80 @@@ cmsDriver.py  QCD_Pt_50_80.cfi -n 10 --relval 100000,100
-QCD_Pt_120_170 @@@ cmsDriver.py  QCD_Pt_120_170.cfi -n 10 --relval 25000,100
-H130GGgluonfusion @@@ cmsDriver.py  H130GGgluonfusion.cfi -n 10 --relval 25000,100
-H200ZZ4L @@@ cmsDriver.py  H200ZZ4L.cfi -n 10 --relval 25000,100
-H165WW2L @@@ cmsDriver.py  H165WW2L.cfi -n 10 --relval 25000,100
-ZPrime5000JJ @@@ cmsDriver.py  ZPrime5000JJ.cfi -n 10 --relval 25000,100
-QQH1352T @@@ cmsDriver.py  QQH1352T.cfi -n 10 --relval 25000,100
-QQH120Inv @@@ cmsDriver.py  QQH120Inv.cfi -n 10 --relval 25000,100
-bJpsiX @@@ cmsDriver.py  bJpsiX.cfi -n 10 --relval 25000,100
-JpsiMM @@@ cmsDriver.py  JpsiMM.cfi -n 10 --relval 25000,100
-BsMM @@@ cmsDriver.py  BsMM.cfi -n 10 --relval 25000,100
-UpsMM @@@ cmsDriver.py  UpsMM.cfi -n 10 --relval 25000,100
-LM1 @@@ cmsDriver.py  LM1.cfi -n 10 --relval 25000,100
-LM5 @@@ cmsDriver.py  LM5.cfi -n 10 --relval 25000,100
-GM1 @@@ cmsDriver.py  GM1.cfi -n 10 --relval 25000,100
-CJets_Pt_50_120 @@@ cmsDriver.py  CJets_Pt_50_120.cfi -n 10 --relval 25000,100
+SingleMuPt10 @@@ cmsDriver.py  SingleMuPt10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+SingleMuPt100 @@@ cmsDriver.py  SingleMuPt100.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+SingleMuPt1000 @@@ cmsDriver.py  SingleMuPt1000.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+SinglePiPt1 @@@ cmsDriver.py  SinglePiPt1.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+SinglePiPt10 @@@ cmsDriver.py  SinglePiPt10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+SinglePiPt100 @@@ cmsDriver.py  SinglePiPt100.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+SingleElectronPt10 @@@ cmsDriver.py  SingleElectronPt10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+SingleElectronPt35 @@@ cmsDriver.py  SingleElectronPt35.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+SingleElectronPt1000 @@@ cmsDriver.py  SingleElectronPt1000.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+SingleGammaPt10 @@@ cmsDriver.py  SingleGammaPt10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+SingleGammaPt35 @@@ cmsDriver.py  SingleGammaPt35.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+SingleGammaPt1000 @@@ cmsDriver.py  SingleGammaPt1000.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+MinBias @@@ cmsDriver.py  PythiaMinBias.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+WE @@@ cmsDriver.py  WE.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+WM @@@ cmsDriver.py  WM.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+ZEE @@@ cmsDriver.py  ZEE.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+ZMM @@@ cmsDriver.py  ZMM.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+ZTT @@@ cmsDriver.py  ZTT.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+BJets_Pt_50_120 @@@ cmsDriver.py  BJets_Pt_50_120.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+TTbar @@@ cmsDriver.py  TTbar.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+HiggsChargedTausM200 @@@ cmsDriver.py  H200ChargedTaus.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+QCD_Pt_80_120 @@@ cmsDriver.py  QCD_Pt_80_120.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 30000,100
+QCD_Pt_3000_3500 @@@ cmsDriver.py  QCD_Pt_3000_3500.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 10000,100
+SingleGammaE120EHCAL @@@ cmsDriver.py  SingleGammaE120EHCAL.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 25000,100
+SinglePiPt60EHCAL @@@ cmsDriver.py  SinglePiPt60EHCAL.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 25000,100
+SinglePiE30HCAL @@@ cmsDriver.py  SinglePiE30HCAL.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 50000,100
+SinglePiE500HCAL @@@ cmsDriver.py  SinglePiE500HCAL.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 5000,100 
+SingleMuPt10 @@@ cmsDriver.py  SingleMuPt10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 25000,100
+SinglePiPt10 @@@ cmsDriver.py  SinglePiPt10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 25000,100
+SinglePi0E10 @@@ cmsDriver.py  SinglePi0E10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 25000,100
+QCD_Pt_50_80 @@@ cmsDriver.py  QCD_Pt_50_80.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 100000,100
+QCD_Pt_120_170 @@@ cmsDriver.py  QCD_Pt_120_170.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 25000,100
+H130GGgluonfusion @@@ cmsDriver.py  H130GGgluonfusion.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 25000,100
+H200ZZ4L @@@ cmsDriver.py  H200ZZ4L.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 25000,100
+H165WW2L @@@ cmsDriver.py  H165WW2L.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 25000,100
+ZPrime5000JJ @@@ cmsDriver.py  ZPrime5000JJ.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 25000,100
+QQH1352T @@@ cmsDriver.py  QQH1352T.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 25000,100
+QQH120Inv @@@ cmsDriver.py  QQH120Inv.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 25000,100
+bJpsiX @@@ cmsDriver.py  bJpsiX.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 25000,100
+JpsiMM @@@ cmsDriver.py  JpsiMM.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 25000,100
+BsMM @@@ cmsDriver.py  BsMM.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 25000,100
+UpsMM @@@ cmsDriver.py  UpsMM.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 25000,100
+LM1 @@@ cmsDriver.py  LM1.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 25000,100
+LM5 @@@ cmsDriver.py  LM5.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 25000,100
+GM1 @@@ cmsDriver.py  GM1.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 25000,100
+CJets_Pt_50_120 @@@ cmsDriver.py  CJets_Pt_50_120.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO,DQM -n 10 --relval 25000,100
