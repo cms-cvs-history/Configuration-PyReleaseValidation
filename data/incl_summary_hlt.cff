@@ -1,0 +1,12 @@
+include "Configuration/StandardSequences/data/Geometry.cff"
+include "Configuration/StandardSequences/data/MagneticField.cff"
+include "Configuration/StandardSequences/data/FakeConditions.cff"
+include "Configuration/StandardSequences/data/Generator.cff"
+include "Configuration/StandardSequences/data/DigiToRaw.cff"
+include "Configuration/StandardSequences/data/Simulation.cff"
+include "Configuration/StandardSequences/data/MixingNoPileUp.cff" 
+include "Configuration/StandardSequences/data/VtxSmearedBetafuncEarlyCollision.cff" 
+include "Configuration/StandardSequences/data/L1Emulator.cff"
+include "HLTrigger/Configuration/data/HLT_1E32.cff"
+
+
