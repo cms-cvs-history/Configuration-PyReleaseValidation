@@ -8,7 +8,7 @@ include "Configuration/StandardSequences/data/Simulation.cff"
 include "Configuration/StandardSequences/data/MixingNoPileUp.cff" 
 include "Configuration/StandardSequences/data/VtxSmearedBetafuncEarlyCollision.cff" 
 include "Configuration/StandardSequences/data/L1Emulator.cff"
-include "Configuration/StandardSequences/data/L1TriggerMenu_1E32Unprescaled.cff"
+include "Configuration/StandardSequences/data/L1Unprescale.cff"
 include "HLTrigger/Configuration/data/HLT_1E32.cff"
 
 
