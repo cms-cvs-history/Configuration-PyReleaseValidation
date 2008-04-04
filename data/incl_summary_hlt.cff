@@ -10,6 +10,6 @@ include "Configuration/StandardSequences/data/MixingNoPileUp.cff"
 include "Configuration/StandardSequences/data/VtxSmearedBetafuncEarlyCollision.cff" 
 include "Configuration/StandardSequences/data/L1Emulator.cff"
 include "Configuration/StandardSequences/data/L1TriggerDefaultMenu.cff"
-include "HLTrigger/Configuration/data/HLT_1E30.cff"
+include "HLTrigger/Configuration/data/HLT_2E30.cff"
 
 
