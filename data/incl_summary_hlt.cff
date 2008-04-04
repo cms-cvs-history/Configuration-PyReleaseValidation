@@ -10,6 +10,7 @@ include "Configuration/StandardSequences/data/MixingNoPileUp.cff"
 include "Configuration/StandardSequences/data/VtxSmearedBetafuncEarlyCollision.cff" 
 include "Configuration/StandardSequences/data/L1Emulator.cff"
 include "Configuration/StandardSequences/data/L1TriggerDefaultMenu.cff"
+// this needs to be the same as the one in relval_steps_module.py -- sorry
 include "HLTrigger/Configuration/data/HLT_2E30.cff"
-
+include "HLTrigger/Configuration/data/common/HLTPrescaleReset.cff"
 
