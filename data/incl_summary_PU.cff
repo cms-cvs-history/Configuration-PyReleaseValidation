@@ -1,7 +1,7 @@
 include "Configuration/StandardSequences/data/Geometry.cff"
 include "Configuration/StandardSequences/data/MagneticField.cff"
 include "Configuration/StandardSequences/data/FrontierConditions_GlobalTag.cff"
-replace GlobalTag.connect = "frontier://FrontierInt/CMS_COND_GLOBALTAG"
+replace GlobalTag.connect = "frontier://FrontierInt/CMS_COND_20X_GLOBALTAG"
 replace GlobalTag.globaltag = "STARTUP::All" 
 include "Configuration/StandardSequences/data/Generator.cff"
 include "Configuration/StandardSequences/data/DigiToRaw.cff"
