@@ -85,10 +85,10 @@ cffCustomiseDict = {
                      'HCALIST':'',
                      'RELVAL':'',
                      'TrackerHaloMuon':'',
-                     'TrackerCosBON':'RECO:Alignment/CommonAlignmentProducer/data/Reconstruction_Cosmics.cff',
-                     'TrackerCosBOFF':'RECO:Alignment/CommonAlignmentProducer/data/Reconstruction_Cosmics.cff',
-                     'MuonCosBON':'RECO:Alignment/CommonAlignmentProducer/data/Reconstruction_Cosmics.cff',
-                     'MuonCosBOFF':'RECO:Alignment/CommonAlignmentProducer/data/Reconstruction_Cosmics.cff',
+                     'TrackerCosBON':'RECO:Configuration/GlobalRuns/data/ReconstructionGR.cff',
+                     'TrackerCosBOFF':'RECO:Configuration/GlobalRuns/data/ReconstructionGR.cff',
+                     'MuonCosBON':'RECO:Configuration/GlobalRuns/data/ReconstructionGR.cff',
+                     'MuonCosBOFF':'RECO:Configuration/GlobalRuns/data/ReconstructionGR.cff',
                      'TrackerLaser':'',
                      'HaloMuon':''
                      }
@@ -104,10 +104,10 @@ recoseqCustomiseDict = {
                         'HCALIST':'',
                         'RELVAL':'',
                         'TrackerHaloMuon':'',
-                        'TrackerCosBON':':reconstruction_cosmics',
-                        'TrackerCosBOFF':':reconstruction_cosmics',
-                        'MuonCosBON':':reconstruction_cosmics',
-                        'MuonCosBOFF':':reconstruction_cosmics',
+                        'TrackerCosBON':':reconstructionGR',
+                        'TrackerCosBOFF':':reconstructionGR',
+                        'MuonCosBON':':reconstructionGR',
+                        'MuonCosBOFF':':reconstructionGR',
                         'TrackerLaser':'',
                         'HaloMuon':''
                         }
