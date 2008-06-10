@@ -23,6 +23,5 @@ HiggsChargedTausM200 @@@ cmsDriver.py  H200ChargedTaus.cfi -s GEN,SIM,DIGI,L1,DI
 QCD_Pt_80_120 @@@ cmsDriver.py  QCD_Pt_80_120.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 30000,100
 QCD_Pt_3000_3500 @@@ cmsDriver.py  QCD_Pt_3000_3500.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO,DQM -n 10 --relval 10000,100
 HYDJET_X2_B0 @@@ cmsDriver.py  gen_hydjet_x2_b0.cfi -s GEN,SIM -n 1 --relval 2,1
-Python_TTbar @@@ cmsDriver.py TTbar_cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO --pure_python
-Python_FastSim @@@ cmsDriver.py TTbar_cfi -s GEN,FASTSIM --pure_python -n 10
+FastSim @@@ cmsDriver.py TTbar_cfi -s GEN,FASTSIM -n 10
 
