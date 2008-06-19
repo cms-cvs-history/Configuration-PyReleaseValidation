@@ -389,6 +389,18 @@ if not options.old_config:
   config.write(configBuilder.pythonCfgCode)
   config.close()
 
+  if options.dump_pickle:
+    import pickle
+    result = {}
+    execfile(python_config_filename, result)
+    process = result["process"]
+
+    pickleFile = open(options.dump_pickle,"w")
+    pickle.dump(process,pickleFile)
+    pickleFile.close()
+    print "wrote "+options.dump_pickle
+    sys.exit(0)
+
   if options.no_exec_flag:
     print "Config file "+python_config_filename+ " created"
     sys.exit(0)
