@@ -1,10 +1,10 @@
-SingleGammaE120EHCAL @@@ cmsDriver.py SingleGammaE120EHCAL.cfi -s GEN,SIM,DIGI,RECO,DQM --eventcontent FEVTDEBUG --beamspot NoSmear --customise Validation/Configuration/SingleGammaE120_ECALHCAL.py -n 10 --relval 25000,100
-SinglePiPt60EHCAL @@@ cmsDriver.py SinglePiPt60EHCAL.cfi -s GEN,SIM,DIGI,RECO,DQM --eventcontent FEVTDEBUG --beamspot NoSmear --customise Validation/Configuration/SinglePionPt60_ECALHCAL.py -n 10 --relval 25000,100
-SinglePiE50HCAL @@@ cmsDriver.py SinglePiE50HCAL.cfi -s GEN,SIM,DIGI,RECO,DQM --eventcontent FEVTDEBUG --beamspot NoSmear --customise Validation/Configuration/SinglePionEfixed_HCAL.py -n 10 --relval 50000,100
-SinglePiE500HCAL @@@ cmsDriver.py SinglePiE500HCAL.cfi -s GEN,SIM,DIGI,RECO,DQM --eventcontent FEVTDEBUG --beamspot NoSmear --customise Validation/Configuration/SinglePionEfixed_HCAL.py -n 10 --relval 5000,100  
-SingleMuPt10 @@@ cmsDriver.py SingleMuPt10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM --eventcontent FEVTDEBUG --beamspot NoSmear --customise Validation/Configuration/SingleMuPt10.py -n 10 --relval 25000,100
-SinglePiPt10 @@@ cmsDriver.py  SinglePiPt10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO:reconstruction_withRS,DQM -n 10 --relval 25000,100
-SinglePi0E10 @@@ cmsDriver.py  SinglePi0E10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO:reconstruction_withRS,DQM -n 10 --relval 25000,100
+SingleGammaE120EHCAL @@@ cmsDriver.py SingleGammaE120EHCAL.cfi -s GEN,SIM,DIGI,RECO,DQM --eventcontent FEVTDEBUG --beamspot NoSmear --customise Validation/Configuration/SingleGammaE120_ECALHCAL.py -n 10 --relval 25000,250
+SinglePiPt60EHCAL @@@ cmsDriver.py SinglePiPt60EHCAL.cfi -s GEN,SIM,DIGI,RECO,DQM --eventcontent FEVTDEBUG --beamspot NoSmear --customise Validation/Configuration/SinglePionPt60_ECALHCAL.py -n 10 --relval 25000,250
+SinglePiE50HCAL @@@ cmsDriver.py SinglePiE50HCAL.cfi -s GEN,SIM,DIGI,RECO,DQM --eventcontent FEVTDEBUG --beamspot NoSmear --customise Validation/Configuration/SinglePionEfixed_HCAL.py -n 10 --relval 50000,250
+SinglePiE500HCAL @@@ cmsDriver.py SinglePiE500HCAL.cfi -s GEN,SIM,DIGI,RECO,DQM --eventcontent FEVTDEBUG --beamspot NoSmear --customise Validation/Configuration/SinglePionEfixed_HCAL.py -n 10 --relval 5000,250  
+SingleMuPt10 @@@ cmsDriver.py SingleMuPt10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM --eventcontent FEVTDEBUG --beamspot NoSmear --customise Validation/Configuration/SingleMuPt10.py -n 10 --relval 25000,250
+SinglePiPt10 @@@ cmsDriver.py  SinglePiPt10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO:reconstruction_withRS,DQM -n 10 --relval 25000,250
+SinglePi0E10 @@@ cmsDriver.py  SinglePi0E10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO:reconstruction_withRS,DQM -n 10 --relval 25000,250
 QCD_Pt_50_80 @@@ cmsDriver.py  QCD_Pt_50_80.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO:reconstruction_withRS,DQM -n 10 --relval 100000,100
 QCD_Pt_120_170 @@@ cmsDriver.py  QCD_Pt_120_170.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO:reconstruction_withRS,DQM -n 10 --relval 25000,100
 H130GGgluonfusion @@@ cmsDriver.py  H130GGgluonfusion.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RECO:reconstruction_withRS,DQM -n 10 --relval 25000,100

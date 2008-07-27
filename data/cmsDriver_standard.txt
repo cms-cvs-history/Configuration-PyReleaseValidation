@@ -1,15 +1,15 @@
-SingleMuPt1 @@@ cmsDriver.py  SingleMuPt1.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,100
-SingleMuPt10 @@@ cmsDriver.py  SingleMuPt10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,100
-SingleMuPt100 @@@ cmsDriver.py  SingleMuPt100.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,100
-SingleMuPt1000 @@@ cmsDriver.py  SingleMuPt1000.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO,DQM -n 10 --relval 10000,100
-SinglePiPt1 @@@ cmsDriver.py  SinglePiPt1.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,100
-SinglePiPt10 @@@ cmsDriver.py  SinglePiPt10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,100
-SinglePiPt100 @@@ cmsDriver.py  SinglePiPt100.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,100
-SingleElectronPt10 @@@ cmsDriver.py  SingleElectronPt10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,100
-SingleElectronPt35 @@@ cmsDriver.py  SingleElectronPt35.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,100
-SingleElectronPt1000 @@@ cmsDriver.py  SingleElectronPt1000.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO,DQM -n 10 --relval 10000,100
-SingleGammaPt10 @@@ cmsDriver.py  SingleGammaPt10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,100
-SingleGammaPt35 @@@ cmsDriver.py  SingleGammaPt35.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,100
+SingleMuPt1 @@@ cmsDriver.py  SingleMuPt1.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,250
+SingleMuPt10 @@@ cmsDriver.py  SingleMuPt10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,250
+SingleMuPt100 @@@ cmsDriver.py  SingleMuPt100.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,250
+SingleMuPt1000 @@@ cmsDriver.py  SingleMuPt1000.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO,DQM -n 10 --relval 10000,250
+SinglePiPt1 @@@ cmsDriver.py  SinglePiPt1.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,250
+SinglePiPt10 @@@ cmsDriver.py  SinglePiPt10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,250
+SinglePiPt100 @@@ cmsDriver.py  SinglePiPt100.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,250
+SingleElectronPt10 @@@ cmsDriver.py  SingleElectronPt10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,250
+SingleElectronPt35 @@@ cmsDriver.py  SingleElectronPt35.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,250
+SingleElectronPt1000 @@@ cmsDriver.py  SingleElectronPt1000.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO,DQM -n 10 --relval 10000,250
+SingleGammaPt10 @@@ cmsDriver.py  SingleGammaPt10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,250
+SingleGammaPt35 @@@ cmsDriver.py  SingleGammaPt35.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,250
 SingleGammaPt1000 @@@ cmsDriver.py  SingleGammaPt1000.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO,DQM -n 10 --relval 10000,100
 MinBias @@@ cmsDriver.py  MinBias.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,100
 WE @@@ cmsDriver.py  WE.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,100
@@ -21,7 +21,7 @@ BJets_Pt_50_120 @@@ cmsDriver.py  BJets_Pt_50_120.cfi -s GEN,SIM,DIGI,L1,DIGI2RA
 TTbar @@@ cmsDriver.py  TTbar.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,100
 HiggsChargedTausM200 @@@ cmsDriver.py  H200ChargedTaus.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 10000,100
 QCD_Pt_80_120 @@@ cmsDriver.py  QCD_Pt_80_120.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO:reconstruction_withRS,DQM -n 10 --relval 30000,100
-QCD_Pt_3000_3500 @@@ cmsDriver.py  QCD_Pt_3000_3500.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO,DQM -n 10 --relval 10000,100
-HYDJET_X2_B0 @@@ cmsDriver.py  gen_hydjet_x2_b0.cfi -s GEN,SIM -n 1 --relval 2,1
+QCD_Pt_3000_3500 @@@ cmsDriver.py  QCD_Pt_3000_3500.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO,DQM -n 10 --relval 10000,25
+#HYDJET_X2_B0 @@@ cmsDriver.py  gen_hydjet_x2_b0.cfi -s GEN,SIM -n 1 --relval 2,1
 FastSim @@@ cmsDriver.py TTbar_cfi -s GEN,FASTSIM -n 10
 
