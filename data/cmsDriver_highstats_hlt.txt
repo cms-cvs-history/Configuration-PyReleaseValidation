@@ -28,3 +28,6 @@ JpsiMM @@@ cmsDriver.py  JpsiMM.cfi -s GEN,SIM,DIGI,L1,DQM,DIGI2RAW,HLT -n 10 --
 BsMM @@@ cmsDriver.py  BsMM.cfi -s GEN,SIM,DIGI,L1,DQM,DIGI2RAW,HLT -n 10 --relval 25000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --conditions FrontierConditions_GlobalTag,STARTUP_V4::All
 UpsMM @@@ cmsDriver.py  UpsMM.cfi -s GEN,SIM,DIGI,L1,DQM,DIGI2RAW,HLT -n 10 --relval 25000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --conditions FrontierConditions_GlobalTag,STARTUP_V4::All
 CJets_Pt_50_120 @@@ cmsDriver.py  CJets_Pt_50_120.cfi -s GEN,SIM,DIGI,L1,DQM,DIGI2RAW,HLT -n 10 --relval 25000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --conditions FrontierConditions_GlobalTag,STARTUP_V4::All
+
+RECO @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,POSTRECO,DQM --relval 25000,100 --datatier GEN-SIM-DIGI-RAW-HLTDEBUG-RECO --eventcontent FEVTSIM -conditions FrontierConditions_GlobalTag,STARTUP_V4::All
+RECO @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,POSTRECO,DQM --relval 25000,100 --datatier GEN-SIM-DIGI-RAW-HLTDEBUG-RECO --eventcontent FEVTSIM -conditions FrontierConditions_GlobalTag,IDEAL_V5::All
