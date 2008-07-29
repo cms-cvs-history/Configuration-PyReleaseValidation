@@ -26,3 +26,10 @@ TTbar @@@ cmsDriver.py  TTbar.cfi -s GEN,SIM,DIGI,L1,DQM,DIGI2RAW,HLT -n 10  --c
 HiggsChargedTausM200 @@@ cmsDriver.py  H200ChargedTaus.cfi -s GEN,SIM,DIGI,L1,DQM,DIGI2RAW,HLT -n 10  --conditions FrontierConditions_GlobalTag,STARTUP_V4::All --relval 10000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT
 QCD_Pt_80_120 @@@ cmsDriver.py  QCD_Pt_80_120.cfi -s GEN,SIM,DIGI,L1,DQM,DIGI2RAW,HLT -n 10  --conditions FrontierConditions_GlobalTag,STARTUP_V4::All --relval 30000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT
 QCD_Pt_80_120 @@@ cmsDriver.py  QCD_Pt_80_120.cfi -s GEN,SIM,DIGI,L1,DQM,DIGI2RAW,HLT -n 10  --conditions FrontierConditions_GlobalTag,IDEAL_V5::All --relval 30000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT
+
+RECO @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,POSTRECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT+DQM --relval 25000,100 --datatier GEN-SIM-DIGI-RAW-HLTDEBUG-RECO --eventcontent FEVTSIM -conditions FrontierConditions_GlobalTag,STARTUP_V4::All
+RECO @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,POSTRECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT+DQM --relval 25000,100 --datatier GEN-SIM-DIGI-RAW-HLTDEBUG-RECO --eventcontent FEVTSIM -conditions FrontierConditions_GlobalTag,IDEAL_V5::All
+
+ALCA @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlZMuMu+TkAlMuonIsolated+TkAlJpsiMuMu+TkAlUpsilonMuMu+TkAlMinBias+SiPixelLorentzAngle+SiStripCalMinBias+EcalCalElectron+EcalCalPhiSym+EcalCalPi0Calib+HcalCalDijets+HcalCalGammaJet+HcalCalIsoTrkNoHLT+MuAlOverlaps+DQM -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,STARTUP_V4::All --no_exec --datatier GEN-SIM-DIGI-RAW-HLTDEBUG-RECO  --oneoutput --eventcontent FEVTSIM
+ALCA @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlZMuMu+TkAlMuonIsolated+TkAlJpsiMuMu+TkAlUpsilonMuMu+TkAlMinBias+SiPixelLorentzAngle+SiStripCalMinBias+EcalCalElectron+EcalCalPhiSym+EcalCalPi0Calib+HcalCalDijets+HcalCalGammaJet+HcalCalIsoTrkNoHLT+MuAlOverlaps+DQM -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,IDEAL_V5::All --no_exec --datatier GEN-SIM-DIGI-RAW-HLTDEBUG-RECO  --oneoutput --eventcontent FEVTSIM
+
