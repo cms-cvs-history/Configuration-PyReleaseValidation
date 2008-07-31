@@ -1,22 +1,10 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.59 $"
+__version__ = "$Revision: 1.56 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
 from FWCore.ParameterSet.Modules import _Module 
-
-class Options:
-        pass
-
-# the canonical defaults
-defaultOptions = Options()
-defaultOptions.pileup = 'NoPileUp'
-defaultOptions.geometry = 'Pilot2'
-defaultOptions.beamspot = 'Early10TeVCollision'
-defaultOptions.magField = ''
-defaultOptions.conditions = 'FrontierConditions_GlobalTag,STARTUP_V4::All'
-    
 
 # some helper routines
 def dumpPython(process,name):
@@ -32,17 +20,14 @@ def findName(object,dictionary):
         if item == object:
             return name
 
-
+             
 class ConfigBuilder(object):
     """The main building routines """
     
-    def __init__(self,options, process = None ):
+    def __init__(self,options):
         """options taken from old cmsDriver and optparse """
         self._options = options
-	if process == None:
-            self.process = cms.Process(self._options.name)
-        else:
-            self.process = process 		
+        self.process = cms.Process(self._options.name)
         self.process.schedule = cms.Schedule()        
         # we are doing three things here:
         # creating a process to catch errors
@@ -179,7 +164,7 @@ class ConfigBuilder(object):
                                                         
 
         # what steps are provided by this class?
-        stepList = [methodName.lstrip("prepare_") for methodName in ConfigBuilder.__dict__ if methodName.startswith('prepare_')]
+        stepList = [methodName.lstrip("prepare_") for methodName in self.__class__.__dict__ if methodName.startswith('prepare_')]
 
         # look which steps are requested and invoke the corresponding method
         for step in self._options.step.split(","):
@@ -413,7 +398,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.59 $"),
+              (version=cms.untracked.string("$Revision: 1.56 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
@@ -493,16 +478,10 @@ class ConfigBuilder(object):
         # dump customise fragment
         if self._options.customisation_file:
             self.pythonCfgCode += self.addCustomise()
+         
         return
       
-
-def loadReco(process):
-    wb = ConfigBuilder(defaultOptions, process = process)
-    wb._options.step = 'RECO'
-    wb.addStandardSequences()
-    wb.addConditions()
-    return process
-                    
+      
       
         
         
