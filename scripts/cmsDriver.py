@@ -6,7 +6,7 @@ import optparse
 import sys
 import os
 import Configuration.PyReleaseValidation
-from Configuration.PyReleaseValidation.ConfigBuilder import ConfigBuilder, defaultOptions
+from Configuration.PyReleaseValidation.ConfigBuilder import ConfigBuilder
 
 # Prepare a parser to read the options
 usage=\
@@ -31,7 +31,7 @@ parser.add_option("-s", "--step",
 
 parser.add_option("--conditions",
                   help="What conditions to use. Default are frontier conditions 'STARTUP_V4::All'",
-                  default=defaultOptions.conditions,
+                  default="FrontierConditions_GlobalTag,STARTUP_V4::All",
                   dest="conditions")
 
 parser.add_option("--eventcontent",
@@ -57,7 +57,7 @@ parser.add_option("-n", "--number",
 # expert settings
 expertSettings.add_option("--beamspot",
                           help="What beam spot to use (from Configuration/StandardSequences). Default=Early10TeVCollision",
-                          default=defaultOptions.beamspot,
+                          default="Early10TeVCollision",
                           dest="beamspot")
 
 expertSettings.add_option("--customise",
@@ -87,12 +87,12 @@ expertSettings.add_option("--filtername",
 
 expertSettings.add_option("--geometry",
                           help="What geometry to use (from Configuration/StandardSequences). Default=Pilot2",
-                          default=defaultOptions.geometry,
+                          default="Pilot2",
                           dest="geometry")
 
 expertSettings.add_option("--magField",
                           help="What magnetic field to use (from Configuration/StandardSequences).",
-                          default=defaultOptions.magField,
+                          default="",
                           dest="magField")
 
 expertSettings.add_option("--no_output",
@@ -133,7 +133,7 @@ expertSettings.add_option("--dump_DSetName",
 
 expertSettings.add_option("--pileup",
                   help="What pileup config to use. Default=NoPileUp.",
-                  default=defaultOptions.pileup,
+                  default='NoPileUp',
                   dest="pileup")
 
                                                     
@@ -271,13 +271,10 @@ elif options.step=='DATA_CHAIN':
 options.step = options.step.replace("SIM_CHAIN","GEN,SIM,DIGI,L1,DIGI2RAW")
 
 
-# the process name is just the last step in the list of steps
-options.name = trimmedStep.split(',')[-1]
-if options.name in ('POSTRECO,DQM') and 'RECO' in trimmedStep:
-    options.name = 'RECO'
 
-# if we're dealing with HLT, the process name has to be 'HLT' only
-if 'HLT' in trimmedStep:
+options.name = trimmedStep.replace(',','').replace("_","")
+# if we're dealing with HLT, the process name has to be "HLT" only
+if 'HLT' in options.name :
     options.name = 'HLT'
 
 options.outfile_name = options.dirout+options.fileout
