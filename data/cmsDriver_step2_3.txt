@@ -1,24 +1,24 @@
 
 #either DQM part has to come last or add the DQM alca path
-cmsDriver.py step2_startup -s RAW2DIGI,RECO,POSTRECO,ALCA:SiPixelLorentzAngle+SiStripCalMinBias+MuAlZMuMu+RpcCalHLT+DQM  -n 30 --filein file:raw.root --eventcontent RECOSIM  --conditions FrontierConditions_GlobalTag,STARTUP_V4::All --dump_cfg & 
+cmsDriver.py step2_startup -s RAW2DIGI,RECO,POSTRECO,ALCA:SiPixelLorentzAngle+SiStripCalMinBias+MuAlZMuMu+RpcCalHLT+DQM  -n 30 --filein file:raw.root --eventcontent RECOSIM  --conditions FrontierConditions_GlobalTag,STARTUP_V5::All --dump_cfg & 
 sleep 10
 
-cmsDriver.py step2_ideal -s RAW2DIGI,RECO,POSTRECO,ALCA:SiPixelLorentzAngle+SiStripCalMinBias+MuAlZMuMu+RpcCalHLT+DQM  -n 30 --filein file:raw.root --eventcontent RECOSIM  --conditions FrontierConditions_GlobalTag,IDEAL_V5::All --dump_cfg & 
+cmsDriver.py step2_ideal -s RAW2DIGI,RECO,POSTRECO,ALCA:SiPixelLorentzAngle+SiStripCalMinBias+MuAlZMuMu+RpcCalHLT+DQM  -n 30 --filein file:raw.root --eventcontent RECOSIM  --conditions FrontierConditions_GlobalTag,IDEAL_V6::All --dump_cfg & 
 sleep 10
 
-cmsDriver.py step3_startup -s ALCA:TkAlZMuMu+TkAlMuonIsolated+TkAlJpsiMuMu+TkAlUpsilonMuMu+TkAlMinBias+EcalCalElectron+EcalCalPhiSym+EcalCalPi0Calib+HcalCalDijets+HcalCalGammaJet+HcalCalIsoTrkNoHLT+MuAlOverlaps+DQM -n 30 --filein file:reco.root --eventcontent none --conditions FrontierConditions_GlobalTag,STARTUP_V4::All --dump_cfg  & 
+cmsDriver.py step3_startup -s ALCA:TkAlZMuMu+TkAlMuonIsolated+TkAlJpsiMuMu+TkAlUpsilonMuMu+TkAlMinBias+EcalCalElectron+EcalCalPhiSym+EcalCalPi0Calib+HcalCalDijets+HcalCalGammaJet+HcalCalIsoTrkNoHLT+MuAlOverlaps+DQM -n 30 --filein file:reco.root --eventcontent none --conditions FrontierConditions_GlobalTag,STARTUP_V5::All --dump_cfg  & 
 sleep 10
 
-cmsDriver.py step3_ideal -s ALCA:TkAlZMuMu+TkAlMuonIsolated+TkAlJpsiMuMu+TkAlUpsilonMuMu+TkAlMinBias+EcalCalElectron+EcalCalPhiSym+EcalCalPi0Calib+HcalCalDijets+HcalCalGammaJet+HcalCalIsoTrkNoHLT+MuAlOverlaps+DQM -n 30 --filein file:reco.root  --eventcontent none --conditions FrontierConditions_GlobalTag,STARTUP_V4::All --dump_cfg & 
+cmsDriver.py step3_ideal -s ALCA:TkAlZMuMu+TkAlMuonIsolated+TkAlJpsiMuMu+TkAlUpsilonMuMu+TkAlMinBias+EcalCalElectron+EcalCalPhiSym+EcalCalPi0Calib+HcalCalDijets+HcalCalGammaJet+HcalCalIsoTrkNoHLT+MuAlOverlaps+DQM -n 30 --filein file:reco.root  --eventcontent none --conditions FrontierConditions_GlobalTag,STARTUP_V5::All --dump_cfg & 
 sleep 10
 
-cmsDriver.py step2_startup_relval -s RAW2DIGI,RECO,POSTRECO,ALCA:SiPixelLorentzAngle+SiStripCalMinBias+MuAlZMuMu+RpcCalHLT+DQM  -n 30 --filein file:raw.root --eventcontent RECOSIM  --conditions FrontierConditions_GlobalTag,STARTUP_V4::All --oneoutput --dump_cfg & 
+cmsDriver.py step2_startup_relval -s RAW2DIGI,RECO,POSTRECO,ALCA:SiPixelLorentzAngle+SiStripCalMinBias+MuAlZMuMu+RpcCalHLT+DQM  -n 30 --filein file:raw.root --eventcontent RECOSIM  --conditions FrontierConditions_GlobalTag,STARTUP_V5::All --oneoutput --dump_cfg & 
 sleep 10
 
-cmsDriver.py step2_ideal_relval -s RAW2DIGI,RECO,POSTRECO,ALCA:SiPixelLorentzAngle+SiStripCalMinBias+MuAlZMuMu+RpcCalHLT+DQM  -n 30 --filein file:raw.root --eventcontent RECOSIM  --conditions FrontierConditions_GlobalTag,IDEAL_V5::All --oneoutput --dump_cfg &  
+cmsDriver.py step2_ideal_relval -s RAW2DIGI,RECO,POSTRECO,ALCA:SiPixelLorentzAngle+SiStripCalMinBias+MuAlZMuMu+RpcCalHLT+DQM  -n 30 --filein file:raw.root --eventcontent RECOSIM  --conditions FrontierConditions_GlobalTag,IDEAL_V6::All --oneoutput --dump_cfg &  
 sleep 10
 
-cmsDriver.py step3_startup_relval -s ALCA:TkAlZMuMu+TkAlMuonIsolated+TkAlJpsiMuMu+TkAlUpsilonMuMu+TkAlMinBias+EcalCalElectron+EcalCalPhiSym+EcalCalPi0Calib+HcalCalDijets+HcalCalGammaJet+HcalCalIsoTrkNoHLT+MuAlOverlaps+DQM -n 30 --filein file:reco.root  --eventcontent none --conditions FrontierConditions_GlobalTag,STARTUP_V4::All --oneoutput --dump_cfg  & 
+cmsDriver.py step3_startup_relval -s ALCA:TkAlZMuMu+TkAlMuonIsolated+TkAlJpsiMuMu+TkAlUpsilonMuMu+TkAlMinBias+EcalCalElectron+EcalCalPhiSym+EcalCalPi0Calib+HcalCalDijets+HcalCalGammaJet+HcalCalIsoTrkNoHLT+MuAlOverlaps+DQM -n 30 --filein file:reco.root  --eventcontent none --conditions FrontierConditions_GlobalTag,STARTUP_V5::All --oneoutput --dump_cfg  & 
 sleep 10
 
-cmsDriver.py step3_ideal_relval -s ALCA:TkAlZMuMu+TkAlMuonIsolated+TkAlJpsiMuMu+TkAlUpsilonMuMu+TkAlMinBias+EcalCalElectron+EcalCalPhiSym+EcalCalPi0Calib+HcalCalDijets+HcalCalGammaJet+HcalCalIsoTrkNoHLT+MuAlOverlaps+DQM -n 30 --filein file:reco.root  --eventcontent none --conditions FrontierConditions_GlobalTag,STARTUP_V4::All --oneoutput --dump_cfg 
+cmsDriver.py step3_ideal_relval -s ALCA:TkAlZMuMu+TkAlMuonIsolated+TkAlJpsiMuMu+TkAlUpsilonMuMu+TkAlMinBias+EcalCalElectron+EcalCalPhiSym+EcalCalPi0Calib+HcalCalDijets+HcalCalGammaJet+HcalCalIsoTrkNoHLT+MuAlOverlaps+DQM -n 30 --filein file:reco.root  --eventcontent none --conditions FrontierConditions_GlobalTag,STARTUP_V5::All --oneoutput --dump_cfg 
