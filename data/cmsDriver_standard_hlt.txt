@@ -37,6 +37,8 @@
 35 ++ Wjet_Pt_80_120 ++ RECO1 @@@ cmsDriver.py Wjet_Pt_80_120_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT -n 10  --conditions FrontierConditions_GlobalTag,IDEAL_V9::All --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT
 36 ++ Wjet_Pt_3000_3500 ++ RECO1 @@@ cmsDriver.py Wjet_Pt_3000_3500_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT -n 10  --conditions FrontierConditions_GlobalTag,IDEAL_V9::All --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT
 37 ++ LM1_sfts ++ RECO1 @@@ cmsDriver.py LM1_sfts_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT -n 10  --conditions FrontierConditions_GlobalTag,IDEAL_V9::All --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT
+38 ++ QCD_FlatPt_15_3000 ++ RECO1 @@@ cmsDriver.py QCDForPF_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT -n 10  --conditions FrontierConditions_GlobalTag,IDEAL_V11::All --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT
+39 ++ QCD_FlatPt_15_3000 ++ none @@@ cmsDriver.py QCDForPF_cfi.py -s GEN,FASTSIM --pileup=NoPileUp  --conditions=FrontierConditions_GlobalTag,IDEAL_V11::All --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
 
 STEP2 ++ RECO1 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,POSTRECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,IDEAL_V9::All
 STEP2 ++ RECO2 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,POSTRECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,STARTUP_V7::All
