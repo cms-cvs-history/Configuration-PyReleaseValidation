@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.99.2.2 $"
+__version__ = "$Revision: 1.99.2.3 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -158,6 +158,9 @@ class ConfigBuilder(object):
 
             # pile up handling for fastsim
             # TODO - do we want a map config - number or actual values?             
+            self.loadAndRemember("FastSimulation.PileUpProducer.PileUpSimulator10TeV_cfi")
+            self.additionalCommands.append('process.famosPileUp.PileUpSimulator = process.PileUpSimulatorBlock.PileUpSimulator')
+
 	    if self._options.pileup not in pileupMap.keys():
 		    print "Pile up option",self._options.pileup,"unknown."
 		    print "Possible options are:", pileupMap.keys()
@@ -542,8 +545,6 @@ class ConfigBuilder(object):
             print '  Set comEnergy to famos decay processing to 10 TeV. Please edit by hand if it needs to be different.'
             print '  The pile up is taken from 10 TeV files. To switch to other files remove the inclusion of "PileUpSimulator10TeV_cfi"'
             self.additionalCommands.append('process.famosSimHits.ActivateDecays.comEnergy = 10000')
-            self.loadAndRemember("FastSimulation.PileUpProducer.PileUpSimulator10TeV_cfi")
-	    self.additionalCommands.append('process.famosPileUp.PileUpSimulator = process.PileUpSimulatorBlock.PileUpSimulator')
 	    
             self.additionalCommands.append("process.simulation = cms.Sequence(process.simulationWithFamos)")
             self.additionalCommands.append("process.HLTEndSequence = cms.Sequence(process.reconstructionWithFamos)")
@@ -584,7 +585,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.99.2.2 $"),
+              (version=cms.untracked.string("$Revision: 1.99.2.3 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
