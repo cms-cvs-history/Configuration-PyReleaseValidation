@@ -3,11 +3,11 @@ cmsPerfSuite.py  --step GEN-SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI-RECO \
     --profile -1 --cmsScimark 0 --cmsScimarkLarge 0 --notrunspare --timesize 1 \
     --RunTimeSize MinBias  --RunDigiPileUp MinBias \
     --PUInputFile "/store/relval/CMSSW_2_2_3/RelValMinBias/GEN-SIM-DIGI-RAW-HLTDEBUG/IDEAL_V11_v4/0003/5A0FBF48-84CB-DD11-B0B3-00304879FBB2.root" \
-   --cmsdriver="--conditions FrontierConditions_GlobalTag,IDEAL_V11::All --eventcontent FEVTDEBUG" >& cmsPerfSuite.log&
+   --cmsdriver="--conditions FrontierConditions_GlobalTag,IDEAL_V12::All --eventcontent FEVTDEBUG" >& cmsPerfSuite.log&
 
 cmsPerfSuite.py  --step GEN-SIM,DIGI,L1,DIGI2RAW,RAW2DIGI-RECO \
     --profile -1 --cmsScimark 0 --cmsScimarkLarge 0 --notrunspare --timesize 1 \
     --RunTimeSize MinBias  --RunDigiPileUp MinBias \
     --PUInputFile "/store/relval/CMSSW_2_2_3/RelValMinBias/GEN-SIM-DIGI-RAW-HLTDEBUG/IDEAL_V11_v4/0003/5A0FBF48-84CB-DD11-B0B3-00304879FBB2.root" \
-   --cmsdriver="--conditions FrontierConditions_GlobalTag,IDEAL_V11::All --eventcontent FEVTDEBUG" >& cmsPerfSuite.log&
+   --cmsdriver="--conditions FrontierConditions_GlobalTag,IDEAL_V12::All --eventcontent FEVTDEBUG" >& cmsPerfSuite.log&
 
