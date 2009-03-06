@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.99.2.5 $"
+__version__ = "$Revision: 1.99.2.6 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -275,9 +275,6 @@ class ConfigBuilder(object):
 	self.SIMDefaultCFF="Configuration/StandardSequences/Sim_cff"
 	self.DIGIDefaultCFF="Configuration/StandardSequences/Digi_cff"
 	self.DIGI2RAWDefaultCFF="Configuration/StandardSequences/DigiToRaw_cff"
-	self.L1EMDefaultCFF='Configuration/StandardSequences/SimL1Emulator_cff'
-	self.L1MENUDefaultCFF="Configuration/StandardSequences/L1TriggerDefaultMenu_cff"
-	self.HLTDefaultCFF="HLTrigger/Configuration/HLT_2E30_cff"
 	self.RAW2DIGIDefaultCFF="Configuration/StandardSequences/RawToDigi_Data_cff"
 	self.RECODefaultCFF="Configuration/StandardSequences/Reconstruction_cff"
 	self.POSTRECODefaultCFF="Configuration/StandardSequences/PostRecoGenerator_cff"
@@ -290,8 +287,6 @@ class ConfigBuilder(object):
 	self.GENDefaultSeq=None
 	self.DIGIDefaultSeq=None
 	self.DIGI2RAWDefaultSeq=None
-	self.HLTDefaultSeq=None
-	self.L1DefaultSeq=None
 	self.RAW2DIGIDefaultSeq='RawToDigi'
 	self.RECODefaultSeq='reconstruction'
 	self.POSTRECODefaultSeq=None
@@ -451,28 +446,21 @@ class ConfigBuilder(object):
 
     def prepare_L1(self, sequence = None):
         """ Enrich the schedule with the L1 simulation step"""
-        if not sequence:
-            self.loadAndRemember(self.L1EMDefaultCFF) 
-            self.loadAndRemember(self.L1MENUDefaultCFF)
-	else:
-            # let the L1 package decide for the scenarios available
-	    from L1Trigger.Configuration.ConfigBuilder import getConfigsForScenario
-	    listOfImports = getConfigsForScenario(sequence)
-	    for file in listOfImports:
-                self.loadAndRemember(file)
+        # let the L1 package decide for the scenarios available
+        from L1Trigger.Configuration.ConfigBuilder import getConfigsForScenario
+	listOfImports = getConfigsForScenario(sequence)
+	for file in listOfImports:
+            self.loadAndRemember(file)
         self.process.L1simulation_step = cms.Path(self.process.SimL1Emulator)
         self.process.schedule.append(self.process.L1simulation_step)
 
     def prepare_HLT(self, sequence = None):
         """ Enrich the schedule with the HLT simulation step"""
-	if not sequence:
-            self.loadAndRemember(self.HLTDefaultCFF)
-        else:
-            # let the HLT package decide for the scenarios available
-            from HLTrigger.Configuration.ConfigBuilder import getConfigsForScenario
-            listOfImports = getConfigsForScenario(sequence)
-            for file in listOfImports:
-                self.loadAndRemember(file)
+        # let the HLT package decide for the scenarios available
+        from HLTrigger.Configuration.ConfigBuilder import getConfigsForScenario
+        listOfImports = getConfigsForScenario(sequence)
+        for file in listOfImports:
+            self.loadAndRemember(file)
         self.process.schedule.extend(self.process.HLTSchedule)
         [self.blacklist_paths.append(path) for path in self.process.HLTSchedule if isinstance(path,(cms.Path,cms.EndPath))]
   
@@ -598,7 +586,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.99.2.5 $"),
+              (version=cms.untracked.string("$Revision: 1.99.2.6 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
