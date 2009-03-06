@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.99.2.4 $"
+__version__ = "$Revision: 1.99.2.5 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -461,7 +461,7 @@ class ConfigBuilder(object):
 	    for file in listOfImports:
                 self.loadAndRemember(file)
         self.process.L1simulation_step = cms.Path(self.process.SimL1Emulator)
-        self.schedule.append(self.process.L1simulation_step)
+        self.process.schedule.append(self.process.L1simulation_step)
 
     def prepare_HLT(self, sequence = None):
         """ Enrich the schedule with the HLT simulation step"""
@@ -473,7 +473,7 @@ class ConfigBuilder(object):
             listOfImports = getConfigsForScenario(sequence)
             for file in listOfImports:
                 self.loadAndRemember(file)
-        self.schedule.append(self.process.HLTSchedule)
+        self.process.schedule.extend(self.process.HLTSchedule)
         [self.blacklist_paths.append(path) for path in self.process.HLTSchedule if isinstance(path,(cms.Path,cms.EndPath))]
   
     def prepare_RAW2DIGI(self, sequence = "RawToDigi"):
@@ -598,7 +598,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.99.2.4 $"),
+              (version=cms.untracked.string("$Revision: 1.99.2.5 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
