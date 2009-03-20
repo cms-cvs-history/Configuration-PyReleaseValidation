@@ -11,11 +11,9 @@ import traceback
 # Prepare a parser to read the options
 usage=\
 """%prog <TYPE> [options].
-Examples:
+Example:
 
-%prog SingleMuPt10_cfi -n 100 --no_output
-%prog QCD_Pt_15_20_cfi -s GEN,SIM,DIGI,L1,DQM,DIGI2RAW,HLT -n 10
-%prog reco -s RAW2DIGI,RECO --conditions FrontierConditions_GlobalTag,STARTUP_V4::All
+%prog reco -s RAW2DIGI,RECO --conditions FrontierConditions_GlobalTag,STARTUP_V4::All --eventcontent RECOSIM
 """
 parser = optparse.OptionParser(usage)
 
@@ -36,7 +34,7 @@ parser.add_option("--conditions",
 
 parser.add_option("--eventcontent",
                   help="What event content to write out. Default=FEVTDEBUG, or FEVT (for cosmics)",
-                  default=None,
+                  default='RECOSIM',
                   dest="eventcontent")
 
 parser.add_option("--filein",
@@ -294,7 +292,7 @@ options.step = options.step.replace("SIM_CHAIN","GEN,SIM,DIGI,L1,DIGI2RAW")
 # if not fastsim or harvesting...
 
 addEndJob = True
-if "FASTSIM" in options.step or "HARVESTING" in options.step: 
+if ("FASTSIM" in options.step and not "VALIDATION" in options.step) or "HARVESTING" in options.step: 
     addEndJob = False
 if addEndJob:    
     options.step=options.step+',ENDJOB'
@@ -302,8 +300,6 @@ print options.step
     
 # the process name is just the last step in the list of steps
 options.name = trimmedStep.split(',')[-1]
-if options.name in ('POSTRECO,ALCA,DQM') and 'RECO' in trimmedStep:
-    options.name = 'RECO'
     
 # check to be sure that people run the harvesting as a separte step
 isHarvesting = False
@@ -315,8 +311,11 @@ if "HARVESTING" in options.step and len(s_list) > 1:
     sys.exit(1)
 
 # if we're dealing with HLT, the process name has to be 'HLT' only
+# and if there is RECO in there we better call it RECO 
 if 'HLT' in trimmedStep:
     options.name = 'HLT'
+elif 'RECO' in trimmedStep:
+    options.name = 'RECO'
 
 # sanity check options specifying data or mc
 if options.isData and options.isMC:
