@@ -1,6 +1,6 @@
 1 ++ ProdMinBias ++ RECOPROD1 @@@ cmsDriver.py  MinBias.cfi -s GEN:ProductionFilterSequence,SIM,DIGI,L1,DIGI2RAW,HLT -n 10  --conditions FrontierConditions_GlobalTag,IDEAL_30X::All --relval 9000,100 --datatier 'GEN-SIM-RAW' --eventcontent RAWSIM
-2 ++ ProdTTbar ++ RECOPROD1, ALCATT1 @@@ cmsDriver.py  TTbar_Tauola.cfi -s GEN:ProductionFilterSequence,SIM,DIGI,L1,DIGI2RAW,HLT -n 10  --conditions FrontierConditions_GlobalTag,IDEAL_30X::All --relval 9000,50 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent RAWSIM
-3 ++ ProdQCD_Pt_3000_3500 ++ RECOPROD1 @@@ cmsDriver.py  QCD_Pt_3000_3500.cfi -s GEN:ProductionFilterSequence,SIM,DIGI,L1,DIGI2RAW,HLT -n 10 --conditions FrontierConditions_GlobalTag,IDEAL_30X::All --relval 9000,25 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent RAWSIM
+2 ++ ProdTTbar ++ RECOPROD1, ALCATT1 @@@ cmsDriver.py  TTbar_Tauola.cfi -s GEN:ProductionFilterSequence,SIM,DIGI,L1,DIGI2RAW,HLT -n 10  --conditions FrontierConditions_GlobalTag,IDEAL_30X::All --relval 9000,50 --datatier 'GEN-SIM-RAW' --eventcontent RAWSIM
+3 ++ ProdQCD_Pt_3000_3500 ++ RECOPROD1 @@@ cmsDriver.py  QCD_Pt_3000_3500.cfi -s GEN:ProductionFilterSequence,SIM,DIGI,L1,DIGI2RAW,HLT -n 10 --conditions FrontierConditions_GlobalTag,IDEAL_30X::All --relval 9000,25 --datatier 'GEN-SIM-RAW' --eventcontent RAWSIM
 
 
 4 ++ Cosmics ++ RECOCOSD, ALCACOSD ++ REALDATA: /Cosmics/Commissioning08-v1/RAW, RUN: 69750 @@@
