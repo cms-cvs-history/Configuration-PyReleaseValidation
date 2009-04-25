@@ -5,7 +5,7 @@
 
 4 ++ Cosmics ++ RECOCOSD, ALCACOSD ++ REALDATA: /Cosmics/Commissioning08-v1/RAW, RUN: 69750 @@@
 
-5.1 ++ SingleMuPt1 ++ none @@@ cmsDriver.py SingleMuPt1_cfi.py -s GEN:ProductionFilterSequence,FASTSIM,VALIDATION --pileup=NoPileUp  --conditions=FrontierConditions_GlobalTag,IDEAL_31X::All --eventcontent=FEVTDEBUGHLT:1E31 --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
+5.1 ++ SingleMuPt1 ++ none @@@ cmsDriver.py SingleMuPt1_cfi.py -s GEN:ProductionFilterSequence,FASTSIM,VALIDATION --pileup=NoPileUp  --conditions=FrontierConditions_GlobalTag,IDEAL_31X::All --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
 5.2 ++ SingleMuPt10 ++ none @@@ cmsDriver.py SingleMuPt10_cfi.py -s GEN:ProductionFilterSequence,FASTSIM,VALIDATION --pileup=NoPileUp  --conditions=FrontierConditions_GlobalTag,IDEAL_31X::All --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
 5.3 ++ SingleMuPt100 ++ none @@@ cmsDriver.py SingleMuPt100_cfi.py -s GEN:ProductionFilterSequence,FASTSIM,VALIDATION --pileup=NoPileUp  --conditions=FrontierConditions_GlobalTag,IDEAL_31X::All --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
 6.1 ++ SinglePiPt1 ++ none @@@ cmsDriver.py SinglePiPt1_cfi.py -s GEN:ProductionFilterSequence,FASTSIM,VALIDATION --pileup=NoPileUp  --conditions=FrontierConditions_GlobalTag,IDEAL_31X::All --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
