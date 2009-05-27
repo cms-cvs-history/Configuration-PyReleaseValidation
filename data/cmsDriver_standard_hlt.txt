@@ -64,10 +64,6 @@ STEP3 ++ ALCACOS @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlCosmics+TkAlCosmics0T
 STEP3 ++ ALCABH @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlBeamHalo+MuAlBeamHaloOverlaps+MuAlBeamHalo -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,STARTUP_31X::All --no_exec --datatier GEN-SIM-DIGI-RAW-HLTDEBUG-RECO  --oneoutput --eventcontent FEVTSIM --scenario cosmics
 STEP3 ++ ALCACOSD @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlCosmicsHLT+TkAlCosmics0T+MuAlStandAloneCosmics+MuAlGlobalCosmics+HcalCalHOCosmics -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,CRAFT_31X::All --no_exec --datatier GEN-SIM-DIGI-RAW-HLTDEBUG-RECO --eventcontent FEVTSIM --scenario cosmics
 
-40 ++ TTbar_Tauola_2M ++ HLT1E31, RECO3, ALCA4 @@@ cmsDriver.py TTbar_Tauola.cfi --step=GEN,SIM,DIGI,L1,DIGI2RAW,HLT --conditions=FrontierConditions_GlobalTag,STARTUP_31X::All --fileout=GenHLT_8E29.root --number=100 --mc --no_exec --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent=FEVTDEBUGHLT --python_filename=GenHLT_8E29.py  --processName=HLT8E29 --relval 9000,100 --no_exec
-
-41 ++ MinBias_2M ++ HLT1E31, RECO3, ALCA4 @@@ cmsDriver.py MinBias.cfi --step=GEN,SIM,DIGI,L1,DIGI2RAW,HLT --conditions=FrontierConditions_GlobalTag,STARTUP_31X::All --fileout=GenHLT_8E29.root --number=100 --mc --no_exec --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent=FEVTDEBUGHLT --python_filename=GenHLT_8E29.py  --processName=HLT8E29 --relval 9000,300 --no_exec
-
 STEP2 ++ HLT1E31 @@@ cmsDriver.py RelVal --step=DIGI,L1,DIGI2RAW,HLT --conditions=FrontierConditions_GlobalTag,IDEAL_31X::All --filein=file:GenHLT_8E29.root --fileout=GenHLT_8E29_1E31.root --number=100 --mc --no_exec --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent=FEVTDEBUGHLT --python_filename=DigiHLT_1E31.py --processName=HLT --relval 9000,100 --no_exec
 
 STEP3 ++ RECO3 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,POSTRECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,IDEAL_31X::All --python_filename=RECO.py --relval 9000,100 --no_exec
