@@ -47,13 +47,13 @@
 39 ++ QCD_FlatPt_15_3000 ++ none @@@ cmsDriver.py QCDForPF_cfi.py -s GEN:ProductionFilterSequence,FASTSIM --pileup=NoPileUp  --conditions=FrontierConditions_GlobalTag,IDEAL_31X::All --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
 
 STEP2 ++ RECOPROD1 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,IDEAL_31X::All
-STEP2 ++ RECO1 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,POSTRECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,IDEAL_31X::All
-STEP2 ++ RECO2 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,POSTRECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,STARTUP_31X::All
-STEP2 ++ RECOMIN @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,POSTRECO,ALCA:RpcCalHLT+SiStripCalZeroBias,VALIDATION --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,STARTUP_31X::All
+STEP2 ++ RECO1 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,IDEAL_31X::All
+STEP2 ++ RECO2 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,STARTUP_31X::All
+STEP2 ++ RECOMIN @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,ALCA:RpcCalHLT+SiStripCalZeroBias,VALIDATION --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,STARTUP_31X::All
 STEP2 ++ RECOCOS @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,STARTUP_31X::All --scenario cosmics
 STEP2 ++ RECOCOSD @@@ cmsDriver.py step2 -s RAW2DIGI,RECO:reconstructionCosmics,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier RECO --eventcontent RECO --conditions FrontierConditions_GlobalTag,CRAFT_31X::All --scenario cosmics --no_exec --data
-STEP2 ++ RECOALCA1 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,POSTRECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,IDEAL_31X::All
-STEP2 ++ RECOALCA2 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,POSTRECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,STARTUP_31X::All
+STEP2 ++ RECOALCA1 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,IDEAL_31X::All
+STEP2 ++ RECOALCA2 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,STARTUP_31X::All
 
 STEP3 ++ ALCAMIN @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMinBias -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,STARTUP_31X::All --no_exec --datatier GEN-SIM-DIGI-RAW-HLTDEBUG-RECO  --oneoutput --eventcontent FEVTSIM
 STEP3 ++ ALCAQCD @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+HcalCalDijets+HcalCalHO+MuAlOverlaps -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,STARTUP_31X::All --no_exec --datatier GEN-SIM-DIGI-RAW-HLTDEBUG-RECO  --oneoutput --eventcontent FEVTSIM
@@ -68,6 +68,6 @@ STEP3 ++ ALCACOSD @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlCosmicsHLT+TkAlCosmi
 
 STEP2 ++ HLT1E31 @@@ cmsDriver.py RelVal --step=DIGI,L1,DIGI2RAW,HLT --conditions=FrontierConditions_GlobalTag,IDEAL_31X::All --filein=file:GenHLT_8E29.root --fileout=GenHLT_8E29_1E31.root --number=100 --mc --no_exec --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent=FEVTDEBUGHLT --python_filename=DigiHLT_1E31.py --processName=HLT --relval 9000,100 --no_exec
 
-STEP3 ++ RECO3 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,POSTRECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,IDEAL_31X::All --python_filename=RECO.py --relval 9000,100 --no_exec
+STEP3 ++ RECO3 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,IDEAL_31X::All --python_filename=RECO.py --relval 9000,100 --no_exec
 
 STEP4 ++ ALCA4 @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlZMuMu+TkAlMuonIsolated+TkAlJpsiMuMu+TkAlUpsilonMuMu+TkAlMinBias+EcalCalElectron+HcalCalIsoTrk+HcalCalDijets+HcalCalHO+MuAlOverlaps -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,IDEAL_31X::All --no_exec --datatier GEN-SIM-DIGI-RAW-HLTDEBUG-RECO  --oneoutput --eventcontent FEVTSIM --relval 9000,100 --python_filename=ALCARECO.py

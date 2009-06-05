@@ -37,8 +37,8 @@
 32 ++ LM9p ++ RECO2 @@@ cmsDriver.py  LM9p_cff.py -s GEN:ProductionFilterSequence,SIM,DIGI,L1,DIGI2RAW,HLT -n 10 --relval 25000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --conditions FrontierConditions_GlobalTag,STARTUP_31X::All
 33 ++ RSGrav ++ RECO2 @@@ cmsDriver.py  RS750_quarks_and_leptons_cff.py -s GEN:ProductionFilterSequence,SIM,DIGI,L1,DIGI2RAW,HLT -n 10 --relval 25000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --conditions FrontierConditions_GlobalTag,STARTUP_31X::All
 
-STEP2 ++ RECO1 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,POSTRECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,IDEAL_31X::All
-STEP2 ++ RECO2 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,POSTRECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,STARTUP_31X::All
+STEP2 ++ RECO1 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,IDEAL_31X::All
+STEP2 ++ RECO2 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,STARTUP_31X::All
 
 STEP3 ++ ALCAQCD @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+HcalCalDijets+HcalCalHO+MuAlOverlaps -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,STARTUP_31X::All --no_exec --datatier GEN-SIM-DIGI-RAW-HLTDEBUG-RECO  --oneoutput --eventcontent FEVTSIM
 STEP3 ++ ALCATT @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlZMuMu+TkAlMuonIsolated+TkAlMinBias+EcalCalElectron+HcalCalIsoTrk+HcalCalDijets+HcalCalGammaJet+HcalCalHO+MuAlOverlaps -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,STARTUP_31X::All --no_exec --datatier GEN-SIM-DIGI-RAW-HLTDEBUG-RECO  --oneoutput --eventcontent FEVTSIM
