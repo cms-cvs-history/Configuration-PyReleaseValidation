@@ -1,6 +1,6 @@
 1 ++ ZmumuJets_Pt_20_300_GEN ++ RECO1 @@@ cmsDriver.py  ZmumuJets_Pt_20_300_GEN_cfg.py -s GEN:ProductionFilterSequence,SIM,DIGI,L1,DIGI2RAW,HLT -n 10  --conditions FrontierConditions_GlobalTag,MC_31X_V1::All --relval 25000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --pileup LowLumiPileUp --eventcontent FEVTDEBUGHLT
-2 ++ TTbar_Tauola ++ RECO2 @@@ cmsDriver.py  TTbar_Tauola.cfi -s GEN:ProductionFilterSequence,SIM,DIGI,L1,DIGI2RAW,HLT -n 10  --conditions FrontierConditions_GlobalTag,STARTUP_31X_V1::All --relval 9000,50 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --pileup 156BxLumiPileUp --eventcontent FEVTDEBUGHLT
+2 ++ TTbar_Tauola ++ RECO2 @@@ cmsDriver.py  TTbar_Tauola.cfi -s GEN:ProductionFilterSequence,SIM,DIGI,L1,DIGI2RAW,HLT -n 10  --conditions FrontierConditions_GlobalTag,STARTUP31X_V1::All --relval 9000,50 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --pileup 156BxLumiPileUp --eventcontent FEVTDEBUGHLT
 
 STEP2 ++ RECO1 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,MC_31X_V1::All --pileup LowLumiPileUp
 
-STEP2 ++ RECO2 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,STARTUP_31X_V1::All --pileup 156BxLumiPileUp
+STEP2 ++ RECO2 @@@ cmsDriver.py step2 -s RAW2DIGI,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,STARTUP31X_V1::All --pileup 156BxLumiPileUp
