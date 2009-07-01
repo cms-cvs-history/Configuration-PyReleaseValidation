@@ -47,4 +47,4 @@ STEP3 ++ ALCAZLL @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlZMuMu+TkAlMuonIsolate
 STEP3 ++ ALCAJPS @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlJpsiMuMu -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,STARTUP31X_V1::All --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
 STEP3 ++ ALCAUPS @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlUpsilonMuMu -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,STARTUP31X_V1::All --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
 
-STEP23 ++ ALCANZS @@@ cmsDriver.py step23 -s ALCA:Configuration/StandardSequences/AlCaRecoStream_HcalCalMinBias_cff:HcalCalMinBias+DQM -n 1000 --filein file:raw.root --conditions FrontierConditions_GlobalTag,IDEAL_31X::All  --no_exec --datatier ALCARECO --eventcontent ALCARECO
+STEP2 ++ ALCANZS @@@ cmsDriver.py step23 -s ALCA:Configuration/StandardSequences/AlCaRecoStream_HcalCalMinBias_cff:HcalCalMinBias+DQM -n 1000 --filein file:raw.root --conditions FrontierConditions_GlobalTag,IDEAL_31X::All  --no_exec --datatier ALCARECO --eventcontent ALCARECO
