@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
-
-__version__ = "$Revision: 1.126 $"
+__version__ = "$Revision: 1.120 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -125,25 +124,13 @@ class ConfigBuilder(object):
         """ Add output module to the process """    
         
         self.loadAndRemember(self.EVTCONTDefaultCFF)
-	
-        theEventContent = getattr(self.process, self.eventcontent.split(',')[0]+"EventContent") 
+        theEventContent = getattr(self.process, self.eventcontent.split(',')[-1]+"EventContent")
+ 
         output = cms.OutputModule("PoolOutputModule",
                                   theEventContent,
                                   fileName = cms.untracked.string(self._options.outfile_name),
                                   dataset = cms.untracked.PSet(dataTier = cms.untracked.string(self._options.datatier))
-                                 )
-	
-	# check if a second (parallel to RECO) output was requested via the eventcontent option
-	# this can (for now) onluy be of type "AOD" or "AODSIM" and will use the datatier of the same name
-	aodOutput = None
-	for evtContent in ['AOD', 'AODSIM']:
-	    if evtContent in self.eventcontent.split(',') :
-	        theEventContentAOD = getattr(self.process, evtContent+"EventContent")
-	        aodOutput = cms.OutputModule("PoolOutputModule",
-					   theEventContentAOD,
-					   fileName = cms.untracked.string(self._options.outfile_name.replace('.root','_AOD.root')),
-					   dataset = cms.untracked.PSet(dataTier = cms.untracked.string(evtContent))
-					   ) 
+                                 ) 
 
         # if there is a generation step in the process, that one should be used as filter decision
         if hasattr(self.process,"generation_step"):
@@ -160,27 +147,12 @@ class ConfigBuilder(object):
 
             # ATTENTION: major tweaking to avoid inlining of event content
             # should we do that?
-            def dummy(instance,label = "process."+self.eventcontent.split(',')[0]+"EventContent.outputCommands"):
+            def dummy(instance,label = "process."+self.eventcontent.split(',')[-1]+"EventContent.outputCommands"):
                 return label
         
             self.process.output.outputCommands.__dict__["dumpPython"] = dummy
-	    result = "\n"+self.process.output.dumpPython()
-
-	    # now do the same for the AOD output, if required
-	    if aodOutput:
-	        self.process.aodOutput = aodOutput
-		self.process.out_stepAOD = cms.EndPath(self.process.aodOutput)
-		self.schedule.append(self.process.out_stepAOD)
-		# ATTENTION: major tweaking to avoid inlining of event content
-		# should we do that?
-		# Note: we need to return the _second_ arg from the list of eventcontents ... 
-		def dummy2(instance,label = "process."+self.eventcontent.split(',')[1]+"EventContent.outputCommands"):
-			return label
-
-		self.process.aodOutput.outputCommands.__dict__["dumpPython"] = dummy2
-		result += "\n"+self.process.aodOutput.dumpPython()
-
-            return result
+        
+            return "\n"+self.process.output.dumpPython()
         
         
     def addStandardSequences(self):
@@ -207,12 +179,11 @@ class ConfigBuilder(object):
         # no fast sim   
         else:
             # load the pile up file
-	    if not self.PileupCFF == '': 
-		    try: 
-  		        self.loadAndRemember(self.PileupCFF)
-		    except ImportError:
-			print "Pile up option",self._options.pileup,"unknown."
-			raise
+            try: 
+                self.loadAndRemember(self.PileupCFF)
+            except ImportError:
+                print "Pile up option",self._options.pileup,"unknown."
+                raise
 
             # load the geometry file
             try:
@@ -249,29 +220,35 @@ class ConfigBuilder(object):
 
     def addConditions(self):
         """Add conditions to the process"""
-        conditions=self._options.conditions.lstrip("FrontierConditions_GlobalTag,") #only for backwards compatibility
-	
+        conditionsSP=self._options.conditions.split(',')
         # FULL or FAST SIM ?
         if "FASTSIM" in self._options.step:
-            self.loadAndRemember('FastSimulation/Configuration/CommonInputs_cff')
+            # fake or real conditions?
+            if len(conditionsSP)>1:
+                self.loadAndRemember('FastSimulation/Configuration/CommonInputs_cff')
 
-            if "STARTUP" in conditions:
-                self.additionalCommands.append("# Apply ECAL/HCAL miscalibration")
-	        self.additionalCommands.append("process.ecalRecHit.doMiscalib = True")
-	        self.additionalCommands.append("process.hbhereco.doMiscalib = True")
-	        self.additionalCommands.append("process.horeco.doMiscalib = True")
-	        self.additionalCommands.append("process.hfreco.doMiscalib = True")
-
-            # Apply Tracker misalignment
-            self.additionalCommands.append("# Apply Tracker misalignment")
-            self.additionalCommands.append("process.famosSimHits.ApplyAlignment = True")
-	    self.additionalCommands.append("process.misalignedTrackerGeometry.applyAlignment = True\n")
+		if "STARTUP" in conditionsSP[1]:
+                    self.additionalCommands.append("# Apply ECAL/HCAL miscalibration")
+		    self.additionalCommands.append("process.ecalRecHit.doMiscalib = True")
+		    self.additionalCommands.append("process.hbhereco.doMiscalib = True")
+		    self.additionalCommands.append("process.horeco.doMiscalib = True")
+		    self.additionalCommands.append("process.hfreco.doMiscalib = True")
+                # Apply Tracker misalignment
+                self.additionalCommands.append("# Apply Tracker misalignment")
+                self.additionalCommands.append("process.famosSimHits.ApplyAlignment = True")
+		self.additionalCommands.append("process.misalignedTrackerGeometry.applyAlignment = True\n")
                                        
+            else:
+                self.loadAndRemember('FastSimulation/Configuration/CommonInputsFake_cff')
+                self.additionalCommands.append('process.famosSimHits.SimulateCalorimetry = True')
+                self.additionalCommands.append('process.famosSimHits.SimulateTracking = True')
+                
         else:
-            self.loadAndRemember(self.ConditionsDefaultCFF)
-
-        # set the global tag
-        self.additionalCommands.append("process.GlobalTag.globaltag = '"+str(conditions)+"'")
+            self.loadAndRemember('Configuration/StandardSequences/'+conditionsSP[0]+'_cff')
+        
+        # set non-default conditions 
+        if ( len(conditionsSP)>1 ):
+            self.additionalCommands.append("process.GlobalTag.globaltag = '"+str(conditionsSP[1]+"'"))
                         
     def addCustomise(self):
         """Include the customise code """
@@ -321,8 +298,7 @@ class ConfigBuilder(object):
 	self.DQMOFFLINEDefaultCFF="DQMOffline/Configuration/DQMOffline_cff"
 	self.HARVESTINGDefaultCFF="Configuration/StandardSequences/Harvesting_cff"
 	self.ENDJOBDefaultCFF="Configuration/StandardSequences/EndOfProcess_cff"
-        self.ConditionsDefaultCFF = "Configuration/StandardSequences/FrontierConditions_GlobalTag_cff"
-	
+
 	self.ALCADefaultSeq=None
 	self.SIMDefaultSeq=None
 	self.GENDefaultSeq=None
@@ -379,11 +355,8 @@ class ConfigBuilder(object):
         self.magFieldCFF = self.magFieldCFF.replace("__",'_')
 
 	self.GeometryCFF='Configuration/StandardSequences/Geometry'+self._options.geometry+'_cff'
-	if self._options.isMC==True:
- 	    self.PileupCFF='Configuration/StandardSequences/Mixing'+self._options.pileup+'_cff'
-        else:
-	    self.PileupCFF=''
-	    
+	self.PileupCFF='Configuration/StandardSequences/Mixing'+self._options.pileup+'_cff'
+
 	#beamspot
 	if self._options.beamspot != None:
 	    self.beamspot=self._options.beamspot
@@ -628,11 +601,7 @@ class ConfigBuilder(object):
             self.loadAndRemember(self.ENDJOBDefaultCFF)
         else:    
             self.loadAndRemember(sequence.split(',')[0])
-	if "FASTSIM" in self._options.step:
-	    self.process.endjob_step = cms.EndPath( getattr(self.process, sequence.split(',')[-1]) )
-	else:
-	    self.process.endjob_step = cms.Path( getattr(self.process, sequence.split(',')[-1]) )
-
+        self.process.endjob_step = cms.Path( getattr(self.process, sequence.split(',')[-1]) )
         self.schedule.append(self.process.endjob_step)
 
     def prepare_FASTSIM(self, sequence = "all"):
@@ -702,7 +671,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.126 $"),
+              (version=cms.untracked.string("$Revision: 1.120 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
@@ -750,9 +719,6 @@ class ConfigBuilder(object):
 	if hasattr(self.process,"output"):
             self.pythonCfgCode += "\n# Output definition\n"
             self.pythonCfgCode += "process.output = "+self.process.output.dumpPython()
-	if hasattr(self.process,"aodOutput"):
-            self.pythonCfgCode += "\n# AodOutput definition\n"
-            self.pythonCfgCode += "process.aodOutput = "+self.process.aodOutput.dumpPython()
 
         # dump all additional outputs (e.g. alca or skim streams)
 	self.pythonCfgCode += "\n# Additional output definition\n"
