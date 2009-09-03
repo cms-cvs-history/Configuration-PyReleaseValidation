@@ -145,7 +145,17 @@ expertSettings.add_option("--pileup",
                   default=defaultOptions.pileup,
                   dest="pileup")
 
-                                                    
+expertSettings.add_option("--datamix",
+                          help="What datamix config to use. Default=DataOnSim.",
+                          default=defaultOptions.datamix,
+                          dest="datamix")
+
+expertSettings.add_option("--gflash",
+                          help="Run the FULL SIM using the GFlash parameterization.",
+                          action="store_true",
+                          default=False,
+                          dest="gflash")
+
 expertSettings.add_option("--python_filename",
                           help="Change the name of the created config file ",
                           default='',
@@ -212,6 +222,8 @@ prec_step = {"ALL":"",
              "ANA":"RECO",
              "DIGI2RAW":"DIGI",
              "RAW2DIGI":"DIGI2RAW",
+             "DATAMIX":"DIGI",
+             "DIGI2RAW":"DATAMIX",
              "HARVESTING":"RECO"}
 
 trimmedEvtType=options.evt_type.split('/')[-1]
@@ -336,6 +348,8 @@ if options.isData and options.isMC:
 # if not specified by user try to guess
 if not options.isData and not options.isMC:
     if 'SIM' in trimmedStep:
+        options.isMC=True
+    if 'CFWRITER' in trimmedStep:
         options.isMC=True
     if 'DIGI' in trimmedStep:
         options.isMC=True
