@@ -81,6 +81,10 @@ STEP4 ++ ALCA4 @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlZMuMu+TkAlMuonIsolated+
  
 43 ++ MinBias_2M_PROD ++ HLT1E31_PROD, RECO3_PROD, ALCA4_PROD @@@ cmsDriver.py MinBias.cfi --step=GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco --conditions=FrontierConditions_GlobalTag,STARTUP31X_V7::All --number=10 --mc --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent=RAWDEBUG   --processName=HLT8E29 --relval 9000,300
 
+44 ++ HydjetQ_MinBias_4TeV ++ None @@@ cmsDriver.py Hydjet_Quenched_MinBias_4TeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW -n 5 --conditions FrontierConditions_GlobalTag,MC_31X_V8::All --relval 500,5 --datatier 'GEN-SIM-RAW' --eventcontent RAWDEBUG --scenario HeavyIons --no_exec
+
+45 ++ HydjetQ_B0_4TeV ++ None @@@ cmsDriver.py Hydjet_Quenched_B0_4TeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW -n 1 --conditions FrontierConditions_GlobalTag,MC_31X_V8::All --relval 80,2 --datatier 'GEN-SIM-RAW' --eventcontent RAWDEBUG --scenario HeavyIons --no_exec
+
 
 STEP2 ++ HLT1E31_PROD @@@ cmsDriver.py RelVal --step=DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco --conditions=FrontierConditions_GlobalTag,MC_31X_V8::All  --number=100 --mc --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent=RAWDEBUG  --processName=HLT --relval 9000,100 --no_exec
 
