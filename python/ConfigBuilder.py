@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.120 $"
+__version__ = "$Revision: 1.123 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -233,10 +233,12 @@ class ConfigBuilder(object):
 		    self.additionalCommands.append("process.hbhereco.doMiscalib = True")
 		    self.additionalCommands.append("process.horeco.doMiscalib = True")
 		    self.additionalCommands.append("process.hfreco.doMiscalib = True")
-                # Apply Tracker misalignment
-                self.additionalCommands.append("# Apply Tracker misalignment")
+                # Apply Tracker and Muon misalignment
+                self.additionalCommands.append("# Apply Tracker and Muon misalignment")
                 self.additionalCommands.append("process.famosSimHits.ApplyAlignment = True")
 		self.additionalCommands.append("process.misalignedTrackerGeometry.applyAlignment = True\n")
+		self.additionalCommands.append("process.misalignedDTGeometry.applyAlignment = True")
+		self.additionalCommands.append("process.misalignedCSCGeometry.applyAlignment = True\n")
                                        
             else:
                 self.loadAndRemember('FastSimulation/Configuration/CommonInputsFake_cff')
@@ -671,7 +673,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.120 $"),
+              (version=cms.untracked.string("$Revision: 1.123 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
