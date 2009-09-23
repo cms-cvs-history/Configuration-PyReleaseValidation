@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
-
-__version__ = "$Revision: 1.139 $"
+__version__ = "$Revision: 1.146 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -15,7 +14,8 @@ class Options:
 defaultOptions = Options()
 defaultOptions.datamix = 'DataOnSim'
 defaultOptions.pileup = 'NoPileUp'
-defaultOptions.geometry = 'Ideal'
+defaultOptions.geometry = 'Extended'
+defaultOptions.geometryExtendedOptions = ['ExtendedGFlash','Extended','NoCastor']
 defaultOptions.magField = 'Default'
 defaultOptions.conditions = 'FrontierConditions_GlobalTag,STARTUP_V5::All'
 defaultOptions.scenarioOptions=['pp','cosmics','nocoll','HeavyIons']
@@ -274,11 +274,13 @@ class ConfigBuilder(object):
 	        self.additionalCommands.append("process.horeco.doMiscalib = True")
 	        self.additionalCommands.append("process.hfreco.doMiscalib = True")
 
-            # Apply Tracker misalignment
-            self.additionalCommands.append("# Apply Tracker misalignment")
+            # Apply Tracker and Muon misalignment
+            self.additionalCommands.append("# Apply Tracker and Muon misalignment")
             self.additionalCommands.append("process.famosSimHits.ApplyAlignment = True")
 	    self.additionalCommands.append("process.misalignedTrackerGeometry.applyAlignment = True\n")
-                                       
+	    self.additionalCommands.append("process.misalignedDTGeometry.applyAlignment = True")
+	    self.additionalCommands.append("process.misalignedCSCGeometry.applyAlignment = True\n")
+	    
         else:
             self.loadAndRemember(self.ConditionsDefaultCFF)
 
@@ -336,6 +338,12 @@ class ConfigBuilder(object):
 	self.ENDJOBDefaultCFF="Configuration/StandardSequences/EndOfProcess_cff"
 	self.ConditionsDefaultCFF = "Configuration/StandardSequences/FrontierConditions_GlobalTag_cff"
 	self.CFWRITERDefaultCFF = "Configuration/StandardSequences/CrossingFrameWriter_cff"
+        self.HISIGNALDefaultCFF = "Configuration/StandardSequences/HiSignalExtended_cff"
+
+        # synchronize the geometry configuration and the FullSimulation sequence to be used
+        if ( self._options.geometry not in defaultOptions.geometryExtendedOptions):
+            self.SIMDefaultCFF="Configuration/StandardSequences/SimIdeal_cff"
+            self.HISIGNALDefaultCFF = "Configuration/StandardSequences/HiSignal_cff"
 	
 	if "DATAMIX" in self._options.step:
 	    self.DATAMIXDefaultCFF="Configuration/StandardSequences/DataMixer"+self._options.datamix+"_cff"
@@ -353,6 +361,7 @@ class ConfigBuilder(object):
 	self.L1DefaultSeq=None
 	self.HARVESTINGDefaultSeq=None
         self.CFWRITERDefaultSeq=None
+        self.HISIGNALDefaultSeq=None        
 	self.RAW2DIGIDefaultSeq='RawToDigi'
 	self.L1RecoDefaultSeq='L1Reco'
 	self.RECODefaultSeq='reconstruction'
@@ -396,21 +405,22 @@ class ConfigBuilder(object):
 	    self.eventcontent='FEVT'
 
         if self._options.scenario=='HeavyIons':
+            self.EVTCONTDefaultCFF="Configuration/EventContent/EventContentHeavyIons_cff"
             self.RECODefaultCFF="Configuration/StandardSequences/ReconstructionHeavyIons_cff"
    	    self.RECODefaultSeq='reconstructionHeavyIons'
 
-	    
         # the magnetic field
 	if self._options.magField=='Default':
 	    self._options.magField=self.defaultMagField	
         self.magFieldCFF = 'Configuration/StandardSequences/MagneticField_'+self._options.magField.replace('.','')+'_cff'
         self.magFieldCFF = self.magFieldCFF.replace("__",'_')
+
         if self._options.gflash==True:
                 self.GeometryCFF='Configuration/StandardSequences/Geometry'+self._options.geometry+'GFlash_cff'
         else:
                 self.GeometryCFF='Configuration/StandardSequences/Geometry'+self._options.geometry+'_cff'
                 
-	if self._options.isMC==True:
+	if self._options.isMC==True and "HISIGNAL" not in self._options.step:
  	    self.PileupCFF='Configuration/StandardSequences/Mixing'+self._options.pileup+'_cff'
         else:
 	    self.PileupCFF=''
@@ -523,10 +533,30 @@ class ConfigBuilder(object):
 
 	if self._options.magField=='0T':
 	    self.additionalCommands.append("process.g4SimHits.UseMagneticField = cms.bool(False)")
-				
+
         self.process.simulation_step = cms.Path( self.process.psim )
         self.schedule.append(self.process.simulation_step)
         return     
+
+    def prepare_HISIGNAL(self, sequence = None):
+        """ Enrich the schedule with the HeavyIons signal mixing step"""
+        self.loadAndRemember(self.HISIGNALDefaultCFF)
+        if self._options.gflash==True:
+                             self.loadAndRemember("Configuration/StandardSequences/GFlashSIM_cff")
+
+        if self._options.magField=='0T':
+	    self.additionalCommands.append("process.g4SimHits.UseMagneticField = cms.bool(False)")
+
+        if sequence:
+	    self.loadAndRemember("Configuration/Generator/Pyquen_"+sequence+"_4TeV_cfi")
+	else:
+	    raise AttributeError("The HISIGNAL step requires a generator sequence defined in Configuration/Generator (e.g. HISIGNAL:GammaJet_pt20")
+        # drop possibly duplicate DIGI-RAW info:
+        self.process.source.inputCommands = cms.untracked.vstring('drop *','keep *_generator_*_*','keep *_g4SimHits_*_*')
+
+	self.process.hisignal_step = cms.Path( self.process.phisignal )
+        self.schedule.append(self.process.hisignal_step)
+        return    
 
     def prepare_DIGI(self, sequence = None):
         """ Enrich the schedule with the digitisation step"""
@@ -771,7 +801,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.139 $"),
+              (version=cms.untracked.string("$Revision: 1.146 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
