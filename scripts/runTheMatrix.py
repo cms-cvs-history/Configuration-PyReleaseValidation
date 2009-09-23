@@ -84,6 +84,7 @@ class WorkFlowRunner(Thread):
         if self.wf.cmdStep2 and retStep1 == 0:
             fullcmd = preamble
             fullcmd += self.wf.cmdStep2 + ' --filein file:raw.root --fileout file:reco.root '
+            if ' -n ' not in fullcmd: fullcmd += ' -n 100 '
             fullcmd += ' > %s 2>&1; ' % ('step2_'+self.wf.nameId+'.log ',)
             # print fullcmd
             retStep2 = self.doCmd(fullcmd)
