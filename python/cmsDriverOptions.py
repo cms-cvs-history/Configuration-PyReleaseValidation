@@ -23,7 +23,7 @@ parser.add_option_group(expertSettings)
 
 parser.add_option("-s", "--step",
                    help="The desired step. The possible values are: "+\
-                        "GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,RECO,POSTRECO,DQM,ALCA,VALIDATION,HARVESTING, NONE or ALL.",
+                        "GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,RECO,POSTRECO,DQM,ALCA,VALIDATION,HARVESTING,HISIGNAL NONE or ALL.",
                    default="ALL",
                    dest="step")
 
@@ -231,6 +231,7 @@ prec_step = {"NONE":"",
              "RAW2DIGI":"DIGI2RAW",
              "DATAMIX":"DIGI",
              "DIGI2RAW":"DATAMIX",
+             "DIGI":"HISIGNAL",
              "HARVESTING":"RECO"}
 
 trimmedEvtType=options.evt_type.split('/')[-1]
@@ -261,7 +262,7 @@ if options.filetype=="MCDB" and options.filein.startswith("mcdb:"):
 filesuffix = {"LHE": "lhe", "EDM": "root", "MCDB": ""}[options.filetype]
 
 first_step=trimmedStep.split(',')[0]             
-if options.filein=="" and not (first_step in ("ALL","GEN","SIM_CHAIN") and options.dirin == ""):
+if options.filein=="" and not (first_step in ("ALL","GEN","SIM_CHAIN","HISIGNAL") and options.dirin == ""):
     if options.dirin=="":
         options.dirin="file:"
     options.filein=trimmedEvtType+"_"+prec_step[first_step]+"."+filesuffix
@@ -376,6 +377,8 @@ if not options.isData and not options.isMC:
         options.isMC=True
     if 'DIGI' in trimmedStep:
         options.isMC=True
+    if 'HISIGNAL' in trimmedStep:
+        options.isMC=True        
     if (not (options.eventcontent == None)) and 'SIM' in options.eventcontent:
         options.isMC=True
     if 'SIM' in options.datatier:
@@ -384,6 +387,11 @@ if not options.isData and not options.isMC:
         print 'We have determined that this is simulation (if not, rerun cmsDriver.py with --data)'
     else:
         print 'We have determined that this is real data (if not, rerun cmsDriver.py with --mc)'
-    
+
+# force HeavyIons scenario if HISIGNAL step is present
+if 'HISIGNAL' in trimmedStep and not options.scenario=='HeavyIons':
+    print "From the presence of the HISIGNAL step, we have determined that this is heavy ions and will use '--scenario HeavyIons'."
+    options.scenario='HeavyIons'
+            
 options.outfile_name = options.dirout+options.fileout
 
