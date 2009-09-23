@@ -194,10 +194,19 @@ class MatrixReader(object):
 
     def readMatrix(self, fileNameIn, prefix='', offset=0):
         
-        print "processing ", fileNameIn
+        print "processing ", fileNameIn,
+        if offset > 0 : print ' offset=', offset,
+        if prefix.strip() != '' : print " prefix=", prefix,
+        print ""
+        
         lines = []
         try:
-            inFile = open(fileNameIn, 'r')
+            try:
+                inFile = open(fileNameIn, 'r')
+            except IOError:
+                baseRelPath = os.environ['CMSSW_RELEASE_BASE']
+                print "falling back to cmsDriver files from base release at:", baseRelPath
+                inFile = open( os.path.join(baseRelPath, 'src/Configuration/PyReleaseValidation/data' ,fileNameIn), 'r')
             lines = inFile.readlines()
             inFile.close()
         except Exception, e:
@@ -262,7 +271,7 @@ class MatrixReader(object):
                 if len(steps) > 2:
                     step4 = steps[2].strip()
                 
-                self.step1WorkFlows[float(num)+offset] = (num, name, step2, step3, step4, cmd, None)
+                self.step1WorkFlows[float(num)+offset] = (str(float(num)+offset), name, step2, step3, step4, cmd, None)
                 continue
             
             step2Match = step2Re.match(line)
@@ -311,16 +320,19 @@ class MatrixReader(object):
         
         return
 
-    def showWorkFlows(self):
+    def showWorkFlows(self, selected=None):
 
-        print "found ", len(self.workFlows), ' workflows:'
-
+        print "\nfound a total of ", len(self.workFlows), ' workflows:'
+        if selected:
+            print "      of which the following", len(selected), 'were selected:'
+            
         n1 = 0
         n2 = 0
         n3 = 0
         n4 = 0
         maxLen = 100
         for wf in self.workFlows:
+            if selected and float(wf.numId) not in selected: continue
             n1+=1
             print "%-6s %-35s [1]: %s ..." % (wf.numId, wf.nameId, wf.cmdStep1[:maxLen])
             if wf.cmdStep2:
@@ -385,9 +397,9 @@ class MatrixReader(object):
 
         return
 
-    def show(self):
+    def show(self, selected=None):
         # self.showRaw()
-        self.showWorkFlows()
+        self.showWorkFlows(selected)
         print '\n','-'*80,'\n'
 
 
@@ -509,18 +521,20 @@ def runSelected(testList, nThreads=4, show=False) :
                '25',  # TTbar+RECO2+ALCATT2  STARTUP
                ]
     hiStatList = [
-#                 '5',  # SingleMuPt10
-#                 '19', # ZTT+RECO1
-                  '23.3', # TTBar FastSim
+#                 '15',  # SingleMuPt10
+#                 '119', # ZTT+RECO1
+                  '123.3', # TTBar FastSim
                    ]
 
     mrd = MatrixReader()
     files = ['cmsDriver_standard_hlt.txt', 'cmsDriver_highstats_hlt.txt']
+    offset = 0
     for matrixFile in files:
         try:
-            mrd.readMatrix(matrixFile)
+            mrd.readMatrix(matrixFile, offset=offset)
         except Exception, e:
             print "ERROR reading file:", matrixFile, str(e)
+        offset += 100
 
     try:
         mrd.createWorkFlows()
@@ -532,7 +546,7 @@ def runSelected(testList, nThreads=4, show=False) :
 
     ret = 0
     if show:
-        mrd.show()
+        mrd.show([float(x) for x in testList])
         print 'selected items:', testList
     else:
         mRunnerHi = MatrixRunner(mrd.workFlows, nThreads)
@@ -574,7 +588,7 @@ def runAll(testList=None, nThreads=4, show=False) :
 
 # --------------------------------------------------------------------------------
 
-def runOnly(only, show):
+def runOnly(only, show, nThreads=4):
 
     if not only: return
     
@@ -596,7 +610,7 @@ if __name__ == '__main__':
         
 # check command line parameter
 
-    np=4 # default: six threads
+    np=4 # default: four threads
     sel = None
     show = False
     only = None
@@ -615,9 +629,9 @@ if __name__ == '__main__':
     # print "sel",sel
     ret = 0
     if sel != None: # explicit distinguish from empty list (which is also false)
-        ret = runSelected(testList=sel, show=show)
+        ret = runSelected(testList=sel, nThreads=np, show=show)
     elif only != None:
-        ret = runOnly(only=only, show=show)
+        ret = runOnly(only=only, show=show, nThreads=np)
     else:
         ret = runAll(show=show, nThreads=np)
 
