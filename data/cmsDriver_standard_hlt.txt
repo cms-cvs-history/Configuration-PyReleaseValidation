@@ -2,8 +2,10 @@
 2 ++ ProdTTbar ++ RECOPROD1, ALCATT1 @@@ cmsDriver.py  TTbar_Tauola.cfi -s GEN:ProductionFilterSequence,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions FrontierConditions_GlobalTag,MC_31X_V8::All --relval 9000,50 --datatier 'GEN-SIM-RAW' --eventcontent RAWSIM
 3 ++ ProdQCD_Pt_3000_3500 ++ RECOPROD1 @@@ cmsDriver.py  QCD_Pt_3000_3500.cfi -s GEN:ProductionFilterSequence,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10 --conditions FrontierConditions_GlobalTag,MC_31X_V8::All --relval 9000,25 --datatier 'GEN-SIM-RAW' --eventcontent RAWSIM
 
-
-4 ++ Cosmics ++ RECOCOSD, ALCACOSD ++ REALDATA: /Cosmics/Commissioning08-v1/RAW, RUN: 69750 @@@
+4.1 ++ Cosmics ++ RECOCOSD08, ALCACOSD08 ++ REALDATA: /Cosmics/Commissioning08-v1/RAW, RUN: 69750, LABEL: 08 @@@
+4.2 ++ Cosmics ++ RECOCOSD09, ALCACOSD09 ++ REALDATA: /Cosmics/CRAFT09-v1/RAW, RUN: 110835, FILES: 100, EVENTS: 2000000, LABEL: 09 @@@
+4.3 ++ Cosmics ++ RECOD, ALCAD ++ REALDATA: /Cosmics/Commissioning08-v1/RAW, RUN: 69750, LABEL: 08 @@@
+4.4 ++ Cosmics ++ RECOD, ALCAD ++ REALDATA: /Cosmics/CRAFT09-v1/RAW, RUN: 110835, FILES: 100, EVENTS: 2000000, LABEL: 09 @@@
 
 5.1 ++ SingleMuPt1 ++ none @@@ cmsDriver.py SingleMuPt1_cfi.py -s GEN:ProductionFilterSequence,FASTSIM,VALIDATION,DQM --pileup=NoPileUp  --conditions=FrontierConditions_GlobalTag,MC_31X_V8::All --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
 5.2 ++ SingleMuPt10 ++ none @@@ cmsDriver.py SingleMuPt10_cfi.py -s GEN:ProductionFilterSequence,FASTSIM,VALIDATION,DQM --pileup=NoPileUp  --conditions=FrontierConditions_GlobalTag,MC_31X_V8::All --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
@@ -52,9 +54,14 @@ STEP2 ++ RECO2 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolat
 STEP2 ++ RECOMIN @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:RpcCalHLT+SiStripCalZeroBias+EcalCalPhiSym+EcalCalPi0Calib+EcalCalEtaCalib,VALIDATION,DQM --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,STARTUP31X_V7::All
 STEP2 ++ RECOQCD @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT+EcalCalPi0Calib+EcalCalEtaCalib,VALIDATION,DQM --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,STARTUP31X_V7::All
 STEP2 ++ RECOCOS @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,STARTUP31X_V7::All --scenario cosmics
-STEP2 ++ RECOCOSD @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO:reconstructionCosmics,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier RECO --eventcontent RECO --conditions FrontierConditions_GlobalTag,CRAFT0831X_V3::All --scenario cosmics --no_exec --data
+
+STEP2 ++ RECOCOSD08 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM,ALCA:SiStripCalZeroBias+MuAlCalIsolatedMu+RpcCalHLT+DQM --relval 25000,100 --datatier RECO --eventcontent RECO --conditions FrontierConditions_GlobalTag,CRAFT0831X_V4::All --scenario cosmics --no_exec --data --magField AutoFromDBCurrent
+STEP2 ++ RECOCOSD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM,ALCA:SiStripCalZeroBias+MuAlCalIsolatedMu+RpcCalHLT+DQM --relval 25000,100 --datatier RECO --eventcontent RECO --conditions FrontierConditions_GlobalTag,CRAFT09_R_V3::All --scenario cosmics --no_exec --data --magField AutoFromDBCurrent
 STEP2 ++ RECOALCA1 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION,DQM --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,MC_31X_V8::All
 STEP2 ++ RECOALCA2 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION,DQM --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,STARTUP31X_V7::All
+
+STEP2 ++ RECOD @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO:reconstructionCosmics,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier RECO --eventcontent RECO --conditions FrontierConditions_GlobalTag,CRAFT0831X_V3::All --scenario pp --no_exec --data
+STEP3 ++ ALCAD @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlCosmicsHLT+TkAlCosmics0T+MuAlStandAloneCosmics+MuAlGlobalCosmics+HcalCalHOCosmics -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,CRAFT0831X_V3::All --no_exec --datatier ALCARECO --eventcontent FEVTSIM --scenario pp
 
 STEP3 ++ ALCAMIN @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMinBias -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,STARTUP31X_V7::All --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
 STEP3 ++ ALCAQCD @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+HcalCalDijets+HcalCalHO+MuAlOverlaps -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,STARTUP31X_V7::All --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
@@ -63,9 +70,10 @@ STEP3 ++ ALCATT2 @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlZMuMu+TkAlMuonIsolate
 STEP3 ++ ALCAELE @@@ cmsDriver.py step3_RELVAL -s ALCA:EcalCalElectron -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,STARTUP31X_V7::All --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
 STEP3 ++ ALCAMU @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMuonIsolated+HcalCalHO+MuAlOverlaps -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,STARTUP31X_V7::All --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
 STEP3 ++ ALCAZMU @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlZMuMu+TkAlMuonIsolated+HcalCalHO+MuAlOverlaps -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,STARTUP31X_V7::All --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
-STEP3 ++ ALCACOS @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlCosmics+TkAlCosmics0THLT+MuAlStandAloneCosmics+MuAlGlobalCosmics+HcalCalHOCosmics -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,STARTUP31X_V7::All --no_exec --datatier ALCARECO  --oneoutput --eventcontent FEVTSIM --scenario cosmics
-STEP3 ++ ALCABH @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlBeamHalo+MuAlBeamHaloOverlaps+MuAlBeamHalo -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,STARTUP31X_V7::All --no_exec --datatier ALCARECO  --oneoutput --eventcontent FEVTSIM --scenario cosmics
-STEP3 ++ ALCACOSD @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlCosmicsHLT+TkAlCosmics0T+MuAlStandAloneCosmics+MuAlGlobalCosmics+HcalCalHOCosmics -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,CRAFT0831X_V3::All --no_exec --datatier ALCARECO --eventcontent FEVTSIM --scenario cosmics
+STEP3 ++ ALCACOS @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlCosmics+TkAlCosmics0THLT+MuAlStandAloneCosmics+MuAlGlobalCosmics+HcalCalHOCosmics -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,STARTUP31X_V7::All --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO --scenario cosmics
+STEP3 ++ ALCABH @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlBeamHalo+MuAlBeamHaloOverlaps+MuAlBeamHalo -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,STARTUP31X_V7::All --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO --scenario cosmics
+STEP3 ++ ALCACOSD08 @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlCosmics0T+MuAlStandAloneCosmics+MuAlGlobalCosmics+HcalCalHOCosmics+DQM -n 1000 --filein file:reco.root --conditions FrontierConditions_GlobalTag,CRAFT0831X_V4::All --no_exec --datatier ALCARECO --eventcontent ALCARECO --scenario cosmics --magField AutoFromDBCurrent
+STEP3 ++ ALCACOSD09 @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlCosmics0T+MuAlStandAloneCosmics+MuAlGlobalCosmics+HcalCalHOCosmics+DQM -n 1000 --filein file:reco.root --conditions FrontierConditions_GlobalTag,CRAFT09_R_V3::All --no_exec --datatier ALCARECO --eventcontent ALCARECO --scenario cosmics --magField AutoFromDBCurrent
 
 40 ++ TTbar_Tauola_2M ++ HLT1E31, RECO3, ALCA4 @@@ cmsDriver.py TTbar_Tauola.cfi --step=GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco --conditions=FrontierConditions_GlobalTag,STARTUP31X_V7::All --number=10 --mc --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent=FEVTDEBUGHLT  --processName=HLT8E29 --relval 9000,100
  
