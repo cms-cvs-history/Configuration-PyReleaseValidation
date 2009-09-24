@@ -205,9 +205,14 @@ class MatrixReader(object):
             try:
                 inFile = open(fileNameIn, 'r')
             except IOError:
-                baseRelPath = os.environ['CMSSW_RELEASE_BASE']
-                print "falling back to cmsDriver files from base release at:", baseRelPath
-                inFile = open( os.path.join(baseRelPath, 'src/Configuration/PyReleaseValidation/data' ,fileNameIn), 'r')
+                baseRelPath = os.environ['CMSSW_BASE']
+                print "trying fall-back to cmsDriver files from developer area at:", baseRelPath
+                try:
+                    inFile = open( os.path.join(baseRelPath, 'src/Configuration/PyReleaseValidation/data' ,fileNameIn), 'r')
+                except IOError:
+                    baseRelPath = os.environ['CMSSW_RELEASE_BASE']
+                    print "trying fall back to cmsDriver files from base release at:", baseRelPath
+                    inFile = open( os.path.join(baseRelPath, 'src/Configuration/PyReleaseValidation/data' ,fileNameIn), 'r')
             lines = inFile.readlines()
             inFile.close()
         except Exception, e:
