@@ -2,10 +2,10 @@
 2 ++ ProdTTbar ++ RECOPROD1, ALCATT1 @@@ cmsDriver.py  TTbar_Tauola.cfi -s GEN:ProductionFilterSequence,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions FrontierConditions_GlobalTag,MC_31X_V8::All --relval 9000,50 --datatier 'GEN-SIM-RAW' --eventcontent RAWSIM
 3 ++ ProdQCD_Pt_3000_3500 ++ RECOPROD1 @@@ cmsDriver.py  QCD_Pt_3000_3500.cfi -s GEN:ProductionFilterSequence,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10 --conditions FrontierConditions_GlobalTag,MC_31X_V8::All --relval 9000,25 --datatier 'GEN-SIM-RAW' --eventcontent RAWSIM
 
-4.1 ++ Cosmics ++ RECOCOSD08, ALCACOSD08 ++ REALDATA: /Cosmics/Commissioning08-v1/RAW, RUN: 69750, LABEL: 08 @@@
-4.2 ++ Cosmics ++ RECOCOSD09, ALCACOSD09 ++ REALDATA: /Cosmics/CRAFT09-v1/RAW, RUN: 110835, FILES: 100, EVENTS: 2000000, LABEL: 09 @@@
-4.3 ++ Cosmics ++ RECOD, ALCAD ++ REALDATA: /Cosmics/Commissioning08-v1/RAW, RUN: 69750, LABEL: 08 @@@
-4.4 ++ Cosmics ++ RECOD, ALCAD ++ REALDATA: /Cosmics/CRAFT09-v1/RAW, RUN: 110835, FILES: 100, EVENTS: 2000000, LABEL: 09 @@@
+4.1 ++ Cosmics ++ RECOCOSD08, ALCACOSD08 ++ REALDATA: /Cosmics/Commissioning08-v1/RAW, RUN: 69750, LABEL: cos_08 @@@
+4.2 ++ Cosmics ++ RECOCOSD09, ALCACOSD09 ++ REALDATA: /Cosmics/CRAFT09-v1/RAW, RUN: 110835, FILES: 100, EVENTS: 2000000, LABEL: cos_09 @@@
+4.3 ++ Cosmics ++ RECOD08 ++ REALDATA: /Cosmics/Commissioning08-v1/RAW, RUN: 69750, LABEL: col_08 @@@
+4.4 ++ Cosmics ++ RECOD09 ++ REALDATA: /Cosmics/CRAFT09-v1/RAW, RUN: 110835, FILES: 100, EVENTS: 2000000, LABEL: col_09 @@@
 
 5.1 ++ SingleMuPt1 ++ none @@@ cmsDriver.py SingleMuPt1_cfi.py -s GEN:ProductionFilterSequence,FASTSIM,VALIDATION,DQM --pileup=NoPileUp  --conditions=FrontierConditions_GlobalTag,MC_31X_V8::All --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
 5.2 ++ SingleMuPt10 ++ none @@@ cmsDriver.py SingleMuPt10_cfi.py -s GEN:ProductionFilterSequence,FASTSIM,VALIDATION,DQM --pileup=NoPileUp  --conditions=FrontierConditions_GlobalTag,MC_31X_V8::All --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
@@ -57,11 +57,12 @@ STEP2 ++ RECOCOS @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsol
 
 STEP2 ++ RECOCOSD08 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM,ALCA:SiStripCalZeroBias+MuAlCalIsolatedMu+RpcCalHLT+DQM --relval 25000,100 --datatier RECO --eventcontent RECO --conditions FrontierConditions_GlobalTag,CRAFT0831X_V4::All --scenario cosmics --no_exec --data --magField AutoFromDBCurrent
 STEP2 ++ RECOCOSD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM,ALCA:SiStripCalZeroBias+MuAlCalIsolatedMu+RpcCalHLT+DQM --relval 25000,100 --datatier RECO --eventcontent RECO --conditions FrontierConditions_GlobalTag,CRAFT09_R_V3::All --scenario cosmics --no_exec --data --magField AutoFromDBCurrent
+
 STEP2 ++ RECOALCA1 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION,DQM --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,MC_31X_V8::All
 STEP2 ++ RECOALCA2 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION,DQM --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions FrontierConditions_GlobalTag,STARTUP31X_V7::All
 
-STEP2 ++ RECOD @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO:reconstructionCosmics,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier RECO --eventcontent RECO --conditions FrontierConditions_GlobalTag,CRAFT0831X_V3::All --scenario pp --no_exec --data --magField AutoFromDBCurrent
-STEP3 ++ ALCAD @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlCosmicsHLT+TkAlCosmics0T+MuAlStandAloneCosmics+MuAlGlobalCosmics+HcalCalHOCosmics -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,CRAFT0831X_V3::All --no_exec --datatier ALCARECO --eventcontent FEVTSIM --scenario pp --magField AutoFromDBCurrent
+STEP2 ++ RECOD08 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier RECO --eventcontent RECO --conditions FrontierConditions_GlobalTag,CRAFT0831X_V4::All --scenario pp --no_exec --data --magField AutoFromDBCurrent
+STEP2 ++ RECOD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier RECO --eventcontent RECO --conditions FrontierConditions_GlobalTag,CRAFT09_R_V3::All --scenario pp --no_exec --data --magField AutoFromDBCurrent
 
 STEP3 ++ ALCAMIN @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMinBias -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,STARTUP31X_V7::All --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
 STEP3 ++ ALCAQCD @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+HcalCalDijets+HcalCalHO+MuAlOverlaps -n 1000 --filein file:reco.root  --conditions FrontierConditions_GlobalTag,STARTUP31X_V7::All --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
