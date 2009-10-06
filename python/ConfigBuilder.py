@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 
-__version__ = "$Revision: 1.147.2.1 $"
+__version__ = "$Revision: 1.147.2.2 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -784,7 +784,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.147.2.1 $"),
+              (version=cms.untracked.string("$Revision: 1.147.2.2 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
@@ -873,7 +873,13 @@ class ConfigBuilder(object):
         result = "process.schedule = cms.Schedule("
 
         # handling of the schedule
-	self.process.schedule = cms.Schedule(*(self.schedule))  
+        self.process.schedule = cms.Schedule() 
+	for item in self.schedule:
+		if not isinstance(item, cms.Schedule):
+			self.process.schedule.append(item)
+                else:
+			self.process.schedule.extend(item) 
+
 	if hasattr(self.process,"HLTSchedule"):
    	    beforeHLT = self.schedule[:self.schedule.index(self.process.HLTSchedule)] 
 	    afterHLT = self.schedule[self.schedule.index(self.process.HLTSchedule)+1:]
