@@ -58,7 +58,7 @@ STEP2 ++ RECOMIN @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:RpcCalHLT+S
 STEP2 ++ RECOQCD @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT+EcalCalPi0Calib+EcalCalEtaCalib,VALIDATION,DQM --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions STARTUP31X_V8::All
 STEP2 ++ RECOCOS @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions STARTUP31X_V8::All --scenario cosmics
 STEP2 ++ RECOALCA1 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION,DQM --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions MC_31X_V9::All
-STEP2 ++ RECOALCA2 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION,DQM --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions STARTUP31X_V8::Al
+STEP2 ++ RECOALCA2 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION,DQM --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions STARTUP31X_V8::All
 STEP2 ++ HLT1E31_PROD @@@ cmsDriver.py RelVal --step=DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco --conditions=MC_31X_V9::All  --number=100 --mc --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent=RAWDEBUG  --processName=HLT --relval 9000,100 --no_exec
 
 STEP2 ++ RECOCOSD08 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM,ALCA:SiStripCalZeroBias+MuAlCalIsolatedMu+RpcCalHLT+DQM --relval 25000,100 --datatier RECO --eventcontent RECO --conditions CRAFT0831X_V4::All --scenario cosmics --no_exec --data --magField AutoFromDBCurrent
