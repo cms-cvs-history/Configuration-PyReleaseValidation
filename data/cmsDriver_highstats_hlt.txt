@@ -2,7 +2,7 @@
 2 ++ SinglePiE50HCAL ++ none @@@ cmsDriver.py SinglePiE50HCAL.cfi -s GEN,SIM,DIGI,DIGI2RAW,RAW2DIGI,L1Reco,RECO -n 10 --relval 25000,250 --datatier 'GEN-SIM-DIGI-RAW-RECO' --geometry ECALHCAL --eventcontent FEVTDEBUG --beamspot NoSmear --customise Validation/Configuration/ECALHCAL.py --conditions MC_3XY_V10::All
 3 ++ InclusiveppMuX ++ RECO1 @@@ cmsDriver.py InclusiveppMuX.cfi -s GEN:ProductionFilterSequence,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10 --relval 11000000,45000 --eventcontent FEVTDEBUGHLT --conditions MC_3XY_V10::All --datatier GEN-SIM-DIGI-RAW-HLTDEBUG
 
-5 ++ MinBiasHcalNZS ++ ALCANZS @@@ cmsDriver.py MinBias.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10 --relval 25000,250 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --conditions MC_3XY_V10::All --customise=SimCalorimetry/HcalZeroSuppressionProducers/NoHcalZeroSuppression_cff.py
+
 6 ++ bJpsiX ++ RECO2 @@@ cmsDriver.py  bJpsiX.cfi -s GEN:ProductionFilterSequence,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10 --relval 325000000,1300000 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --conditions STARTUP3XY_V9::All
 7 ++ QQH120Inv ++ RECO2 @@@ cmsDriver.py  QQH120Inv_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10 --relval 25000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --conditions STARTUP3XY_V9::All
 8 ++ H165WW2L ++ RECO2 @@@ cmsDriver.py  H165WW2L_Tauola.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10 --relval 25000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --conditions STARTUP3XY_V9::All
