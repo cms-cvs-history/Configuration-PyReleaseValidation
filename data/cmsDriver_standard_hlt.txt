@@ -15,7 +15,7 @@
 6.2 ++ SinglePiPt10 ++ none @@@ cmsDriver.py SinglePiPt10_cfi.py -s GEN,FASTSIM,VALIDATION --pileup=NoPileUp  --conditions=MC_3XY_V12::All --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
 6.3 ++ SinglePiPt100 ++ none @@@ cmsDriver.py SinglePiPt100_cfi.py -s GEN,FASTSIM,VALIDATION --pileup=NoPileUp  --conditions=MC_3XY_V12::All --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
 
-7 ++ Cosmics ++ RECOCOS, ALCACOS @@@ cmsDriver.py UndergroundCosmicMu_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions STARTUP3X_V11::All --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTSIM --scenario cosmics
+7 ++ Cosmics ++ RECOCOS, ALCACOS @@@ cmsDriver.py UndergroundCosmicMu_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions STARTUP3X_V11::All --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUG --scenario cosmics
 8 ++ BeamHalo ++ RECOCOS, ALCABH @@@ cmsDriver.py BeamHalo_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions STARTUP3X_V11::All --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTSIM --scenario cosmics
 9 ++ Higgs200ChargedTaus ++ RECO2 @@@ cmsDriver.py H200ChargedTaus_Tauola_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions STARTUP3X_V11::All --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT
 10 ++ MinBias ++ RECO1 @@@ cmsDriver.py  MinBias.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions MC_3XY_V12::All --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT
