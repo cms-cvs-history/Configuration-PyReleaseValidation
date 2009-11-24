@@ -49,7 +49,7 @@
 38 ++ QCD_FlatPt_15_3000 ++ RECO1 @@@ cmsDriver.py QCDForPF_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions MC_3XY_V14::All --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT
 39 ++ QCD_FlatPt_15_3000 ++ none @@@ cmsDriver.py QCDForPF_cfi.py -s GEN,FASTSIM --pileup=NoPileUp  --conditions=MC_3XY_V14::All --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
 
-40 ++ HydjetQ_MinBias_4TeV ++ RECOHI1 @@@ cmsDriver.py  Hydjet_Quenched_MinBias_4TeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW -n 1 --conditions MC_3XY_V14::All --relval 500,5 --datatier 'GEN-SIM-RAW' -- eventcontent RAWDEBUG --scenario HeavyIons --no_exec
+40 ++ HydjetQ_MinBias_4TeV ++ RECOHI1 @@@ cmsDriver.py  Hydjet_Quenched_MinBias_4TeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW -n 1 --conditions MC_3XY_V14::All --relval 500,5 --datatier 'GEN-SIM-RAW' --eventcontent RAWDEBUG --scenario HeavyIons --no_exec
 41 ++ HydjetQ_B0_4TeV ++ RECOHI1 @@@ cmsDriver.py  Hydjet_Quenched_B0_4TeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW -n 0 --conditions  MC_3XY_V14::All --relval 80,2 --datatier 'GEN-SIM-RAW' --eventcontent  RAWDEBUG --scenario HeavyIons --no_exec
 
 STEP2 ++ RECOPROD1 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions MC_3XY_V14::All
@@ -68,7 +68,7 @@ STEP2 ++ RECOCOSD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM,ALCA:SiSt
 STEP2 ++ RECOD08 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier RECO --eventcontent RECO --conditions CRAFT08_R_V8::All --scenario pp --no_exec --data --magField AutoFromDBCurrent
 STEP2 ++ RECOD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier RECO --eventcontent RECO --conditions CRAFT09_R_V9::All --scenario pp --no_exec --data --magField AutoFromDBCurrent
 
-STEP2 ++ RECOHI1 @@@ cmsDriver.py hiReco -n 1 -s RAW2DIGI,RECO -- scenario HeavyIons --conditions MC_3XY_V14::All --datatier 'GEN-SIM- RECO' --eventcontent=FEVTDEBUG --filein=file.root --no_exec
+STEP2 ++ RECOHI1 @@@ cmsDriver.py hiReco -n 1 -s RAW2DIGI,RECO --scenario HeavyIons --conditions MC_3XY_V14::All --datatier 'GEN-SIM- RECO' --eventcontent=FEVTDEBUG --filein=file.root --no_exec
 
 STEP3 ++ ALCAMIN @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMinBias -n 1000 --filein file:reco.root  --conditions STARTUP3X_V14::All --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
 STEP3 ++ ALCAQCD @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+HcalCalDijets+HcalCalHO+MuAlOverlaps -n 1000 --filein file:reco.root  --conditions STARTUP3X_V14::All --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
