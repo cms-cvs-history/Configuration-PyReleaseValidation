@@ -68,7 +68,7 @@ STEP2 ++ RECOCOSD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM,ALCA:SiSt
 STEP2 ++ RECOD08 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier RECO --eventcontent RECO --conditions CRAFT08_R_V8::All --scenario pp --no_exec --data --magField AutoFromDBCurrent
 STEP2 ++ RECOD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier RECO --eventcontent RECO --conditions CRAFT09_R_V9::All --scenario pp --no_exec --data --magField AutoFromDBCurrent
 
-STEP2 ++ RECOHI1 @@@ cmsDriver.py hiReco -n 0 -s RAW2DIGI,RECO --scenario HeavyIons --conditions MC_3XY_V14::All --datatier 'GEN-SIM- RECO' --eventcontent=FEVTDEBUG --filein=file.root --no_exec
+STEP2 ++ RECOHI1 @@@ cmsDriver.py hiReco -n 0 -s RAW2DIGI,RECO --scenario HeavyIons --conditions MC_3XY_V14::All --datatier 'GEN-SIM-RECO' --eventcontent=FEVTDEBUG --filein=file.root --no_exec
 
 STEP3 ++ ALCAMIN @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMinBias -n 1000 --filein file:reco.root  --conditions STARTUP3X_V14::All --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
 STEP3 ++ ALCAQCD @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+HcalCalDijets+HcalCalHO+MuAlOverlaps -n 1000 --filein file:reco.root  --conditions STARTUP3X_V14::All --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
