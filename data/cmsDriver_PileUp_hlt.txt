@@ -1,16 +1,16 @@
-1 ++ ZmumuJets_Pt_20_300_GEN ++ RECO1 @@@ cmsDriver.py  ZmumuJets_Pt_20_300_GEN_cfg.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions MC_3XY_V14::All --relval 25000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --pileup LowLumiPileUp --eventcontent FEVTDEBUGHLT
-2 ++ TTbar_Tauola ++ RECO2 @@@ cmsDriver.py  TTbar_Tauola.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions STARTUP3X_V14::All --relval 9000,50 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --pileup 156BxLumiPileUp --eventcontent FEVTDEBUGHLT
+1 ++ ZmumuJets_Pt_20_300_GEN ++ RECO1 @@@ cmsDriver.py  ZmumuJets_Pt_20_300_GEN_cfg.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions MC_3XY_V15::All --relval 25000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --pileup LowLumiPileUp --eventcontent FEVTDEBUGHLT
+2 ++ TTbar_Tauola ++ RECO2 @@@ cmsDriver.py  TTbar_Tauola.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions STARTUP3X_V15::All --relval 9000,50 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --pileup 156BxLumiPileUp --eventcontent FEVTDEBUGHLT
 
 3 ++ Pyquen_GammaJet_pt20_4TeV ++ GAMMAHI, RECOHI1 ++ REALDATA: /RelValHydjetQ_B0_4TeV/*/GEN-SIM-RAW, RUN: 1, PRIMARY: Y @@@
 4 ++ Pyquen_DiJet_pt80to120_4TeV ++ DIJETHI, RECOHI1 ++ REALDATA: /RelValHydjetQ_B0_4TeV/*/GEN-SIM-RAW, RUN: 1, PRIMARY: Y @@@
 5 ++ Pyquen_ZeemumuJets_pt10_4TeV ++ ZEEMUMUHI, RECOHI1 ++ REALDATA: /RelValHydjetQ_B0_4TeV/*/GEN-SIM-RAW, RUN: 1, PRIMARY: Y @@@
 
-STEP2 ++ RECO1 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION,DQM --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions MC_3XY_V14::All --pileup LowLumiPileUp
+STEP2 ++ RECO1 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION,DQM --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions MC_3XY_V15::All --pileup LowLumiPileUp
 
-STEP2 ++ RECO2 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION,DQM --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions STARTUP3X_V14::All --pileup 156BxLumiPileUp
+STEP2 ++ RECO2 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION,DQM --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions STARTUP3X_V15::All --pileup 156BxLumiPileUp
 
-STEP2 ++ GAMMAHI @@@ cmsDriver.py Pyquen_GammaJet_pt20_4TeV_cfi.py -n 1 -s GEN:hiSignal,SIM,DIGI,L1,DIGI2RAW --scenario HeavyIons --himix --conditions MC_3XY_V14::All --datatier 'GEN-SIM-RAW' --eventcontent=RAWDEBUG --filein=file.root --processName 'HISIGNAL' --no_exec
-STEP2 ++ DIJETHI @@@ cmsDriver.py Pyquen_DiJet_pt80to120_4TeV_cfi.py -n 1 -s GEN:hiSignal,SIM,DIGI,L1,DIGI2RAW --scenario HeavyIons --himix --conditions MC_3XY_V14::All --datatier 'GEN-SIM-RAW' --eventcontent=RAWDEBUG --filein=file.root --processName 'HISIGNAL' --no_exec
-STEP2 ++ ZEEMUMUHI @@@ cmsDriver.py Pyquen_ZeemumuJets_pt10_4TeV_cfi.py -n 1 -s GEN:hiSignal,SIM,DIGI,L1,DIGI2RAW --scenario HeavyIons --himix --conditions MC_3XY_V14::All --datatier 'GEN-SIM-RAW' --eventcontent=RAWDEBUG --filein=file.root --processName 'HISIGNAL' --no_exec
+STEP2 ++ GAMMAHI @@@ cmsDriver.py Pyquen_GammaJet_pt20_4TeV_cfi.py -n 1 -s GEN:hiSignal,SIM,DIGI,L1,DIGI2RAW --scenario HeavyIons --himix --conditions MC_3XY_V15::All --datatier 'GEN-SIM-RAW' --eventcontent=RAWDEBUG --filein=file.root --processName 'HISIGNAL' --no_exec
+STEP2 ++ DIJETHI @@@ cmsDriver.py Pyquen_DiJet_pt80to120_4TeV_cfi.py -n 1 -s GEN:hiSignal,SIM,DIGI,L1,DIGI2RAW --scenario HeavyIons --himix --conditions MC_3XY_V15::All --datatier 'GEN-SIM-RAW' --eventcontent=RAWDEBUG --filein=file.root --processName 'HISIGNAL' --no_exec
+STEP2 ++ ZEEMUMUHI @@@ cmsDriver.py Pyquen_ZeemumuJets_pt10_4TeV_cfi.py -n 1 -s GEN:hiSignal,SIM,DIGI,L1,DIGI2RAW --scenario HeavyIons --himix --conditions MC_3XY_V15::All --datatier 'GEN-SIM-RAW' --eventcontent=RAWDEBUG --filein=file.root --processName 'HISIGNAL' --no_exec
 
-STEP3 ++ RECOHI1 @@@ cmsDriver.py hiReco -n 1 -s RAW2DIGI,RECO --scenario HeavyIons --conditions MC_3XY_V14::All --datatier 'GEN-SIM-RECO' --eventcontent=FEVTDEBUG --filein=hola.root --no_exec
+STEP3 ++ RECOHI1 @@@ cmsDriver.py hiReco -n 1 -s RAW2DIGI,RECO --scenario HeavyIons --conditions MC_3XY_V15::All --datatier 'GEN-SIM-RECO' --eventcontent=FEVTDEBUG --filein=hola.root --no_exec
