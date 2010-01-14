@@ -41,7 +41,7 @@
 
 STEP2 ++ RECO1 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION,DQM --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions MC_3XY_V15::All
 STEP2 ++ RECO2 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION,DQM --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions STARTUP3X_V15::All
-STEP2 ++ ALCANZS @@@ cmsDriver.py step2 -s ALCA:HcalCalMinBias --datatier ALCARECO --eventcontent ALCARECO --conditions MC_3XY_V15::All
+STEP2 ++ ALCANZS @@@ cmsDriver.py step2 -s ALCA:HcalCalMinBias --datatier ALCARECO --eventcontent ALCARECO --conditions MC_3XY_V15::All --mc
 
 STEP3 ++ ALCAQCD @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+HcalCalDijets+HcalCalHO+MuAlOverlaps -n 1000 --filein file:reco.root  --conditions STARTUP3X_V15::All --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
 STEP3 ++ ALCATT @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlZMuMu+TkAlMuonIsolated+TkAlMinBias+EcalCalElectron+HcalCalIsoTrk+HcalCalDijets+HcalCalGammaJet+HcalCalHO+MuAlOverlaps -n 1000 --filein file:reco.root  --conditions STARTUP3X_V15::All --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
