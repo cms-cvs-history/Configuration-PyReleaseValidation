@@ -7,13 +7,12 @@
 4.3 ++ Cosmics ++ RECOD08 ++ REALDATA: /Cosmics/Commissioning08-v1/RAW, RUN: 69750, LABEL: col_08 @@@
 4.4 ++ Cosmics ++ RECOD09 ++ REALDATA: /Cosmics/CRAFT09-v1/RAW, RUN: 110835, FILES: 100, EVENTS: 2000000, LABEL: col_09 @@@
 
-
-5.1 ++ SingleMuPt1 ++ none @@@ cmsDriver.py SingleMuPt1_cfi.py -s GEN,FASTSIM,VALIDATION --pileup=NoPileUp  --conditions=MC_3XY_V15::All --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
+5.1 ++ TTbar ++ none @@@ cmsDriver.py TTbar_Tauola_cfi.py -s GEN,FASTSIM,VALIDATION --pileup=NoPileUp  --conditions=MC_3XY_V15::All --eventcontent=FEVTDEBUGHLT --beamspot=Early10TeVCollision  --datatier GEN-SIM-DIGI-RECO -n 10 --relval 100000,1000
 5.2 ++ SingleMuPt10 ++ none @@@ cmsDriver.py SingleMuPt10_cfi.py -s GEN,FASTSIM,VALIDATION --pileup=NoPileUp  --conditions=MC_3XY_V15::All --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
 5.3 ++ SingleMuPt100 ++ none @@@ cmsDriver.py SingleMuPt100_cfi.py -s GEN,FASTSIM,VALIDATION --pileup=NoPileUp  --conditions=MC_3XY_V15::All --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
-6.1 ++ SinglePiPt1 ++ none @@@ cmsDriver.py SinglePiPt1_cfi.py -s GEN,FASTSIM,VALIDATION --pileup=NoPileUp  --conditions=MC_3XY_V15::All --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
-6.2 ++ SinglePiPt10 ++ none @@@ cmsDriver.py SinglePiPt10_cfi.py -s GEN,FASTSIM,VALIDATION --pileup=NoPileUp  --conditions=MC_3XY_V15::All --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
-6.3 ++ SinglePiPt100 ++ none @@@ cmsDriver.py SinglePiPt100_cfi.py -s GEN,FASTSIM,VALIDATION --pileup=NoPileUp  --conditions=MC_3XY_V15::All --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
+6.1 ++ ZEE ++ none @@@ cmsDriver.py ZEE_cfi.py -s GEN,FASTSIM,VALIDATION --pileup=NoPileUp  --conditions=MC_3XY_V15::All --eventcontent=FEVTDEBUGHLT --beamspot=Early10TeVCollision  --datatier GEN-SIM-DIGI-RECO -n 10 --relval 100000,1000
+6.2 ++ ZEE ++ none @@@ cmsDriver.py ZEE_cfi.py -s GEN,FASTSIM,VALIDATION --pileup=NoPileUp  --conditions=STARTUP3X_V15::All --eventcontent=FEVTDEBUGHLT --beamspot=Early10TeVCollision  --datatier GEN-SIM-DIGI-RECO -n 10 --relval 100000,1000
+6.3 ++ ZTT ++ none @@@ cmsDriver.py ZTT_Tauola_OneLepton_OtherHadrons_cfi.py -s GEN,FASTSIM,VALIDATION --pileup=NoPileUp  --conditions=STARTUP3X_V15::All --eventcontent=FEVTDEBUGHLT --beamspot=Early10TeVCollision  --datatier GEN-SIM-DIGI-RECO -n 10 --relval 100000,1000
 
 7 ++ Cosmics ++ RECOCOS, ALCACOS @@@ cmsDriver.py UndergroundCosmicMu_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions STARTUP3X_V15::All --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUG --scenario cosmics
 8 ++ BeamHalo ++ RECOCOS, ALCABH @@@ cmsDriver.py BeamHalo_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions STARTUP3X_V15::All --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTSIM --scenario cosmics
