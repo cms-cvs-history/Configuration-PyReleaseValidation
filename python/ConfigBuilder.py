@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 
-__version__ = "$Revision: 1.161 $"
+__version__ = "$Revision: 1.162 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -105,7 +105,9 @@ class ConfigBuilder(object):
         if 'HARVESTING' in self._options.step:
             self.process.options = cms.untracked.PSet( Rethrow = cms.untracked.vstring('ProductNotFound'),fileMode = cms.untracked.string('FULLMERGE'))
         else:
-	    self.process.options = cms.untracked.PSet( )
+            # use very strict settings
+            from FWCore.Framework.test.cmsExceptionsFatalOption_cff import Rethrow
+            self.process.options = cms.untracked.PSet( Rethrow = Rethrow )
 	
     def addMaxEvents(self):
         """Here we decide how many evts will be processed"""
@@ -824,7 +826,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.161 $"),
+              (version=cms.untracked.string("$Revision: 1.162 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
