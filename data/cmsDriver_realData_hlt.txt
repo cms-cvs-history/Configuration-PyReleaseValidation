@@ -4,11 +4,11 @@
 1004.3 ++ Cosmics ++ RECOD08 ++ REALDATA: /Cosmics/Commissioning08-v1/RAW, RUN: 69750, LABEL: col_08 @@@
 1004.4 ++ Cosmics ++ RECOD09 ++ REALDATA: /Cosmics/CRAFT09-v1/RAW, RUN: 110835, FILES: 100, EVENTS: 2000000, LABEL: col_09 @@@
 
-STEP2 ++ RECOCOSD08 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM,ALCA:SiStripCalZeroBias+MuAlCalIsolatedMu+RpcCalHLT+DQM --relval 25000,100 --datatier RECO --eventcontent RECO --conditions CRAFT08_R_V9::All --scenario cosmics --no_exec --data --magField AutoFromDBCurrent
-STEP2 ++ RECOCOSD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM,ALCA:SiStripCalZeroBias+MuAlCalIsolatedMu+RpcCalHLT+DQM --relval 25000,100 --datatier RECO --eventcontent RECO --conditions CRAFT09_R_V10::All --scenario cosmics --no_exec --data --magField AutoFromDBCurrent
+STEP2 ++ RECOCOSD08 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM,ALCA:SiStripCalZeroBias+MuAlCalIsolatedMu+RpcCalHLT+DQM --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft08 --scenario cosmics --no_exec --data --magField AutoFromDBCurrent
+STEP2 ++ RECOCOSD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM,ALCA:SiStripCalZeroBias+MuAlCalIsolatedMu+RpcCalHLT+DQM --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft09 --scenario cosmics --no_exec --data --magField AutoFromDBCurrent
 
-STEP2 ++ RECOD08 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier RECO --eventcontent RECO --conditions CRAFT08_R_V9::All --scenario pp --no_exec --data --magField AutoFromDBCurrent
-STEP2 ++ RECOD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier RECO --eventcontent RECO --conditions CRAFT09_R_V10::All --scenario pp --no_exec --data --magField AutoFromDBCurrent
+STEP2 ++ RECOD08 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft08 --scenario pp --no_exec --data --magField AutoFromDBCurrent
+STEP2 ++ RECOD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft09 --scenario pp --no_exec --data --magField AutoFromDBCurrent
 
-STEP3 ++ ALCACOSD08 @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlCosmics0T+MuAlStandAloneCosmics+MuAlGlobalCosmics+HcalCalHOCosmics+DQM -n 1000 --filein file:reco.root --conditions CRAFT08_R_V9::All --no_exec --datatier ALCARECO --eventcontent ALCARECO --scenario cosmics --magField AutoFromDBCurrent
-STEP3 ++ ALCACOSD09 @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlCosmics0T+MuAlStandAloneCosmics+MuAlGlobalCosmics+HcalCalHOCosmics+DQM -n 1000 --filein file:reco.root --conditions CRAFT09_R_V10::All --no_exec --datatier ALCARECO --eventcontent ALCARECO --scenario cosmics --magField AutoFromDBCurrent
+STEP3 ++ ALCACOSD08 @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlCosmics0T+MuAlStandAloneCosmics+MuAlGlobalCosmics+HcalCalHOCosmics+DQM -n 1000 --filein file:reco.root --conditions auto:craft08 --no_exec --datatier ALCARECO --eventcontent ALCARECO --scenario cosmics --magField AutoFromDBCurrent
+STEP3 ++ ALCACOSD09 @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlCosmics0T+MuAlStandAloneCosmics+MuAlGlobalCosmics+HcalCalHOCosmics+DQM -n 1000 --filein file:reco.root --conditions auto:craft09 --no_exec --datatier ALCARECO --eventcontent ALCARECO --scenario cosmics --magField AutoFromDBCurrent
