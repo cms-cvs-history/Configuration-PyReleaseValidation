@@ -9,8 +9,8 @@ STEP2 ++ RECO1 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolat
 
 STEP2 ++ RECO2 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION,DQM --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions auto:startup --pileup 156BxLumiPileUp
 
-STEP2 ++ GAMMAHI @@@ cmsDriver.py Pyquen_GammaJet_pt20_4TeV.py -n 1 -s GEN:hiSignal,SIM,DIGI,L1,DIGI2RAW --scenario HeavyIons --himix --conditions auto:mc --datatier 'GEN-SIM-RAW' --eventcontent=RAWDEBUG --filein=file.root --processName 'HISIGNAL' --no_exec
-STEP2 ++ DIJETHI @@@ cmsDriver.py Pyquen_DiJet_pt80to120_4TeV.py -n 1 -s GEN:hiSignal,SIM,DIGI,L1,DIGI2RAW --scenario HeavyIons --himix --conditions auto:mc --datatier 'GEN-SIM-RAW' --eventcontent=RAWDEBUG --filein=file.root --processName 'HISIGNAL' --no_exec
-STEP2 ++ ZEEMUMUHI @@@ cmsDriver.py Pyquen_ZeemumuJets_pt10_4TeV.py -n 1 -s GEN:hiSignal,SIM,DIGI,L1,DIGI2RAW --scenario HeavyIons --himix --conditions auto:mc --datatier 'GEN-SIM-RAW' --eventcontent=RAWDEBUG --filein=file.root --processName 'HISIGNAL' --no_exec
+STEP2 ++ GAMMAHI @@@ cmsDriver.py Pyquen_GammaJet_pt20_4TeV_cfi.py -n 1 -s GEN:hiSignal,SIM,DIGI,L1,DIGI2RAW --scenario HeavyIons --himix --conditions auto:mc --datatier 'GEN-SIM-RAW' --eventcontent=RAWDEBUG --filein=file.root --processName 'HISIGNAL' --no_exec
+STEP2 ++ DIJETHI @@@ cmsDriver.py Pyquen_DiJet_pt80to120_4TeV_cfi.py -n 1 -s GEN:hiSignal,SIM,DIGI,L1,DIGI2RAW --scenario HeavyIons --himix --conditions auto:mc --datatier 'GEN-SIM-RAW' --eventcontent=RAWDEBUG --filein=file.root --processName 'HISIGNAL' --no_exec
+STEP2 ++ ZEEMUMUHI @@@ cmsDriver.py Pyquen_ZeemumuJets_pt10_4TeV_cfi.py -n 1 -s GEN:hiSignal,SIM,DIGI,L1,DIGI2RAW --scenario HeavyIons --himix --conditions auto:mc --datatier 'GEN-SIM-RAW' --eventcontent=RAWDEBUG --filein=file.root --processName 'HISIGNAL' --no_exec
 
 STEP3 ++ RECOHI1 @@@ cmsDriver.py hiReco -n 1 -s RAW2DIGI,RECO --scenario HeavyIons --conditions auto:mc --datatier 'GEN-SIM-RECO' --eventcontent=FEVTDEBUG --filein=hola.root --no_exec
