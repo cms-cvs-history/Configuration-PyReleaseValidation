@@ -1,9 +1,9 @@
-1 ++ ZmumuJets_Pt_20_300_GEN ++ RECO1 @@@ cmsDriver.py  ZmumuJets_Pt_20_300_GEN_cfg.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions auto:mc --relval 25000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --pileup LowLumiPileUp --eventcontent FEVTDEBUGHLT
-2 ++ TTbar_Tauola ++ RECO2 @@@ cmsDriver.py  TTbar_Tauola.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions auto:startup --relval 9000,50 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --pileup 156BxLumiPileUp --eventcontent FEVTDEBUGHLT
+501 ++ ZmumuJets_Pt_20_300_GEN ++ RECO1 @@@ cmsDriver.py  ZmumuJets_Pt_20_300_GEN_7TeV_cfg.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions auto:mc --relval 25000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --pileup LowLumiPileUp --eventcontent FEVTDEBUGHLT
+502 ++ TTbar_Tauola ++ RECO2 @@@ cmsDriver.py  TTbar_Tauola_7TeV.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions auto:startup --relval 9000,50 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --pileup 156BxLumiPileUp --eventcontent FEVTDEBUGHLT
 
-3 ++ Pyquen_GammaJet_pt20_4TeV ++ GAMMAHI, RECOHI1 ++ REALDATA: /RelValHydjetQ_B0_4TeV/*/GEN-SIM-RAW, RUN: 1, PRIMARY: Y @@@
-4 ++ Pyquen_DiJet_pt80to120_4TeV ++ DIJETHI, RECOHI1 ++ REALDATA: /RelValHydjetQ_B0_4TeV/*/GEN-SIM-RAW, RUN: 1, PRIMARY: Y @@@
-5 ++ Pyquen_ZeemumuJets_pt10_4TeV ++ ZEEMUMUHI, RECOHI1 ++ REALDATA: /RelValHydjetQ_B0_4TeV/*/GEN-SIM-RAW, RUN: 1, PRIMARY: Y @@@
+503 ++ Pyquen_GammaJet_pt20_4TeV ++ GAMMAHI, RECOHI1 ++ REALDATA: /RelValHydjetQ_B0_4TeV/*/GEN-SIM-RAW, RUN: 1, PRIMARY: Y @@@
+504 ++ Pyquen_DiJet_pt80to120_4TeV ++ DIJETHI, RECOHI1 ++ REALDATA: /RelValHydjetQ_B0_4TeV/*/GEN-SIM-RAW, RUN: 1, PRIMARY: Y @@@
+505 ++ Pyquen_ZeemumuJets_pt10_4TeV ++ ZEEMUMUHI, RECOHI1 ++ REALDATA: /RelValHydjetQ_B0_4TeV/*/GEN-SIM-RAW, RUN: 1, PRIMARY: Y @@@
 
 STEP2 ++ RECO1 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION,DQM --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions auto:mc --pileup LowLumiPileUp
 

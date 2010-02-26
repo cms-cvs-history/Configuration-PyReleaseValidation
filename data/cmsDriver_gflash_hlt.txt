@@ -1,9 +1,9 @@
-1 ++ QCD_Pt_3000_3500_gflash ++ RECO1 @@@ cmsDriver.py  QCD_Pt_3000_3500.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10 --conditions auto:mc --relval 9000,25 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --gflash
-2 ++ QCD_Pt_80_120_gflash ++ RECO1 @@@ cmsDriver.py  QCD_Pt_80_120.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions auto:mc --relval 9000,50 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --gflash
-3 ++ QCD_FlatPt_15_3000_gflash ++ RECO1 @@@ cmsDriver.py QCDForPF_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --gflash
-4 ++ Wjet_Pt_80_120_gflash ++ RECO1 @@@ cmsDriver.py Wjet_Pt_80_120_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --gflash
-5 ++ LM1_sfts_gflash ++ RECO1 @@@ cmsDriver.py LM1_sfts_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --gflash
-6 ++ TTbar_gflash ++ RECO1, ALCATT1 @@@ cmsDriver.py  TTbar_Tauola.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions auto:mc --relval 9000,50 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --gflash 
+1 ++ QCD_Pt_3000_3500_gflash ++ RECO1 @@@ cmsDriver.py  QCD_Pt_3000_3500_7TeV.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10 --conditions auto:mc --relval 9000,25 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --gflash
+2 ++ QCD_Pt_80_120_gflash ++ RECO1 @@@ cmsDriver.py  QCD_Pt_80_120_7TeV.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions auto:mc --relval 9000,50 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --gflash
+3 ++ QCD_FlatPt_15_3000_gflash ++ RECO1 @@@ cmsDriver.py QCDForPF_7TeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --gflash
+4 ++ Wjet_Pt_80_120_gflash ++ RECO1 @@@ cmsDriver.py Wjet_Pt_80_120_7TeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --gflash
+5 ++ LM1_sfts_gflash ++ RECO1 @@@ cmsDriver.py LM1_sfts_7TeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --gflash
+6 ++ TTbar_gflash ++ RECO1, ALCATT1 @@@ cmsDriver.py  TTbar_Tauola_7TeV.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions auto:mc --relval 9000,50 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --gflash 
 
 STEP2 ++ RECO1 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION,DQM --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions auto:mc
 
