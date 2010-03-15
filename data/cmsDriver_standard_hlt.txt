@@ -50,7 +50,7 @@
 38 ++ QCD_FlatPt_15_3000 ++ RECO1 @@@ cmsDriver.py QCDForPF_7TeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT
 39 ++ QCD_FlatPt_15_3000 ++ none @@@ cmsDriver.py QCDForPF_7TeV_cfi.py -s GEN,FASTSIM,VALIDATION --pileup=NoPileUp  --conditions=auto:mc --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
 
-40 ++ HydjetQ_MinBias_4TeV ++ RECOHI1 @@@ cmsDriver.py  Hydjet_Quenched_MinBias_4TeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW -n 1 --conditions auto:mc --relval 500,5 --datatier 'GEN-SIM-RAW' --eventcontent RAWDEBUG --scenario HeavyIons --no_exec
+40 ++ HydjetQ_MinBias_4TeV ++ RECOHI1 @@@ cmsDriver.py  Hydjet_Quenched_MinBias_4TeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW -n 0 --conditions auto:mc --relval 500,5 --datatier 'GEN-SIM-RAW' --eventcontent RAWDEBUG --scenario HeavyIons --no_exec
 41 ++ HydjetQ_B0_4TeV ++ RECOHI1 @@@ cmsDriver.py  Hydjet_Quenched_B0_4TeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW -n 0 --conditions  auto:mc --relval 80,2 --datatier 'GEN-SIM-RAW' --eventcontent  RAWDEBUG --scenario HeavyIons --no_exec
 
 STEP2 ++ RECOPROD1 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions auto:mc
