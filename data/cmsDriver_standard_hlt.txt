@@ -50,7 +50,7 @@
 38 ++ QCD_FlatPt_15_3000 ++ RECO1 @@@ cmsDriver.py QCDForPF_7TeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT
 39 ++ QCD_FlatPt_15_3000 ++ none @@@ cmsDriver.py QCDForPF_7TeV_cfi.py -s GEN,FASTSIM,VALIDATION --pileup=NoPileUp  --conditions=auto:mc --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
 
-40 ++ HydjetQ_MinBias_4TeV ++ RECOHI1 @@@ cmsDriver.py  Hydjet_Quenched_MinBias_4TeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW -n 1 --conditions auto:mc --relval 500,5 --datatier 'GEN-SIM-RAW' --eventcontent RAWDEBUG --scenario HeavyIons --no_exec
+40 ++ HydjetQ_MinBias_4TeV ++ RECOHI1 @@@ cmsDriver.py  Hydjet_Quenched_MinBias_4TeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW -n 0 --conditions auto:mc --relval 500,5 --datatier 'GEN-SIM-RAW' --eventcontent RAWDEBUG --scenario HeavyIons --no_exec
 41 ++ HydjetQ_B0_4TeV ++ RECOHI1 @@@ cmsDriver.py  Hydjet_Quenched_B0_4TeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW -n 0 --conditions  auto:mc --relval 80,2 --datatier 'GEN-SIM-RAW' --eventcontent  RAWDEBUG --scenario HeavyIons --no_exec
 
 STEP2 ++ RECOPROD1 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions auto:mc
@@ -63,8 +63,8 @@ STEP2 ++ RECOALCA1 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIs
 STEP2 ++ RECOALCA2 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT,VALIDATION,DQM --datatier GEN-SIM-RECO --eventcontent RECOSIM --conditions auto:startup
 STEP2 ++ HLT1E31_PROD @@@ cmsDriver.py RelVal --step=DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco --conditions=auto:mc  --number=100 --mc --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent=RAWDEBUG  --processName=HLT --relval 9000,100 --no_exec
 
-STEP2 ++ RECOCOSD08 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM,ALCA:SiStripCalZeroBias+MuAlCalIsolatedMu+RpcCalHLT+DQM --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft08 --scenario cosmics --no_exec --data --magField AutoFromDBCurrent
-STEP2 ++ RECOCOSD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM,ALCA:SiStripCalZeroBias+MuAlCalIsolatedMu+RpcCalHLT+DQM --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft09 --scenario cosmics --no_exec --data --magField AutoFromDBCurrent
+STEP2 ++ RECOCOSD08 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,L1HwVal,DQM,ALCA:SiStripCalZeroBias+MuAlCalIsolatedMu+RpcCalHLT+DQM --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft08 --scenario cosmics --no_exec --data --magField AutoFromDBCurrent
+STEP2 ++ RECOCOSD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,L1HwVal,DQM,ALCA:SiStripCalZeroBias+MuAlCalIsolatedMu+RpcCalHLT+DQM --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft09 --scenario cosmics --no_exec --data --magField AutoFromDBCurrent
 
 STEP2 ++ RECOD08 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft08 --scenario pp --no_exec --data --magField AutoFromDBCurrent
 STEP2 ++ RECOD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft09 --scenario pp --no_exec --data --magField AutoFromDBCurrent
