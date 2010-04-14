@@ -67,7 +67,7 @@ STEP2 ++ RECOCOSD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,L1HwVal,DQM,A
 
 STEP2 ++ RECOD08 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft08 --scenario pp --no_exec --data --magField AutoFromDBCurrent
 STEP2 ++ RECOD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft09 --scenario pp --no_exec --data --magField AutoFromDBCurrent
-STEP2 ++ RECOD10 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO --relval 25000,100 --datatier RECO --eventcontent RECODEBUG --conditions auto:com10 --scenario pp --no_exec --data --magField AutoFromDBCurrent
+STEP2 ++ RECOD10 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:SiStripCalMinBias --relval 25000,100 --datatier RECO --eventcontent RECODEBUG --conditions auto:com10 --scenario pp --no_exec --data --magField AutoFromDBCurrent
 
 STEP2 ++ RECOHI1 @@@ cmsDriver.py hiReco -n 2 -s RAW2DIGI,RECO --scenario HeavyIons --conditions auto:mc --datatier 'GEN-SIM-RECO' --eventcontent=FEVTDEBUG --filein=file.root --no_exec
 
