@@ -2,7 +2,7 @@
 2 ++ ProdTTbar ++ RECOPROD1, ALCATT1 @@@ cmsDriver.py  TTbar_Tauola_7TeV.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --conditions auto:mc --relval 9000,50 --datatier 'GEN-SIM-RAW' --eventcontent RAWSIM
 3 ++ ProdQCD_Pt_3000_3500 ++ RECOPROD1 @@@ cmsDriver.py  QCD_Pt_3000_3500_7TeV.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 5 --conditions auto:mc --relval 9000,25 --datatier 'GEN-SIM-RAW' --eventcontent RAWSIM
 
-4.1 ++ MinimumBias ++ RECOD10, ALCACOSD10 ++ REALDATA: /MinimumBias/Commissioning10-v4/RAW, RUN: 132440, FILES: 100, EVENTS: 2000000, LABEL: col_10 @@@
+4.1 ++ MinimumBias ++ RECOD10, ALCAMIN ++ REALDATA: /MinimumBias/Commissioning10-v4/RAW, RUN: 132440, FILES: 100, EVENTS: 2000000, LABEL: col_10 @@@
 4.2 ++ Cosmics ++ RECOCOSD09, ALCACOSD09 ++ REALDATA: /Cosmics/CRAFT09-v1/RAW, RUN: 110835, FILES: 100, EVENTS: 2000000, LABEL: cos_09 @@@
 4.4 ++ Cosmics ++ RECOD09 ++ REALDATA: /Cosmics/CRAFT09-v1/RAW, RUN: 110835, FILES: 100, EVENTS: 2000000, LABEL: col_09 @@@
 
