@@ -2,9 +2,9 @@
 2 ++ ProdTTbar ++ RECOPROD1, ALCATT1 @@@ cmsDriver.py  TTbar_Tauola_7TeV.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --geometry DB --conditions auto:mc --relval 9000,50 --datatier 'GEN-SIM-RAW' --eventcontent RAWSIM
 3 ++ ProdQCD_Pt_3000_3500 ++ RECOPROD1 @@@ cmsDriver.py  QCD_Pt_3000_3500_7TeV.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 5 --geometry DB --conditions auto:mc --relval 9000,25 --datatier 'GEN-SIM-RAW' --eventcontent RAWSIM
 
-4.1 ++ MinimumBias ++ RECOD10 ++ REALDATA: /MinimumBias/Commissioning10-v4/RAW, RUN: 132440, FILES: 100, EVENTS: 2000000, LABEL: col_10 @@@
+4.1 ++ MinimumBias ++ RECOD10,HARVD10 ++ REALDATA: /MinimumBias/Commissioning10-v4/RAW, RUN: 132440, FILES: 100, EVENTS: 2000000, LABEL: col_10 @@@
 4.2 ++ Cosmics ++ RECOCOSD09, ALCACOSD09 ++ REALDATA: /Cosmics/CRAFT09-v1/RAW, RUN: 110835, FILES: 100, EVENTS: 2000000, LABEL: cos_09 @@@
-4.4 ++ Cosmics ++ RECOD09 ++ REALDATA: /Cosmics/CRAFT09-v1/RAW, RUN: 110835, FILES: 100, EVENTS: 2000000, LABEL: col_09 @@@
+4.4 ++ Cosmics ++ RECOD09,HARVD09 ++ REALDATA: /Cosmics/CRAFT09-v1/RAW, RUN: 110835, FILES: 100, EVENTS: 2000000, LABEL: col_09 @@@
 
 5.1 ++ TTbar ++ none @@@ cmsDriver.py TTbar_Tauola_7TeV_cfi.py -s GEN,FASTSIM,VALIDATION --pileup=NoPileUp  --geometry DB --conditions=auto:mc --eventcontent=FEVTDEBUGHLT  --datatier GEN-SIM-DIGI-RECO -n 10 --relval 100000,1000
 5.2 ++ SingleMuPt10 ++ none @@@ cmsDriver.py SingleMuPt10_cfi.py -s GEN,FASTSIM,VALIDATION --pileup=NoPileUp  --geometry DB --conditions=auto:mc --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
@@ -17,7 +17,7 @@
 7 ++ Cosmics ++ RECOCOS, ALCACOS @@@ cmsDriver.py UndergroundCosmicMu_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT:GRun,RAW2DIGI,L1Reco -n 10  --geometry DB --conditions auto:startup --relval 666000,7400 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUG --scenario cosmics
 8 ++ BeamHalo ++ RECOCOS, ALCABH @@@ cmsDriver.py BeamHalo_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --geometry DB --conditions auto:startup --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTSIM --scenario cosmics
 9 ++ Higgs200ChargedTaus ++ RECO2 @@@ cmsDriver.py H200ChargedTaus_Tauola_7TeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --geometry DB --conditions auto:startup --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT
-10 ++ MinBias ++ RECO1 @@@ cmsDriver.py  MinBias_7TeV.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --geometry DB --conditions auto:mc --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT
+10 ++ MinBias ++ RECO1, HARV1  @@@ cmsDriver.py  MinBias_7TeV.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --geometry DB --conditions auto:mc --relval 9000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT
 11 ++ MinBias ++ RECOMIN, ALCAMIN @@@ cmsDriver.py  MinBias_7TeV.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --geometry DB --conditions auto:startup --relval 9000,300 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT
 12 ++ QCD_Pt_3000_3500 ++ RECO1 @@@ cmsDriver.py  QCD_Pt_3000_3500_7TeV.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 5 --geometry DB --conditions auto:mc --relval 9000,25 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT
 13 ++ QCD_Pt_3000_3500 ++ RECO2 @@@ cmsDriver.py  QCD_Pt_3000_3500_7TeV.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 5 --geometry DB --conditions auto:startup --relval 9000,25 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT
@@ -66,9 +66,9 @@ STEP2 ++ RECOCOSD08 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,L1HwVal,DQM,A
 STEP2 ++ RECOCOSD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,L1HwVal,DQM,ALCA:SiStripCalZeroBias+MuAlCalIsolatedMu+DtCalib+DQM --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft09 --scenario cosmics --no_exec --data --magField AutoFromDBCurrent
 
 STEP2 ++ RECOD08 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+DtCalib --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft08 --scenario pp --no_exec --data --magField AutoFromDBCurrent
-STEP2 ++ RECOD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+DtCalib --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft09 --scenario pp --no_exec --data --magField AutoFromDBCurrent
+STEP2 ++ RECOD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM,ALCA:MuAlCalIsolatedMu+DtCalib --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft09 --scenario pp --no_exec --data --magField AutoFromDBCurrent
 
-STEP2 ++ RECOD10 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO --relval 25000,100 --datatier RECO --eventcontent RECODEBUG --conditions auto:com10 --scenario pp --no_exec --data --magField AutoFromDBCurrent
+STEP2 ++ RECOD10 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM --relval 25000,100 --datatier RECO --eventcontent RECODEBUG --conditions auto:com10 --scenario pp --no_exec --data --magField AutoFromDBCurrent
 
 STEP2 ++ RECOHI1 @@@ cmsDriver.py hiReco -n 2 -s RAW2DIGI,RECO --scenario HeavyIons --geometry DB --conditions auto:mc --datatier 'GEN-SIM-RECO' --eventcontent=FEVTDEBUG --filein=file.root --no_exec
 
@@ -87,7 +87,14 @@ STEP3 ++ ALCACOSD @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlCosmicsHLT+TkAlCosmi
 STEP3 ++ ALCACOSD08 @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlCosmics0T+MuAlStandAloneCosmics+MuAlGlobalCosmics+HcalCalHOCosmics+DQM -n 1000 --filein file:reco.root --conditions auto:craft08 --no_exec --datatier ALCARECO --eventcontent ALCARECO --scenario cosmics --magField AutoFromDBCurrent
 STEP3 ++ ALCACOSD09 @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlCosmics0T+MuAlStandAloneCosmics+MuAlGlobalCosmics+HcalCalHOCosmics+DQM -n 1000 --filein file:reco.root --conditions auto:craft09 --no_exec --datatier ALCARECO --eventcontent ALCARECO --scenario cosmics --magField AutoFromDBCurrent
 
-STEP3 ++ RECO3_PROD @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu,VALIDATION:validation_prod --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECODEBUG --geometry DB --conditions auto:mc --relval 9000,100 --no_exec
+STEP3 ++ RECO3_PROD @@@ cmsDriver.py step3 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu,VALIDATION:validation_prod --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECODEBUG --geometry DB --conditions auto:mc --relval 9000,100 --no_exec
+
+STEP3 ++ HARVEOR1 @@@ cmsDriver.py step3 -s HARVESTING:validationHarvesting+dqmHarvesting --harvesting AtRunEnd --conditions auto:mc  --no_exec --mc
+STEP3 ++ HARVEOR2 @@@ cmsDriver.py step3 -s HARVESTING:validationHarvesting+dqmHarvesting --harvesting AtRunEnd --conditions auto:startup  --no_exec --mc
+STEP3 ++ HARV1    @@@ cmsDriver.py step3 -s HARVESTING:dqmHarvesting --conditions auto:mc  --no_exec --mc
+STEP3 ++ HARV2    @@@ cmsDriver.py step3 -s HARVESTING:dqmHarvesting --conditions auto:startup  --no_exec --mc
+STEP3 ++ HARVD10  @@@ cmsDriver.py step3 -s HARVESTING:dqmHarvesting --conditions auto:com10   --scenario pp --no_exec --data 
+STEP3 ++ HARVD09  @@@ cmsDriver.py step3 -s HARVESTING:dqmHarvesting --conditions auto:craft09 --scenario pp --no_exec --data 
 
 STEP4 ++ ALCA4_PROD @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlZMuMu+TkAlMuonIsolated+TkAlJpsiMuMu+TkAlUpsilonMuMu+TkAlMinBias+EcalCalElectron+HcalCalIsoTrk+HcalCalDijets+HcalCalHO+MuAlOverlaps -n 1000  --geometry DB --conditions auto:mc --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO --filein file:reco.root
 
