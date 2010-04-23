@@ -1,5 +1,5 @@
 501 ++ ZmumuJets_Pt_20_300_GEN ++ RECO1 @@@ cmsDriver.py  ZmumuJets_Pt_20_300_GEN_7TeV_cfg.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --geometry DB --conditions auto:mc --relval 25000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --pileup E7TeV_AVE_2_BX2808 --eventcontent FEVTDEBUGHLT
-502 ++ TTbar_Tauola ++ RECO2 @@@ cmsDriver.py  TTbar_Tauola_7TeV.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco -n 10  --geometry DB --conditions auto:startup --relval 9000,50 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --pileup E7TeV_AVE_2_BX156 --eventcontent FEVTDEBUGHLT
+502 ++ TTbar_Tauola ++ RECO2 @@@ cmsDriver.py  TTbar_Tauola_7TeV.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT:GRun,RAW2DIGI,L1Reco -n 10  --geometry DB --conditions auto:startup --relval 9000,50 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --pileup E7TeV_AVE_2_BX156 --eventcontent FEVTDEBUGHLT
 
 503 ++ Pyquen_GammaJet_pt20_2760GeV ++ GAMMAHI, RECOHI1 ++ REALDATA: /RelValHydjetQ_B0_2760GeV/*/GEN-SIM-RAW, RUN: 1, PRIMARY: Y @@@
 504 ++ Pyquen_DiJet_pt80to120_2760GeV ++ DIJETHI, RECOHI1 ++ REALDATA: /RelValHydjetQ_B0_2760GeV/*/GEN-SIM-RAW, RUN: 1, PRIMARY: Y @@@
