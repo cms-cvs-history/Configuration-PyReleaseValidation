@@ -2,7 +2,7 @@
 1004.1 ++ MinimumBias ++ RECOD10,HARVD10 ++ REALDATA: /MinimumBias/Commissioning10-v4/RAW, RUN: 132440, FILES: 100, EVENTS: 2000000, LABEL: col_10 @@@
 1004.2 ++ Cosmics ++ RECOCOSD09, ALCACOSD09 ++ REALDATA: /Cosmics/CRAFT09-v1/RAW, RUN: 110835, FILES: 100, EVENTS: 2000000, LABEL: cos_09 @@@
 1004.4 ++ Cosmics ++ RECOD09 ++ REALDATA: /Cosmics/CRAFT09-v1/RAW, RUN: 110835, FILES: 100, EVENTS: 2000000, LABEL: col_09 @@@
-1004.5 ++ MinimumBiasSkim ++ RECOD10++ REALDATA: /MinimumBias/Commissioning10-May6thPDSkim_valskim-v1/RAW-RECO, FILES: 100, EVENTS: 2000000, LABEL: col_10 @@@
+1004.5 ++ MinimumBiasSkim ++ RECOD10++ REALDATA: /MinimumBias/Commissioning10-May6thPDSkim_valskim-v1/RAW-RECO, FILES: 100, EVENTS: 2000000, LABEL: valskim @@@
 
 STEP2 ++ RECOCOSD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,L1HwVal,DQM,ALCA:SiStripCalZeroBias+MuAlCalIsolatedMu+RpcCalHLT+DQM --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft09 --scenario cosmics --no_exec --data --magField AutoFromDBCurrent
 STEP2 ++ RECOD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+RpcCalHLT --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft09 --scenario pp --no_exec --data --magField AutoFromDBCurrent
