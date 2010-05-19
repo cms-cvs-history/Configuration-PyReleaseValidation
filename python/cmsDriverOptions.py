@@ -101,7 +101,7 @@ expertSettings.add_option("--filtername",
                           dest="filtername")
 
 expertSettings.add_option("--geometry",
-                          help="What geometry to use (from Configuration/StandardSequences). Default=Ideal",
+                          help="What geometry to use (from Configuration/StandardSequences). Default=DB (meaning selected from the Global Tag)",
                           default=defaultOptions.geometry,
                           dest="geometry")
 
