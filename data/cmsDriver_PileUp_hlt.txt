@@ -13,6 +13,6 @@ STEP2 ++ GAMMAHI @@@ cmsDriver.py Pyquen_GammaJet_pt20_2760GeV_cfi.py -n 1 -s GE
 STEP2 ++ DIJETHI @@@ cmsDriver.py Pyquen_DiJet_pt80to120_2760GeV_cfi.py -n 1 -s GEN:hiSignal,SIM,DIGI,L1,DIGI2RAW,HLT:HIon --scenario HeavyIons --himix --geometry DB --conditions auto:mc --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent=FEVTDEBUGHLT --filein=file.root --processName 'HISIGNAL' --no_exec
 STEP2 ++ ZEEMUMUHI @@@ cmsDriver.py Pyquen_ZeemumuJets_pt10_2760GeV_cfi.py -n 1 -s GEN:hiSignal,SIM,DIGI,L1,DIGI2RAW,HLT:HIon --scenario HeavyIons --himix --geometry DB --conditions auto:mc --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent=FEVTDEBUGHLT --filein=file.root --processName 'HISIGNAL' --no_exec
 
-STEP3 ++ RECOHI1 @@@ cmsDriver.py hiReco -n 1 -s RAW2DIGI,RECO,VALIDATION --scenario HeavyIons --geometry DB --conditions auto:mc --datatier 'GEN-SIM-RECO' --eventcontent=RECOSIM --filein=hola.root --no_exec
+STEP3 ++ RECOHI1 @@@ cmsDriver.py hiReco -n 1 -s RAW2DIGI,RECO,VALIDATION --scenario HeavyIons --himix --geometry DB --conditions auto:mc --datatier 'GEN-SIM-RECO' --eventcontent=RECOSIM --filein=hola.root --no_exec
 
 STEP4 ++ HARVEORHI1 @@@ cmsDriver.py step3 -s HARVESTING:validationHarvestingHI --harvesting AtRunEnd --conditions auto:mc --no_exec --mc
