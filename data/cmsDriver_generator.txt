@@ -1,0 +1,44 @@
+501 ++ MinBiasPy6D6T ++ none @@@ cmsDriver.py MinBias_TuneD6T_7TeV_pythia6_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM
+502 ++ QCDPt30Py6D6T ++ none @@@ cmsDriver.py QCD_Pt_30_TuneD6T_7TeV_pythia6_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM
+503 ++ TTPy6D6T ++ none @@@ cmsDriver.py TT_TuneD6T_7TeV_pythia6_evtgen_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM
+504 ++ DYtoTauTauPy6D6T ++ none @@@ cmsDriver.py DYtoTauTau_M_50_TuneD6T_7TeV_pythia6_tauola_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM
+505 ++ WToENuPy6D6T ++ none @@@ cmsDriver.py WToENu_TuneD6T_7TeV_pythia6_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM
+506 ++ WToMuNuPy6D6T ++ none @@@ cmsDriver.py WToMuNu_TuneD6T_7TeV_pythia6_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM
+
+507 ++ MinBiasPy8 ++ none @@@ cmsDriver.py MinBias_7TeV_pythia8_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM
+508 ++ QCDPt30Py8 ++ none @@@ cmsDriver.py QCD_Pt_30_7TeV_pythia8_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM
+
+509 ++ QCDPt30Hw6 ++ none @@@ cmsDriver.py QCD_Pt_30_7TeV_herwig6_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM
+
+510 ++ MinBiasHwPP ++ none @@@ cmsDriver.py MinBias_7TeV_herwigpp_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM
+511 ++ QCDPt30HwPP ++ none @@@ cmsDriver.py QCD_Pt_30_7TeV_herwigpp_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM
+
+512 ++ GluGluTo2JetsExh ++ none @@@ cmsDriver.py GluGluTo2Jets_M_100_7TeV_exhume_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM
+
+513 ++ TTMcnlo ++ none @@@ cmsDriver.py TT_7TeV_mcatnlo_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:346
+514 ++ WminusToENuMcnlo ++ none @@@ cmsDriver.py WminusToENu_7TeV_mcatnlo_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:666
+515 ++ WminusToMuNuMcnlo ++ none @@@ cmsDriver.py WminusToMuNu_7TeV_mcatnlo_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:666
+516 ++ WplusToENuMcnlo ++ none @@@ cmsDriver.py WplusToENu_7TeV_mcatnlo_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:666
+517 ++ WplusToMuNuMcnlo ++ none @@@ cmsDriver.py WplusToMuNu_7TeV_mcatnlo_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:666
+
+519 ++ QCDHt100To250Mg ++ none @@@ cmsDriver.py Hadronizer_MgmMatchTuneD6T_7TeV_madgraph_tauola_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:546 --processName QCD_Ht_100To250_TuneD6T_7TeV_madgraph_tauola
+520 ++ TTJetsMg ++ none @@@ cmsDriver.py Hadronizer_MgmMatchTuneD6T_7TeV_madgraph_tauola_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:846 --processName TTJets_TuneD6T_7TeV_madgraph_tauola
+521 ++ WjetsMg ++ none @@@ cmsDriver.py Hadronizer_MgmMatchTuneD6T_7TeV_madgraph_tauola_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:882 --processName WJetsLNu_TuneD6T_7TeV_madgraph_tauola
+522 ++ ZjetsMg ++ none @@@ cmsDriver.py Hadronizer_MgmMatchTuneD6T_7TeV_madgraph_tauola_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:851 --processName ZJetsLNu_TuneD6T_7TeV_madgraph_tauola
+
+523 ++ QCD2JetsPt40To120Alp ++ none @@@ cmsDriver.py Hadronizer_Et20MatchTuneD6T_7TeV_alpgen_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:785 --processName QCD2Jets_Pt_40To120_TuneD6T_7TeV_alpgen
+524 ++ QCD3JetsPt40To120Alp ++ none @@@ cmsDriver.py Hadronizer_Et20MatchTuneD6T_7TeV_alpgen_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:786 --processName QCD3Jets_Pt_40To120_TuneD6T_7TeV_alpgen
+525 ++ QCD4JetsPt40To120Alp ++ none @@@ cmsDriver.py Hadronizer_Et20MatchTuneD6T_7TeV_alpgen_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:787 --processName QCD4Jets_Pt_40To120_TuneD6T_7TeV_alpgen
+526 ++ QCD5JetsPt40To120Alp ++ none @@@ cmsDriver.py Hadronizer_Et20MatchTuneD6T_7TeV_alpgen_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:832 --processName QCD5Jets_Pt_40To120_TuneD6T_7TeV_alpgen
+527 ++ TT0JetsAlp ++ none @@@ cmsDriver.py Hadronizer_Et48MatchTuneD6T_7TeV_alpgen_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:472 --processName TT0Jets_Et_40_TuneD6T_7TeV_alpgen
+528 ++ TT1JetsAlp ++ none @@@ cmsDriver.py Hadronizer_Et48MatchTuneD6T_7TeV_alpgen_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:475 --processName TT1Jets_Et_40_TuneD6T_7TeV_alpgen
+529 ++ TT2JetsAlp ++ none @@@ cmsDriver.py Hadronizer_Et48MatchTuneD6T_7TeV_alpgen_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:478 --processName TT2Jets_Et_40_TuneD6T_7TeV_alpgen
+530 ++ TT3JetsAlp ++ none @@@ cmsDriver.py Hadronizer_Et48MatchTuneD6T_7TeV_alpgen_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:481 --processName TT3Jets_Et_40_TuneD6T_7TeV_alpgen
+531 ++ W0JetsAlp ++ none @@@ cmsDriver.py Hadronizer_Et20MatchTuneD6T_7TeV_alpgen_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:397 --processName W0Jets_Pt_0To100_TuneD6T_7TeV_alpgen
+532 ++ W1JetsAlp ++ none @@@ cmsDriver.py Hadronizer_Et20MatchTuneD6T_7TeV_alpgen_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:398 --processName W1Jets_Pt_0To100_TuneD6T_7TeV_alpgen
+533 ++ W2JetsAlp ++ none @@@ cmsDriver.py Hadronizer_Et20MatchTuneD6T_7TeV_alpgen_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:399 --processName W2Jets_Pt_0To100_TuneD6T_7TeV_alpgen
+534 ++ W3JetsAlp ++ none @@@ cmsDriver.py Hadronizer_Et20MatchTuneD6T_7TeV_alpgen_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:400 --processName W3Jets_Pt_0To100_TuneD6T_7TeV_alpgen
+535 ++ Z0JetsAlp ++ none @@@ cmsDriver.py Hadronizer_Et20MatchTuneD6T_7TeV_alpgen_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:440 --processName Z0Jets_Pt_0To100_TuneD6T_7TeV_alpgen
+536 ++ Z1JetsAlp ++ none @@@ cmsDriver.py Hadronizer_Et20MatchTuneD6T_7TeV_alpgen_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:441 --processName Z1Jets_Pt_0To100_TuneD6T_7TeV_alpgen
+535 ++ Z2JetsAlp ++ none @@@ cmsDriver.py Hadronizer_Et20MatchTuneD6T_7TeV_alpgen_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:442 --processName Z2Jets_Pt_0To100_TuneD6T_7TeV_alpgen
+535 ++ Z3JetsAlp ++ none @@@ cmsDriver.py Hadronizer_Et20MatchTuneD6T_7TeV_alpgen_cff.py -s GEN,GENVALIDATION -n 10  --conditions auto:mc --relval 9000,100 --datatier 'GEN' --eventcontent RAWSIM --filein mcdb:443 --processName Z3Jets_Pt_0To100_TuneD6T_7TeV_alpgen
