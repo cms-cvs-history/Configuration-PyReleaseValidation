@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.172.2.3 $"
+__version__ = "$Revision: 1.172.2.4 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -14,7 +14,7 @@ class Options:
 defaultOptions = Options()
 defaultOptions.datamix = 'DataOnSim'
 defaultOptions.pileup = 'NoPileUp'
-defaultOptions.geometry = 'DB'
+defaultOptions.geometry = 'Extended'
 defaultOptions.geometryExtendedOptions = ['ExtendedGFlash','Extended','NoCastor']
 defaultOptions.magField = 'Default'
 defaultOptions.conditions = 'auto:startup'
@@ -444,6 +444,8 @@ class ConfigBuilder(object):
 	    self.eventcontent='FEVT'
 
         if self._options.scenario=='HeavyIons':
+	    # self.VALIDATIONDefaultCFF="Configuration/StandardSequences/ValidationHeavyIons_cff"
+            # self.VALIDATIONDefaultSeq='validationHeavyIons'
             self.EVTCONTDefaultCFF="Configuration/EventContent/EventContentHeavyIons_cff"
             self.RECODefaultCFF="Configuration/StandardSequences/ReconstructionHeavyIons_cff"
    	    self.RECODefaultSeq='reconstructionHeavyIons'
@@ -731,6 +733,8 @@ class ConfigBuilder(object):
         else:    
             self.loadAndRemember(sequence.split(',')[0])
         self.process.validation_step = cms.Path( getattr(self.process, sequence.split(',')[-1]) )
+        # if 'genvalid' in sequence.split(',')[-1]:
+        #     self.loadAndRemember("IOMC.RandomEngine.IOMC_cff")    
         self.schedule.append(self.process.validation_step)
         print self._options.step
         if not "DIGI"  in self._options.step.split(","):
@@ -770,7 +774,7 @@ class ConfigBuilder(object):
         if 'alcaHarvesting' in harvestingList:
             harvestingList.remove('alcaHarvesting')
                     
-        if len(harvestingList) != 0:
+        if len(harvestingList) != 0: #  and 'dummyHarvesting' not in harvestingList :
             print "The following harvesting could not be found : ", harvestingList
             raise
 
@@ -857,7 +861,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.172.2.3 $"),
+              (version=cms.untracked.string("$Revision: 1.172.2.4 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
