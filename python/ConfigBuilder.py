@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.172.2.1 $"
+__version__ = "$Revision: 1.172.2.2 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -413,7 +413,7 @@ class ConfigBuilder(object):
 	
 	self.EVTCONTDefaultCFF="Configuration/EventContent/EventContent_cff"
 	self.defaultMagField='38T'
-	self.defaultBeamSpot='Early10TeVCollision'
+	self.defaultBeamSpot='Realistic7TeVCollision'
 
         # if fastsim switch event content
 	if "FASTSIM" in self._options.step:
@@ -854,7 +854,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.172.2.1 $"),
+              (version=cms.untracked.string("$Revision: 1.172.2.2 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
