@@ -6,7 +6,7 @@
 4.2 ++ Cosmics ++ RECOCOSD09, ALCACOSD09 ++ REALDATA: /Cosmics/CRAFT09-v1/RAW, RUN: 110835, FILES: 100, EVENTS: 2000000, LABEL: cos_09 @@@
 4.4 ++ Cosmics ++ RECOD09,HARVD09 ++ REALDATA: /Cosmics/CRAFT09-v1/RAW, RUN: 110835, FILES: 100, EVENTS: 2000000, LABEL: col_09 @@@
 4.5 ++ MinimumBiasSkim ++ RECOD10++ REALDATA: /MinimumBias/Commissioning10-May6thPDSkim_valskim-v1/RAW-RECO, FILES: 100, EVENTS: 2000000, LABEL: valskim @@@
-4.6 ++ MinimumBiasBS ++ RECOD10A,ALCAPROMPT,ALCAHARVD10 ++ REALDATA: /MinimumBias/Commissioning10-v4/RAW, RUN: 132440, FILES: 100, EVENTS: 2000000, LABEL: col_10 @@@
+4.6 ++ MinimumBiasBS ++ RECOD10A,ALCAPROMPT,ALCAHARVD10 ++ REALDATA: /MinimumBias/Commissioning10-v4/RAW, RUN: 132440, FILES: 100, EVENTS: 2000000, LABEL: col_10_bs @@@
 
 
 5.1 ++ TTbar ++ none @@@ cmsDriver.py TTbar_Tauola_7TeV_cfi.py -s GEN,FASTSIM,VALIDATION --pileup=NoPileUp  --geometry DB --conditions=auto:mc --eventcontent=FEVTDEBUGHLT  --datatier GEN-SIM-DIGI-RECO -n 10 --relval 100000,1000
@@ -96,7 +96,7 @@ STEP3 ++ HARVD09  @@@ cmsDriver.py step3 -s HARVESTING:dqmHarvesting --condition
 
 STEP3 ++ HARVEORHI1 @@@ cmsDriver.py step3 -s HARVESTING:validationHarvestingHI --harvesting AtRunEnd --conditions auto:mc  --no_exec --mc
 
-STEP3 ++ ALCAPROMPT  @@@ cmsDriver.py step3 -s ALCA:PromptCalibProd -n 1000 --filein file:TkAlMinBias.root --geometry DB --conditions auto:com10 --no_exe --datatier ALCARECO --oneoutput --eventcontent ALCARECO
+STEP3 ++ ALCAPROMPT  @@@ cmsDriver.py step3 -s ALCA:PromptCalibProd -n 1000 --filein file:TkAlMinBias.root --geometry DB --conditions auto:com10 --no_exec --datatier ALCARECO --oneoutput --eventcontent ALCARECO
 
 STEP4 ++ ALCAHARVD10  @@@ cmsDriver.py step4 -s ALCAHARVEST:BeamSpotByRun+BeamSpotByLumi --conditions auto:com10   --scenario pp --no_exec --data  --filein file:PromptCalibProd.root
 
