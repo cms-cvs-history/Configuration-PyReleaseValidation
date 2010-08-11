@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.172.2.7 $"
+__version__ = "$Revision: 1.172.2.8 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -184,6 +184,15 @@ class ConfigBuilder(object):
                                            fileName = cms.untracked.string(self._options.outfile_name.replace('.root','_secondary.root')),
                                            dataset = cms.untracked.PSet(dataTier = cms.untracked.string(evtContent))
                                            )
+        
+        if 'DQM' in self.eventcontent.split(','):
+                dqmOutput = cms.OutputModule("PoolOutputModule",
+                                           outputCommands = cms.untracked.vstring('drop *','keep *_MEtoEDMConverter_*_*'),
+                                           fileName = cms.untracked.string(self._options.dirout+'DQMStream.root'),
+                                           dataset = cms.untracked.PSet(filterName = cms.untracked.string(''),dataTier = cms.untracked.string('DQM'))
+                                           )
+                self.additionalOutputs['DQMStream'] = dqmOutput
+                setattr(self.process,'DQMStream',dqmOutput)
 
         # if there is a generation step in the process, that one should be used as filter decision
         if hasattr(self.process,"generation_step"):
@@ -293,13 +302,19 @@ class ConfigBuilder(object):
 
     def addConditions(self):
         """Add conditions to the process"""
-        conditions=self._options.conditions.replace("FrontierConditions_GlobalTag,",'') #only for backwards compatibility
+        # remove FrontierConditions_GlobalTag only for backwards compatibility
+        # the option can be a list of GT name and connection string
+        conditions = self._options.conditions.replace("FrontierConditions_GlobalTag,",'').split(',')
+        gtName = str( conditions[0] )
+        if len(conditions) > 1:
+          connect   = str( conditions[1] )
+          pfnPrefix = str( '/'.join(connect.split('/')[:-1] + ['']) )
 
         # FULL or FAST SIM ?
         if "FASTSIM" in self._options.step:
             self.loadAndRemember('FastSimulation/Configuration/CommonInputs_cff')
 
-            if "START" in conditions:
+            if "START" in gtName:
                 self.executeAndRemember("# Apply ECAL/HCAL miscalibration")
                 self.executeAndRemember("process.ecalRecHit.doMiscalib = True")
                 self.executeAndRemember("process.hbhereco.doMiscalib = True")
@@ -317,7 +332,10 @@ class ConfigBuilder(object):
             self.loadAndRemember(self.ConditionsDefaultCFF)
 
         # set the global tag
-        self.executeAndRemember("process.GlobalTag.globaltag = '"+str(conditions)+"'")
+        self.executeAndRemember("process.GlobalTag.globaltag = '%s'" % gtName)
+        if len(conditions) > 1:
+            self.executeAndRemember("process.GlobalTag.connect   = '%s'" % connect)
+            self.executeAndRemember("process.GlobalTag.pfnPrefix = cms.untracked.string('%s')" % pfnPrefix)
 
     def addCustomise(self):
         """Include the customise code """
@@ -939,7 +957,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.172.2.7 $"),
+              (version=cms.untracked.string("$Revision: 1.172.2.8 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
