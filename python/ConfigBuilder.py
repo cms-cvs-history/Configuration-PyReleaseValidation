@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.172.2.6 $"
+__version__ = "$Revision: 1.172.2.7 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -826,7 +826,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
                 self.process.dqmoffline_step = cms.EndPath( getattr(self.process, sequence.split(',')[-1]) )
         else:
                 # schedule DQM as a standard Path
-        self.process.dqmoffline_step = cms.Path( getattr(self.process, sequence.split(',')[-1]) )
+                self.process.dqmoffline_step = cms.Path( getattr(self.process, sequence.split(',')[-1]) )
         self.schedule.append(self.process.dqmoffline_step)
 
     def prepare_HARVESTING(self, sequence = None):
@@ -939,7 +939,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.172.2.6 $"),
+              (version=cms.untracked.string("$Revision: 1.172.2.7 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
