@@ -88,12 +88,12 @@ expertSettings.add_option("--datatier",
 expertSettings.add_option( "--dirin",
                           help="The infile directory.",
                           default="",
-                          dest="dirin")                    
+                          dest="dirin")
 
 expertSettings.add_option( "--dirout",
                           help="The outfile directory.",
                           default="",
-                          dest="dirout")                
+                          dest="dirout")
 
 expertSettings.add_option("--filtername",
                           help="What filter name to specify in output module",
@@ -126,7 +126,7 @@ expertSettings.add_option("--oneoutput",
 expertSettings.add_option("--prefix",
                           help="Specify a prefix to the cmsRun command.",
                           default="",
-                          dest="prefix")  
+                          dest="prefix")
 
 expertSettings.add_option("--relval",
                           help="Set total number of events and events per job.", #this does not get used but get parsed in the command by DatOps
@@ -137,7 +137,7 @@ expertSettings.add_option("--dump_python",
                   help="Dump the config file in python "+\
                   "and do a full expansion of imports.",
                   action="store_true",
-                  default=False,                  
+                  default=False,
                   dest="dump_python")
 
 expertSettings.add_option("--dump_DSetName",
@@ -167,7 +167,7 @@ expertSettings.add_option("--himix",
                  action="store_true",
                  default=defaultOptions.himix,
                  dest="himix")
-                                                    
+
 expertSettings.add_option("--python_filename",
                           help="Change the name of the created config file ",
                           default='',
@@ -188,7 +188,7 @@ expertSettings.add_option("--writeraw",
 expertSettings.add_option("--processName",
                           help="set process name explicitly",
                           default = None,
-                          dest="name" 
+                          dest="name"
                           )
 
 expertSettings.add_option("--triggerResultsProcess",
@@ -197,6 +197,11 @@ expertSettings.add_option("--triggerResultsProcess",
                           dest="triggerResultsProcess"
                           )
 
+expertSettings.add_option("--hltProcess",
+                          help="modify the DQM sequence to look for HLT trigger results with the specified process name", 
+                          default = None,
+                          dest="hltProcess"
+                          )
 
 expertSettings.add_option("--scenario",
                           help="Select scenario overriding standard settings (available:"+str(defaultOptions.scenarioOptions)+")",
@@ -228,8 +233,8 @@ parser.add_option("--no_exec",
                   help="Do not exec cmsRun. Just prepare the python config file.",
                   action="store_true",
                   default=False,
-                  dest="no_exec_flag")   
-                  
+                  dest="no_exec_flag")
+
 (options,args) = parser.parse_args() # by default the arg is sys.argv[1:]
 
 
@@ -246,12 +251,12 @@ recoRe = re.compile('.*[,\s]RECO[,\s].*')
 if ( hltRe.match(str(options.step)) and recoRe.match(str(options.step))):
     print "ERROR: HLT and RECO cannot be run in the same process"
     sys.exit(1)
-    
+
 # check whether conditions given
 if options.conditions == None:
     print "ERROR: No conditions given!\nPlease specify conditions. E.g. via --conditions=FrontierConditions_GlobalTag,IDEAL_30X::All"
     sys.exit(1)
-            
+
 # sanity check options specifying data or mc
 if options.isData and options.isMC:
     print "ERROR: You may specify only --data or --mc, not both"
@@ -261,11 +266,11 @@ if options.isData and options.isMC:
 if options.triggerResultsProcess == None and "ALCAOUTPUT" in options.step:
     print "ERROR: If ALCA splitting is requested, the name of the process in which the alca producers ran needs to be specified. E.g. via --triggerResultsProcess RECO"
     sys.exit(1)
-            
-            
+
+
 options.evt_type=sys.argv[1]
 
-# memorize the command line arguments 
+# memorize the command line arguments
 options.arguments = reduce(lambda x, y: x+' '+y, sys.argv[1:])
 
 # now adjust the given parameters before passing it to the ConfigBuilder
@@ -280,6 +285,7 @@ prec_step = {"NONE":"",
              "GEN":"",
              "SIM":"GEN",
              "DIGI":"SIM",
+             "HLT":"RAW",
              "RECO":"DIGI",
              "ALCA":"RECO",
              "ANA":"RECO",
@@ -316,7 +322,7 @@ if options.filetype=="MCDB" and options.filein.startswith("mcdb:"):
 
 filesuffix = {"LHE": "lhe", "EDM": "root", "MCDB": ""}[options.filetype]
 
-first_step=trimmedStep.split(',')[0]             
+first_step=trimmedStep.split(',')[0]
 if options.filein=="" and not (first_step in ("ALL","GEN","SIM_CHAIN") and options.dirin == ""):
     if options.dirin=="":
         options.dirin="file:"
@@ -368,7 +374,7 @@ if options.writeraw:
         if ( counter < wrSPLen ):
             if ( counter == 1):
                 fileraw=fileraw+w
-            else:    
+            else:
                 fileraw=fileraw+'.'+w
         else:
             fileraw=fileraw+'_rawonly.'+w
@@ -381,7 +387,7 @@ if options.secondfilein!='':
 
 
 # replace step aliases by right list
-if options.step=='NONE': 
+if options.step=='NONE':
         options.step=''
 elif options.step=='ALL':
         options.step='GEN,SIM,DIGI,L1,DIGI2RAW,RAW2DIGI,RECO,POSTRECO,VALIDATION,DQM'
@@ -393,9 +399,9 @@ options.step = options.step.replace("SIM_CHAIN","GEN,SIM,DIGI,L1,DIGI2RAW")
 # if not fastsim or harvesting...
 
 addEndJob = True
-if ("FASTSIM" in options.step and not "VALIDATION" in options.step) or "HARVESTING" in options.step or options.step == "": 
+if ("FASTSIM" in options.step and not "VALIDATION" in options.step) or "HARVESTING" in options.step or options.step == "":
     addEndJob = False
-if addEndJob:    
+if addEndJob:
     options.step=options.step+',ENDJOB'
 print options.step
 
@@ -403,7 +409,7 @@ print options.step
 # Setting name of process
 # if not set explicitly it needs some thinking
 if not options.name:
-    if 'HLT' in trimmedStep:    
+    if 'HLT' in trimmedStep:
         options.name = 'HLT'
     elif 'RECO' in trimmedStep:
         options.name = 'RECO'
@@ -437,7 +443,7 @@ if not options.isData and not options.isMC:
         print 'We have determined that this is simulation (if not, rerun cmsDriver.py with --data)'
     else:
         print 'We have determined that this is real data (if not, rerun cmsDriver.py with --mc)'
-    
+
 # force the HeavyIons scenario is the himix option is chosen
 if options.himix and not options.scenario=='HeavyIons':
    print "From the presence of the himix option, we have determined that this is heavy ions and will use '--scenario HeavyIons'."
