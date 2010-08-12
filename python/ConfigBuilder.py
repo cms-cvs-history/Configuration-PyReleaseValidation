@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.172.2.8 $"
+__version__ = "$Revision: 1.172.2.9 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -308,7 +308,8 @@ class ConfigBuilder(object):
         gtName = str( conditions[0] )
         if len(conditions) > 1:
           connect   = str( conditions[1] )
-          pfnPrefix = str( '/'.join(connect.split('/')[:-1] + ['']) )
+        if len(conditions) > 2:
+          pfnPrefix = str( conditions[2] )
 
         # FULL or FAST SIM ?
         if "FASTSIM" in self._options.step:
@@ -335,6 +336,7 @@ class ConfigBuilder(object):
         self.executeAndRemember("process.GlobalTag.globaltag = '%s'" % gtName)
         if len(conditions) > 1:
             self.executeAndRemember("process.GlobalTag.connect   = '%s'" % connect)
+        if len(conditions) > 2:
             self.executeAndRemember("process.GlobalTag.pfnPrefix = cms.untracked.string('%s')" % pfnPrefix)
 
     def addCustomise(self):
@@ -957,7 +959,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.172.2.8 $"),
+              (version=cms.untracked.string("$Revision: 1.172.2.9 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
