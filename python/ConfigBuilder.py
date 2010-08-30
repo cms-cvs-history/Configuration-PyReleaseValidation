@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.204 $"
+__version__ = "$Revision: 1.215 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -66,7 +66,29 @@ class ConfigBuilder(object):
         """options taken from old cmsDriver and optparse """
 
         self._options = options
+
+        # what steps are provided by this class?
+        stepList = [re.sub(r'^prepare_', '', methodName) for methodName in ConfigBuilder.__dict__ if methodName.startswith('prepare_')]
+
+	self.stepMap={}
+	for step in self._options.step.split(","):
+		stepParts = step.split(":")
+		stepName = stepParts[0]
+		if stepName not in stepList:
+			raise ValueError("Step "+stepName+" unknown")
+		if len(stepParts)==1:
+			self.stepMap[stepName]=""
+		elif len(stepParts)==2:
+			self.stepMap[stepName]=stepParts[1].split('+')
+		elif len(stepParts)==3:
+			self.stepMap[stepName]=(stepParts[2].split('+'),stepParts[1])
+		else:
+			raise ValueError("Step definition "+step+" invalid")
+	#print "map of steps is:",self.stepMap
+	
         self.with_output = with_output
+	if hasattr(self._options,"no_output_flag") and self._options.no_output_flag:
+		self.with_output = False
         self.with_input = with_input
         if process == None:
             self.process = cms.Process(self._options.name)
@@ -87,6 +109,8 @@ class ConfigBuilder(object):
         self.additionalOutputs = {}
         self.productionFilterSequence = None
 
+	
+
     def loadAndRemember(self, includeFile):
         """helper routine to load am memorize imports"""
         # we could make the imports a on-the-fly data method of the process instance itself
@@ -104,7 +128,7 @@ class ConfigBuilder(object):
             exec(command.replace("process.","self.process."))
 
     def addCommon(self):
-        if 'HARVESTING' in self._options.step or 'ALCAHARVEST' in self._options.step:
+	if 'HARVESTING' in self.stepMap.keys() or 'ALCAHARVEST' in self.stepMap.keys():
             self.process.options = cms.untracked.PSet( Rethrow = cms.untracked.vstring('ProductNotFound'),fileMode = cms.untracked.string('FULLMERGE'))
         else:
             self.process.options = cms.untracked.PSet( )
@@ -123,7 +147,7 @@ class ConfigBuilder(object):
            elif self._options.filetype == "MCDB":
                self.process.source=cms.Source("MCDBSource", articleID = cms.uint32(int(self._options.filein)), supportedProtocols = cms.untracked.vstring("rfio"))
 
-           if 'HARVESTING' in self._options.step or 'ALCAHARVEST' in self._options.step:
+	   if 'HARVESTING' in self.stepMap.keys() or 'ALCAHARVEST' in self.stepMap.keys():
                self.process.source.processingMode = cms.untracked.string("RunsAndLumis")
 
            if self._options.dbsquery!='':
@@ -143,7 +167,7 @@ class ConfigBuilder(object):
 		       print "found parent files:",self.process.source.secondaryFileNames.value()
 		       
 
-        if 'GEN' in self._options.step or (not self._options.filein and hasattr(self._options, "evt_type")):
+        if 'GEN' in self.stepMap.keys() or (not self._options.filein and hasattr(self._options, "evt_type")):		
             if self.process.source is None:
                 self.process.source=cms.Source("EmptySource")
             # if option himix is active, drop possibly duplicate DIGI-RAW info:
@@ -158,7 +182,11 @@ class ConfigBuilder(object):
                 evt_type = evt_type.replace("/",".")
             else:
                 evt_type = ('Configuration.Generator.'+evt_type).replace('/','.')
-            __import__(evt_type)
+            import os.path
+            try:
+                 __import__(evt_type)
+            except ImportError:
+                 return
             generatorModule = sys.modules[evt_type]
             self.process.extend(generatorModule)
             # now add all modules and sequences to the process
@@ -214,7 +242,7 @@ class ConfigBuilder(object):
         output.dataset.filterName = cms.untracked.string(self._options.filtername)
 
         # if the only step is alca we don't need to put in an output
-        if not self._options.step.split(',')[0].split(':')[0] == 'ALCA':
+	if not(self.stepMap.has_key('ALCA') and self.stepMap.__len__()==1):
             self.process.output = output
             self.process.out_step = cms.EndPath(self.process.output)
             self.schedule.append(self.process.out_step)
@@ -244,7 +272,6 @@ class ConfigBuilder(object):
 
             return result
 
-
     def addStandardSequences(self):
         """
         Add selected standard sequences to the process
@@ -252,7 +279,7 @@ class ConfigBuilder(object):
         conditionsSP=self._options.conditions.split(',')
 
         # here we check if we have fastsim or fullsim
-        if "FAST" in self._options.step:
+	if "FAST" in self.stepMap.keys():
             self.loadAndRemember('FastSimulation/Configuration/RandomServiceInitialization_cff')
 
             # pile up handling for fastsim
@@ -324,7 +351,7 @@ class ConfigBuilder(object):
           pfnPrefix = str( conditions[2] )
 
         # FULL or FAST SIM ?
-        if "FASTSIM" in self._options.step:
+	if "FASTSIM" in self.stepMap.keys():
             self.loadAndRemember('FastSimulation/Configuration/CommonInputs_cff')
 
             if "START" in gtName:
@@ -418,7 +445,7 @@ class ConfigBuilder(object):
         if self._options.geometry not in defaultOptions.geometryExtendedOptions:
             self.SIMDefaultCFF="Configuration/StandardSequences/SimIdeal_cff"
 
-        if "DATAMIX" in self._options.step:
+	if "DATAMIX" in self.stepMap.keys():
             self.DATAMIXDefaultCFF="Configuration/StandardSequences/DataMixer"+self._options.datamix+"_cff"
             self.DIGIDefaultCFF="Configuration/StandardSequences/DigiDM_cff"
             self.DIGI2RAWDefaultCFF="Configuration/StandardSequences/DigiToRawDM_cff"
@@ -451,7 +478,7 @@ class ConfigBuilder(object):
         self.defaultBeamSpot='Realistic7TeVCollision'
 
         # if fastsim switch event content
-        if "FASTSIM" in self._options.step:
+	if "FASTSIM" in self.stepMap.keys():
                 self.EVTCONTDefaultCFF = "FastSimulation/Configuration/EventContent_cff"
 
         # if its MC then change the raw2digi
@@ -517,7 +544,17 @@ class ConfigBuilder(object):
     def addExtraStream(self,name,stream,workflow='full'):
     # define output module and go from there
         output = cms.OutputModule("PoolOutputModule")
-        output.SelectEvents = stream.selectEvents
+	if stream.selectEvents.parameters_().__len__()!=0:
+		output.SelectEvents = stream.selectEvents
+	else:
+		output.SelectEvents = cms.untracked.PSet()
+		output.SelectEvents.SelectEvents=cms.vstring()
+		if isinstance(stream.paths,tuple):
+			for path in stream.paths:
+				output.SelectEvents.SelectEvents.append(path.label())
+		else:
+			output.SelectEvents.SelectEvents.append(stream.paths.label())
+			
         output.outputCommands = stream.content
         if (hasattr(self._options, 'dirout')):
                 output.fileName = cms.untracked.string(self._options.dirout+stream.name+'.root')
@@ -582,7 +619,7 @@ class ConfigBuilder(object):
         self.loadAndRemember(self.GENDefaultCFF)
 
         #check if we are dealing with fastsim -> no vtx smearing
-        if "FASTSIM" in self._options.step:
+	if "FASTSIM" in self.stepMap.keys():
           self.process.pgen.remove(self.process.VertexSmearing)
           self.process.pgen.remove(self.process.GeneInfo)
           self.process.pgen.remove(self.process.genJetMET)
@@ -602,6 +639,8 @@ class ConfigBuilder(object):
           elif self._options.himix==True:
               self.process.generation_step = cms.Path( self.process.pgen_himix )
               self.loadAndRemember("SimGeneral/MixingModule/himixGEN_cff")
+          elif sequence == 'pgen_genonly':
+              self.process.generation_step = cms.Path ( self.process.pgen_genonly )
           else:
               self.process.generation_step = cms.Path( self.process.pgen )
 
@@ -610,9 +649,9 @@ class ConfigBuilder(object):
         self.schedule.append(self.process.generation_step)
 
         # is there a production filter sequence given?
-        if "ProductionFilterSequence" in self.additionalObjects and ("generator" in self.additionalObjects or 'hiSignal' in self.additionalObjects) and sequence == None:
+        if "ProductionFilterSequence" in self.additionalObjects and ("generator" in self.additionalObjects or 'hiSignal' in self.additionalObjects) and ( sequence == None or sequence == 'pgen_genonly' ):
             sequence = "ProductionFilterSequence"
-        elif "generator" in self.additionalObjects and sequence == None:
+        elif "generator" in self.additionalObjects and ( sequence == None or sequence == 'pgen_genonly' ):
             sequence = "generator"
 
         if sequence:
@@ -698,7 +737,7 @@ class ConfigBuilder(object):
         """ Enrich the schedule with the HLT simulation step"""
         loadDir='HLTrigger'
         fastSim=False
-        if 'FASTSIM' in self._options.step:
+	if 'FASTSIM' in self.stepMap.keys():
                 fastSim=True
                 loadDir='FastSimulation'
         if not sequence:
@@ -715,7 +754,7 @@ class ConfigBuilder(object):
 
         self.schedule.append(self.process.HLTSchedule)
         [self.blacklist_paths.append(path) for path in self.process.HLTSchedule if isinstance(path,(cms.Path,cms.EndPath))]
-        if (fastSim and 'HLT' in self._options.step):
+	if (fastSim and 'HLT' in self.stepMap.keys()):
                 self.finalizeFastSimHLT()
 
 
@@ -760,22 +799,22 @@ class ConfigBuilder(object):
 
     def prepare_SKIM(self, sequence = "all"):
         ''' Enrich the schedule with skimming fragments'''
-        if (sequence=="all"):
-                print "not implemented yet, please specify a list of skims with -s SKIM:skim1+skim2+..."
-        else:
-                skimlist=sequence.split('+')
-                skimConfig = self.loadAndRemember(self.SKIMDefaultCFF)
-                #print "dictionnary for skims:",skimConfig.__dict__
-                for skim in skimConfig.__dict__:
-                        skimstream = getattr(skimConfig,skim)
-                        if (not isinstance(skimstream,cms.FilteredStream)):
-                                continue
-                        shortname = skim.replace('SKIMStream','')
-                        if (not shortname in skimlist):
-                                continue
-                        self.addExtraStream(skim,skimstream)
-                        skimlist.remove(shortname)
-
+	skimlist=sequence.split('+')
+	skimConfig = self.loadAndRemember(self.SKIMDefaultCFF)
+	#print "dictionnary for skims:",skimConfig.__dict__
+	for skim in skimConfig.__dict__:
+		skimstream = getattr(skimConfig,skim)
+		if (not isinstance(skimstream,cms.FilteredStream)):
+			continue
+		shortname = skim.replace('SKIMStream','')
+		if (sequence=="all"):
+			self.addExtraStream(skim,skimstream)
+		elif (shortname in skimlist):
+			self.addExtraStream(skim,skimstream)
+			skimlist.remove(shortname)
+			
+	if (skimlist.__len__()!=0 and sequence!="all"):
+		print 'WARNING, possible typo with SKIM:'+'+'.join(skimlist)
 
     def prepare_POSTRECO(self, sequence = None):
         """ Enrich the schedule with the postreco step """
@@ -791,7 +830,7 @@ class ConfigBuilder(object):
 
 
     def prepare_VALIDATION(self, sequence = 'validation'):
-        if "FASTSIM" in self._options.step:
+	if "FASTSIM" in self.stepMap.keys():
             self.loadAndRemember("FastSimulation.Configuration.Validation_cff")
             self.process.prevalidation_step = cms.Path( self.process.prevalidation )
             self.schedule.append( self.process.prevalidation_step )
@@ -807,7 +846,7 @@ class ConfigBuilder(object):
             self.loadAndRemember("IOMC.RandomEngine.IOMC_cff")
         self.schedule.append(self.process.validation_step)
         print self._options.step
-        if not "DIGI"  in self._options.step.split(","):
+	if not 'DIGI'  in self.stepMap.keys():
             self.executeAndRemember("process.mix.playback = True")
         return
 
@@ -883,15 +922,15 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
         else:
             self.loadAndRemember(sequence.split(',')[0])
 
-        if self._options.hltProcess:
+        if hasattr(self._options,"hltProcess") and self._options.hltProcess:
                 # if specified, change the process name used to acess the HLT results in the [HLT]DQM sequence
                 self.dqmMassaging = self.renameHLTforDQM(sequence.split(',')[-1], self._options.hltProcess)
-        elif 'HLT' in self._options.step:
+	elif 'HLT' in self.stepMap.keys():
                 # otherwise, if both HLT and DQM are run in the same process, change the DQM process name to the current process name
                 self.dqmMassaging = self.renameHLTforDQM(sequence.split(',')[-1], self.process.name_())
 
         # if both HLT and DQM are run in the same process, schedule [HLT]DQM in an EndPath
-        if 'HLT' in self._options.step:
+	if 'HLT' in self.stepMap.keys():
                 # need to put [HLT]DQM in an EndPath, to access the HLT trigger results
                 self.process.dqmoffline_step = cms.EndPath( getattr(self.process, sequence.split(',')[-1]) )
         else:
@@ -955,7 +994,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
             self.loadAndRemember(self.ENDJOBDefaultCFF)
         else:
             self.loadAndRemember(sequence.split(',')[0])
-        if "FASTSIM" in self._options.step:
+	if "FASTSIM" in self.stepMap.keys():
             self.process.endjob_step = cms.EndPath( getattr(self.process, sequence.split(',')[-1]) )
         else:
             self.process.endjob_step = cms.Path( getattr(self.process, sequence.split(',')[-1]) )
@@ -972,7 +1011,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
         self.loadAndRemember("FastSimulation/Configuration/FamosSequences_cff")
 
         if sequence in ('all','allWithHLTFiltering',''):
-            if not 'HLT' in self._options.step:
+	    if not 'HLT' in self.stepMap.keys():
                     self.prepare_HLT(sequence=None)
 
             self.executeAndRemember("process.famosSimHits.SimulateCalorimetry = True")
@@ -988,7 +1027,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
             self._options.name = "HLT"
 
             # if we don't want to filter after HLT but simulate everything regardless of what HLT tells, we have to add reconstruction explicitly
-            if sequence == 'all' and not 'HLT' in self._options.step: #(a)
+	    if sequence == 'all' and not 'HLT' in self.stepMap.keys(): #(a)		    
                 self.finalizeFastSimHLT()
         elif sequence == 'famosWithEverything':
             self.process.fastsim_step = cms.Path( getattr(self.process, "famosWithEverything") )
@@ -1018,7 +1057,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.204 $"),
+              (version=cms.untracked.string("$Revision: 1.215 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
@@ -1036,7 +1075,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
         self.addConditions()
         self.loadAndRemember(self.EVTCONTDefaultCFF)  #load the event contents regardless
 
-        if not 'HARVESTING' in self._options.step and not 'SKIM' in self._options.step and not 'ALCAHARVEST' in self._options.step and not 'ALCAOUTPUT' in self._options.step and self.with_output:
+	if not 'HARVESTING' in self.stepMap.keys() and not 'SKIM' in self.stepMap.keys() and not 'ALCAHARVEST' in self.stepMap.keys() and not 'ALCAOUTPUT' in self.stepMap.keys() and self.with_output:
             self.addOutput()
 
         self.addCommon()
