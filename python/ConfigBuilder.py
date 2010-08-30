@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.204 $"
+__version__ = "$Revision: 1.211 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -67,6 +67,8 @@ class ConfigBuilder(object):
 
         self._options = options
         self.with_output = with_output
+	if hasattr(self._options,"no_output_flag") and self._options.no_output_flag:
+		self.with_output = False
         self.with_input = with_input
         if process == None:
             self.process = cms.Process(self._options.name)
@@ -158,7 +160,11 @@ class ConfigBuilder(object):
                 evt_type = evt_type.replace("/",".")
             else:
                 evt_type = ('Configuration.Generator.'+evt_type).replace('/','.')
-            __import__(evt_type)
+            import os.path
+            try:
+                 __import__(evt_type)
+            except ImportError:
+                 return
             generatorModule = sys.modules[evt_type]
             self.process.extend(generatorModule)
             # now add all modules and sequences to the process
@@ -517,7 +523,17 @@ class ConfigBuilder(object):
     def addExtraStream(self,name,stream,workflow='full'):
     # define output module and go from there
         output = cms.OutputModule("PoolOutputModule")
-        output.SelectEvents = stream.selectEvents
+	if stream.selectEvents.parameters_().__len__()!=0:
+		output.SelectEvents = stream.selectEvents
+	else:
+		output.SelectEvents = cms.untracked.PSet()
+		output.SelectEvents.SelectEvents=cms.vstring()
+		if isinstance(stream.paths,tuple):
+			for path in stream.paths:
+				output.SelectEvents.SelectEvents.append(path.label())
+		else:
+			output.SelectEvents.SelectEvents.append(stream.paths.label())
+			
         output.outputCommands = stream.content
         if (hasattr(self._options, 'dirout')):
                 output.fileName = cms.untracked.string(self._options.dirout+stream.name+'.root')
@@ -602,6 +618,8 @@ class ConfigBuilder(object):
           elif self._options.himix==True:
               self.process.generation_step = cms.Path( self.process.pgen_himix )
               self.loadAndRemember("SimGeneral/MixingModule/himixGEN_cff")
+          elif sequence == 'pgen_genonly':
+              self.process.generation_step = cms.Path ( self.process.pgen_genonly )
           else:
               self.process.generation_step = cms.Path( self.process.pgen )
 
@@ -610,9 +628,9 @@ class ConfigBuilder(object):
         self.schedule.append(self.process.generation_step)
 
         # is there a production filter sequence given?
-        if "ProductionFilterSequence" in self.additionalObjects and ("generator" in self.additionalObjects or 'hiSignal' in self.additionalObjects) and sequence == None:
+        if "ProductionFilterSequence" in self.additionalObjects and ("generator" in self.additionalObjects or 'hiSignal' in self.additionalObjects) and ( sequence == None or sequence == 'pgen_genonly' ):
             sequence = "ProductionFilterSequence"
-        elif "generator" in self.additionalObjects and sequence == None:
+        elif "generator" in self.additionalObjects and ( sequence == None or sequence == 'pgen_genonly' ):
             sequence = "generator"
 
         if sequence:
@@ -760,22 +778,22 @@ class ConfigBuilder(object):
 
     def prepare_SKIM(self, sequence = "all"):
         ''' Enrich the schedule with skimming fragments'''
-        if (sequence=="all"):
-                print "not implemented yet, please specify a list of skims with -s SKIM:skim1+skim2+..."
-        else:
-                skimlist=sequence.split('+')
-                skimConfig = self.loadAndRemember(self.SKIMDefaultCFF)
-                #print "dictionnary for skims:",skimConfig.__dict__
-                for skim in skimConfig.__dict__:
-                        skimstream = getattr(skimConfig,skim)
-                        if (not isinstance(skimstream,cms.FilteredStream)):
-                                continue
-                        shortname = skim.replace('SKIMStream','')
-                        if (not shortname in skimlist):
-                                continue
-                        self.addExtraStream(skim,skimstream)
-                        skimlist.remove(shortname)
-
+	skimlist=sequence.split('+')
+	skimConfig = self.loadAndRemember(self.SKIMDefaultCFF)
+	#print "dictionnary for skims:",skimConfig.__dict__
+	for skim in skimConfig.__dict__:
+		skimstream = getattr(skimConfig,skim)
+		if (not isinstance(skimstream,cms.FilteredStream)):
+			continue
+		shortname = skim.replace('SKIMStream','')
+		if (sequence=="all"):
+			self.addExtraStream(skim,skimstream)
+		elif (shortname in skimlist):
+			self.addExtraStream(skim,skimstream)
+			skimlist.remove(shortname)
+			
+	if (skimlist.__len__()!=0 and sequence!="all"):
+		print 'WARNING, possible typo with SKIM:'+'+'.join(skimlist)
 
     def prepare_POSTRECO(self, sequence = None):
         """ Enrich the schedule with the postreco step """
@@ -883,10 +901,10 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
         else:
             self.loadAndRemember(sequence.split(',')[0])
 
-        if self._options.hltProcess:
+        if hasattr(self._options,"hltProcess") and self._options.hltProcess:
                 # if specified, change the process name used to acess the HLT results in the [HLT]DQM sequence
                 self.dqmMassaging = self.renameHLTforDQM(sequence.split(',')[-1], self._options.hltProcess)
-        elif 'HLT' in self._options.step:
+        elif (',HLT' in self._options.step or 'HLT,' in self._options.step or 'HLT:' in self._options.step):
                 # otherwise, if both HLT and DQM are run in the same process, change the DQM process name to the current process name
                 self.dqmMassaging = self.renameHLTforDQM(sequence.split(',')[-1], self.process.name_())
 
@@ -1018,7 +1036,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.204 $"),
+              (version=cms.untracked.string("$Revision: 1.211 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
