@@ -30,6 +30,8 @@
 
 124.4 ++ SinglePiPt10 ++ none @@@ cmsDriver.py SinglePiPt10_cfi.py -s GEN,FASTSIM,HLT:GRun,VALIDATION --pileup=NoPileUp  --geometry DB --conditions=auto:mc --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
 124.5 ++ SinglePiPt100 ++ none @@@ cmsDriver.py SinglePiPt100_cfi.py -s GEN,FASTSIM,HLT:GRun,VALIDATION --pileup=NoPileUp  --geometry DB --conditions=auto:mc --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 27000,1000
+124.6 ++ SingleGammaFlatPt10To10 ++ None @@@ cmsDriver.py SingleGammaFlatPt10To100_cfi.py -s GEN,FASTSIM,HLT:GRun,VALIDATION --pileup=NoPileUp  --geometry DB  --conditions=auto:mc --eventcontent=FEVTDEBUGHLT --datatier GEN-SIM-DIGI-RECO -n 10 --relval 100000,1000
+
 125 ++ ZPrime5000Dijet ++ RECO1 @@@ cmsDriver.py  ZPrime5000JJ_7TeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT:GRun,RAW2DIGI,L1Reco -n 10  --geometry DB --conditions auto:mc --relval 25000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT
 126 ++ SingleElectronFlatPt5To100 ++ RECO1 @@@ cmsDriver.py SingleElectronFlatPt5To100_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT:GRun,RAW2DIGI,L1Reco -n 10 --relval 25000,250 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --geometry DB --conditions auto:mc
 127 ++ SingleGammaFlatPt10To100 ++ RECO1 @@@ cmsDriver.py SingleGammaFlatPt10To100_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT:GRun,RAW2DIGI,L1Reco -n 10 --relval 25000,250 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --geometry DB --conditions auto:mc
