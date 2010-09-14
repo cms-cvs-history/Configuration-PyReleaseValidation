@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.221 $"
+__version__ = "$Revision: 1.216 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -69,9 +69,9 @@ class ConfigBuilder(object):
 
         # what steps are provided by this class?
         stepList = [re.sub(r'^prepare_', '', methodName) for methodName in ConfigBuilder.__dict__ if methodName.startswith('prepare_')]
+
 	self.stepMap={}
 	for step in self._options.step.split(","):
-		if step=='': continue
 		stepParts = step.split(":")
 		stepName = stepParts[0]
 		if stepName not in stepList:
@@ -203,51 +203,74 @@ class ConfigBuilder(object):
 
     def addOutput(self):
         """ Add output module to the process """
-	result=""
-	streamTypes=self.eventcontent.split(',')
-	tiers=self._options.datatier.split(',')
-	if len(streamTypes)!=len(tiers):
-		raise Exception("number of event content arguments does not match number of datatier arguments")
+
+        theEventContent = getattr(self.process, self.eventcontent.split(',')[0]+"EventContent")
+        output = cms.OutputModule("PoolOutputModule",
+                                  theEventContent,
+                                  fileName = cms.untracked.string(self._options.outfile_name),
+                                  dataset = cms.untracked.PSet(dataTier = cms.untracked.string(self._options.datatier))
+                                 )
+
+        # check if a second (parallel to RECO) output was requested via the eventcontent option
+        # this can (for now) only be of type "AOD","AODSIM" or "ALCARECO" and will use the datatier of the same name
+        secondOutput = None
+        for evtContent in ['AOD', 'AODSIM','ALCARECO']:
+            if evtContent in self.eventcontent.split(',') :
+                theSecondEventContent = getattr(self.process, evtContent+"EventContent")
+                secondOutput = cms.OutputModule("PoolOutputModule",
+                                           theSecondEventContent,
+                                           fileName = cms.untracked.string(self._options.outfile_name.replace('.root','_secondary.root')),
+                                           dataset = cms.untracked.PSet(dataTier = cms.untracked.string(evtContent))
+                                           )
+                if evtContent=='ALCARECO':
+                        secondOutput.dataset.filterName = cms.untracked.string('StreamALCACombined')
+
+        if 'DQM' in self.eventcontent.split(','):
+                dqmOutput = cms.OutputModule("PoolOutputModule",
+                                             outputCommands = cms.untracked.vstring('drop *','keep *_MEtoEDMConverter_*_*'),
+                                             fileName = cms.untracked.string(self._options.dirout+'DQMStream.root'),
+                                             dataset = cms.untracked.PSet(filterName = cms.untracked.string(''),dataTier = cms.untracked.string('DQM'))
+                                             )
+                self.additionalOutputs['DQMStream'] = dqmOutput
+                setattr(self.process,'DQMStream',dqmOutput)
+
+        # if there is a generation step in the process, that one should be used as filter decision
+        if hasattr(self.process,"generation_step"):
+            output.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('generation_step'))
+
+        # add the filtername
+        output.dataset.filterName = cms.untracked.string(self._options.filtername)
 
         # if the only step is alca we don't need to put in an output
-        if self._options.step.split(',')[0].split(':')[0] == 'ALCA':
-            return "\n"
+	if not(self.stepMap.has_key('ALCA') and self.stepMap.__len__()==1):
+            self.process.output = output
+            self.process.out_step = cms.EndPath(self.process.output)
+            self.schedule.append(self.process.out_step)
 
-	for i,(streamType,tier) in enumerate(zip(streamTypes,tiers)):
-		theEventContent = getattr(self.process, streamType+"EventContent")
-		if i==0:
-			theFileName=self._options.outfile_name
-			theFilterName=self._options.filtername
-		else:
-			theFileName=self._options.outfile_name.replace('.root','_in'+streamType+'.root')
-			theFilterName=""
-			
-		output = cms.OutputModule("PoolOutputModule",
-					  theEventContent,
-					  fileName = cms.untracked.string(theFileName),
-					  dataset = cms.untracked.PSet(dataTier = cms.untracked.string(tier),
-								       filterName = cms.untracked.string(theFilterName)
-								       )
-					  )
-		if hasattr(self.process,"generation_step"):
-			output.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('generation_step'))
-			
-		if streamType=='ALCARECO':
-			output.dataset.filterName = cms.untracked.string('StreamALCACombined')
+            # ATTENTION: major tweaking to avoid inlining of event content
+            # should we do that?
+            def dummy(instance,label = "process."+self.eventcontent.split(',')[0]+"EventContent.outputCommands"):
+                return label
 
-		outputModuleName=streamType+'output'
-		setattr(self.process,outputModuleName,output)
-		outputModule=getattr(self.process,outputModuleName)
-		setattr(self.process,outputModuleName+'_step',cms.EndPath(outputModule))
-		path=getattr(self.process,outputModuleName+'_step')
-		self.schedule.append(path)
-		
-		def doNotInlineEventContent(instance,label = "process."+streamType+"EventContent.outputCommands"):
-			return label
-		outputModule.outputCommands.__dict__["dumpPython"] = doNotInlineEventContent
-		result+="\nprocess."+outputModuleName+" = "+outputModule.dumpPython()
-		
-	return result
+            self.process.output.outputCommands.__dict__["dumpPython"] = dummy
+            result = "\n"+self.process.output.dumpPython()
+
+            # now do the same for the second output, if required
+            if secondOutput:
+                self.process.secondOutput = secondOutput
+                self.process.out_stepSecond = cms.EndPath(self.process.secondOutput)
+                self.schedule.append(self.process.out_stepSecond)
+                # ATTENTION: major tweaking to avoid inlining of event content
+                # should we do that?
+                # Note: we need to return the _second_ arg from the list of eventcontents ...
+                if len(self.eventcontent.split(',')) > 1 :
+                    def dummy2(instance,label = "process."+self.eventcontent.split(',')[1]+"EventContent.outputCommands"):
+                        return label
+
+                    self.process.secondOutput.outputCommands.__dict__["dumpPython"] = dummy2
+                    result += "\n"+self.process.secondOutput.dumpPython()
+
+            return result
 
     def addStandardSequences(self):
         """
@@ -568,22 +591,13 @@ class ConfigBuilder(object):
     def prepare_ALCAOUTPUT(self, sequence = None):
         self.prepare_ALCA(sequence, workflow = "output")
 
-    def loadDefaultOrSpecifiedCFF(self, sequence,defaultCFF):
-	    if ( len(sequence.split('.'))==1 ):
-		    l=self.loadAndRemember(defaultCFF)
-	    elif ( len(sequence.split('.'))==2 ):
-		    l=self.loadAndRemember(sequence.split('.')[0])
-		    sequence=sequence.split('.')[1]
-	    else:
-		    print "sub sequence configuration must be of the form dir/subdir/cff.a+b+c or cff.a"
-		    print sequence,"not recognized"
-		    raise 
-	    return l
-    
     def prepare_ALCA(self, sequence = None, workflow = 'full'):
         """ Enrich the process with alca streams """
-	alcaConfig=self.loadDefaultOrSpecifiedCFF(sequence,self.ALCADefaultCFF)
-        sequence = sequence.split('.')[-1]
+        if ( len(sequence.split(','))==1 ):
+            alcaConfig = self.loadAndRemember(self.ALCADefaultCFF)
+        else:
+            alcaConfig = self.loadAndRemember(sequence.split(',')[0])
+            sequence = sequence.split(',')[1]
         # decide which ALCA paths to use
         alcaList = sequence.split("+")
         for name in alcaConfig.__dict__:
@@ -745,29 +759,41 @@ class ConfigBuilder(object):
 
 
     def prepare_RAW2DIGI(self, sequence = "RawToDigi"):
-	    self.loadDefaultOrSpecifiedCFF(sequence,self.RAW2DIGIDefaultCFF)
-	    self.process.raw2digi_step = cms.Path( getattr(self.process, sequence.split('.')[-1]) )
-	    self.schedule.append(self.process.raw2digi_step)
-	    return
+        if ( len(sequence.split(','))==1 ):
+            self.loadAndRemember(self.RAW2DIGIDefaultCFF)
+        else:
+            self.loadAndRemember(sequence.split(',')[0])
+        self.process.raw2digi_step = cms.Path( getattr(self.process, sequence.split(',')[-1]) )
+        self.schedule.append(self.process.raw2digi_step)
+        return
 
     def prepare_L1HwVal(self, sequence = 'L1HwVal'):
         ''' Enrich the schedule with L1 HW validation '''
-	self.loadDefaultOrSpecifiedCFF(sequence,self.L1HwValDefaultCFF)
-        self.process.l1hwval_step = cms.Path( getattr(self.process, sequence.split('.')[-1]) )
+        if ( len(sequence.split(','))==1 ):
+            self.loadAndRemember(self.L1HwValDefaultCFF)
+        else:
+            self.loadAndRemember(sequence.split(',')[0])
+        self.process.l1hwval_step = cms.Path( getattr(self.process, sequence.split(',')[-1]) )
         self.schedule.append( self.process.l1hwval_step )
         return
 
     def prepare_L1Reco(self, sequence = "L1Reco"):
         ''' Enrich the schedule with L1 reconstruction '''
-	self.loadDefaultOrSpecifiedCFF(sequence,self.L1RecoDefaultCFF)
-        self.process.L1Reco_step = cms.Path( getattr(self.process, sequence.split('.')[-1]) )
+        if ( len(sequence.split(','))==1 ):
+            self.loadAndRemember(self.L1RecoDefaultCFF)
+        else:
+            self.loadAndRemember(sequence.split(',')[0])
+        self.process.L1Reco_step = cms.Path( getattr(self.process, sequence.split(',')[-1]) )
         self.schedule.append(self.process.L1Reco_step)
         return
 
     def prepare_RECO(self, sequence = "reconstruction"):
         ''' Enrich the schedule with reconstruction '''
-	self.loadDefaultOrSpecifiedCFF(sequence,self.RECODefaultCFF)
-        self.process.reconstruction_step = cms.Path( getattr(self.process, sequence.split('.')[-1]) )
+        if ( len(sequence.split(','))==1 ):
+            self.loadAndRemember(self.RECODefaultCFF)
+        else:
+            self.loadAndRemember(sequence.split(',')[0])
+        self.process.reconstruction_step = cms.Path( getattr(self.process, sequence.split(',')[-1]) )
         self.schedule.append(self.process.reconstruction_step)
         return
 
@@ -804,23 +830,25 @@ class ConfigBuilder(object):
 
 
     def prepare_VALIDATION(self, sequence = 'validation'):
-	    if "FASTSIM" in self.stepMap.keys():
-		    self.loadAndRemember("FastSimulation.Configuration.Validation_cff")
-		    self.process.prevalidation_step = cms.Path( self.process.prevalidation )
-		    self.schedule.append( self.process.prevalidation_step )
-		    self.process.validation_step = cms.EndPath( getattr(self.process, sequence.split('.')[-1]) )
-		    self.schedule.append(self.process.validation_step)
-		    return
-	    else:
-		    self.loadDefaultOrSpecifiedCFF(sequence,self.VALIDATIONDefaultCFF)
-	    self.process.validation_step = cms.Path( getattr(self.process, sequence.split('.')[-1]) )
-	    if 'genvalid' in sequence.split('.')[-1]:
-		    self.loadAndRemember("IOMC.RandomEngine.IOMC_cff")
-	    self.schedule.append(self.process.validation_step)
-	    print self._options.step
-	    if not 'DIGI'  in self.stepMap.keys():
-		    self.executeAndRemember("process.mix.playback = True")
-	    return
+	if "FASTSIM" in self.stepMap.keys():
+            self.loadAndRemember("FastSimulation.Configuration.Validation_cff")
+            self.process.prevalidation_step = cms.Path( self.process.prevalidation )
+            self.schedule.append( self.process.prevalidation_step )
+            self.process.validation_step = cms.EndPath( getattr(self.process, sequence.split(',')[-1]) )
+            self.schedule.append(self.process.validation_step)
+            return
+        elif ( len(sequence.split(','))==1 ):
+            self.loadAndRemember(self.VALIDATIONDefaultCFF)
+        else:
+            self.loadAndRemember(sequence.split(',')[0])
+        self.process.validation_step = cms.Path( getattr(self.process, sequence.split(',')[-1]) )
+        if 'genvalid' in sequence.split(',')[-1]:
+            self.loadAndRemember("IOMC.RandomEngine.IOMC_cff")
+        self.schedule.append(self.process.validation_step)
+        print self._options.step
+	if not 'DIGI'  in self.stepMap.keys():
+            self.executeAndRemember("process.mix.playback = True")
+        return
 
     class MassSearchReplaceProcessNameVisitor(object):
             """Visitor that travels within a cms.Sequence, looks for a parameter and replace its value
@@ -889,23 +917,25 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
     def prepare_DQM(self, sequence = 'DQMOffline'):
         # this one needs replacement
 
-	self.loadDefaultOrSpecifiedCFF(sequence,self.DQMOFFLINEDefaultCFF)
-	sequence=sequence.split('.')[-1]
+        if ( len(sequence.split(','))==1 ):
+            self.loadAndRemember(self.DQMOFFLINEDefaultCFF)
+        else:
+            self.loadAndRemember(sequence.split(',')[0])
 
         if hasattr(self._options,"hltProcess") and self._options.hltProcess:
                 # if specified, change the process name used to acess the HLT results in the [HLT]DQM sequence
-                self.dqmMassaging = self.renameHLTforDQM(sequence, self._options.hltProcess)
+                self.dqmMassaging = self.renameHLTforDQM(sequence.split(',')[-1], self._options.hltProcess)
 	elif 'HLT' in self.stepMap.keys():
                 # otherwise, if both HLT and DQM are run in the same process, change the DQM process name to the current process name
-                self.dqmMassaging = self.renameHLTforDQM(sequence, self.process.name_())
+                self.dqmMassaging = self.renameHLTforDQM(sequence.split(',')[-1], self.process.name_())
 
         # if both HLT and DQM are run in the same process, schedule [HLT]DQM in an EndPath
 	if 'HLT' in self.stepMap.keys():
                 # need to put [HLT]DQM in an EndPath, to access the HLT trigger results
-                self.process.dqmoffline_step = cms.EndPath( getattr(self.process, sequence ) )
+                self.process.dqmoffline_step = cms.EndPath( getattr(self.process, sequence.split(',')[-1]) )
         else:
                 # schedule DQM as a standard Path
-                self.process.dqmoffline_step = cms.Path( getattr(self.process, sequence) )
+                self.process.dqmoffline_step = cms.Path( getattr(self.process, sequence.split(',')[-1]) )
         self.schedule.append(self.process.dqmoffline_step)
 
     def prepare_HARVESTING(self, sequence = None):
@@ -915,9 +945,11 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
         self.process.edmtome_step = cms.Path(self.process.EDMtoME)
         self.schedule.append(self.process.edmtome_step)
 
-	harvestingConfig = self.loadDefaultOrSpecifiedCFF(sequence,self.HARVESTINGDefaultCFF)
-	sequence = sequence.split('.')[-1]
-	
+        if ( len(sequence.split(','))==1 ):
+            harvestingConfig = self.loadAndRemember(self.HARVESTINGDefaultCFF)
+        else:
+            harvestingConfig = self.loadAndRemember(sequence.split(',')[0])
+            sequence = sequence.split(',')[1]
         # decide which HARVESTING paths to use
         harvestingList = sequence.split("+")
         for name in harvestingConfig.__dict__:
@@ -925,11 +957,6 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
             if name in harvestingList and isinstance(harvestingstream,cms.Path):
                self.schedule.append(harvestingstream)
                harvestingList.remove(name)
-	    if name in harvestingList and isinstance(harvestingstream,cms.Sequence):
-		    setattr(self.process,name+"_step",cms.Path(harvestingstream))
-		    self.schedule.append(getattr(self.process,name+"_step"))
-		    harvestingList.remove(name)
-		    
         # This if statment must disappears once some config happens in the alca harvesting step
         if 'alcaHarvesting' in harvestingList:
             harvestingList.remove('alcaHarvesting')
@@ -945,8 +972,6 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
     def prepare_ALCAHARVEST(self, sequence = None):
         """ Enrich the process with AlCaHarvesting step """
         harvestingConfig = self.loadAndRemember(self.ALCAHARVESTDefaultCFF)
-	sequence=sequence.split(".")[-1]
-	
         # decide which AlcaHARVESTING paths to use
         harvestingList = sequence.split("+")
         for name in harvestingConfig.__dict__:
@@ -965,13 +990,14 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
     def prepare_ENDJOB(self, sequence = 'endOfProcess'):
         # this one needs replacement
 
-	self.loadDefaultOrSpecifiedCFF(sequence,self.ENDJOBDefaultCFF)
-	sequence=sequence.split('.')[-1]
-	
-	if "FASTSIM" in self.stepMap.keys():
-            self.process.endjob_step = cms.EndPath( getattr(self.process, sequence) )
+        if ( len(sequence.split(','))==1 ):
+            self.loadAndRemember(self.ENDJOBDefaultCFF)
         else:
-            self.process.endjob_step = cms.Path( getattr(self.process, sequence) )
+            self.loadAndRemember(sequence.split(',')[0])
+	if "FASTSIM" in self.stepMap.keys():
+            self.process.endjob_step = cms.EndPath( getattr(self.process, sequence.split(',')[-1]) )
+        else:
+            self.process.endjob_step = cms.Path( getattr(self.process, sequence.split(',')[-1]) )
 
         self.schedule.append(self.process.endjob_step)
 
@@ -1031,7 +1057,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.221 $"),
+              (version=cms.untracked.string("$Revision: 1.216 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
@@ -1049,9 +1075,8 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
         self.addConditions()
         self.loadAndRemember(self.EVTCONTDefaultCFF)  #load the event contents regardless
 
-	outputModuleCfgCode=""
 	if not 'HARVESTING' in self.stepMap.keys() and not 'SKIM' in self.stepMap.keys() and not 'ALCAHARVEST' in self.stepMap.keys() and not 'ALCAOUTPUT' in self.stepMap.keys() and self.with_output:
-		outputModuleCfgCode=self.addOutput()
+            self.addOutput()
 
         self.addCommon()
 
@@ -1081,9 +1106,13 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
         self.pythonCfgCode += "process.source = "+self.process.source.dumpPython()
 
         # dump the output definition
-	self.pythonCfgCode += "\n# Output definition\n"
-	self.pythonCfgCode += outputModuleCfgCode
-	
+        if hasattr(self.process,"output"):
+            self.pythonCfgCode += "\n# Output definition\n"
+            self.pythonCfgCode += "process.output = "+self.process.output.dumpPython()
+        if hasattr(self.process,"secondOutput"):
+            self.pythonCfgCode += "\n# Second Output definition\n"
+            self.pythonCfgCode += "process.secondOutput = "+self.process.secondOutput.dumpPython()
+
         # dump all additional outputs (e.g. alca or skim streams)
         self.pythonCfgCode += "\n# Additional output definition\n"
         #I do not understand why the keys are not normally ordered.
