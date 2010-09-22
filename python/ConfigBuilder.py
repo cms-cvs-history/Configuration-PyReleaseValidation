@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.221 $"
+__version__ = "$Revision: 1.222 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -1031,7 +1031,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.221 $"),
+              (version=cms.untracked.string("$Revision: 1.222 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
@@ -1075,6 +1075,15 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
 
         # dump the job options
         self.pythonCfgCode += "\nprocess.options = "+self.process.options.dumpPython()
+
+	# dump the lazy download config
+	if hasattr(self._options,"lazy_download") and self._options.lazy_download:
+		self.pythonCfgCode += '\nprocess.AdaptorConfig = cms.Service("AdaptorConfig",\n'
+		self.pythonCfgCode += 'stats = cms.untracked.bool(True),\n'
+		self.pythonCfgCode += 'enable = cms.untracked.bool(True),\n'
+		self.pythonCfgCode += 'cacheHint = cms.untracked.string("lazy-download"),\n'
+		self.pythonCfgCode += 'readHint = cms.untracked.string("read-ahead-buffered")\n'
+		self.pythonCfgCode += ')\n'
 
         # dump the input definition
         self.pythonCfgCode += "\n# Input source\n"
