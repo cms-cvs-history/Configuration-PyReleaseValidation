@@ -56,7 +56,7 @@
 40 ++ HydjetQ_MinBias_2760GeV ++ RECOHI1 @@@ cmsDriver.py  Hydjet_Quenched_MinBias_2760GeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT:HIon -n 0 --geometry DB --conditions auto:mc --relval 500,5 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --scenario HeavyIons --no_exec
 41 ++ HydjetQ_B0_2760GeV ++ RECOHI1 @@@ cmsDriver.py  Hydjet_Quenched_B0_2760GeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT:HIon -n 0 --conditions  auto:mc --relval 80,2 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent  FEVTDEBUGHLT --scenario HeavyIons --no_exec
 
-STEP2 ++ RECOPROD1 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO --datatier GEN-SIM-RECO --eventcontent RECOSIM --geometry DB --conditions auto:mc
+STEP2 ++ RECOPROD1 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO --datatier GEN-SIM-RECO,AODSIM --eventcontent RECOSIM,AODSIM --geometry DB --conditions auto:mc
 STEP2 ++ RECO1 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+DtCalib,VALIDATION,DQM --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --geometry DB --conditions auto:mc
 STEP2 ++ RECO2 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+DtCalib,VALIDATION,DQM --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --geometry DB --conditions auto:startup
 STEP2 ++ RECOMIN @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:EcalCalPhiSym+EcalCalPi0Calib+EcalCalEtaCalib+DtCalib,VALIDATION,DQM --datatier GEN-SIM-RECO --eventcontent RECOSIM --geometry DB --conditions auto:startup
