@@ -71,7 +71,7 @@ STEP2 ++ RECOD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM,ALCA:MuAlCal
 STEP2 ++ RECOD10 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:SiStripCalZeroBias+SiStripCalMinBias,DQM --data --datatier RECO --eventcontent RECO --conditions auto:com10 --scenario pp --no_exec --magField AutoFromDBCurrent --process reRECO --customise Configuration/GlobalRuns/reco_TLR_39X.py --cust_function customisePPData
 STEP2 ++ RECOVALSKIM @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM --data --datatier RECO --eventcontent RECO --conditions auto:com10 --scenario pp --no_exec --magField AutoFromDBCurrent --process reRECO --customise Configuration/GlobalRuns/reco_TLR_39X.py --cust_function customiseVALSKIM
 
-STEP2 ++ RECOHI1 @@@ cmsDriver.py hiReco -n 2 -s RAW2DIGI,RECO,VALIDATION --scenario HeavyIons --geometry DB --conditions auto:mc --datatier 'GEN-SIM-RECO' --eventcontent=RECOSIM --filein=file.root --no_exec
+STEP2 ++ RECOHI1 @@@ cmsDriver.py hiReco -n 2 -s RAW2DIGI,RECO,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBiasHI,VALIDATION --scenario HeavyIons --geometry DB --conditions auto:mc --datatier 'GEN-SIM-RECO' --eventcontent=RECOSIM --filein=file.root --no_exec
 
 STEP3 ++ ALCAMIN @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMinBias -n 1000 --filein file:reco.root  --geometry DB --conditions auto:startup --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
 STEP3 ++ ALCAQCD @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+HcalCalDijets+HcalCalHO+MuAlOverlaps -n 1000 --filein file:reco.root  --geometry DB --conditions auto:startup --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
