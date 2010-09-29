@@ -241,6 +241,10 @@ expertSettings.add_option("--lazy_download",
                   default=False,
                   dest="lazy_download")   
 
+expertSettings.add_option("--custom_conditions",
+                          help="Allow to give a few overriding tags for the GT",
+                          default='',
+                          dest='custom_conditions')
 
                   
 (options,args) = parser.parse_args() # by default the arg is sys.argv[1:]
