@@ -7,6 +7,7 @@
 1004.7 ++ MinimumBias2010B ++ RECOD10 ++ REALDATA: /MinimumBias/Run2010B-valskim-v2/RAW-RECO, FILES: 100, EVENTS: 2000000, LABEL: run2010B @@@
 1004.8 ++ WZMuSkim ++ RECOD10 ++ REALDATA: /Mu/Run2010B-WZMu-v2/RAW-RECO, FILES: 100, EVENTS: 2000000, LABEL: wzMu @@@
 1004.9 ++ WZEGSkim ++ RECOD10 ++ REALDATA: /Electron/Run2010B-WZEG-v2/RAW-RECO, FILES: 100, EVENTS: 2000000, LABEL: wzEG @@@
+1004.10 ++ DiJetSkim ++ RECOD10 ++ REALDATA: , FILES: 100, EVENTS: 2000000, LABEL: diJet @@@
 
 STEP2 ++ RECOCOSD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,L1HwVal,DQM,ALCA:SiStripCalZeroBias+MuAlCalIsolatedMu+DQM --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft09 --scenario cosmics --no_exec --data --magField AutoFromDBCurrent
 STEP2 ++ RECOD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft09 --scenario pp --no_exec --data --magField AutoFromDBCurrent
@@ -14,4 +15,4 @@ STEP2 ++ RECOD10 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM --data --dat
 STEP2 ++ RECOVALSKIM @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM --data --datatier RECO,AOD --eventcontent RECO,AOD --conditions auto:com10 --scenario pp --no_exec --magField AutoFromDBCurrent --process reRECO --customise Configuration/GlobalRuns/reco_TLR_39X.py --cust_function customiseVALSKIM
 
 STEP3 ++ ALCACOSD09 @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlCosmics0T+MuAlGlobalCosmics+HcalCalHOCosmics+DQM -n 1000 --filein file:reco.root --conditions auto:craft09 --no_exec --datatier ALCARECO --eventcontent ALCARECO --scenario cosmics --magField AutoFromDBCurrent
-STEP3 ++ SKIMMING10 @@@ cmsDriver.py step3_SKIM -s SKIM:BeamBkg+GoodCol+DT+CSC+WZMu+RPC+LogError+CSCHLT+CSCAlone+MuonTrack+HTSD+L1MuBit+ValSkim+GoodVtx+TPG+HSCP+EcalRH+WZEG+DiJet -n 1000 --filein file:reco.root --conditions auto:com10 --no_exec --scenario pp --magField AutoFromDBCurrent 
+STEP3 ++ SKIMMING10 @@@ cmsDriver.py step3_SKIM -s SKIM:BeamBkg+GoodCol+DT+CSC+WZMu+RPC+LogError+CSCHLT+CSCAlone+MuonTrack+HTSD+L1MuBit+ValSkim+GoodVtx+TPG+HSCP+EcalRH+WZEG+DiJet -n 1000 --filein file:reco.root --conditions auto:com10 --no_exec --scenario pp --magField AutoFromDBCurrent --process reSKIM
