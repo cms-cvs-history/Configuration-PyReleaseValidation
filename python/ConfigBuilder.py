@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.222.2.2 $"
+__version__ = "$Revision: 1.222.2.3 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -607,12 +607,21 @@ class ConfigBuilder(object):
                 output.fileName = cms.untracked.string(stream.name+'.root')
         output.dataset  = cms.untracked.PSet( dataTier = stream.dataTier,
                                               filterName = cms.untracked.string(stream.name))
+
         if workflow in ("producers,full"):
           if isinstance(stream.paths,tuple):
               for path in stream.paths:
                   self.schedule.append(path)
+		  # manipulate the HLT process name if needed
+		  if hasattr(self._options,"hltProcess") and self._options.hltProcess:
+			  self.alcaMassaging.append(self.renameHLTforALCA(path.label(), self._options.hltProcess))
           else:
               self.schedule.append(stream.paths)
+	      # manipulate the HLT process name if needed
+	      if hasattr(self._options,"hltProcess") and self._options.hltProcess:
+		      self.alcaMassaging.append(self.renameHLTforALCA(stream.paths.label(), self._options.hltProcess))
+	       
+
                 # in case of relvals we don't want to have additional outputs
         if (not self._options.relval) and workflow in ("full","output"):
             self.additionalOutputs[name] = output
@@ -629,6 +638,14 @@ class ConfigBuilder(object):
     # here the methods to create the steps. Of course we are doing magic here ;)
     # prepare_STEPNAME modifies self.process and what else's needed.
     #----------------------------------------------------------------------------
+ # change the process name used to acess the HLT results in the [HLT]DQM sequence
+    @staticmethod
+    def renameHLTforALCA(sequence, process):
+        # look up all module in dqm sequence
+        print "replacing HLT process name - ALCA sequence %s will use '%s'" % (sequence, process)
+        return """
+process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", whitelist = ('subSystemFolder',)))
+""" % (sequence, process)
 
     def prepare_ALCAPRODUCER(self, sequence = None):
         self.prepare_ALCA(sequence, workflow = "producers")
@@ -654,8 +671,14 @@ class ConfigBuilder(object):
         sequence = sequence.split('.')[-1]
         # decide which ALCA paths to use
         alcaList = sequence.split("+")
+
+	if hasattr(self._options,"hltProcess") and self._options.hltProcess:
+		self.alcaMassaging = []
+		if not hasattr(self,"dqmMassaging"):
+			self.alcaMassaging.append("from Configuration.PyReleaseValidation.ConfigBuilder import ConfigBuilder")
+		
         for name in alcaConfig.__dict__:
-            alcastream = getattr(alcaConfig,name)
+	    alcastream = getattr(alcaConfig,name)
             shortName = name.replace('ALCARECOStream','')
             if shortName in alcaList and isinstance(alcastream,cms.FilteredStream):
                 self.addExtraStream(name,alcastream, workflow = workflow)
@@ -1099,7 +1122,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.222.2.2 $"),
+              (version=cms.untracked.string("$Revision: 1.222.2.3 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
@@ -1219,6 +1242,10 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
 
         if hasattr(self,"dqmMassaging"):
                 result += self.dqmMassaging
+
+	if hasattr(self,"alcaMassaging"):
+		for line in self.alcaMassaging:
+			result += line
 
         self.pythonCfgCode += result
 
