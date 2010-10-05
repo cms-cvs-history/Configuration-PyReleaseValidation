@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.222.2.5 $"
+__version__ = "$Revision: 1.222.2.6 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -1122,7 +1122,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.222.2.5 $"),
+              (version=cms.untracked.string("$Revision: 1.222.2.6 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
@@ -1318,14 +1318,14 @@ def addOutputModule(process, tier, content):
     pathName = "%sPath" % moduleName
     contentName = "%sEventContent" % content
     contentAttr = getattr(process, contentName)
+    #print contentAttr
     setattr(process, moduleName,
             cms.OutputModule("PoolOutputModule",
-                              fileName = cms.untracked.string('%s.root' % moduleName),
-                              dataset = cms.untracked.PSet(
-                                dataTier = cms.untracked.string(tier),
-                              ),
-                              eventContent = contentAttr
-                           )
+			     contentAttr,
+			     fileName = cms.untracked.string('%s.root' % moduleName),
+			     dataset = cms.untracked.PSet( dataTier = cms.untracked.string(tier),
+							   ),
+			     )
             )
     print getattr(process,moduleName)
     # put it in an EndPath and put the EndPath into the schedule
