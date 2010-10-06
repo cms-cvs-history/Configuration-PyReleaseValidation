@@ -223,6 +223,11 @@ expertSettings.add_option("--dbsquery",
                           default='',
                           dest="dbsquery")
 
+expertSettings.add_option("--slhc",
+                          help="Specify the SLHC scenario version",
+                          default='',
+                          dest="slhc")
+
 parser.add_option("--cust_function",
                   help="Specify the customise function to be called from the customise fragment.",
                   default='customise',

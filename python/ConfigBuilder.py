@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.172.2.9 $"
+__version__ = "$Revision: 1.172.2.10 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -339,6 +339,11 @@ class ConfigBuilder(object):
         if len(conditions) > 2:
             self.executeAndRemember("process.GlobalTag.pfnPrefix = cms.untracked.string('%s')" % pfnPrefix)
 
+	if self._options.slhc!='':
+		self.loadAndRemember("SLHCUpgradeSimulations/Geometry/fakeConditions_Phase1_cff")
+		
+
+
     def addCustomise(self):
         """Include the customise code """
 
@@ -481,9 +486,15 @@ class ConfigBuilder(object):
         else:
                 self.GeometryCFF='Configuration/StandardSequences/Geometry'+self._options.geometry+'_cff'
 
+	if self._options.slhc!='':
+		self.GeometryCFF='SLHCUpgradeSimulations.Geometry.PhaseI_cmsSimIdealGeometryXML_%s_cff'%(self._options.slhc,)
+
         # Mixing
         if self._options.isMC==True and self._options.himix==False:
-            self.PileupCFF='Configuration/StandardSequences/Mixing'+self._options.pileup+'_cff'
+		if self._options.slhc!='':
+			self.PileupCFF='SLHCUpgradeSimulations/Geometry/mixLowLumPU_Phase1_%s_cff'%(self._options.slhc,)
+		else:
+			self.PileupCFF='Configuration/StandardSequences/Mixing'+self._options.pileup+'_cff'
         elif self._options.isMC==True and self._options.himix==True:
             self.PileupCFF='Configuration/StandardSequences/HiEventMixing_cff'
         else:
@@ -959,7 +970,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.172.2.9 $"),
+              (version=cms.untracked.string("$Revision: 1.172.2.10 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
