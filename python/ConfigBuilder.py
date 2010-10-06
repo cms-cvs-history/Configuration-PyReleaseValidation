@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.172.2.10 $"
+__version__ = "$Revision: 1.172.2.11 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -271,6 +271,9 @@ class ConfigBuilder(object):
             except ImportError:
                 print "Geometry option",self._options.geometry,"unknown."
                 raise
+	    if self._options.slhc!='':
+		    self.loadAndRemember('SLHCUpgradeSimulations.Geometry.PhaseI_cmsSimIdealGeometryXML_%s_cff'%(self._options.slhc,))
+
 
         self.loadAndRemember(self.magFieldCFF)
 
@@ -485,9 +488,6 @@ class ConfigBuilder(object):
                 self.GeometryCFF='Configuration/StandardSequences/Geometry'+self._options.geometry+'GFlash_cff'
         else:
                 self.GeometryCFF='Configuration/StandardSequences/Geometry'+self._options.geometry+'_cff'
-
-	if self._options.slhc!='':
-		self.GeometryCFF='SLHCUpgradeSimulations.Geometry.PhaseI_cmsSimIdealGeometryXML_%s_cff'%(self._options.slhc,)
 
         # Mixing
         if self._options.isMC==True and self._options.himix==False:
@@ -970,7 +970,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.172.2.10 $"),
+              (version=cms.untracked.string("$Revision: 1.172.2.11 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
