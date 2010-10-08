@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.172.2.11 $"
+__version__ = "$Revision: 1.172.2.12 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -271,8 +271,6 @@ class ConfigBuilder(object):
             except ImportError:
                 print "Geometry option",self._options.geometry,"unknown."
                 raise
-	    if self._options.slhc!='':
-		    self.loadAndRemember('SLHCUpgradeSimulations.Geometry.PhaseI_cmsSimIdealGeometryXML_%s_cff'%(self._options.slhc,))
 
 
         self.loadAndRemember(self.magFieldCFF)
@@ -342,8 +340,9 @@ class ConfigBuilder(object):
         if len(conditions) > 2:
             self.executeAndRemember("process.GlobalTag.pfnPrefix = cms.untracked.string('%s')" % pfnPrefix)
 
-	if self._options.slhc!='':
+	if hasattr(self._options,"slhc") and self._options.slhc!='':
 		self.loadAndRemember("SLHCUpgradeSimulations/Geometry/fakeConditions_Phase1_cff")
+		self.loadAndRemember("SLHCUpgradeSimulations/Geometry/fakeConditions_Phase1_%s_cff"%(self._options.slhc,))
 		
 
 
@@ -487,19 +486,23 @@ class ConfigBuilder(object):
         if self._options.gflash==True:
                 self.GeometryCFF='Configuration/StandardSequences/Geometry'+self._options.geometry+'GFlash_cff'
         else:
-                self.GeometryCFF='Configuration/StandardSequences/Geometry'+self._options.geometry+'_cff'
+		self.GeometryCFF='Configuration/StandardSequences/Geometry'+self._options.geometry+'_cff'
 
         # Mixing
         if self._options.isMC==True and self._options.himix==False:
-		if self._options.slhc!='':
-			self.PileupCFF='SLHCUpgradeSimulations/Geometry/mixLowLumPU_Phase1_%s_cff'%(self._options.slhc,)
-		else:
 			self.PileupCFF='Configuration/StandardSequences/Mixing'+self._options.pileup+'_cff'
         elif self._options.isMC==True and self._options.himix==True:
             self.PileupCFF='Configuration/StandardSequences/HiEventMixing_cff'
         else:
             self.PileupCFF=''
 
+
+	if hasattr(self._options,"slhc") and self._options.slhc!='':
+		self.GeometryCFF='SLHCUpgradeSimulations.Geometry.PhaseI_cmsSimIdealGeometryXML_%s_cff'%(self._options.slhc,)
+		if self._options.pileup == 'LowLumiPileUp':
+			self.PileupCFF='SLHCUpgradeSimulations/Geometry/mixLowLumPU_Phase1_%s_cff'%(self._options.slhc,)
+		self.DIGIDefaultCFF='SLHCUpgradeSimulations/Geometry/Digi_Phase1_cff'
+		
         # beamspot
         if self._options.beamspot != None:
             self.beamspot=self._options.beamspot
@@ -970,7 +973,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.172.2.11 $"),
+              (version=cms.untracked.string("$Revision: 1.172.2.12 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
