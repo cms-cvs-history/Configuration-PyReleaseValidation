@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.172.2.12 $"
+__version__ = "$Revision: 1.172.2.13 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -501,7 +501,11 @@ class ConfigBuilder(object):
 		self.GeometryCFF='SLHCUpgradeSimulations.Geometry.PhaseI_cmsSimIdealGeometryXML_%s_cff'%(self._options.slhc,)
 		if self._options.pileup == 'LowLumiPileUp':
 			self.PileupCFF='SLHCUpgradeSimulations/Geometry/mixLowLumPU_Phase1_%s_cff'%(self._options.slhc,)
-		self.DIGIDefaultCFF='SLHCUpgradeSimulations/Geometry/Digi_Phase1_cff'
+		if "smpx" in self._options.slhc:
+			self.DIGIDefaultCFF='SLHCUpgradeSimulations/Geometry/Digi_Phase1_smpx_cff'
+		else:
+			self.DIGIDefaultCFF='SLHCUpgradeSimulations/Geometry/Digi_Phase1_cff'
+						
 		
         # beamspot
         if self._options.beamspot != None:
@@ -973,7 +977,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.172.2.12 $"),
+              (version=cms.untracked.string("$Revision: 1.172.2.13 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
