@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.232 $"
+__version__ = "$Revision: 1.232.2.1 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -867,6 +867,9 @@ class ConfigBuilder(object):
 
     def prepare_SKIM(self, sequence = "all"):
         ''' Enrich the schedule with skimming fragments'''
+	self.loadDefaultOrSpecifiedCFF(sequence,self.SKIMDefaultCFF)
+	sequence=sequence.split('.')[-1]
+	
 	skimlist=sequence.split('+')
 	skimConfig = self.loadAndRemember(self.SKIMDefaultCFF)
 	#print "dictionnary for skims:",skimConfig.__dict__
@@ -1125,7 +1128,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.232 $"),
+              (version=cms.untracked.string("$Revision: 1.232.2.1 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
