@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.243 $"
+__version__ = "$Revision: 1.232 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -31,13 +31,6 @@ defaultOptions.filein = []
 defaultOptions.customisation_file = ""
 defaultOptions.particleTable = 'pythiapdt'
 defaultOptions.particleTableList = ['pythiapdt','pdt']
-defaultOptions.dirout = ''
-defaultOptions.fileout = 'output.root'
-defaultOptions.filtername = ''
-defaultOptions.lazy_download = False
-defaultOptions.custom_conditions = ''
-defaultOptions.hltProcess = ''
-defaultOptions.inlineEventContent = True
 
 # the pile up map
 pileupMap = {'156BxLumiPileUp': 2.0,
@@ -51,7 +44,7 @@ pileupMap = {'156BxLumiPileUp': 2.0,
 def dumpPython(process,name):
 	theObject = getattr(process,name)
 	if isinstance(theObject,cms.Path) or isinstance(theObject,cms.EndPath) or isinstance(theObject,cms.Sequence):
-		return "process."+name+" = " + theObject.dumpPython("process")
+		return "process."+name+" = " + theObject.dumpPython("process")+"\n"
 	elif isinstance(theObject,_Module) or isinstance(theObject,cms.ESProducer):
 		return "process."+name+" = " + theObject.dumpPython()+"\n"
 	else:
@@ -73,12 +66,7 @@ class ConfigBuilder(object):
     def __init__(self, options, process = None, with_output = False, with_input = False ):
         """options taken from old cmsDriver and optparse """
 
-	options.outfile_name = options.dirout+options.fileout
-
         self._options = options
-
-	
-
 
         # what steps are provided by this class?
         stepList = [re.sub(r'^prepare_', '', methodName) for methodName in ConfigBuilder.__dict__ if methodName.startswith('prepare_')]
@@ -148,7 +136,7 @@ class ConfigBuilder(object):
 		    self.process.options = cms.untracked.PSet( )
 	    self.addedObjects.append(("","options"))
 	    
-	    if self._options.lazy_download:
+	    if hasattr(self._options,"lazy_download") and self._options.lazy_download:
 		    self.process.AdaptorConfig = cms.Service("AdaptorConfig",
 							     stats = cms.untracked.bool(True),
 							     enable = cms.untracked.bool(True),
@@ -267,12 +255,10 @@ class ConfigBuilder(object):
 		setattr(self.process,outputModuleName+'_step',cms.EndPath(outputModule))
 		path=getattr(self.process,outputModuleName+'_step')
 		self.schedule.append(path)
-
-		if not self._options.inlineEventContent:
-			def doNotInlineEventContent(instance,label = "process."+streamType+"EventContent.outputCommands"):
-				return label
-			outputModule.outputCommands.__dict__["dumpPython"] = doNotInlineEventContent
-			
+		
+		def doNotInlineEventContent(instance,label = "process."+streamType+"EventContent.outputCommands"):
+			return label
+		outputModule.outputCommands.__dict__["dumpPython"] = doNotInlineEventContent
 		result+="\nprocess."+outputModuleName+" = "+outputModule.dumpPython()
 		
 	return result
@@ -383,7 +369,7 @@ class ConfigBuilder(object):
         if len(conditions) > 2:
             self.executeAndRemember("process.GlobalTag.pfnPrefix = cms.untracked.string('%s')" % pfnPrefix)
 
-	if self._options.custom_conditions!="":
+	if hasattr(self._options,"custom_conditions") and self._options.custom_conditions!="":
 		specs=self._options.custom_conditions.split('+')
 		self.executeAndRemember("process.GlobalTag.toGet = cms.VPSet()")
 		for spec in specs:
@@ -621,51 +607,42 @@ class ConfigBuilder(object):
 
     # for alca, skims, etc
     def addExtraStream(self,name,stream,workflow='full'):
-	    # define output module and go from there
-	    output = cms.OutputModule("PoolOutputModule")
-	    if stream.selectEvents.parameters_().__len__()!=0:
-		    output.SelectEvents = stream.selectEvents
-	    else:
-		    output.SelectEvents = cms.untracked.PSet()
-		    output.SelectEvents.SelectEvents=cms.vstring()
-		    if isinstance(stream.paths,tuple):
-			    for path in stream.paths:
-				    output.SelectEvents.SelectEvents.append(path.label())
-		    else:
-			    output.SelectEvents.SelectEvents.append(stream.paths.label())
+    # define output module and go from there
+        output = cms.OutputModule("PoolOutputModule")
+	if stream.selectEvents.parameters_().__len__()!=0:
+		output.SelectEvents = stream.selectEvents
+	else:
+		output.SelectEvents = cms.untracked.PSet()
+		output.SelectEvents.SelectEvents=cms.vstring()
+		if isinstance(stream.paths,tuple):
+			for path in stream.paths:
+				output.SelectEvents.SelectEvents.append(path.label())
+		else:
+			output.SelectEvents.SelectEvents.append(stream.paths.label())
+			
+        output.outputCommands = stream.content
+        if (hasattr(self._options, 'dirout')):
+                output.fileName = cms.untracked.string(self._options.dirout+stream.name+'.root')
+        else:
+                output.fileName = cms.untracked.string(stream.name+'.root')
+        output.dataset  = cms.untracked.PSet( dataTier = stream.dataTier,
+                                              filterName = cms.untracked.string(stream.name))
+        if workflow in ("producers,full"):
+          if isinstance(stream.paths,tuple):
+              for path in stream.paths:
+                  self.schedule.append(path)
+          else:
+              self.schedule.append(stream.paths)
+                # in case of relvals we don't want to have additional outputs
+        if (not self._options.relval) and workflow in ("full","output"):
+            self.additionalOutputs[name] = output
+            setattr(self.process,name,output)
+        if workflow == 'output':
+                # adjust the select events to the proper trigger results from previous process
+                filterList = output.SelectEvents.SelectEvents
+                for i, filter in enumerate(filterList):
+                        filterList[i] = filter+":"+self._options.triggerResultsProcess
 
-
-
-	    if isinstance(stream.content,str):
-		    if not self._options.inlineEventContent:
-			    def doNotInlineEventContent(instance,label = "process."+stream.content+".outputCommands"):
-				    return label
-			    output.outputCommands = getattr(self.process,stream.content)
-		    output.outputCommands.__dict__["dumpPython"] = doNotInlineEventContent
-	    else:
-		    output.outputCommands = stream.content
-
-	    
-	    output.fileName = cms.untracked.string(self._options.dirout+stream.name+'.root')
-
-	    output.dataset  = cms.untracked.PSet( dataTier = stream.dataTier,
-						  filterName = cms.untracked.string(stream.name))
-	    if workflow in ("producers,full"):
-		    if isinstance(stream.paths,tuple):
-			    for path in stream.paths:
-				    self.schedule.append(path)
-		    else:
-			    self.schedule.append(stream.paths)
-		  
-	    # in case of relvals we don't want to have additional outputs
-	    if (not self._options.relval) and workflow in ("full","output"):
-		    self.additionalOutputs[name] = output
-		    setattr(self.process,name,output)
-	    if workflow == 'output':
-		    # adjust the select events to the proper trigger results from previous process
-		    filterList = output.SelectEvents.SelectEvents
-		    for i, filter in enumerate(filterList):
-			    filterList[i] = filter+":"+self._options.triggerResultsProcess
 
 
     #----------------------------------------------------------------------------
@@ -695,51 +672,21 @@ class ConfigBuilder(object):
         """ Enrich the process with alca streams """
 	alcaConfig=self.loadDefaultOrSpecifiedCFF(sequence,self.ALCADefaultCFF)
         sequence = sequence.split('.')[-1]
-
         # decide which ALCA paths to use
-        alcaList = []
-	for specifiedCommand in sequence.split("+"):
-		if specifiedCommand[0]=="@":
-			from Configuration.PyReleaseValidation.autoAlca import autoAlca
-			location=specifiedCommand[1:]
-			alcaSequence = autoAlca[location]
-			alcaList.extend(alcaSequence.split('+'))
-		else:
-			alcaList.append(specifiedCommand)
-
+        alcaList = sequence.split("+")
         for name in alcaConfig.__dict__:
             alcastream = getattr(alcaConfig,name)
             shortName = name.replace('ALCARECOStream','')
             if shortName in alcaList and isinstance(alcastream,cms.FilteredStream):
                 self.addExtraStream(name,alcastream, workflow = workflow)
-		#rename the HLT process name in the alca modules
-		if self._options.hltProcess:
-			if isinstance(alcastream.paths,tuple):
-				for path in alcastream.paths:
-					self.renameHLTprocessInSequence(path.label(),self._options.hltProcess)
-			else:
-				self.renameHLTprocessInSequence(alcastream.paths.label(),self._options.hltProcess)
-		for i in range(alcaList.count(shortName)):
-			alcaList.remove(shortName)
-	    if isinstance(alcastream,cms.Path):
-		    #black list the alca path so that they do not appear in the cfg
-		    self.blacklist_paths.append(alcastream)
-
+                alcaList.remove(shortName)
             # DQM needs a special handling
             elif name == 'pathALCARECODQM' and 'DQM' in alcaList:
                     path = getattr(alcaConfig,name)
                     self.schedule.append(path)
                     alcaList.remove('DQM')
         if len(alcaList) != 0:
-		available=[]
-		for name in alcaConfig.__dict__:
-			alcastream = getattr(alcaConfig,name)
-			if isinstance(alcastream,cms.FilteredStream):
-				available.append(name.replace('ALCARECOStream',''))
-		print "The following alcas could not be found "+str(alcaList)
-		print "available ",available
-		#print "verify your configuration, ignoring for now"
-		raise Exception("The following alcas could not be found "+str(alcaList))
+            raise Exception("The following alcas could not be found"+str(alcaList))
 
     def prepare_GEN(self, sequence = None):
         """ Enrich the schedule with the generation step """
@@ -920,20 +867,8 @@ class ConfigBuilder(object):
 
     def prepare_SKIM(self, sequence = "all"):
         ''' Enrich the schedule with skimming fragments'''
-	skimConfig = self.loadDefaultOrSpecifiedCFF(sequence,self.SKIMDefaultCFF)
-	sequence = sequence.split('.')[-1]
-
-	skimlist=[]
-	## support @Mu+DiJet+@Electron configuration via autoSkim.py
-	for specifiedCommand in sequence.split('+'):
-		if specifiedCommand[0]=="@":
-			from Configuration.Skimming.autoSkim import autoSkim
-			location=specifiedCommand[1:]
-			skimSequence = autoSkim[location]
-			skimlist.extend(skimSequence.split('+'))
-		else:
-			skimlist.append(specifiedCommand)
-
+	skimlist=sequence.split('+')
+	skimConfig = self.loadAndRemember(self.SKIMDefaultCFF)
 	#print "dictionnary for skims:",skimConfig.__dict__
 	for skim in skimConfig.__dict__:
 		skimstream = getattr(skimConfig,skim)
@@ -944,14 +879,10 @@ class ConfigBuilder(object):
 			self.addExtraStream(skim,skimstream)
 		elif (shortname in skimlist):
 			self.addExtraStream(skim,skimstream)
-			for i in range(skimlist.count(shortname)):
-				skimlist.remove(shortname)
-
-		
-	
+			skimlist.remove(shortname)
+			
 	if (skimlist.__len__()!=0 and sequence!="all"):
 		print 'WARNING, possible typo with SKIM:'+'+'.join(skimlist)
-		raise Exception('WARNING, possible typo with SKIM:'+'+'.join(skimlist))
 
     def prepare_POSTRECO(self, sequence = None):
         """ Enrich the schedule with the postreco step """
@@ -976,18 +907,12 @@ class ConfigBuilder(object):
 		    return
 	    else:
 		    self.loadDefaultOrSpecifiedCFF(sequence,self.VALIDATIONDefaultCFF)
-		    if not 'DIGI' in self.stepMap:
-			    self.loadAndRemember('Configuration.StandardSequences.ReMixingSeeds_cff')
-	    if 'HLT' in self.stepMap:
-		    #in order to access the trigger result: same as DQM
-		    self.process.validation_step = cms.EndPath( getattr(self.process, sequence.split('.')[-1]) )
-	    else:
-		    self.process.validation_step = cms.Path( getattr(self.process, sequence.split('.')[-1]) )
+	    self.process.validation_step = cms.Path( getattr(self.process, sequence.split('.')[-1]) )
 	    if 'genvalid' in sequence.split('.')[-1]:
 		    self.loadAndRemember("IOMC.RandomEngine.IOMC_cff")
 	    self.schedule.append(self.process.validation_step)
-	    #print self._options.step
-	    if not 'DIGI'  in self.stepMap:
+	    print self._options.step
+	    if not 'DIGI'  in self.stepMap.keys():
 		    self.executeAndRemember("process.mix.playback = True")
 	    return
 
@@ -1043,28 +968,30 @@ class ConfigBuilder(object):
             def leave(self,visitee):
                     pass
 
-    #change the process name used to address HLT results in any sequence
-    def renameHLTprocessInSequence(self,sequence,proc,HLTprocess='HLT'):
-	    # look up all module in dqm sequence
-	    print "replacing %s process name - sequence %s will use '%s'" % (HLTprocess,sequence, proc)
-	    getattr(self.process,sequence).visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor(HLTprocess,proc,whitelist = ("subSystemFolder",)))
-	    if 'from Configuration.PyReleaseValidation.ConfigBuilder import ConfigBuilder' not in self.additionalCommands:
-		    self.additionalCommands.append('from Configuration.PyReleaseValidation.ConfigBuilder import ConfigBuilder')
-	    self.additionalCommands.append('process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("%s", "%s", whitelist = ("subSystemFolder",)))'% (sequence,HLTprocess, proc))
-	    
-    
+
+    # change the process name used to acess the HLT results in the [HLT]DQM sequence
+    @staticmethod
+    def renameHLTforDQM(sequence, process):
+        # look up all module in dqm sequence
+        print "replacing HLT process name - DQM sequence %s will use '%s'" % (sequence, process)
+        return """
+from Configuration.PyReleaseValidation.ConfigBuilder import ConfigBuilder
+process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", whitelist = ('subSystemFolder',)))
+""" % (sequence, process)
+
+
     def prepare_DQM(self, sequence = 'DQMOffline'):
         # this one needs replacement
 
 	self.loadDefaultOrSpecifiedCFF(sequence,self.DQMOFFLINEDefaultCFF)
 	sequence=sequence.split('.')[-1]
 
-        if self._options.hltProcess:
+        if hasattr(self._options,"hltProcess") and self._options.hltProcess:
                 # if specified, change the process name used to acess the HLT results in the [HLT]DQM sequence
-                self.renameHLTprocessInSequence(sequence, self._options.hltProcess)
+                self.dqmMassaging = self.renameHLTforDQM(sequence, self._options.hltProcess)
 	elif 'HLT' in self.stepMap.keys():
                 # otherwise, if both HLT and DQM are run in the same process, change the DQM process name to the current process name
-                self.renameHLTprocessInSequence(sequence, self.process.name_())
+                self.dqmMassaging = self.renameHLTforDQM(sequence, self.process.name_())
 
         # if both HLT and DQM are run in the same process, schedule [HLT]DQM in an EndPath
 	if 'HLT' in self.stepMap.keys():
@@ -1197,13 +1124,13 @@ class ConfigBuilder(object):
 
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
-	self.process.configurationMetadata=cms.untracked.PSet\
-					    (version=cms.untracked.string("$Revision: 1.243 $"),
-					     name=cms.untracked.string("PyReleaseValidation"),
-					     annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
-					     )
-	
-	self.addedObjects.append(("Production Info","configurationMetadata"))
+        prod_info=cms.untracked.PSet\
+              (version=cms.untracked.string("$Revision: 1.232 $"),
+               name=cms.untracked.string("PyReleaseValidation"),
+               annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
+              )
+
+        return prod_info
 
 
     def prepare(self, doChecking = False):
@@ -1234,7 +1161,8 @@ class ConfigBuilder(object):
 
         # production info
         if not hasattr(self.process,"configurationMetadata"):
-		self.build_production_info(self._options.evt_type, self._options.number)
+            self.process.configurationMetadata=self.build_production_info(self._options.evt_type, self._options.number)
+	self.pythonCfgCode += "\nprocess.configurationMetadata = "+self.process.configurationMetadata.dumpPython()
 
 	self.pythonCfgCode +="\n"
 	for comment,object in self.addedObjects:
@@ -1301,6 +1229,9 @@ class ConfigBuilder(object):
         else:
             pathNames = ['process.'+p.label_() for p in self.schedule]
             result ='process.schedule = cms.Schedule('+','.join(pathNames)+')\n'
+
+        if hasattr(self,"dqmMassaging"):
+                result += self.dqmMassaging
 
         self.pythonCfgCode += result
 
@@ -1369,19 +1300,17 @@ def addOutputModule(process, tier, content):
 
     Function to add an output module to a given process with given data tier and event content
     """
-    print "WARNING. this method will not be supported any more SOON, please use --eventcontent --datatier field to drive the output module definitions"
-
     moduleName = "output%s%s" % (tier, content)
     pathName = "%sPath" % moduleName
     contentName = "%sEventContent" % content
     contentAttr = getattr(process, contentName)
     setattr(process, moduleName,
             cms.OutputModule("PoolOutputModule",
-			     contentAttr,
-			     fileName = cms.untracked.string('%s.root' % moduleName),
-			     dataset = cms.untracked.PSet(
-	                       dataTier = cms.untracked.string(tier),
-			       ),
+                              fileName = cms.untracked.string('%s.root' % moduleName),
+                              dataset = cms.untracked.PSet(
+                                dataTier = cms.untracked.string(tier),
+                              ),
+                              eventContent = contentAttr
                            )
             )
     print getattr(process,moduleName)
