@@ -48,7 +48,7 @@
 STEP2 ++ RECO1 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu,VALIDATION,DQM --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --geometry DB --conditions auto:mc
 STEP2 ++ RECO2 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu,VALIDATION,DQM --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --geometry DB --conditions auto:startup
 STEP2 ++ ALCANZS @@@ cmsDriver.py step2 -s ALCA:HcalCalMinBias --datatier ALCARECO --eventcontent ALCARECO --geometry DB --conditions auto:mc --mc
-STEP2 ++ RECOD10A @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:TkAlMinBias,DQM --data --datatier RECO --eventcontent RECO --conditions auto:com10 --scenario pp --no_exec --magField AutoFromDBCurrent --process RECO --customise Configuration/GlobalRuns/reco_TLR_39X.py --cust_function customisePPData
+STEP2 ++ RECOD10A @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:TkAlMinBias,DQM --data --datatier RECO --eventcontent RECO --conditions auto:com10 --scenario pp --no_exec --magField AutoFromDBCurrent --process RECO --customise Configuration/DataProcessing/RecoTLR.py --cust_function customisePPData
 
 STEP3 ++ ALCAQCD @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+HcalCalDijets+HcalCalHO+MuAlOverlaps -n 1000 --filein file:reco.root  --geometry DB --conditions auto:startup --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
 STEP3 ++ ALCATT @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlZMuMu+TkAlMuonIsolated+TkAlMinBias+EcalCalElectron+HcalCalIsoTrk+HcalCalDijets+HcalCalGammaJet+HcalCalHO+MuAlOverlaps -n 1000 --filein file:reco.root  --geometry DB --conditions auto:startup --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
