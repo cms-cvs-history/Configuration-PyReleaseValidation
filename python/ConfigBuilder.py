@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.232.2.3 $"
+__version__ = "$Revision: 1.232.2.4 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -1128,7 +1128,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.232.2.3 $"),
+              (version=cms.untracked.string("$Revision: 1.232.2.4 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
@@ -1309,11 +1309,11 @@ def addOutputModule(process, tier, content):
     contentAttr = getattr(process, contentName)
     setattr(process, moduleName,
             cms.OutputModule("PoolOutputModule",
+			     contentAttr,
                               fileName = cms.untracked.string('%s.root' % moduleName),
                               dataset = cms.untracked.PSet(
                                 dataTier = cms.untracked.string(tier),
                               ),
-                              eventContent = contentAttr
                            )
             )
     print getattr(process,moduleName)
