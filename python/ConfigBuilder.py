@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.243 $"
+__version__ = "$Revision: 1.248 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -523,7 +523,7 @@ class ConfigBuilder(object):
         self.ALCADefaultSeq=None
         self.SIMDefaultSeq=None
         self.GENDefaultSeq=None
-        self.DIGIDefaultSeq=None
+        self.DIGIDefaultSeq='pdigi'
         self.DATAMIXDefaultSeq=None
         self.DIGI2RAWDefaultSeq='DigiToRaw'
         self.HLTDefaultSeq=None
@@ -587,6 +587,7 @@ class ConfigBuilder(object):
 	    self.ALCADefaultCFF = "Configuration/StandardSequences/AlCaRecoStreamsHeavyIons_cff"
 	    self.DQMOFFLINEDefaultCFF="DQMOffline/Configuration/DQMOfflineHeavyIons_cff"
 	    self.DQMDefaultSeq='DQMOfflineHeavyIons'
+	    self.SKIMDefaultCFF="Configuration/StandardSequences/SkimsHeavyIons_cff"
 	    if self._options.isMC==True:
 		    self.DQMOFFLINEDefaultCFF="DQMOffline/Configuration/DQMOfflineHeavyIonsMC_cff"
 		    self.HARVESTINGDefaultCFF="Configuration/StandardSequences/HarvestingHeavyIons_cff"
@@ -637,11 +638,11 @@ class ConfigBuilder(object):
 
 
 	    if isinstance(stream.content,str):
+		    output.outputCommands = getattr(self.process,stream.content)
 		    if not self._options.inlineEventContent:
 			    def doNotInlineEventContent(instance,label = "process."+stream.content+".outputCommands"):
 				    return label
-			    output.outputCommands = getattr(self.process,stream.content)
-		    output.outputCommands.__dict__["dumpPython"] = doNotInlineEventContent
+			    output.outputCommands.__dict__["dumpPython"] = doNotInlineEventContent
 	    else:
 		    output.outputCommands = stream.content
 
@@ -721,15 +722,18 @@ class ConfigBuilder(object):
 				self.renameHLTprocessInSequence(alcastream.paths.label(),self._options.hltProcess)
 		for i in range(alcaList.count(shortName)):
 			alcaList.remove(shortName)
-	    if isinstance(alcastream,cms.Path):
-		    #black list the alca path so that they do not appear in the cfg
-		    self.blacklist_paths.append(alcastream)
-
+			
             # DQM needs a special handling
             elif name == 'pathALCARECODQM' and 'DQM' in alcaList:
                     path = getattr(alcaConfig,name)
                     self.schedule.append(path)
                     alcaList.remove('DQM')
+
+	    if isinstance(alcastream,cms.Path):
+		    #black list the alca path so that they do not appear in the cfg
+		    self.blacklist_paths.append(alcastream)
+
+
         if len(alcaList) != 0:
 		available=[]
 		for name in alcaConfig.__dict__:
@@ -809,14 +813,15 @@ class ConfigBuilder(object):
 
     def prepare_DIGI(self, sequence = None):
         """ Enrich the schedule with the digitisation step"""
-        self.loadAndRemember(self.DIGIDefaultCFF)
+	self.loadDefaultOrSpecifiedCFF(sequence,self.DIGIDefaultCFF)
+	
         if self._options.gflash==True:
                 self.loadAndRemember("Configuration/StandardSequences/GFlashDIGI_cff")
 
         if self._options.himix==True:
             self.loadAndRemember("SimGeneral/MixingModule/himixDIGI_cff")
 
-        self.process.digitisation_step = cms.Path(self.process.pdigi)
+        self.process.digitisation_step = cms.Path(getattr(self.process,sequence.split('.')[-1]))
         self.schedule.append(self.process.digitisation_step)
         return
     def prepare_CFWRITER(self, sequence = None):
@@ -937,6 +942,9 @@ class ConfigBuilder(object):
 	#print "dictionnary for skims:",skimConfig.__dict__
 	for skim in skimConfig.__dict__:
 		skimstream = getattr(skimConfig,skim)
+		if isinstance(skimstream,cms.Path):
+		    #black list the alca path so that they do not appear in the cfg
+		    self.blacklist_paths.append(skimstream)
 		if (not isinstance(skimstream,cms.FilteredStream)):
 			continue
 		shortname = skim.replace('SKIMStream','')
@@ -1198,7 +1206,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
 	self.process.configurationMetadata=cms.untracked.PSet\
-					    (version=cms.untracked.string("$Revision: 1.243 $"),
+					    (version=cms.untracked.string("$Revision: 1.248 $"),
 					     name=cms.untracked.string("PyReleaseValidation"),
 					     annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
 					     )
