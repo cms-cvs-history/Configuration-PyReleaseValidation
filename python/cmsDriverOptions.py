@@ -252,12 +252,6 @@ expertSettings.add_option("--custom_conditions",
                           help="Allow to give a few overriding tags for the GT",
                           default='',
                           dest='custom_conditions')
-
-expertSettings.add_option("--inline_eventcontent",
-                          help="expeand event content definitions",
-                          action="store_true",
-                          default=False,
-                          dest="inlineEventContent")
                   
 (options,args) = parser.parse_args() # by default the arg is sys.argv[1:]
 
@@ -481,5 +475,5 @@ if options.himix and not options.scenario=='HeavyIons':
    options.scenario='HeavyIons'
 
 
-#options.outfile_name = options.dirout+options.fileout
+options.outfile_name = options.dirout+options.fileout
 
