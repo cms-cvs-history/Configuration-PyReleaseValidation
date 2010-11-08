@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.247 $"
+__version__ = "$Revision: 1.251 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -588,9 +588,10 @@ class ConfigBuilder(object):
 	    self.DQMOFFLINEDefaultCFF="DQMOffline/Configuration/DQMOfflineHeavyIons_cff"
 	    self.DQMDefaultSeq='DQMOfflineHeavyIons'
 	    self.SKIMDefaultCFF="Configuration/StandardSequences/SkimsHeavyIons_cff"
+	    self.HARVESTINGDefaultCFF="Configuration/StandardSequences/HarvestingHeavyIons_cff"
 	    if self._options.isMC==True:
 		    self.DQMOFFLINEDefaultCFF="DQMOffline/Configuration/DQMOfflineHeavyIonsMC_cff"
-		    self.HARVESTINGDefaultCFF="Configuration/StandardSequences/HarvestingHeavyIons_cff"
+
 		    
 
         # the magnetic field
@@ -722,15 +723,18 @@ class ConfigBuilder(object):
 				self.renameHLTprocessInSequence(alcastream.paths.label(),self._options.hltProcess)
 		for i in range(alcaList.count(shortName)):
 			alcaList.remove(shortName)
-	    if isinstance(alcastream,cms.Path):
-		    #black list the alca path so that they do not appear in the cfg
-		    self.blacklist_paths.append(alcastream)
-
+			
             # DQM needs a special handling
             elif name == 'pathALCARECODQM' and 'DQM' in alcaList:
                     path = getattr(alcaConfig,name)
                     self.schedule.append(path)
                     alcaList.remove('DQM')
+
+	    if isinstance(alcastream,cms.Path):
+		    #black list the alca path so that they do not appear in the cfg
+		    self.blacklist_paths.append(alcastream)
+
+
         if len(alcaList) != 0:
 		available=[]
 		for name in alcaConfig.__dict__:
@@ -949,6 +953,18 @@ class ConfigBuilder(object):
 			self.addExtraStream(skim,skimstream)
 		elif (shortname in skimlist):
 			self.addExtraStream(skim,skimstream)
+			#add a DQM eventcontent for this guy
+			if self._options.datatier!="":
+				self.process.load(self.EVTCONTDefaultCFF)
+				skimstreamDQM = cms.FilteredStream(
+					responsible = skimstream.responsible,
+					name = skimstream.name+'DQM',
+					paths = skimstream.paths,
+					selectEvents = skimstream.selectEvents,
+					content = self._options.datatier+'EventContent',
+					dataTier = cms.untracked.string(self._options.datatier)
+					)
+				self.addExtraStream(skim+'DQM',skimstreamDQM)
 			for i in range(skimlist.count(shortname)):
 				skimlist.remove(shortname)
 
@@ -1203,7 +1219,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
 	self.process.configurationMetadata=cms.untracked.PSet\
-					    (version=cms.untracked.string("$Revision: 1.247 $"),
+					    (version=cms.untracked.string("$Revision: 1.251 $"),
 					     name=cms.untracked.string("PyReleaseValidation"),
 					     annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
 					     )
@@ -1240,6 +1256,9 @@ class ConfigBuilder(object):
         # production info
         if not hasattr(self.process,"configurationMetadata"):
 		self.build_production_info(self._options.evt_type, self._options.number)
+	else:
+		#the PSet was added via a load
+		self.addedObjects.append(("Production Info","configurationMetadata"))
 
 	self.pythonCfgCode +="\n"
 	for comment,object in self.addedObjects:
