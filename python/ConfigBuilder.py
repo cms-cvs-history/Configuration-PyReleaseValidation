@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.253 $"
+__version__ = "$Revision: 1.252 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -533,11 +533,7 @@ class ConfigBuilder(object):
         self.CFWRITERDefaultSeq=None
         self.RAW2DIGIDefaultSeq='RawToDigi'
         self.L1RecoDefaultSeq='L1Reco'
-	if 'RAW2DIGI' in self.stepMap and 'RECO' in self.stepMap:
-		self.RECODefaultSeq='reconstruction'
-	else:
-		self.RECODefaultSeq='reconstruction_fromRECO'
-		
+        self.RECODefaultSeq='reconstruction'
         self.POSTRECODefaultSeq=None
         self.L1HwValDefaultSeq='L1HwVal'
         self.DQMDefaultSeq='DQMOffline'
@@ -1240,7 +1236,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
 	self.process.configurationMetadata=cms.untracked.PSet\
-					    (version=cms.untracked.string("$Revision: 1.253 $"),
+					    (version=cms.untracked.string("$Revision: 1.252 $"),
 					     name=cms.untracked.string("PyReleaseValidation"),
 					     annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
 					     )
