@@ -2,7 +2,7 @@
 502 ++ QCD_Pt-30_TuneD6T_7TeV_pythia6 ++ HARVGEN @@@ cmsDriver.py QCD_Pt_30_TuneD6T_7TeV_pythia6_cff.py -s GEN,VALIDATION:genvalid_qcd -n 10  --conditions auto:mc --relval 1000000,20000 --datatier 'GEN' --eventcontent RAWSIM 
 503 ++ TT_TuneD6T_7TeV_pythia6-evtgen ++ HARVGEN @@@ cmsDriver.py TT_TuneD6T_7TeV_pythia6_evtgen_cff.py -s GEN,VALIDATION:genvalid -n 10  --conditions auto:mc --relval 1000000,20000 --datatier 'GEN' --eventcontent RAWSIM --customise Configuration/Generator/noAbortPDGid_custom.py 
 504 ++ DYtoLL_M-50_TuneD6T_7TeV_pythia6-tauola ++ HARVGEN @@@ cmsDriver.py DYtoTauTau_M_50_TuneD6T_7TeV_pythia6_tauola_cff.py -s GEN,VALIDATION:genvalid -n 10  --conditions auto:mc --relval 1000000,20000 --datatier 'GEN' --eventcontent RAWSIM 
-505 ++ WToLNu_TuneD6T_7TeV_pythia6 ++ HARVGEN @@@ cmsDriver.py WToENu_TuneD6T_7TeV_pythia6_cff.py -s GEN,VALIDATION:genvalid -n 10  --conditions auto:mc --relval 1000000,20000 --datatier 'GEN' --eventcontent RAWSIM 
+505 ++ WToLNu_TuneD6T_7TeV_pythia6-tauola ++ HARVGEN @@@ cmsDriver.py WToLNu_TuneD6T_7TeV_pythia6_tauola_cff.py -s GEN,VALIDATION:genvalid -n 10  --conditions auto:mc --relval 1000000,20000 --datatier 'GEN' --eventcontent RAWSIM 
 
 506 ++ MinBias_7TeV_pythia8 ++ HARVGEN @@@ cmsDriver.py MinBias_7TeV_pythia8_cff.py -s GEN,VALIDATION:genvalid_qcd -n 10  --conditions auto:mc --relval 1000000,20000 --datatier 'GEN' --eventcontent RAWSIM --customise Configuration/Generator/noAbortPDGid_custom.py 
 507 ++ QCD_Pt-30_7TeV_pythia8 ++ HARVGEN @@@ cmsDriver.py QCD_Pt_30_7TeV_pythia8_cff.py -s GEN,VALIDATION:genvalid_qcd -n 10  --conditions auto:mc --relval 1000000,5000 --datatier 'GEN' --eventcontent RAWSIM --customise Configuration/Generator/noAbortPDGid_custom.py 
