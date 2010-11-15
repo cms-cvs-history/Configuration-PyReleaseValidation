@@ -41,7 +41,7 @@
 131 ++ SinglePiPt100 ++ RECO1 @@@ cmsDriver.py  SinglePiPt100.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT:GRun,RAW2DIGI,L1Reco -n 10 --relval 25000,250 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --geometry DB --conditions auto:mc
 132 ++ LM9p ++ RECO2 @@@ cmsDriver.py  LM9p_7TeV_cff.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT:GRun,RAW2DIGI,L1Reco -n 10 --relval 25000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --geometry DB --conditions auto:startup
 133 ++ RSGrav ++ RECO2 @@@ cmsDriver.py  RS750_quarks_and_leptons_7TeV_cff.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT:GRun,RAW2DIGI,L1Reco  -n 10 --relval 25000,100 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --geometry DB --conditions auto:startup
-134 ++ MinimumBiasBS ++ RECOD10A,ALCAPROMPT,ALCAHARVD10 ++ REALDATA: /MinimumBias/Commissioning10-v4/RAW, RUN: 132440, FILES: 100, EVENTS: 2000000, LABEL: col_10_bs @@@
+134 ++ MinimumBiasBS ++ RECOD10A,ALCAPROMPT,ALCAHARVD10 ++ REALDATA: /MinimumBias/Commissioning10-v4/RAW, RUN: 132440, FILES: 100, EVENTS: 2000000, LABEL: col_10_bs, LOCATION: STD  @@@
 
 
 
