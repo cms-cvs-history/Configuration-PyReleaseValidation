@@ -61,6 +61,8 @@
 40 ++ HydjetQ_MinBias_2760GeV ++ RECOHI1 @@@ cmsDriver.py  Hydjet_Quenched_MinBias_2760GeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT:HIon -n 0 --geometry DB --conditions auto:starthi --relval 500,5 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent FEVTDEBUGHLT --scenario HeavyIons --no_exec
 41 ++ HydjetQ_B0_2760GeV ++ RECOHI1 @@@ cmsDriver.py  Hydjet_Quenched_B0_2760GeV_cfi.py -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT:HIon -n 0 --conditions auto:starthi --relval 80,2 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent  FEVTDEBUGHLT --scenario HeavyIons --no_exec
 
+42 ++ TTbar ++ REDIGIHLTRECO, RECOFROMRECO @@@ cmsDriver.py  SingleMuPt10.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT:GRun,RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+DtCalib,VALIDATION,DQM -n 10  --geometry DB --conditions auto:startup --relval 900,50 --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG-RECO' --eventcontent FEVTDEBUGHLT
+
 STEP2 ++ RECOPROD1 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO --datatier GEN-SIM-RECO,AODSIM --eventcontent RECOSIM,AODSIM --geometry DB --conditions auto:mc
 STEP2 ++ RECO1 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+DtCalib,VALIDATION,DQM --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --geometry DB --conditions auto:mc
 STEP2 ++ RECO2 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+DtCalib,VALIDATION,DQM --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --geometry DB --conditions auto:startup
@@ -77,6 +79,9 @@ STEP2 ++ RECOD10 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:SiStripCalZ
 STEP2 ++ RECOVALSKIM @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM --data --datatier RECO --eventcontent RECO --conditions auto:com10 --scenario pp --no_exec --magField AutoFromDBCurrent --process reRECO --customise Configuration/DataProcessing/RecoTLR.py --cust_function customiseVALSKIM
 
 STEP2 ++ RECOHI1 @@@ cmsDriver.py hiReco -n 2 -s RAW2DIGI,RECO,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBiasHI,VALIDATION --scenario HeavyIons --geometry DB --conditions auto:mc --datatier 'GEN-SIM-RECO' --eventcontent=RECOSIM --filein=file.root --no_exec
+
+STEP2 ++ REDIGIHLTRECO @@@ cmsDriver.py step2 -s DIGI,L1,DIGI2RAW,HLT:GRun,RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+DtCalib,VALIDATION,DQM --mc --geometry DB --conditions auto:startup --datatier RECO --eventcontent RECO --process REDIGI --customise Configuration/StandardSequences/DigiToRecoNoPU.customise
+STEP3 ++ RECOFROMRECO @@@ cmsDriver.py step3 -s RECO,ALCA:MuAlCalIsolatedMu+DtCalib --mc --geometry DB --conditions auto:startup --datatier RECO --eventcontent RECO --process RERECO
 
 STEP3 ++ ALCAMIN @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMinBias -n 1000 --filein file:reco.root  --geometry DB --conditions auto:startup --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
 STEP3 ++ ALCAQCD @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+HcalCalDijets+HcalCalHO+MuAlOverlaps -n 1000 --filein file:reco.root  --geometry DB --conditions auto:startup --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
