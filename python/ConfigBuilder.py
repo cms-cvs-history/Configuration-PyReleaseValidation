@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.259 $"
+__version__ = "$Revision: 1.260 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -1306,7 +1306,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
 	self.process.configurationMetadata=cms.untracked.PSet\
-					    (version=cms.untracked.string("$Revision: 1.259 $"),
+					    (version=cms.untracked.string("$Revision: 1.260 $"),
 					     name=cms.untracked.string("PyReleaseValidation"),
 					     annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
 					     )
@@ -1426,6 +1426,11 @@ for path in process.paths: \n    getattr(process,path)._seq = process."""+self.p
         # dump customise fragment
         if self._options.customisation_file:
             self.pythonCfgCode += self.addCustomise()
+
+	self.pythonCfgCode +='\n'
+	self.pythonCfgCode +='import sys\n'
+	self.pythonCfgCode +='sys.setrecursionlimit(10000)\n'
+	
         return
 
 
