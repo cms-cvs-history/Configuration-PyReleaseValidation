@@ -74,7 +74,7 @@ STEP2 ++ RECOD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM,ALCA:MuAlCal
 STEP2 ++ RECOD10 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:SiStripCalZeroBias+SiStripCalMinBias,DQM --data --datatier RECO --eventcontent RECO --conditions auto:com10 --scenario pp --no_exec --magField AutoFromDBCurrent --process reRECO --customise Configuration/DataProcessing/RecoTLR.py --cust_function customisePPData
 STEP2 ++ RECOVALSKIM @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM --data --datatier RECO --eventcontent RECO --conditions auto:com10 --scenario pp --no_exec --magField AutoFromDBCurrent --process reRECO --customise Configuration/DataProcessing/RecoTLR.py --cust_function customiseVALSKIM
 
-STEP2 ++ RECOHI1 @@@ cmsDriver.py hiReco -n 2 -s RAW2DIGI,RECO,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBiasHI,VALIDATION --scenario HeavyIons --geometry DB --conditions auto:mc --datatier 'GEN-SIM-RECO' --eventcontent=RECOSIM --filein=file.root --no_exec
+STEP2 ++ RECOHI1 @@@ cmsDriver.py hiReco -n 2 -s RAW2DIGI,RECO,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBiasHI,VALIDATION --scenario HeavyIons --geometry DB --conditions auto:starthi --datatier 'GEN-SIM-RECO' --eventcontent=RECOSIM --filein=file.root --no_exec
 
 STEP2 ++ REDIGIHLTRECO @@@ cmsDriver.py step2 -s DIGI,L1,DIGI2RAW,HLT:GRun,RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+DtCalib,VALIDATION,DQM --mc --geometry DB --conditions auto:startup --datatier RECO --eventcontent RECO --process REDIGI --customise Configuration/StandardSequences/DigiToRecoNoPU.customise
 STEP3 ++ RECOFROMRECO @@@ cmsDriver.py step3 -s RECO,ALCA:MuAlCalIsolatedMu+DtCalib --mc --geometry DB --conditions auto:startup --datatier RECO --eventcontent RECO --process RERECO
@@ -101,7 +101,7 @@ STEP3 ++ HARV2    @@@ cmsDriver.py step3 -s HARVESTING:dqmHarvesting --condition
 STEP3 ++ HARVD10  @@@ cmsDriver.py step3 -s HARVESTING:dqmHarvesting --conditions auto:com10   --scenario pp --no_exec --data 
 STEP3 ++ HARVD09  @@@ cmsDriver.py step3 -s HARVESTING:dqmHarvesting --conditions auto:craft09 --scenario pp --no_exec --data 
 
-STEP3 ++ HARVEORHI1 @@@ cmsDriver.py step3 -s HARVESTING:validationHarvestingHI --harvesting AtRunEnd --conditions auto:mc  --no_exec --mc
+STEP3 ++ HARVEORHI1 @@@ cmsDriver.py step3 -s HARVESTING:validationHarvestingHI --harvesting AtRunEnd --conditions auto:starthi  --no_exec --mc
 
 
 STEP4 ++ ALCA4_PROD @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlZMuMu+TkAlMuonIsolated+TkAlJpsiMuMu+TkAlUpsilonMuMu+TkAlMinBias+EcalCalElectron+HcalCalIsoTrk+HcalCalDijets+HcalCalHO+MuAlOverlaps -n 1000  --geometry DB --conditions auto:mc --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO --filein file:reco.root
