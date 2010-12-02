@@ -3,7 +3,7 @@
 3 ++ ProdQCD_Pt_3000_3500 ++ RECOPROD1 @@@ cmsDriver.py  QCD_Pt_3000_3500_7TeV.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT:GRun,RAW2DIGI,L1Reco -n 5 --geometry DB --conditions auto:mc --relval 9000,25 --datatier 'GEN-SIM-RAW' --eventcontent RAWSIM
 
 4.6 ++ MinimumBias2010A ++ RECOVALSKIM ++ REALDATA: /MinimumBias/Run2010A-valskim-v6/RAW-RECO, FILES: 100, EVENTS: 2000000, LABEL: run2010A, LOCATION:STD @@@
-4.7 ++ MinimumBias2010B ++ RECOVALSKIM ++ REALDATA: /MinimumBias/Run2010B-valskim-v2/RAW-RECO, FILES: 100, EVENTS: 2000000, LABEL: run2010B, LOCATION:CAF @@@
+4.7 ++ MinimumBias2010B ++ RECOVALSKIMALCA ++ REALDATA: /MinimumBias/Run2010B-valskim-v2/RAW-RECO, FILES: 100, EVENTS: 2000000, LABEL: run2010B, LOCATION:CAF @@@
 4.8 ++ WZMuSkim2010A ++ RECOVALSKIM ++ REALDATA: /Mu/Run2010A-WZMu-Nov4Skim_v1/RAW-RECO, FILES: 100, EVENTS: 2000000, LABEL: wzMu2010A, LOCATION:CAF  @@@
 4.9 ++ WZEGSkim2010A ++ RECOVALSKIM ++ REALDATA: /EG/Run2010A-WZEG-Nov4Skim_v1/RAW-RECO, FILES: 100, EVENTS: 2000000, LABEL: wzEG2010A, LOCATION:CAF @@@
 4.10 ++ WZMuSkim2010B ++ RECOVALSKIM ++ REALDATA: /Mu/Run2010B-WZMu-Nov4Skim_v1/RAW-RECO, FILES: 100, EVENTS: 2000000, LABEL: wzMu2010B, LOCATION:CAF @@@
@@ -73,6 +73,7 @@ STEP2 ++ RECOCOSD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,L1HwVal,DQM,A
 STEP2 ++ RECOD09 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM,ALCA:MuAlCalIsolatedMu+DtCalib --relval 25000,100 --datatier RECO --eventcontent RECO --conditions auto:craft09 --scenario pp --no_exec --data --magField AutoFromDBCurrent
 STEP2 ++ RECOD10 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:SiStripCalZeroBias+SiStripCalMinBias,DQM --data --datatier RECO --eventcontent RECO --conditions auto:com10 --scenario pp --no_exec --magField AutoFromDBCurrent --process reRECO --customise Configuration/DataProcessing/RecoTLR.py --cust_function customisePPData
 STEP2 ++ RECOVALSKIM @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,DQM --data --datatier RECO --eventcontent RECO --conditions auto:com10 --scenario pp --no_exec --magField AutoFromDBCurrent --process reRECO --customise Configuration/DataProcessing/RecoTLR.py --cust_function customiseVALSKIM
+STEP2 ++ RECOVALSKIMALCA @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:SiStripCalZeroBias+SiStripCalMinBias,DQM --data --datatier RECO --eventcontent RECO --conditions auto:com10 --scenario pp --no_exec --magField AutoFromDBCurrent --process reRECO --customise Configuration/DataProcessing/RecoTLR.py --cust_function customiseVALSKIM
 
 STEP2 ++ RECOHI1 @@@ cmsDriver.py hiReco -n 2 -s RAW2DIGI,RECO,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBiasHI,VALIDATION --scenario HeavyIons --geometry DB --conditions auto:starthi --datatier 'GEN-SIM-RECO' --eventcontent=RECOSIM --filein=file.root --no_exec
 
