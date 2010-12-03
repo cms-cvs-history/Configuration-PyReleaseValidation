@@ -77,8 +77,8 @@ STEP2 ++ RECOVALSKIMALCA @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:SiS
 
 STEP2 ++ RECOHI1 @@@ cmsDriver.py hiReco -n 2 -s RAW2DIGI,RECO,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBiasHI,VALIDATION --scenario HeavyIons --geometry DB --conditions auto:starthi --datatier 'GEN-SIM-RECO' --eventcontent=RECOSIM --filein=file.root --no_exec
 
-STEP2 ++ REDIGIHLTRECO @@@ cmsDriver.py step2 -s DIGI,L1,DIGI2RAW,HLT:GRun,RAW2DIGI,L1Reco,RECO,VALIDATION,DQM --mc --geometry DB --conditions auto:startup --datatier RECO --eventcontent RECO --process REDIGI --customise Configuration/StandardSequences/DigiToRecoNoPU.customise
-STEP3 ++ RECOFROMRECO @@@ cmsDriver.py step3 -s RECO,ALCA:MuAlCalIsolatedMu+DtCalib --mc --geometry DB --conditions auto:startup --datatier RECO --eventcontent RECO --process RERECO
+STEP2 ++ REDIGIHLTRECO @@@ cmsDriver.py step2 -s DIGI,L1,DIGI2RAW,HLT:GRun,RAW2DIGI,L1Reco,RECO,VALIDATION,DQM --mc --geometry DB --conditions auto:startup --datatier RECO --eventcontent RECO --process REDIGI --customise Configuration/StandardSequences/DigiToRecoNoPU.customise --filtername REDIGItoRECO
+STEP3 ++ RECOFROMRECO @@@ cmsDriver.py step3 -s RECO,ALCA:MuAlCalIsolatedMu+DtCalib --mc --geometry DB --conditions auto:startup --datatier RECO --eventcontent RECO --process RERECO --filtername RECOfromRECO
 
 STEP3 ++ ALCAMIN @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMinBias -n 1000 --filein file:reco.root  --geometry DB --conditions auto:startup --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
 STEP3 ++ ALCAMU @@@ cmsDriver.py step3_RELVAL -s ALCA:MuAlOverlaps+TkAlMuonIsolated+TkAlZMuMu -n 1000 --filein file:reco.root  --geometry DB --conditions auto:startup --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
