@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.232.2.5 $"
+__version__ = "$Revision: 1.232.2.6 $"
 __source__ = "$Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -1066,11 +1066,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
 	self.loadDefaultOrSpecifiedCFF(sequence,self.ENDJOBDefaultCFF)
 	sequence=sequence.split('.')[-1]
 	
-	if "FASTSIM" in self.stepMap.keys():
-            self.process.endjob_step = cms.EndPath( getattr(self.process, sequence) )
-        else:
-            self.process.endjob_step = cms.Path( getattr(self.process, sequence) )
-
+	self.process.endjob_step = cms.EndPath( getattr(self.process, sequence) )
         self.schedule.append(self.process.endjob_step)
 
     def finalizeFastSimHLT(self):
@@ -1129,7 +1125,7 @@ process.%s.visit(ConfigBuilder.MassSearchReplaceProcessNameVisitor("HLT", "%s", 
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         prod_info=cms.untracked.PSet\
-              (version=cms.untracked.string("$Revision: 1.232.2.5 $"),
+              (version=cms.untracked.string("$Revision: 1.232.2.6 $"),
                name=cms.untracked.string("PyReleaseValidation"),
                annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
               )
