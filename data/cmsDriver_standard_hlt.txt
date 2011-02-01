@@ -2,7 +2,7 @@
 2 ++ ProdTTbar ++ RECOPROD1 @@@ cmsDriver.py  TTbar_Tauola_7TeV.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT:GRun,RAW2DIGI,L1Reco -n 10  --geometry DB --conditions auto:mc --relval 9000,50 --datatier 'GEN-SIM-RAW' --eventcontent RAWSIM
 3 ++ ProdQCD_Pt_3000_3500 ++ RECOPROD1 @@@ cmsDriver.py  QCD_Pt_3000_3500_7TeV.cfi -s GEN,SIM,DIGI,L1,DIGI2RAW,HLT:GRun,RAW2DIGI,L1Reco -n 5 --geometry DB --conditions auto:mc --relval 9000,25 --datatier 'GEN-SIM-RAW' --eventcontent RAWSIM
 
-4.5 ++ Cosmics ++ RECOCOSD10,ALCACOSD10 ++ REALDATA: /Cosmics/Run2010B-v1/RAW, RUN: 142089, FILES: 100, EVENTS: 100000, LABEL: cos2010B, LOCATION:CAF @@@
+4.5 ++ Cosmics ++ RECOCOSD10,ALCACOSD10 ++ REALDATA: /Cosmics/Run2010A-v1/RAW, RUN: 142089, FILES: 100, EVENTS: 100000, LABEL: cos2010A, LOCATION:CAF @@@
 
 4.6 ++ MinimumBias2010A ++ RECOVALSKIM ++ REALDATA: /MinimumBias/Run2010A-valskim-v6/RAW-RECO, FILES: 100, EVENTS: 2000000, LABEL: run2010A, LOCATION:STD @@@
 4.7 ++ MinimumBias2010B ++ RECOVALSKIMALCA ++ REALDATA: /MinimumBias/Run2010B-valskim-v2/RAW-RECO, FILES: 100, EVENTS: 2000000, LABEL: run2010B, LOCATION:CAF @@@
