@@ -70,17 +70,31 @@ class WorkFlowRunner(Thread):
 
         inFile = 'file:raw.root'
         if 'REALDATA' in self.wf.cmdStep1:
-            realDataRe = re.compile('REALDATA:\s*(/[A-Za-z].*?),(\s*RUN:\s*(?P<run>\d+),)?(\s*FILES:\s*(?P<files>\d+),)?(\s*EVENTS:\s*(?P<events>\d+))?,\s*LABEL:\s*(?P<label>.*)')
+            realDataRe = re.compile('REALDATA:\s*(/[A-Za-z].*?),(\s*RUN:\s*(?P<run>\d+),)?(\s*FILES:\s*(?P<files>\d+),)?(\s*EVENTS:\s*(?P<events>\d+))?,\s*LABEL:\s*(?P<label>.*),\s*LOCATION:\s*(?P<location>.*)\s*')
             realDataMatch = realDataRe.match(self.wf.cmdStep1)
             if realDataMatch:
                 run = None
                 if realDataMatch.group("run") : run = realDataMatch.group("run")
                 label  = realDataMatch.group("label")
+                location = realDataMatch.group("location").lower().strip()
+                if 'caf' in location:
+                    print "ignoring workflow ",self.wf.numId, self.wf.nameId, ' as this is on CAF ...'
+                    self.npass = [0,0,0,0]
+                    self.nfail = [0,0,0,0]
 
+                    logStat = 'Step1-NOTRUN Step2-NOTRUN Step3-NOTRUN Step4-NOTRUN ' 
+                    self.report+='%s_%s %s - time %s; exit: %s %s %s %s \n' % (self.wf.numId, self.wf.nameId, logStat, 0, 0,0,0,0)
+                    return
+                
                 files  = None
                 events = None
-                if realDataMatch.group("files") : files=realDataMatch.group("files")
-                if realDataMatch.group("events"): events=realDataMatch.group("events")
+                if realDataMatch.group("files"): 
+                  files  = realDataMatch.group("files")
+                if realDataMatch.group("events"): 
+                  events = realDataMatch.group("events")
+                  if self.wf.cmdStep2 and ' -n ' not in self.wf.cmdStep2: self.wf.cmdStep2 += ' -n ' + events
+                  if self.wf.cmdStep3 and ' -n ' not in self.wf.cmdStep3: self.wf.cmdStep3 += ' -n ' + events
+                  if self.wf.cmdStep4 and ' -n ' not in self.wf.cmdStep4: self.wf.cmdStep4 += ' -n ' + events
 
                 print "run, files, events, label", run, files, events, label 
                 cmd += 'dbs search --noheader --url=http://cmsdbsprod.cern.ch/cms_dbs_prod_global/servlet/DBSServlet '
@@ -93,7 +107,7 @@ class WorkFlowRunner(Thread):
                     lf = open(wfDir+'/step1_'+self.wf.nameId+'-dbsquery.log', 'r')
                     lines = lf.readlines()
                     lf.close()
-                    if not lines:
+                    if not lines or len(lines)==0 :
                         inFile = "NoFileFoundInDBS"
                         retStep1 = -95
                     else:
@@ -121,7 +135,7 @@ class WorkFlowRunner(Thread):
         if self.wf.cmdStep2 and retStep1 == 0:
             fullcmd = preamble
             fullcmd += self.wf.cmdStep2
-            if ' -n ' not in fullcmd : fullcmd += ' -n 100 '
+            if ' -n ' not in fullcmd : fullcmd += ' -n -1 '
             fullcmd += ' --fileout file:reco.root '
             print '=====>>> ', self.wf.nameId, self.wf.numId
 
@@ -130,10 +144,10 @@ class WorkFlowRunner(Thread):
             # input files (the relvals are OK)
             if ( '40.0' in str(self.wf.numId) ) :
                 fullcmd += ' --himix '
-                inFile = '/store/relval/CMSSW_3_8_0_pre1/RelValPyquen_ZeemumuJets_pt10_2760GeV/GEN-SIM-RAW/MC_37Y_V5-v1/0001/E0DE7C01-2C6F-DF11-B61F-0026189438F4.root'
+                inFile = '/store/relval/CMSSW_3_9_7/RelValPyquen_ZeemumuJets_pt10_2760GeV/GEN-SIM-DIGI-RAW-HLTDEBUG/START39_V7HI-v1/0054/102FF831-9B0F-E011-A3E9-003048678BC6.root'
             if ( '41.0' in str(self.wf.numId) ) : 
                 fullcmd += ' --himix '
-                inFile = '/store/relval/CMSSW_3_8_0_pre1/RelValPyquen_GammaJet_pt20_2760GeV/GEN-SIM-RAW/MC_37Y_V5-v1/0001/F68A53A5-2B6F-DF11-8958-003048678FE6.root'
+                inFile = '/store/relval/CMSSW_3_9_7/RelValPyquen_GammaJet_pt20_2760GeV/GEN-SIM-DIGI-RAW-HLTDEBUG/START39_V7HI-v1/0054/06B4F699-A50F-E011-AD62-0018F3D0962E.root'
 
             fullcmd += ' --filein '+inFile+ ' '
             fullcmd += ' > %s 2>&1; ' % ('step2_'+self.wf.nameId+'.log ',)
@@ -144,6 +158,7 @@ class WorkFlowRunner(Thread):
             if self.wf.cmdStep3 and retStep2 == 0:
                 fullcmd = preamble
                 fullcmd += self.wf.cmdStep3
+                if ' -n ' not in fullcmd : fullcmd += ' -n -1 '
                 # FIXME: dirty hack for beam-spot dedicated relval
                 if not '134' in str(self.wf.numId):
                     fullcmd += ' --filein file:reco.root --fileout file:step3.root '
@@ -154,6 +169,7 @@ class WorkFlowRunner(Thread):
                 if self.wf.cmdStep4 and retStep3 == 0:
                     fullcmd = preamble
                     fullcmd += self.wf.cmdStep4
+                    if ' -n ' not in fullcmd : fullcmd += ' -n -1 '
                     # FIXME: dirty hack for beam-spot dedicated relval
                     if not '134' in str(self.wf.numId):
                         fullcmd += ' --filein file:step3.root '
@@ -308,6 +324,7 @@ class MatrixReader(object):
                 name = realMatch.group(2).strip().replace('<','').replace('>','').replace(':','')
                 next = realMatch.group(3).strip().replace('+','').replace(',', ' ')
                 cmd  = realMatch.group(4).strip()
+
                 step2 = "None"
                 step3 = "None"
                 step4 = "None"
@@ -409,16 +426,16 @@ class MatrixReader(object):
         for wf in self.workFlows:
             if selected and float(wf.numId) not in selected: continue
             n1+=1
-            print fmt1 % (wf.numId, wf.nameId, wf.cmdStep1[:maxLen])
+            print fmt1 % (wf.numId, wf.nameId, (wf.cmdStep1+' ')[:maxLen])
             if wf.cmdStep2:
                 n2+=1
-                print fmt2 % ( ' ', 2, wf.cmdStep2[:maxLen])
+                print fmt2 % ( ' ', 2, (wf.cmdStep2+' ')[:maxLen])
                 if wf.cmdStep3:
                     n3+=1
-                    print fmt2 % ( ' ', 3, wf.cmdStep3[:maxLen])
+                    print fmt2 % ( ' ', 3, (wf.cmdStep3+' ')[:maxLen])
                     if wf.cmdStep4:
                         n4+=1
-                        print fmt2 % ( ' ', 4, wf.cmdStep4[:maxLen])
+                        print fmt2 % ( ' ', 4, (wf.cmdStep4+' ')[:maxLen])
 
         print n1, 'workflows for step1,'
         print n2, 'workflows for step1 + step2,'
