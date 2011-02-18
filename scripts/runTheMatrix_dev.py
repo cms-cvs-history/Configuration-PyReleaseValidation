@@ -71,11 +71,7 @@ class WorkFlowRunner(Thread):
         inFile = 'file:raw.root'
         if self.wf.cmdStep1.startswith('DATAINPUT'):
             print "going to run with file input ... "
-            if self.wf.input.run:
-                run      = str(self.wf.input.run)
-            else:
-                run=None
-
+            run      = str(self.wf.input.run)
             label    = self.wf.input.label
             location = self.wf.input.location.lower().strip()
             if 'caf' in location:
@@ -88,7 +84,7 @@ class WorkFlowRunner(Thread):
                 return
                 
             files  = str(self.wf.input.files)
-            events = '10' # ignore the give number ...    str(self.wf.input.events)
+            events = str(self.wf.input.events)
             if self.wf.cmdStep2 and ' -n ' not in self.wf.cmdStep2: self.wf.cmdStep2 += ' -n ' + events
             if self.wf.cmdStep3 and ' -n ' not in self.wf.cmdStep3: self.wf.cmdStep3 += ' -n ' + events
             if self.wf.cmdStep4 and ' -n ' not in self.wf.cmdStep4: self.wf.cmdStep4 += ' -n ' + events
@@ -223,31 +219,16 @@ class WorkFlowRunner(Thread):
 class WorkFlow(object):
 
     def __init__(self, num, nameID, cmd1, cmd2=None, cmd3=None, cmd4=None, inputInfo=None):
-
         self.numId  = num.strip()
         self.nameId = nameID
-        self.cmdStep1 = self.check(cmd1)
-        self.cmdStep2 = self.check(cmd2)
-        self.cmdStep3 = self.check(cmd3)
-        self.cmdStep4 = self.check(cmd4)
+        self.cmdStep1 = cmd1
+        self.cmdStep2 = cmd2
+        self.cmdStep3 = cmd3
+        self.cmdStep4 = cmd4
 
         # run on real data requested:
         self.input = inputInfo
         return
-
-    def check(self, cmd=None):
-        if not cmd : return None
-
-        # raw data are treated differently ...
-        if 'DATAINPUT' in cmd: return cmd
-
-        # force the number of events to process to be 10
-        reN = re.compile('\s*-n\s*\d+\s*')
-        newCmd = reN.sub(' -n 10 ', cmd)
-        if not reN.match(newCmd) : # -n not specified, add it:
-            newCmd += ' -n 10 '
-
-        return newCmd
 
 # ================================================================================
 
@@ -291,7 +272,7 @@ class MatrixReader(object):
         #print step
         #print defaults
         for k,v in step.items():
-            if 'no_exec' in k : continue  # we want to really run it ...
+            if 'no_exec' in k : continue  # we want to really run it ... 
             if k.lower() == 'cfg':
                 cfg = v
                 continue # do not append to cmd, return separately
@@ -317,20 +298,16 @@ class MatrixReader(object):
 
         print "request for INPUT for ", useInput
 
-        for num, wfInfo in self.relvalModule.workflows.items():
-            wfName = wfInfo[0]
-            stepList = wfInfo[1]
-            # if no explicit name given for the workflow, use the name of step1
-            if wfName.strip() == '': wfName = stepList[0] 
+        for num, stepList in self.relvalModule.workflows.items():
             stepCmds = ['','','','']
             stepIndex = 0
-            name  = wfName
+            name  = ''
             inputInfo = None
             for step in stepList:
                 if len(name) > 0 : name += '+'
                 stepName = step
                 if stepIndex==0 and useInput and (str(num) in useInput or "all" in useInput):
-                    # print "--> using INPUT as step1 for workflow ", num
+                    print "--> using INPUT as step1 for workflow ", num
                     if step+'INPUT' in self.relvalModule.step1.keys():
                         stepName = step+"INPUT"
                 name += stepName
@@ -338,15 +315,11 @@ class MatrixReader(object):
                 if input and cfg :
                     msg = "FATAL ERROR: found both cfg and input for workflow "+str(num)+' step '+stepName
                     raise msg
-
                 if cfg:
                     cmd  = 'cmsDriver.py '+cfg+' '+opts
-                if stepIndex==0 and not inputInfo and input: # only if we didn't already set the input
+                if input:
                     inputInfo = input
                     cmd = 'DATAINPUT from '+inputInfo.dataSet
-                    
-                if stepIndex > 0:
-                    cmd  = 'cmsDriver.py step'+str(stepIndex+1)+'.py '+opts
                     
                 stepCmds[stepIndex] = cmd
                 stepIndex += 1
@@ -376,11 +349,11 @@ class MatrixReader(object):
             stepCmds = ['','','','']
             for key in ids:
                 num, name, stepCmds[0], stepCmds[1], stepCmds[2], stepCmds[3], inputInfo = self.step1WorkFlows[key]
-                wfName,stepNames= name.split('+',1)
+                step1 = name
                 otherSteps = None
-                if '+' in stepNames:
-                    step1,otherSteps = stepNames.split('+',1)
-                line = num + ' ++ '+ wfName 
+                if '+' in name:
+                    step1,otherSteps = name.split('+',1)
+                line = num + ' ++ '+ step1
                 if otherSteps: line += ' ++ ' +otherSteps.replace('+',',')
                 if inputInfo :
                     line += ' ++ REALDATA: '+inputInfo.dataSet
@@ -441,8 +414,7 @@ class MatrixReader(object):
             if selected and float(wf.numId) not in selected: continue
             print ''
             n1+=1
-            wfName, stepNames = wf.nameId.split('+',1)
-            print fmt1 % (wf.numId, stepNames, (wf.cmdStep1+' ')[:maxLen])
+            print fmt1 % (wf.numId, wf.nameId, (wf.cmdStep1+' ')[:maxLen])
             if wf.cmdStep2:
                 n2+=1
                 print fmt2 % ( ' ', 2, (wf.cmdStep2+' ')[:maxLen])
