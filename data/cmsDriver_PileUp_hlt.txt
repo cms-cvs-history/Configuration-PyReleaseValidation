@@ -10,10 +10,10 @@ STEP2 ++ RECO1 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolat
 
 STEP2 ++ RECO2 @@@ cmsDriver.py step2 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu,VALIDATION,DQM --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECOSIM --geometry DB --conditions auto:startup --pileup E7TeV_AVE_2_BX156
 
-STEP2 ++ GAMMAHI @@@ cmsDriver.py Pyquen_GammaJet_pt20_2760GeV_cfi.py -n 1 -s GEN:hiSignal,SIM,DIGI,L1,DIGI2RAW,HLT:HIon --scenario HeavyIons --himix --geometry DB --conditions auto:starthi --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent=FEVTDEBUGHLT --filein=file.root --processName 'HISIGNAL' --no_exec
-STEP2 ++ DIJETHI @@@ cmsDriver.py Pyquen_DiJet_pt80to120_2760GeV_cfi.py -n 1 -s GEN:hiSignal,SIM,DIGI,L1,DIGI2RAW,HLT:HIon --scenario HeavyIons --himix --geometry DB --conditions auto:starthi --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent=FEVTDEBUGHLT --filein=file.root --processName 'HISIGNAL' --no_exec
-STEP2 ++ ZEEMUMUHI @@@ cmsDriver.py Pyquen_ZeemumuJets_pt10_2760GeV_cfi.py -n 1 -s GEN:hiSignal,SIM,DIGI,L1,DIGI2RAW,HLT:HIon --scenario HeavyIons --himix --geometry DB --conditions auto:starthi --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent=FEVTDEBUGHLT --filein=file.root --processName 'HISIGNAL' --no_exec
+STEP2 ++ GAMMAHI @@@ cmsDriver.py Pyquen_GammaJet_pt20_2760GeV_cfi.py -n 1 -s GEN:hiSignal,SIM,DIGI,L1,DIGI2RAW,HLT:HIon --scenario HeavyIons --himix --geometry DB --conditions auto:mc --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent=FEVTDEBUGHLT --filein=file.root --processName 'HISIGNAL' --no_exec
+STEP2 ++ DIJETHI @@@ cmsDriver.py Pyquen_DiJet_pt80to120_2760GeV_cfi.py -n 1 -s GEN:hiSignal,SIM,DIGI,L1,DIGI2RAW,HLT:HIon --scenario HeavyIons --himix --geometry DB --conditions auto:mc --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent=FEVTDEBUGHLT --filein=file.root --processName 'HISIGNAL' --no_exec
+STEP2 ++ ZEEMUMUHI @@@ cmsDriver.py Pyquen_ZeemumuJets_pt10_2760GeV_cfi.py -n 1 -s GEN:hiSignal,SIM,DIGI,L1,DIGI2RAW,HLT:HIon --scenario HeavyIons --himix --geometry DB --conditions auto:mc --datatier 'GEN-SIM-DIGI-RAW-HLTDEBUG' --eventcontent=FEVTDEBUGHLT --filein=file.root --processName 'HISIGNAL' --no_exec
 
-STEP3 ++ RECOHI1 @@@ cmsDriver.py hiReco -n 1 -s RAW2DIGI,RECO,VALIDATION --scenario HeavyIons --himix --geometry DB --conditions auto:starthi --datatier 'GEN-SIM-RECO' --eventcontent=RECOSIM --filein=hola.root --no_exec
+STEP3 ++ RECOHI1 @@@ cmsDriver.py hiReco -n 1 -s RAW2DIGI,RECO,VALIDATION --scenario HeavyIons --himix --geometry DB --conditions auto:mc --datatier 'GEN-SIM-RECO' --eventcontent=RECOSIM --filein=hola.root --no_exec
 
-STEP4 ++ HARVEORHI1 @@@ cmsDriver.py step3 -s HARVESTING:validationHarvestingHI --harvesting AtRunEnd --conditions auto:starthi --no_exec --mc
+STEP4 ++ HARVEORHI1 @@@ cmsDriver.py step3 -s HARVESTING:validationHarvestingHI --harvesting AtRunEnd --conditions auto:mc --no_exec --mc
