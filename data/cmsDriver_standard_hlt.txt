@@ -97,22 +97,12 @@ STEP3 ++ ALCABH @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlBeamHalo+MuAlBeamHaloO
 
 STEP3 ++ ALCAQCD @@@ cmsDriver.py step3_RELVAL -s ALCA:HcalCalIsoTrk+HcalCalDijets+HcalCalHO -n 1000 --filein file:reco.root  --geometry DB --conditions auto:startup --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
 
-
-
 STEP3 ++ ALCATT1 @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMuonIsolated+TkAlMinBias+EcalCalElectron+HcalCalIsoTrk+MuAlOverlaps -n 1000 --filein file:reco.root  --geometry DB --conditions auto:mc --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
 STEP3 ++ ALCATT2 @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlMuonIsolated+TkAlMinBias+EcalCalElectron+HcalCalIsoTrk+MuAlOverlaps -n 1000 --filein file:reco.root  --geometry DB --conditions auto:startup --no_exec --datatier ALCARECO  --oneoutput --eventcontent ALCARECO
 
-
 STEP3 ++ ALCACOSD10 @@@ cmsDriver.py step3_RELVAL -s ALCA:TkAlCosmics0T+MuAlGlobalCosmics+HcalCalHOCosmics+DQM -n 1000 --filein file:reco.root --conditions auto:com10 --no_exec --datatier ALCARECO --eventcontent ALCARECO --scenario cosmics --magField AutoFromDBCurrent
 
-STEP3 ++ RECO3_PROD @@@ cmsDriver.py step3 -s RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu,VALIDATION:validation_prod --relval 25000,100 --datatier GEN-SIM-RECO --eventcontent RECODEBUG --geometry DB --conditions auto:mc --relval 9000,100 --no_exec
-
-STEP3 ++ HARVEOR1 @@@ cmsDriver.py step3 -s HARVESTING:validationHarvesting+dqmHarvesting --harvesting AtRunEnd --conditions auto:mc  --no_exec --mc
-STEP3 ++ HARVEOR2 @@@ cmsDriver.py step3 -s HARVESTING:validationHarvesting+dqmHarvesting --harvesting AtRunEnd --conditions auto:startup  --no_exec --mc
 STEP3 ++ HARV1    @@@ cmsDriver.py step3 -s HARVESTING:dqmHarvesting --conditions auto:mc  --no_exec --mc
-STEP3 ++ HARV2    @@@ cmsDriver.py step3 -s HARVESTING:dqmHarvesting --conditions auto:startup  --no_exec --mc
-STEP3 ++ HARVD10  @@@ cmsDriver.py step3 -s HARVESTING:dqmHarvesting --conditions auto:com10   --scenario pp --no_exec --data 
-STEP3 ++ HARVD09  @@@ cmsDriver.py step3 -s HARVESTING:dqmHarvesting --conditions auto:craft09 --scenario pp --no_exec --data 
 
 STEP3 ++ HARVEORHI1 @@@ cmsDriver.py step3 -s HARVESTING:validationHarvestingHI --harvesting AtRunEnd --conditions auto:starthi  --no_exec --mc
 
