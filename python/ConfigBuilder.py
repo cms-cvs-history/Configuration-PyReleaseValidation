@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.302 $"
+__version__ = "$Revision: 1.303 $"
 __source__ = "$Source: /cvs/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -181,7 +181,7 @@ class ConfigBuilder(object):
            if 'HARVESTING' in self.stepMap.keys() or 'ALCAHARVEST' in self.stepMap.keys():
                self.process.source.processingMode = cms.untracked.string("RunsAndLumis")
 
-           if self._options.dbsquery!='':
+	if self._options.dbsquery!='':
                self.process.source=cms.Source("PoolSource", fileNames = cms.untracked.vstring(),secondaryFileNames = cms.untracked.vstring())
                import os
                print "the query is",self._options.dbsquery
@@ -904,6 +904,9 @@ class ConfigBuilder(object):
 		__import__(loadFragment)
 	except:
 		loadFailure=True
+		if self.process.source and self.process.source.type_()=='EmptySource':
+			raise Exception("Neither gen fragment nor input files provided: this is an inconsistent GEN step configuration")
+		
 	if not loadFailure:
 		generatorModule=sys.modules[loadFragment]
 		genModules=generatorModule.__dict__
@@ -1385,7 +1388,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.302 $"),
+                                            (version=cms.untracked.string("$Revision: 1.303 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
