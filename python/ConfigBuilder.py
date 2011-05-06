@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.303 $"
+__version__ = "$Revision: 1.303.2.1 $"
 __source__ = "$Source: /cvs/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -464,25 +464,30 @@ class ConfigBuilder(object):
                 specs=self._options.custom_conditions.split('+')
                 self.executeAndRemember("process.GlobalTag.toGet = cms.VPSet()")
                 for spec in specs:
-                        # format Tag,Rcd,connect+Tag,Rcd+
-                        spl=spec.split(',')
-                        rcd=""
-                        tag=""
-                        connect=""
-                        if len(spl)>=2:
-                                tag=spl[0]
-                                rcd=spl[1]
-                                if len(spl)==3:
-                                        connect=spl[2]
-                        else:
-                                print "cannot interpret GT customisation from ",spec,"within",self._options.custom_conditions
-                                raise
-
-                        # customise now
-                        if connect=="":
-                                self.executeAndRemember('process.GlobalTag.toGet.append(cms.PSet(record=cms.string("%s"),tag=cms.string("%s")))'%(rcd,tag))
-                        else:
-                                self.executeAndRemember('process.GlobalTag.toGet.append(cms.PSet(record=cms.string("%s"),tag=cms.string("%s"),connect=cms.untracked.string("%s")))'%(rcd,tag,connect))
+                        #format is tag=<...>,record=<...>,connect=<...>,label=<...> with connect and label optionnal
+			items=spec.split(',')
+			payloadSpec={}
+			allowedFields=['tag','record','connect','label']
+			for i,item in enumerate(items):
+				if '=' in item:
+					field=item.split('=')[0]
+					if not field in allowedFields:
+						raise Exception('in --custom_conditions, '+field+' is not a valid field')
+					payloadSpec[field]=item.split('=')[1]
+				else:
+					payloadSpec[allowedFields[i]]=item
+			if (not 'record' in payloadSpec) or (not 'tag' in payloadSpec):
+				raise Exception('conditions cannot be customised with: '+repr(payloadSpec)+' no record or tag field available')
+			payloadSpecToAppend=''
+			for i,item in enumerate(allowedFields):
+				if not item in payloadSpec: continue
+				if not payloadSpec[item]: continue
+				if i<2: untracked=''
+				else: untracked='untracked.'
+				payloadSpecToAppend+='%s=cms.%sstring("%s"),'%(item,untracked,payloadSpec[item])
+			print 'customising the GlogalTag with:',payloadSpecToAppend
+			self.executeAndRemember('process.GlobalTag.toGet.append(cms.PSet(%s))'%(payloadSpecToAppend,))
+						
 
     def addCustomise(self):
         """Include the customise code """
@@ -1388,7 +1393,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.303 $"),
+                                            (version=cms.untracked.string("$Revision: 1.303.2.1 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
