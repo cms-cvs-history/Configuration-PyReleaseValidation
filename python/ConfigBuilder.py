@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.303.2.2 $"
+__version__ = "$Revision: 1.303.2.3 $"
 __source__ = "$Source: /cvs/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -206,7 +206,9 @@ class ConfigBuilder(object):
 		self.process.source.inputCommands = cms.untracked.vstring()
 		for command in self._options.inputCommands.split(','):
 			self.process.source.inputCommands.append(command)
-
+		#I do not want to drop descendants
+		self.process.source.dropDescendantsOfDroppedBranches = cms.untracked.bool(False)
+		
 	if self._options.inputEventContent:
 		import copy
 		theEventContent = getattr(self.process, self._options.inputEventContent+"EventContent")
@@ -1392,7 +1394,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.303.2.2 $"),
+                                            (version=cms.untracked.string("$Revision: 1.303.2.3 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
