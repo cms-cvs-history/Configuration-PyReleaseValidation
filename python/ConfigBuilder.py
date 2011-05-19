@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.303.2.4 $"
+__version__ = "$Revision: 1.303.2.5 $"
 __source__ = "$Source: /cvs/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -731,7 +731,8 @@ class ConfigBuilder(object):
 		if 'stdgeom' not in self._options.slhc:
 			self.GeometryCFF='SLHCUpgradeSimulations.Geometry.%s_cmsSimIdealGeometryXML_cff'%(self._options.slhc,)
 		self.DIGIDefaultCFF='SLHCUpgradeSimulations/Geometry/Digi_%s_cff'%(self._options.slhc,)
-		self._options.pileup='SLHC_%s_%s'%(self._options.pileup,self._options.slhc)
+		if self._options.pileup!=defaultOptions.pileup:
+			self._options.pileup='SLHC_%s_%s'%(self._options.pileup,self._options.slhc)
 
     # for alca, skims, etc
     def addExtraStream(self,name,stream,workflow='full'):
@@ -1404,7 +1405,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.303.2.4 $"),
+                                            (version=cms.untracked.string("$Revision: 1.303.2.5 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
