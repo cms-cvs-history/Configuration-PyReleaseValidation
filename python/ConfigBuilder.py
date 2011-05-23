@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.303.2.5 $"
+__version__ = "$Revision: 1.303.2.6 $"
 __source__ = "$Source: /cvs/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -771,6 +771,9 @@ class ConfigBuilder(object):
             if self._options.filtername:
                     output.dataset.filterName= cms.untracked.string(self._options.filtername+"_"+stream.name)
 
+	    #add an automatic flushing to limit memory consumption
+	    output.eventAutoFlushCompressedSize=cms.untracked.int32(5*1024*1024)
+
             if workflow in ("producers,full"):
                     if isinstance(stream.paths,tuple):
                             for path in stream.paths:
@@ -1405,7 +1408,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.303.2.5 $"),
+                                            (version=cms.untracked.string("$Revision: 1.303.2.6 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
