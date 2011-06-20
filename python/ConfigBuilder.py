@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.284.2.2 $"
+__version__ = "$Revision: 1.284.2.3 $"
 __source__ = "$Source: /cvs/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -168,8 +168,22 @@ class ConfigBuilder(object):
            elif self._options.filetype == "LHE":
                self.process.source=cms.Source("LHESource", fileNames = cms.untracked.vstring(self._options.filein))
            elif self._options.filetype == "MCDB":
-               self.process.source=cms.Source("MCDBSource", articleID = cms.uint32(int(self._options.filein)), supportedProtocols = cms.untracked.vstring("rfio"))
-
+		   #self.process.source=cms.Source("MCDBSource", articleID = cms.uint32(int(self._options.filein)), supportedProtocols = cms.untracked.vstring("rfio"))
+		   #list the article directory automatically
+		   args=self._options.filein.split(':')
+		   article=args[0]
+		   location='/castor/cern.ch/sft/mcdb/storage/'
+		   import os
+		   if len(args)>2:
+			   location=args[2]
+		   textOfFiles=os.popen('nsls '+location+article)
+		   listOfFiles=[]
+		   for line in textOfFiles:
+			   if 'lhe' in line.rstrip().split("."):
+				   listOfFiles.append('rfio:'+location+article+'/'+line.rstrip())
+		   self.process.source=cms.Source("LHESource", fileNames = cms.untracked.vstring(listOfFiles))
+		   if len(args)>1:
+			   self.process.source.skipEvents = cms.untracked.uint32(int(args[1]))
            if 'HARVESTING' in self.stepMap.keys() or 'ALCAHARVEST' in self.stepMap.keys():
                self.process.source.processingMode = cms.untracked.string("RunsAndLumis")
 
@@ -1338,7 +1352,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.284.2.2 $"),
+                                            (version=cms.untracked.string("$Revision: 1.284.2.3 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
