@@ -1,5 +1,5 @@
-autoCond = { 'mc':          'MC_42_V12::All',
-             'startup':     'START42_V13A::All',    # new L1 menu Collisions2011 v4 (2e33)
+autoCond = { 'mc':          'MC_42_V13::All',
+             'startup':     'START42_V13B::All',    # new L1 menu Collisions2011 v5 (3e33)
              'craft08':     'CRFT8_37R_V1::All',    # not maintained anymore
              'craft09':     'CRFT9_310_V1::All',    # not maintained anymore
              'com10':       'GR_R_42_V14::All',
