@@ -1,4 +1,4 @@
-4
+
 InputInfoNDefault=2000000    
 class InputInfo(object):
     def __init__(self,dataSet,label='',run=0,files=1000,events=InputInfoNDefault,location='CAF') :
@@ -82,7 +82,7 @@ step1['RunElectron2011A']={'INPUT':InputInfo(dataSet='/SingleElectron/Run2011A-v
 step1['RunPhoton2011A']={'INPUT':InputInfo(dataSet='/Photon/Run2011A-v1/RAW',label='photon2011A',run=Run2011A,events=100000)}
 step1['RunJet2011A']={'INPUT':InputInfo(dataSet='/Jet/Run2011A-v1/RAW',label='jet2011A',run=Run2011A,events=100000)}
 
-step1['RunHI2010']={'INPUT':InputInfo(dataSet='/HIAllPhysics/HIRun2010-v1/RAW',label='hi2010',run=152698,events=100000,location='STD')}
+step1['RunHI2010']={'INPUT':InputInfo(dataSet='/HIAllPhysics/HIRun2010-v1/RAW',label='hi2010',run=152957,events=100000,location='STD')}
 step1['RunHI2011']={'INPUT':InputInfo(dataSet='/HIAllPhysics/HIRun2011A-v1/RAW',label='hi2011',run=174773,events=100000,location='STD')}
 
 #### Standard release validation samples ####
