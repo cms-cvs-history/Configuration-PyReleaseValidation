@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.340 $"
+__version__ = "$Revision: 1.341 $"
 __source__ = "$Source: /cvs/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -1223,14 +1223,14 @@ class ConfigBuilder(object):
                         #case where HLT:something:something was provided
                         self.executeAndRemember('import HLTrigger.Configuration.Utilities')
                         optionsForHLT = {}
-                        optionsForHLT['data'] = self._options.isData
+                        optionsForHLT['data'] = self._options.isData and (not 'DATAMIX' in self.stepMap)
                         optionsForHLT['type'] = 'GRun'
                         if self._options.scenario == 'HeavyIons': optionsForHLT['type'] = 'HIon'
                         optionsForHLTConfig = ', '.join('%s=%s' % (key, repr(val)) for (key, val) in optionsForHLT.iteritems())
                         self.executeAndRemember('process.loadHltConfiguration("%s",%s)'%(sequence.replace(',',':'),optionsForHLTConfig))
                 else:
                         dataSpec=''
-                        if self._options.isData:
+                        if self._options.isData and (not 'DATAMIX' in self.stepMap):
                                 dataSpec='_data'
                         self.loadAndRemember('%s/Configuration/HLT_%s%s_cff'%(loadDir,sequence,dataSpec))
 
@@ -1591,7 +1591,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.340 $"),
+                                            (version=cms.untracked.string("$Revision: 1.341 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
