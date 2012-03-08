@@ -417,7 +417,7 @@ steps['Z3Jets-Pt_0To100_TuneZ2_7TeV_alpgen_tauola']=genvalid('Hadronizer_Et20Exc
 steps['ZJetsLNu_Tune4C_7TeV_madgraph-pythia8']=genvalid('Hadronizer_MgmMatchTune4C_7TeV_madgraph_pythia8_cff',step1GenDefaults,'dy',2925)
 
 PU={'--pileup':'2012_Startup_50ns_PoissonOOTPU','--pileup_input':'dbs:/RelValProdMinBias/%s/GEN-SIM-RAW'%(baseDataSetRelease[0],)}
-PUFS={'--pileup':'FlatDist10_2011EarlyData_50ns'}
+PUFS={'--pileup':'2012_Startup_inTimeOnly'}
 
 steps['TTbarFSPU']=merge([PUFS,steps['TTbarFS']])
 ##########################
