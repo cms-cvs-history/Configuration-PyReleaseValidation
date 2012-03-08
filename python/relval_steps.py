@@ -159,7 +159,7 @@ steps['RunHI2011']={'INPUT':InputInfo(dataSet='/HIAllPhysics/HIRun2011A-v1/RAW',
 stCond={'--conditions':'auto:startup'}
 K9by25={'--relval':'9000,25'}
 K9by50={'--relval':'9000,50'}
-K90by500={'--relval':'9000,500'}
+K9by500={'--relval':'9000,500'}
 K9by100={'--relval':'9000,100'}
 K9by250={'--relval':'9000,250'}
 K25by250={'--relval':'25000,250'}
@@ -179,7 +179,7 @@ steps['SingleMuPt10']=gen('SingleMuPt10_cfi',K25by250)
 steps['SingleMuPt100']=gen('SingleMuPt100_cfi',K9by250)
 steps['SingleMuPt1000']=gen('SingleMuPt1000_cfi',K9by100)
 steps['TTbar']=gen('TTbar_Tauola_7TeV_cfi',K9by50)
-steps['TTbarLepton']=gen('TTbarLepton_Tauola_7TeV_cfi',K90by500)
+steps['TTbarLepton']=gen('TTbarLepton_Tauola_7TeV_cfi',K9by100)
 steps['ZEE']=gen('ZEE_7TeV_cfi',K9by100)
 steps['Wjet_Pt_80_120']=gen('Wjet_Pt_80_120_7TeV_cfi',K9by100)
 steps['Wjet_Pt_3000_3500']=gen('Wjet_Pt_3000_3500_7TeV_cfi',K9by100)
@@ -199,6 +199,7 @@ steps['SingleMuPt10INPUT']={'INPUT':InputInfo(dataSet='/RelValSingleMuPt10/%s/GE
 steps['SingleMuPt100INPUT']={'INPUT':InputInfo(dataSet='/RelValSingleMuPt100/%s/GEN-SIM'%(baseDataSetRelease[0],),location='STD')}
 steps['SingleMuPt1000INPUT']={'INPUT':InputInfo(dataSet='/RelValSingleMuPt1000/%s/GEN-SIM'%(baseDataSetRelease[0],),location='STD')}
 steps['TTbarINPUT']={'INPUT':InputInfo(dataSet='/RelValTTbar/%s/GEN-SIM'%(baseDataSetRelease[0],),location='STD')}
+steps['TTbarLeptonINPUT']={'INPUT':InputInfo(dataSet='/RelValTTbarLepton/CMSSW_5_2_0_pre5-START52_V1-v1/GEN-SIM',location='STD')}
 steps['OldTTbarINPUT']={'INPUT':InputInfo(dataSet='/RelValProdTTbar/CMSSW_5_0_0_pre6-START50_V5-v1/GEN-SIM-RECO',location='STD')}
 steps['OldGenSimINPUT']={'INPUT':InputInfo(dataSet='/RelValTTbar/CMSSW_4_4_2-START44_V7-v1/GEN-SIM-DIGI-RAW-HLTDEBUG',location='STD')}
 steps['Wjet_Pt_80_120INPUT']={'INPUT':InputInfo(dataSet='/RelValWjet_Pt_80_120/%s/GEN-SIM'%(baseDataSetRelease[0],),location='STD')}
