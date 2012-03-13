@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.371 $"
+__version__ = "$Revision: 1.372 $"
 __source__ = "$Source: /cvs/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -396,6 +396,8 @@ class ConfigBuilder(object):
 	if self._options.inputCommands:
 		if not hasattr(self.process.source,'inputCommands'): self.process.source.inputCommands=cms.untracked.vstring()
 		for command in self._options.inputCommands.split(','):
+			# remove whitespace around the keep/drop statements
+			command = command.strip()
 			if command=='': continue
 			self.process.source.inputCommands.append(command)
 		if not self._options.dropDescendant:
@@ -842,6 +844,7 @@ class ConfigBuilder(object):
         self.DIGI2RAWDefaultSeq='DigiToRaw'
         self.HLTDefaultSeq='GRun'
         self.L1DefaultSeq=None
+        self.L1REPACKDefaultSeq='GT'
         self.HARVESTINGDefaultSeq=None
         self.ALCAHARVESTDefaultSeq=None
         self.CFWRITERDefaultSeq=None
@@ -1278,6 +1281,16 @@ class ConfigBuilder(object):
 	    self.scheduleSequence('SimL1Emulator','L1simulation_step')
 	    return
 
+    def prepare_L1REPACK(self, sequence = None):
+            """ Enrich the schedule with the L1 simulation step, running the L1 emulator on data unpacked from the RAW collection, and repacking the result in a new RAW collection"""
+            if sequence is not 'GT':
+                  print 'Running the full L1 emulator is not supported yet'
+                  raise Exception('unsupported feature')
+            if sequence is 'GT':
+                  self.loadAndRemember('Configuration/StandardSequences/SimL1EmulatorRepack_GT_cff')
+                  self.scheduleSequence('SimL1Emulator','L1simulation_step')
+
+
     def prepare_HLT(self, sequence = None):
         """ Enrich the schedule with the HLT simulation step"""
         loadDir='HLTrigger'
@@ -1694,7 +1707,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.371 $"),
+                                            (version=cms.untracked.string("$Revision: 1.372 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
