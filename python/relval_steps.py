@@ -410,7 +410,7 @@ steps['Z2Jets_Pt-0To100_TuneZ2star_8TeV_alpgen_tauola']=genvalid('Hadronizer_Et2
 steps['Z3Jets-Pt_0To100_TuneZ2star_8TeV_alpgen_tauola']=genvalid('Hadronizer_Et20ExclTuneZ2star_8TeV_alpgen_tauola_cff',step1GenDefaults,'dy',443)
 steps['ZJetsLNu_Tune4C_8TeV_madgraph-pythia8']=genvalid('Hadronizer_MgmMatchTune4C_8TeV_madgraph_pythia8_cff',step1GenDefaults,'dy',2925)
 
-PU={'--pileup':'2012_Startup_50ns_PoissonOOTPU','--pileup_input':'dbs:/RelValProdMinBias/%s/GEN-SIM-RAW'%(baseDataSetRelease[0],)}
+PU={'-n':10,'--pileup':'2012_Startup_50ns_PoissonOOTPU','--pileup_input':'dbs:/RelValProdMinBias/%s/GEN-SIM-RAW'%(baseDataSetRelease[0],)}
 PUFS={'--pileup':'2012_Startup_inTimeOnly'}
 
 steps['TTbarFSPU']=merge([PUFS,steps['TTbarFS']])
@@ -432,7 +432,7 @@ steps['DIGI']=merge([step2Defaults])
 #steps['DIGI2']=merge([stCond,step2Defaults])
 steps['DIGICOS']=merge([{'--scenario':'cosmics','--eventcontent':'FEVTDEBUG','--datatier':'GEN-SIM-DIGI-RAW'},stCond,step2Defaults])
 
-steps['DIGIPU1']=merge([step2Defaults,PU])
+steps['DIGIPU1']=merge([PU,step2Defaults])
 steps['REDIGIPU']=merge([{'-s':'reGEN,reDIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco'},steps['DIGIPU1']])
 
 
@@ -527,7 +527,7 @@ steps['RECOPROD1']=merge([{ '-s' : 'RAW2DIGI,L1Reco,RECO', '--datatier' : 'GEN-S
 steps['RECOCOS']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu,DQM','--scenario':'cosmics'},stCond,step3Defaults])
 steps['RECOMIN']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,ALCA:SiStripCalZeroBias+SiStripCalMinBias+EcalCalPhiSym+EcalCalPi0Calib+EcalCalEtaCalib,VALIDATION,DQM'},stCond,step3Defaults])
 
-steps['RECOPU1']=merge([steps['RECO'],PU])
+steps['RECOPU1']=merge([PU,steps['RECO']])
 steps['RERECOPU1']=merge([{'--hltProcess':'REDIGI'},steps['RECOPU1']])
 
 
