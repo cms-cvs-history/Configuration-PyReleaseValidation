@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.372.2.1 $"
+__version__ = "$Revision: 1.372.2.2 $"
 __source__ = "$Source: /cvs/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -1305,11 +1305,6 @@ class ConfigBuilder(object):
 
     def prepare_HLT(self, sequence = None):
         """ Enrich the schedule with the HLT simulation step"""
-        loadDir='HLTrigger'
-        fastSim=False
-        if 'FASTSIM' in self.stepMap.keys():
-                fastSim=True
-                loadDir='FastSimulation'
         if not sequence:
                 print "no specification of the hlt menu has been given, should never happen"
                 raise  Exception('no HLT sequence provided')
@@ -1325,7 +1320,10 @@ class ConfigBuilder(object):
                         optionsForHLTConfig = ', '.join('%s=%s' % (key, repr(val)) for (key, val) in optionsForHLT.iteritems())
                         self.executeAndRemember('process.loadHltConfiguration("%s",%s)'%(sequence.replace(',',':'),optionsForHLTConfig))
                 else:
-                        self.loadAndRemember('%s/Configuration/HLT_%s_cff' % (loadDir, sequence))
+                        if 'FASTSIM' in self.stepMap:
+                            self.loadAndRemember('HLTrigger/Configuration/HLT_%s_Famos_cff' % sequence)
+                        else:
+                            self.loadAndRemember('HLTrigger/Configuration/HLT_%s_cff'       % sequence)
 
 	if self._options.name!='HLT':
 		self.additionalCommands.append('from HLTrigger.Configuration.CustomConfigs import ProcessName')
@@ -1335,7 +1333,7 @@ class ConfigBuilder(object):
 		
         self.schedule.append(self.process.HLTSchedule)
         [self.blacklist_paths.append(path) for path in self.process.HLTSchedule if isinstance(path,(cms.Path,cms.EndPath))]
-        if (fastSim and 'HLT' in self.stepMap.keys()):
+        if ('FASTSIM' in self.stepMap and 'HLT' in self.stepMap):
                 self.finalizeFastSimHLT()
 
 
@@ -1719,7 +1717,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.372.2.1 $"),
+                                            (version=cms.untracked.string("$Revision: 1.372.2.2 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
