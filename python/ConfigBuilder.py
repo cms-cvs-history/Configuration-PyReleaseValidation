@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.303.2.7 $"
+__version__ = "$Revision: 1.303.2.8 $"
 __source__ = "$Source: /cvs/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -176,22 +176,22 @@ class ConfigBuilder(object):
 			       self.process.source.secondaryFileNames = cms.untracked.vstring(entry)
            elif self._options.filetype == "LHE":
                self.process.source=cms.Source("LHESource", fileNames = cms.untracked.vstring())
-	          #provided by article number
-		  if self._options.filein.startswith("lhe:"):
-			  print 'LHE input from article',self._options.filein
-			  #list the article directory automatically
-			  args=self._options.filein.split(':')
-			  article=args[1]
-			  location='/store/lhe/'
-			  import os
-			  textOfFiles=os.popen('cmsLHEtoEOSManager.py -l '+article)
-			  for line in textOfFiles:
-				  for fileName in [x for x in line.split() if '.lhe' in x]:
-					  self.process.source.fileNames.append(location+article+'/'+fileName)
-			  if len(args)>2:
-				  self.process.source.skipEvents = cms.untracked.uint32(int(args[2]))
-		  else:
-			  self.process.source.fileNames=cms.untracked.vstring(self._options.filein)
+	       #provided by article number
+	       if self._options.filein.startswith("lhe:"):
+		       print 'LHE input from article',self._options.filein
+		       #list the article directory automatically
+		       args=self._options.filein.split(':')
+		       article=args[1]
+		       location='/store/lhe/'
+		       import os
+		       textOfFiles=os.popen('cmsLHEtoEOSManager.py -l '+article)
+		       for line in textOfFiles:
+			       for fileName in [x for x in line.split() if '.lhe' in x]:
+				       self.process.source.fileNames.append(location+article+'/'+fileName)
+		       if len(args)>2:
+			       self.process.source.skipEvents = cms.untracked.uint32(int(args[2]))
+	       else:
+		       self.process.source.fileNames=cms.untracked.vstring(self._options.filein)
 										     
 
            if 'HARVESTING' in self.stepMap.keys() or 'ALCAHARVEST' in self.stepMap.keys():
@@ -1423,7 +1423,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.303.2.7 $"),
+                                            (version=cms.untracked.string("$Revision: 1.303.2.8 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
