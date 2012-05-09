@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.372.2.3 $"
-__source__ = "$Source: /cvs/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
+__version__ = "$Revision: 1.372.2.4 $"
+__source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
 from FWCore.ParameterSet.Modules import _Module
@@ -617,7 +617,7 @@ class ConfigBuilder(object):
 
 	if self._options.restoreRNDSeeds:
 		self.executeAndRemember('process.RandomNumberGeneratorService.restoreStateLabel=cms.untracked.string("randomEngineStateProducer")')
-		if not self._options.inputCommands:			self._options.inputCommands='keep *_randomEngineStateProducer_*_*,'     
+		if not self._options.inputCommands:			self._options.inputCommands='keep *, keep *_randomEngineStateProducer_*_*,'     
 		else:		self._options.inputCommands+='keep *_randomEngineStateProducer_*_*,'
 
         # what steps are provided by this class?
@@ -1719,7 +1719,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.372.2.3 $"),
+                                            (version=cms.untracked.string("$Revision: 1.372.2.4 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
