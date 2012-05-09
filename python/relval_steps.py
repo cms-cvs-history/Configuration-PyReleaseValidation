@@ -436,7 +436,7 @@ steps['DIGIPU1']=merge([PU,step2Defaults])
 steps['REDIGIPU']=merge([{'-s':'reGEN,reDIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco'},steps['DIGIPU1']])
 
 
-steps['RESIM']=merge([{'-s':'reGEN,reSIM','-n':10},steps['DIGI']])
+steps['RESIM']=merge([{'-s':'reGEN,reSIM','-n':10,'--eventcontent':'RAWSIM'},steps['DIGI']])
     
 steps['DIGIHI']=merge([{'--inputCommands':'"keep *","drop *_simEcalPreshowerDigis_*_*"','-n':10},hiDefaults,step2Defaults])
 
