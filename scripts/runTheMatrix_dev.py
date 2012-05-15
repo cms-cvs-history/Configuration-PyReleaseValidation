@@ -270,13 +270,15 @@ class MatrixReader(object):
         self.nameList  = {}
         
         self.filesPrefMap = {'relval_standard' : 'std-' ,
-                             'relval_highstats': 'hi-'  ,
-                             'relval_generator': 'gen-'  ,
+                             #'relval_highstats': 'hi-'  ,
+                             #'relval_generator': 'gen-'  ,
+                             'relval_upgrade':'upg-',
                              }
 
         self.files = ['relval_standard' ,
-                      'relval_highstats',
-                      'relval_generator',
+                      #'relval_highstats',
+                      #'relval_generator',
+                      'relval_upgrade'
                       ]
 
         self.relvalModule = None
