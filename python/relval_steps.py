@@ -140,6 +140,19 @@ step1['Cosmics']=merge([{'cfg':'UndergroundCosmicMu_cfi.py','--relval':'666000,7
 step1['BeamHalo']=merge([{'cfg':'BeamHalo_cfi.py','--scenario':'cosmics'},K9by100,step1Defaults])
 
 
+step1UpgDefaults={'-s':'GEN,SIM',
+                  '--conditions':'DESIGN42_V17S::All',
+                  '--eventcontent':'FEVTDEBUGHLT',
+                  '--beamspot' : 'Gauss',
+                  '--slhc' : 'stdgeom',
+                  '--datatier' : 'GEN-SIM'
+                  }
+
+step1['MinBiasUPG8']=merge([{'cfg':'MinBias_TuneZ2star_8TeV_pythia6_cff'},K9by100,step1UpgDefaults])
+step1['MinBiasUPG14']=merge([{'cfg':'MinBias_TuneZ2star_14TeV_pythia6_cff'},K9by100,step1UpgDefaults])         
+step1['SingleMuPt10UPG']=merge([{'cfg':'SingleMuPt10_cfi','--relval':'25000,250'},step1UpgDefaults])
+step1['SingleMuPt100UPG']=merge([{'cfg':'SingleMuPt100_cfi','--relval':'9000,250'},step1UpgDefaults])
+step1['SingleMuPt1000UPG']=merge([{'cfg':'SingleMuPt1000_cfi'},K9by100,step1UpgDefaults])
 
 def changeRefRelease(step1s,listOfPairs):
     for s in step1s:
@@ -212,7 +225,16 @@ step2['RECOCOSD']=merge([{'--scenario':'cosmics',
                           },dataReco])
 
 
+step2['RECOUPG']={'cfg' : 'dud',
+                  '-s'  : 'DIGI,L1,DIGI2RAW,RAW2DIGI,L1Reco,RECO,DQM,VALIDATION ',
+                  '--eventcontent' : 'FEVTDEBUGHLT,DQM',
+                  '--datatier' : 'GEN-SIM-RECO,DQM',
+                  '--conditions' : 'DESIGN42_V17S::All',
+                  '--slhc' : 'stdgeom',
+                  '--customise' : 'SLHCUpgradeSimulations/Geometry/customise_stdgeom.customise'
+                  }
 
+step2['RECOUPGPU']=merge([{'--customise':'SLHCUpgradeSimulations/Geometry/customise_stdgeom.customise_pu15_25ns'},step2['RECOUPG']])
 
 # step3 
 step3Defaults = { 'cfg'           : 'step3',
