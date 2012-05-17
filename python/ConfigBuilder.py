@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.372.2.8 $"
+__version__ = "$Revision: 1.372.2.9 $"
 __source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -657,13 +657,12 @@ class ConfigBuilder(object):
 			self.executeAndRemember('process.RandomNumberGeneratorService.restoreStateLabel=cms.untracked.string("randomEngineStateProducer")')
 		else:
 			self.executeAndRemember('process.RandomNumberGeneratorService.restoreStateTag=cms.untracked.InputTag("randomEngineStateProducer","","%s")'%(self._options.restoreRNDSeeds))
-		if self._options.inputEventContent:
-			if not self._options.inputCommands:
-				self._options.inputCommands='keep *, keep *_randomEngineStateProducer_*_*,'     
-			else:
+		if self._options.inputEventContent or self._options.inputCommands:
+			if self._options.inputCommands:
 				self._options.inputCommands+='keep *_randomEngineStateProducer_*_*,'
-
-
+			else:
+				self._options.inputCommands='keep *_randomEngineStateProducer_*_*,'
+				
     def addConditions(self):
         """Add conditions to the process"""
 	if not self._options.conditions: return
@@ -1736,7 +1735,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.372.2.8 $"),
+                                            (version=cms.untracked.string("$Revision: 1.372.2.9 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
