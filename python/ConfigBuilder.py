@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.372.2.9 $"
+__version__ = "$Revision: 1.372.2.10 $"
 __source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -1465,8 +1465,8 @@ class ConfigBuilder(object):
 
 	    if not 'DIGI' in self.stepMap and not 'FASTSIM' in self.stepMap:
 		    #self.loadAndRemember('Configuration.StandardSequences.ReMixingSeeds_cff')
-		    if self._options.restoreRNDSeeds==False and not self._options.restoreRNDSeeds=='True':
-			    self._options.restoreRNDSeeds='True'
+		    if self._options.restoreRNDSeeds==False and not self._options.restoreRNDSeeds==True:
+			    self._options.restoreRNDSeeds=True
 
             #rename the HLT process in validation steps
 	    if ('HLT' in self.stepMap and not 'FASTSIM' in self.stepMap) or self._options.hltProcess:
@@ -1735,7 +1735,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.372.2.9 $"),
+                                            (version=cms.untracked.string("$Revision: 1.372.2.10 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
