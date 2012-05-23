@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.372.2.10 $"
+__version__ = "$Revision: 1.372.2.11 $"
 __source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -1464,8 +1464,7 @@ class ConfigBuilder(object):
                             valSeqName=sequence
 
 	    if not 'DIGI' in self.stepMap and not 'FASTSIM' in self.stepMap:
-		    #self.loadAndRemember('Configuration.StandardSequences.ReMixingSeeds_cff')
-		    if self._options.restoreRNDSeeds==False and not self._options.restoreRNDSeeds==True:
+		    if self._options.restoreRNDSeeds==False and not self._options.restoreRNDSeeds==True and not valSeqName.startswith('genvalid'):
 			    self._options.restoreRNDSeeds=True
 
             #rename the HLT process in validation steps
@@ -1478,7 +1477,6 @@ class ConfigBuilder(object):
                     self.process.prevalidation_step = cms.Path( getattr(self.process, prevalSeqName ) )
                     self.schedule.append(self.process.prevalidation_step)
             if valSeqName.startswith('genvalid'):
-                    self.loadAndRemember("IOMC.RandomEngine.IOMC_cff")
                     self.process.validation_step = cms.Path( getattr(self.process,valSeqName ) )
             else:
                     self.process.validation_step = cms.EndPath( getattr(self.process,valSeqName ) )
@@ -1735,7 +1733,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.372.2.10 $"),
+                                            (version=cms.untracked.string("$Revision: 1.372.2.11 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
