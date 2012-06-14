@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.372.2.11 $"
+__version__ = "$Revision: 1.372.2.12 $"
 __source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -1323,22 +1323,22 @@ class ConfigBuilder(object):
         if not sequence:
                 print "no specification of the hlt menu has been given, should never happen"
                 raise  Exception('no HLT sequence provided')
-        else:
-                if ',' in sequence:
-                        #case where HLT:something:something was provided
-                        self.executeAndRemember('import HLTrigger.Configuration.Utilities')
-                        optionsForHLT = {}
-                        if self._options.scenario == 'HeavyIons':
-                          optionsForHLT['type'] = 'HIon'
-                        else:
-                          optionsForHLT['type'] = 'GRun'
-                        optionsForHLTConfig = ', '.join('%s=%s' % (key, repr(val)) for (key, val) in optionsForHLT.iteritems())
-                        self.executeAndRemember('process.loadHltConfiguration("%s",%s)'%(sequence.replace(',',':'),optionsForHLTConfig))
+
+        if ',' in sequence:
+                #case where HLT:something:something was provided
+                self.executeAndRemember('import HLTrigger.Configuration.Utilities')
+                optionsForHLT = {}
+                if self._options.scenario == 'HeavyIons':
+                  optionsForHLT['type'] = 'HIon'
                 else:
-                        if 'FASTSIM' in self.stepMap:
-                            self.loadAndRemember('HLTrigger/Configuration/HLT_%s_Famos_cff' % sequence)
-                        else:
-                            self.loadAndRemember('HLTrigger/Configuration/HLT_%s_cff'       % sequence)
+                  optionsForHLT['type'] = 'GRun'
+                optionsForHLTConfig = ', '.join('%s=%s' % (key, repr(val)) for (key, val) in optionsForHLT.iteritems())
+                self.executeAndRemember('process.loadHltConfiguration("%s",%s)'%(sequence.replace(',',':'),optionsForHLTConfig))
+        else:
+                if 'FASTSIM' in self.stepMap:
+                    self.loadAndRemember('HLTrigger/Configuration/HLT_%s_Famos_cff' % sequence)
+                else:
+                    self.loadAndRemember('HLTrigger/Configuration/HLT_%s_cff'       % sequence)
 
 	if self._options.name!='HLT':
 		self.additionalCommands.append('from HLTrigger.Configuration.CustomConfigs import ProcessName')
@@ -1733,7 +1733,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.372.2.11 $"),
+                                            (version=cms.untracked.string("$Revision: 1.372.2.12 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
