@@ -17,6 +17,8 @@ class Steps(dict):
         if key in self:
             print "ERROR in Step"
             print "overwritting",key,"not allowed"
+            import sys
+            sys.exit(-9) 
         else:
             self.update({key:value})
             # make the python file named <step>.py
