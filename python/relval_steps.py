@@ -41,13 +41,14 @@ class WF(list):
     
 InputInfoNDefault=2000000    
 class InputInfo(object):
-    def __init__(self,dataSet,label='',run=[],files=1000,events=InputInfoNDefault,location='CAF') :
+    def __init__(self,dataSet,label='',run=[],files=1000,events=InputInfoNDefault,split=8,location='CAF') :
         self.run = run
         self.files = files
         self.events = events
         self.location = location
         self.label = label
         self.dataSet = dataSet
+        self.split=split
 
     def dbs(self):
         command='dbs search --noheader --query "find file where dataset like '+self.dataSet
