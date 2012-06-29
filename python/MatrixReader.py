@@ -22,6 +22,7 @@ class MatrixReader(object):
         self.wm=opt.wmcontrol
         self.addCommand=opt.command
         self.commandLineWf=opt.workflow
+        self.overWrite=opt.overWrite
         
         return
 
@@ -40,6 +41,7 @@ class MatrixReader(object):
                              'relval_pileup': 'PU-'  ,
                              'relval_generator': 'gen-'  ,
                              'relval_production': 'prod-'  ,
+                             'relval_ged': 'ged-'
                              }
 
         self.files = ['relval_standard' ,
@@ -47,6 +49,7 @@ class MatrixReader(object):
                       'relval_pileup',
                       'relval_generator',
                       'relval_production',
+                      'relval_ged'
                       ]
 
         self.relvalModule = None
@@ -88,6 +91,35 @@ class MatrixReader(object):
 
         print "request for INPUT for ", useInput
 
+        
+        fromInput={}
+        
+        if useInput:
+            for i in useInput:
+                if ':' in i:
+                    (ik,il)=i.split(':')
+                    if ik=='all':
+                        for k in self.relvalModule.workflows.keys():
+                            fromInput[float(k)]=int(il)
+                    else:
+                        fromInput[float(ik)]=int(il)
+                else:
+                    if i=='all':
+                        for k in self.relvalModule.workflows.keys():
+                            fromInput[float(k)]=0
+                    else:
+                        fromInput[float(i)]=0
+                
+        if fromScratch:
+            fromScratch=map(float,fromScratch)
+            for num in fromScratch:
+                if num in fromInput:
+                    fromInput.pop(num)
+        #overwrite steps
+        if self.overWrite:
+            for p in self.overWrite:
+                self.relvalModule.steps.overwrite(p)
+        
         #change the origin of dataset on the fly
         if refRel:
             self.relvalModule.changeRefRelease(
@@ -118,25 +150,53 @@ class MatrixReader(object):
             name=wfName
             stepIndex=0
             ranStepList=[]
+
+            #first resolve INPUT possibilities
+            if num in fromInput:
+                ilevel=fromInput[num]
+                #print num,ilevel
+                for (stepIr,step) in enumerate(reversed(stepList)):
+                    stepName=step
+                    stepI=(len(stepList)-stepIr)-1
+                    #print stepIr,step,stepI,ilevel                    
+                    if stepI>ilevel:
+                        #print "ignoring"
+                        continue
+                    if stepI!=0:
+                        testName='__'.join(stepList[0:stepI+1])+'INPUT'
+                    else:
+                        testName=step+'INPUT'
+                    #print "JR",stepI,stepIr,testName,stepList
+                    if testName in self.relvalModule.steps.keys():
+                        #print "JR",stepI,stepIr
+                        stepList[stepI]=testName
+                        #pop the rest in the list
+                        #print "\tmod prepop",stepList
+                        for p in range(stepI):
+                            stepList.pop(0)
+                        #print "\t\tmod",stepList
+                        break
+                                                        
+                                                    
             for (stepI,step) in enumerate(stepList):
                 stepName=step
                 if self.wm:
                     #cannot put a certain number of things in wm
-                    if stepName in ['SKIMD','HARVESTD','HARVEST','HARVESTD','RECODFROMRAWRECO']:
+                    if stepName in ['SKIMD','HARVESTD','HARVEST','HARVESTD','RECODFROMRAWRECO','SKIMCOSD','SKIMD3']:
                         continue
+                    
                 #replace stepName is needed
                 #if stepName in self.replaceStep
                 if len(name) > 0 : name += '+'
                 #any step can be mirrored with INPUT
                 ## maybe we want too level deep input
-                if useInput and (str(num) in useInput or "all" in useInput):
+                """
+                if num in fromInput:
                     if step+'INPUT' in self.relvalModule.steps.keys():
                         stepName = step+"INPUT"
                         stepList.remove(step)
                         stepList.insert(stepIndex,stepName)
-                    if fromScratch and (str(num) in fromScratch or "all" in fromScratch):
-                        msg = "FATAL ERROR: request for both fromScratch and input for workflow "+str(num)
-                        raise MatrixException(msg)
+                """    
                 name += stepName
 
                 if addCom and (not addTo or addTo[stepIndex]==1):
@@ -161,6 +221,8 @@ class MatrixReader(object):
                         cmd+=' --io %s.io --python %s.py'%(stepName,stepName)
                     if self.addCommand:
                         cmd +=' '+self.addCommand
+                    if self.wm:
+                        cmd=cmd.replace('DQMROOT','DQM')
                 commands.append(cmd)
                 ranStepList.append(stepName)
                 stepIndex+=1
@@ -211,8 +273,11 @@ class MatrixReader(object):
                 stepNames=stepNames.replace('+RECODFROMRAWRECO','')
                 stepNames=stepNames.replace('+SKIMCOSD','')
                 stepNames=stepNames.replace('+SKIMD','')
-                stepNames=stepNames.replace('+HARVESTD','')
-                stepNames=stepNames.replace('+HARVEST','')
+                if 'HARVEST' in stepNames:
+                    #find out automatically what to remove
+                    exactb=stepNames.index('+HARVEST')
+                    exacte=stepNames.index('+',exactb+1) if ('+' in stepNames[exactb+1:]) else (len(stepNames))
+                    stepNames=stepNames.replace(stepNames[exactb:exacte],'')
                 otherSteps = None
                 if '+' in stepNames:
                     step1,otherSteps = stepNames.split('+',1)
