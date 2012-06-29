@@ -357,7 +357,7 @@ def addForAll(steps,d):
 
 #### fastsim section ####
 ##no forseen to do things in two steps GEN-SIM then FASTIM->end: maybe later
-step1FastDefaults =merge([{'-s':'GEN,FASTSIM,HLT:GRun,VALIDATION',
+step1FastDefaults =merge([{'-s':'GEN,FASTSIM,HLT:@relval,VALIDATION',
                            '--eventcontent':'FEVTDEBUGHLT',
                            '--datatier':'GEN-SIM-DIGI-RECO',
                            '--relval':'27000,3000'},
@@ -446,20 +446,19 @@ steps['TTbarFSPU']=merge([PUFS,steps['TTbarFS']])
 
 # step2 
 step2Defaults = { 
-                  '-s'            : 'DIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco',
+                  '-s'            : 'DIGI,L1,DIGI2RAW,HLT:@relval,RAW2DIGI,L1Reco',
                   '--datatier'    : 'GEN-SIM-DIGI-RAW-HLTDEBUG',
                   '--eventcontent': 'FEVTDEBUGHLT',
                   '--conditions'  : 'auto:startup',
                   }
 
 
-steps['DIGIPROD1']=merge([{'--eventcontent':'RAWSIM','--datatier':'GEN-SIM-RAW'},step2Defaults])
+steps['DIGIPROD1']=merge([{'--eventcontent':'RAWSIM','--datatier':'GEN-SIM-RAW','-s':'DIGI,L1,DIGI2RAW,HLT:@test,RAW2DIGI,L1Reco'},step2Defaults])
 steps['DIGI']=merge([step2Defaults])
-#steps['DIGI2']=merge([stCond,step2Defaults])
 steps['DIGICOS']=merge([{'--scenario':'cosmics','--eventcontent':'FEVTDEBUG','--datatier':'GEN-SIM-DIGI-RAW'},stCond,step2Defaults])
 
 steps['DIGIPU1']=merge([PU,step2Defaults])
-steps['REDIGIPU']=merge([{'-s':'reGEN,reDIGI,L1,DIGI2RAW,HLT,RAW2DIGI,L1Reco'},steps['DIGIPU1']])
+steps['REDIGIPU']=merge([{'-s':'reGEN,reDIGI,L1,DIGI2RAW,HLT:@relval,RAW2DIGI,L1Reco'},steps['DIGIPU1']])
 
 
 steps['RESIM']=merge([{'-s':'reGEN,reSIM','-n':10,'--eventcontent':'RAWSIM'},steps['DIGI']])
@@ -479,7 +478,7 @@ dataReco={'--conditions':'auto:com10',
           }
 
 steps['HLTD']=merge([{'--process':'reHLT',
-                      '-s':'L1REPACK,HLT',
+                      '-s':'L1REPACK,HLT:@relvalD',
                       '--condition':'auto:hltonline11',
                       '--data':'',
                       '--datatier':'RAW',
