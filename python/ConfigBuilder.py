@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.372.2.16 $"
+__version__ = "$Revision: 1.372.2.17 $"
 __source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -1329,7 +1329,7 @@ class ConfigBuilder(object):
                 raise  Exception('no HLT sequence provided')
 
 	if '@' in sequence:
-		from HLTrigger.Configuration.autoHLT import autoHLT
+		from Configuration.HLT.autoHLT import autoHLT
 		key=sequence[1:]
 		if key in autoHLT:
 			sequence=autoHLT[key]
@@ -1753,7 +1753,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.372.2.16 $"),
+                                            (version=cms.untracked.string("$Revision: 1.372.2.17 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
