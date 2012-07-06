@@ -463,7 +463,7 @@ steps['REDIGIPU']=merge([{'-s':'reGEN,reDIGI,L1,DIGI2RAW,HLT:@relval,RAW2DIGI,L1
 
 steps['RESIM']=merge([{'-s':'reGEN,reSIM','-n':10,'--eventcontent':'RAWSIM'},steps['DIGI']])
     
-steps['DIGIHI']=merge([{'--inputCommands':'"keep *","drop *_simEcalPreshowerDigis_*_*"','-n':10},hiDefaults,step2Defaults])
+steps['DIGIHI']=merge([{'-s':'DIGI,L1,DIGI2RAW,HLT:HIon,RAW2DIGI,L1Reco', '--inputCommands':'"keep *","drop *_simEcalPreshowerDigis_*_*"', '-n':10}, hiDefaults, step2Defaults])
 
 #add this line when testing from an input file that is not strictly GEN-SIM
 #addForAll(step2,{'--process':'DIGI'})
