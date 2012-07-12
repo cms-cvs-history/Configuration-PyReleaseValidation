@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.385 $"
+__version__ = "$Revision: 1.391 $"
 __source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -266,7 +266,9 @@ class ConfigBuilder(object):
         self.additionalCommands.append(command)
         if not command.strip().startswith("#"):
             # substitute: process.foo = process.bar -> self.process.foo = self.process.bar
-            exec(command.replace("process.","self.process."))
+            import re
+            exec(re.sub(r"([^a-zA-Z_0-9]|^)(process)([^a-zA-Z_0-9])",r"\1self.process\3",command))
+            #exec(command.replace("process.","self.process."))
 
     def addCommon(self):
             if 'HARVESTING' in self.stepMap.keys() or 'ALCAHARVEST' in self.stepMap.keys():
@@ -687,9 +689,9 @@ class ConfigBuilder(object):
 
 	if isinstance(self._options.conditions,tuple):
 		if self._options.custom_conditions:
-			self._options.custom_conditions+='+'+self._options.conditions[1]
+			self._options.custom_conditions += '+' + '+'.join(self._options.conditions[1:])
 		else:
-			self._options.custom_conditions=self._options.conditions[1]
+			self._options.custom_conditions = '+'.join(self._options.conditions[1:])
 		self._options.conditions=self._options.conditions[0]
 
 
@@ -1269,6 +1271,9 @@ class ConfigBuilder(object):
         self.process.generation_step = cms.Path( getattr(self.process,genSeqName) )
         self.schedule.append(self.process.generation_step)
 
+	#register to the genstepfilter the name of the path (static right now, but might evolve)
+	self.executeAndRemember('process.genstepfilter.triggerConditions=cms.vstring("generation_step")')
+	
 	if 'reGEN' in self.stepMap:
 		#stop here
 		return 
@@ -1362,28 +1367,32 @@ class ConfigBuilder(object):
         if not sequence:
                 print "no specification of the hlt menu has been given, should never happen"
                 raise  Exception('no HLT sequence provided')
-        else:
-                if ',' in sequence:
-                        #case where HLT:something:something was provided
-                        self.executeAndRemember('import HLTrigger.Configuration.Utilities')
-                        optionsForHLT = {}
-                        if self._options.scenario == 'HeavyIons':
-                          optionsForHLT['type'] = 'HIon'
-                        else:
-                          optionsForHLT['type'] = 'GRun'
-                        optionsForHLTConfig = ', '.join('%s=%s' % (key, repr(val)) for (key, val) in optionsForHLT.iteritems())
-                        self.executeAndRemember('process.loadHltConfiguration("%s",%s)'%(sequence.replace(',',':'),optionsForHLTConfig))
-                else:
-                        if 'FASTSIM' in self.stepMap:
-                            self.loadAndRemember('HLTrigger/Configuration/HLT_%s_Famos_cff' % sequence)
-                        else:
-                            self.loadAndRemember('HLTrigger/Configuration/HLT_%s_cff'       % sequence)
 
-	if self._options.name!='HLT':
+        if ',' in sequence:
+                #case where HLT:something:something was provided
+                self.executeAndRemember('import HLTrigger.Configuration.Utilities')
+                optionsForHLT = {}
+                if self._options.scenario == 'HeavyIons':
+                  optionsForHLT['type'] = 'HIon'
+                else:
+                  optionsForHLT['type'] = 'GRun'
+                optionsForHLTConfig = ', '.join('%s=%s' % (key, repr(val)) for (key, val) in optionsForHLT.iteritems())
+                self.executeAndRemember('process.loadHltConfiguration("%s",%s)'%(sequence.replace(',',':'),optionsForHLTConfig))
+        else:
+                if 'FASTSIM' in self.stepMap:
+                    self.loadAndRemember('HLTrigger/Configuration/HLT_%s_Famos_cff' % sequence)
+                else:
+                    self.loadAndRemember('HLTrigger/Configuration/HLT_%s_cff'       % sequence)
+
+        if self._options.isMC:
+		self._options.customisation_file+=",HLTrigger/Configuration/customizeHLTforMC.customizeHLTforMC"
+
+	if self._options.name != 'HLT':
 		self.additionalCommands.append('from HLTrigger.Configuration.CustomConfigs import ProcessName')
-		self.additionalCommands.append('process=ProcessName(process)')
+		self.additionalCommands.append('process = ProcessName(process)')
+                self.additionalCommands.append('')
 		from HLTrigger.Configuration.CustomConfigs import ProcessName
-		self.process=ProcessName(self.process)
+		self.process = ProcessName(self.process)
 		
         self.schedule.append(self.process.HLTSchedule)
         [self.blacklist_paths.append(path) for path in self.process.HLTSchedule if isinstance(path,(cms.Path,cms.EndPath))]
@@ -1524,6 +1533,12 @@ class ConfigBuilder(object):
 
 	    if not 'DIGI' in self.stepMap and not 'FASTSIM' in self.stepMap:
 		    self.executeAndRemember("process.mix.playback = True")
+		    self.executeAndRemember("process.mix.digitizers = cms.PSet()")
+                    self.executeAndRemember("for a in process.aliases: delattr(process, a)")
+
+	    if hasattr(self.process,"genstepfilter") and len(self.process.genstepfilter.triggerConditions):
+		    #will get in the schedule, smoothly
+		    self.process.validation_step._seq = self.process.genstepfilter * self.process.validation_step._seq
 
             return
 
@@ -1774,7 +1789,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.385 $"),
+                                            (version=cms.untracked.string("$Revision: 1.391 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
