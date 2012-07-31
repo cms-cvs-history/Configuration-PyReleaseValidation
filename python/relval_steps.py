@@ -213,7 +213,11 @@ steps['Wjet_Pt_3000_3500']=gen('Wjet_Pt_3000_3500_8TeV_cfi',K9by100)
 steps['LM1_sfts']=gen('LM1_sfts_8TeV_cfi',K9by100)
 steps['QCD_FlatPt_15_3000']=gen('QCDForPF_8TeV_cfi',K9by100)
 
-baseDataSetRelease=['CMSSW_5_2_1-START52_V4-v1','CMSSW_5_2_1-STARTHI52_V4-v1','CMSSW_5_2_1-PU_START52_V4-v1']
+baseDataSetRelease=[
+    'CMSSW_5_2_1-START52_V4-v1',
+    'CMSSW_5_2_1-STARTHI52_V4-v1',
+    'CMSSW_5_2_1-PU_START52_V4-v1'
+    ]
 
 steps['MinBiasINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBias/%s/GEN-SIM'%(baseDataSetRelease[0],),location='STD')}
 steps['QCD_Pt_3000_3500INPUT']={'INPUT':InputInfo(dataSet='/RelValQCD_Pt_3000_3500/%s/GEN-SIM'%(baseDataSetRelease[0],),location='STD')}
@@ -357,9 +361,9 @@ def addForAll(steps,d):
 
 #### fastsim section ####
 ##no forseen to do things in two steps GEN-SIM then FASTIM->end: maybe later
-step1FastDefaults =merge([{'-s':'GEN,FASTSIM,HLT:@relval,VALIDATION',
-                           '--eventcontent':'FEVTDEBUGHLT',
-                           '--datatier':'GEN-SIM-DIGI-RECO',
+step1FastDefaults =merge([{'-s':'GEN,FASTSIM,HLT:7E33v2,VALIDATION',
+                           '--eventcontent':'FEVTDEBUGHLT,DQM',
+                           '--datatier':'GEN-SIM-DIGI-RECO,DQM',
                            '--relval':'27000,3000'},
                           step1Defaults])
 K100by500={'--relval':'100000,500'}
@@ -446,24 +450,25 @@ steps['TTbarFSPU']=merge([PUFS,steps['TTbarFS']])
 
 # step2 
 step2Defaults = { 
-                  '-s'            : 'DIGI,L1,DIGI2RAW,HLT:@relval,RAW2DIGI,L1Reco',
+                  '-s'            : 'DIGI,L1,DIGI2RAW,HLT:7E33v2,RAW2DIGI,L1Reco',
                   '--datatier'    : 'GEN-SIM-DIGI-RAW-HLTDEBUG',
                   '--eventcontent': 'FEVTDEBUGHLT',
                   '--conditions'  : 'auto:startup',
                   }
 
 
-steps['DIGIPROD1']=merge([{'--eventcontent':'RAWSIM','--datatier':'GEN-SIM-RAW','-s':'DIGI,L1,DIGI2RAW,HLT:@test,RAW2DIGI,L1Reco'},step2Defaults])
+steps['DIGIPROD1']=merge([{'--eventcontent':'RAWSIM','--datatier':'GEN-SIM-RAW'},step2Defaults])
 steps['DIGI']=merge([step2Defaults])
+#steps['DIGI2']=merge([stCond,step2Defaults])
 steps['DIGICOS']=merge([{'--scenario':'cosmics','--eventcontent':'FEVTDEBUG','--datatier':'GEN-SIM-DIGI-RAW'},stCond,step2Defaults])
 
 steps['DIGIPU1']=merge([PU,step2Defaults])
-steps['REDIGIPU']=merge([{'-s':'reGEN,reDIGI,L1,DIGI2RAW,HLT:@relval,RAW2DIGI,L1Reco'},steps['DIGIPU1']])
+steps['REDIGIPU']=merge([{'-s':'reGEN,reDIGI,L1,DIGI2RAW,HLT:7E33v2,RAW2DIGI,L1Reco'},steps['DIGIPU1']])
 
-
-steps['RESIM']=merge([{'-s':'reGEN,reSIM','-n':10,'--eventcontent':'RAWSIM'},steps['DIGI']])
+steps['RESIM']=merge([{'-s':'reGEN,reSIM','-n':10},steps['DIGI']])
+steps['RESIMDIGI']=merge([{'-s':'reGEN,reSIM,DIGI,L1,DIGI2RAW,HLT:7E33v2,RAW2DIGI,L1Reco','-n':10,'--restoreRNDSeeds':'','--process':'HLT'},steps['DIGI']]) 
     
-steps['DIGIHI']=merge([{'-s':'DIGI,L1,DIGI2RAW,HLT:HIon,RAW2DIGI,L1Reco', '--inputCommands':'"keep *","drop *_simEcalPreshowerDigis_*_*"', '-n':10}, hiDefaults, step2Defaults])
+steps['DIGIHI']=merge([{'--conditions':'auto:starthi_HIon', '-s':'DIGI,L1,DIGI2RAW,HLT:HIon,RAW2DIGI,L1Reco', '--inputCommands':'"keep *","drop *_simEcalPreshowerDigis_*_*"', '-n':10}, hiDefaults, step2Defaults])
 
 #add this line when testing from an input file that is not strictly GEN-SIM
 #addForAll(step2,{'--process':'DIGI'})
@@ -478,12 +483,13 @@ dataReco={'--conditions':'auto:com10',
           }
 
 steps['HLTD']=merge([{'--process':'reHLT',
-                      '-s':'L1REPACK,HLT:@relvalD',
-                      '--condition':'auto:hltonline11',
+                      '-s':'L1REPACK,HLT:7E33v2',
+                      '--condition':'auto:hltonline_7E33v2',
                       '--data':'',
-                      '--datatier':'RAW',
-                      '--eventcontent':'RAW',
-                      '--customise_commands':'\'process.RAWoutput.outputCommands.append("drop FEDRawDataCollection_rawDataCollector__LHC")\''
+                      '--output':'\'[{"e":"RAW","t":"RAW","o":["drop FEDRawDataCollection_rawDataCollector__LHC"]}]\'',
+#                      '--datatier':'RAW',
+#                      '--eventcontent':'RAW',
+#                      '--customise_commands':'\'process.RAWoutput.outputCommands.append("drop FEDRawDataCollection_rawDataCollector__LHC")\''
                       },])
 steps['RECOD']=merge([{'--scenario':'pp',},dataReco])
 steps['RECOSKIMALCA']=merge([{'--inputCommands':'"keep *","drop *_*_*_RECO"'
@@ -546,7 +552,7 @@ steps['DIGIPU']=merge([{'--process':'REDIGI'},steps['DIGIPU1']])
 
 steps['RECODst3']=merge([{'--hltProcess':'reHLT'},steps['RECOD']])
 steps['RECO']=merge([step3Defaults])
-#steps['RECO2']=merge([stCond,step3Defaults])
+steps['RECODBG']=merge([{'--eventcontent':'RECODEBUG,DQM'},steps['RECO']])
 steps['RECOPROD1']=merge([{ '-s' : 'RAW2DIGI,L1Reco,RECO', '--datatier' : 'GEN-SIM-RECO,AODSIM', '--eventcontent' : 'RECOSIM,AODSIM'},step3Defaults])
 steps['RECOCOS']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu,DQM','--scenario':'cosmics'},stCond,step3Defaults])
 steps['RECOMIN']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,ALCA:SiStripCalZeroBias+SiStripCalMinBias+EcalCalPhiSym+EcalCalPi0Calib+EcalCalEtaCalib,VALIDATION,DQM'},stCond,step3Defaults])
@@ -663,11 +669,11 @@ steps['SKIMCOSD']={'-s':'SKIM:all',
 
 #### for special wfs ###
 #steps['TTbar_REDIGI_RERECO']=merge([{'cfg':'TTbar_Tauola_8TeV_cfi',
-#                                     '-s':'GEN,SIM,DIGI,L1,DIGI2RAW,HLT:GRun,RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+DtCalib,VALIDATION,DQM',
+#                                     '-s':'GEN,SIM,DIGI,L1,DIGI2RAW,HLT:7E33v2,RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+DtCalib,VALIDATION,DQM',
 #                                     '--datatier':'GEN-SIM-DIGI-RAW-HLTDEBUG-RECO,DQM',
 #                                     '--eventcontent':'FEVTDEBUGHLT,DQM'},
 #                                    K9by50,stCond,step1Defaults])
-#steps['DIGI2RECO']=merge([{'-s':'DIGI,L1,DIGI2RAW,HLT:GRun,RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+#steps['DIGI2RECO']=merge([{'-s':'DIGI,L1,DIGI2RAW,HLT:7E33v2,RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
 #                           '--filtername':'DIGItoRECO',
 #                           '--process':'RECO',
 #                           '--eventcontent':'RECOSIM,DQM',
