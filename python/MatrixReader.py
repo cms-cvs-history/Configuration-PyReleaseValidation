@@ -41,7 +41,7 @@ class MatrixReader(object):
                              'relval_pileup': 'PU-'  ,
                              'relval_generator': 'gen-'  ,
                              'relval_production': 'prod-'  ,
-                             'relval_ged': 'ged-'
+#                             'relval_ged': 'ged-'
                              }
 
         self.files = ['relval_standard' ,
@@ -49,7 +49,7 @@ class MatrixReader(object):
                       'relval_pileup',
                       'relval_generator',
                       'relval_production',
-                      'relval_ged'
+#                      'relval_ged'
                       ]
 
         self.relvalModule = None
