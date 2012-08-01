@@ -361,7 +361,7 @@ def addForAll(steps,d):
 
 #### fastsim section ####
 ##no forseen to do things in two steps GEN-SIM then FASTIM->end: maybe later
-step1FastDefaults =merge([{'-s':'GEN,FASTSIM,HLT:7E33v2,VALIDATION',
+step1FastDefaults =merge([{'-s':'GEN,FASTSIM,HLT:5E33v4,VALIDATION',
                            '--eventcontent':'FEVTDEBUGHLT,DQM',
                            '--datatier':'GEN-SIM-DIGI-RECO,DQM',
                            '--relval':'27000,3000'},
@@ -450,7 +450,7 @@ steps['TTbarFSPU']=merge([PUFS,steps['TTbarFS']])
 
 # step2 
 step2Defaults = { 
-                  '-s'            : 'DIGI,L1,DIGI2RAW,HLT:7E33v2,RAW2DIGI,L1Reco',
+                  '-s'            : 'DIGI,L1,DIGI2RAW,HLT:5E33v4,RAW2DIGI,L1Reco',
                   '--datatier'    : 'GEN-SIM-DIGI-RAW-HLTDEBUG',
                   '--eventcontent': 'FEVTDEBUGHLT',
                   '--conditions'  : 'auto:startup',
@@ -463,10 +463,10 @@ steps['DIGI']=merge([step2Defaults])
 steps['DIGICOS']=merge([{'--scenario':'cosmics','--eventcontent':'FEVTDEBUG','--datatier':'GEN-SIM-DIGI-RAW'},stCond,step2Defaults])
 
 steps['DIGIPU1']=merge([PU,step2Defaults])
-steps['REDIGIPU']=merge([{'-s':'reGEN,reDIGI,L1,DIGI2RAW,HLT:7E33v2,RAW2DIGI,L1Reco'},steps['DIGIPU1']])
+steps['REDIGIPU']=merge([{'-s':'reGEN,reDIGI,L1,DIGI2RAW,HLT:5E33v4,RAW2DIGI,L1Reco'},steps['DIGIPU1']])
 
 steps['RESIM']=merge([{'-s':'reGEN,reSIM','-n':10},steps['DIGI']])
-steps['RESIMDIGI']=merge([{'-s':'reGEN,reSIM,DIGI,L1,DIGI2RAW,HLT:7E33v2,RAW2DIGI,L1Reco','-n':10,'--restoreRNDSeeds':'','--process':'HLT'},steps['DIGI']]) 
+steps['RESIMDIGI']=merge([{'-s':'reGEN,reSIM,DIGI,L1,DIGI2RAW,HLT:5E33v4,RAW2DIGI,L1Reco','-n':10,'--restoreRNDSeeds':'','--process':'HLT'},steps['DIGI']]) 
     
 steps['DIGIHI']=merge([{'--conditions':'auto:starthi_HIon', '-s':'DIGI,L1,DIGI2RAW,HLT:HIon,RAW2DIGI,L1Reco', '--inputCommands':'"keep *","drop *_simEcalPreshowerDigis_*_*"', '-n':10}, hiDefaults, step2Defaults])
 
@@ -483,8 +483,8 @@ dataReco={'--conditions':'auto:com10',
           }
 
 steps['HLTD']=merge([{'--process':'reHLT',
-                      '-s':'L1REPACK,HLT:7E33v2',
-                      '--condition':'auto:hltonline_7E33v2',
+                      '-s':'L1REPACK,HLT:5E33v4',
+                      '--condition':'auto:hltonline_5E33v4',
                       '--data':'',
                       '--output':'\'[{"e":"RAW","t":"RAW","o":["drop FEDRawDataCollection_rawDataCollector__LHC"]}]\'',
 #                      '--datatier':'RAW',
@@ -669,11 +669,11 @@ steps['SKIMCOSD']={'-s':'SKIM:all',
 
 #### for special wfs ###
 #steps['TTbar_REDIGI_RERECO']=merge([{'cfg':'TTbar_Tauola_8TeV_cfi',
-#                                     '-s':'GEN,SIM,DIGI,L1,DIGI2RAW,HLT:7E33v2,RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+DtCalib,VALIDATION,DQM',
+#                                     '-s':'GEN,SIM,DIGI,L1,DIGI2RAW,HLT:5E33v4,RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu+DtCalib,VALIDATION,DQM',
 #                                     '--datatier':'GEN-SIM-DIGI-RAW-HLTDEBUG-RECO,DQM',
 #                                     '--eventcontent':'FEVTDEBUGHLT,DQM'},
 #                                    K9by50,stCond,step1Defaults])
-#steps['DIGI2RECO']=merge([{'-s':'DIGI,L1,DIGI2RAW,HLT:7E33v2,RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+#steps['DIGI2RECO']=merge([{'-s':'DIGI,L1,DIGI2RAW,HLT:5E33v4,RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
 #                           '--filtername':'DIGItoRECO',
 #                           '--process':'RECO',
 #                           '--eventcontent':'RECOSIM,DQM',
