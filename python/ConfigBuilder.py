@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.381.2.6 $"
+__version__ = "$Revision: 1.381.2.7 $"
 __source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -1311,8 +1311,17 @@ class ConfigBuilder(object):
                 print "no specification of the hlt menu has been given, should never happen"
                 raise  Exception('no HLT sequence provided')
 
+        if '@' in sequence:
+                # case where HLT:@something was provided
+                from Configuration.HLT.autoHLT import autoHLT
+                key = sequence[1:]
+                if key in autoHLT:
+                  sequence = autoHLT[key]
+                else:
+                  raise ValueError('no HLT mapping key "%s" found in autoHLT' % key)
+
         if ',' in sequence:
-                #case where HLT:something:something was provided
+                # case where HLT:something:something was provided
                 self.executeAndRemember('import HLTrigger.Configuration.Utilities')
                 optionsForHLT = {}
                 if self._options.scenario == 'HeavyIons':
@@ -1730,7 +1739,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.381.2.6 $"),
+                                            (version=cms.untracked.string("$Revision: 1.381.2.7 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
