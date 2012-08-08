@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.372.2.20 $"
+__version__ = "$Revision: 1.372.2.21 $"
 __source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -667,7 +667,6 @@ class ConfigBuilder(object):
         """Add conditions to the process"""
 	if not self._options.conditions: return
 
-        # it is insane to keep this replace in: dependency on changes in DataProcessing
 	if 'FrontierConditions_GlobalTag' in self._options.conditions:
 		print 'using FrontierConditions_GlobalTag in --conditions is not necessary anymore and will be deprecated soon. please update your command line'
 		self._options.conditions = self._options.conditions.replace("FrontierConditions_GlobalTag,",'')
@@ -1176,7 +1175,6 @@ class ConfigBuilder(object):
         self.schedule.append(self.process.generation_step)
 
 	#register to the genstepfilter the name of the path (static right now, but might evolve)
-	print "modify gen filter"
 	self.executeAndRemember('process.genstepfilter.triggerConditions=cms.vstring("generation_step")')
 	
 	if 'reGEN' in self.stepMap:
@@ -1274,15 +1272,16 @@ class ConfigBuilder(object):
                 raise  Exception('no HLT sequence provided')
 
 	if '@' in sequence:
+                # case where HLT:@something was provided
 		from Configuration.HLT.autoHLT import autoHLT
-		key=sequence[1:]
+		key = sequence[1:]
 		if key in autoHLT:
-			sequence=autoHLT[key]
+		  sequence = autoHLT[key]
 		else:
-			raise  Exception('no HLT mapping key'+key+'found in autoHLT')
-		
+                  raise ValueError('no HLT mapping key "%s" found in autoHLT' % key)
+
         if ',' in sequence:
-                #case where HLT:something:something was provided
+                # case where HLT:something:something was provided
                 self.executeAndRemember('import HLTrigger.Configuration.Utilities')
                 optionsForHLT = {}
                 if self._options.scenario == 'HeavyIons':
@@ -1698,7 +1697,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.372.2.20 $"),
+                                            (version=cms.untracked.string("$Revision: 1.372.2.21 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
