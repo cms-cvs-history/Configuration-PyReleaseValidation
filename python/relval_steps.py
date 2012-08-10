@@ -666,7 +666,9 @@ steps['SKIMD']={'-s':'SKIM:all',
                 '--filein':'file:step2.root',
                 '--secondfilein':'filelist:step1_dbsquery.log'}
 
-steps['SKIMDreHLT'] = merge([ {'--conditions':'auto:com10_7E33v4','--filein':'file:step3.root'}, steps['SKIMD'] ])
+#steps['SKIMDreHLT'] = merge([ {'--conditions':'auto:com10_7E33v4','--filein':'file:step3.root'}, steps['SKIMD'] ])
+# this should use actually 'auto:com10_7E33v4' and a SKIM configuration compliant with Run2012C data
+steps['SKIMDreHLT'] = merge([ {'--conditions':'auto:com10','--filein':'file:step3.root'}, steps['SKIMD'] ])
 
 steps['SKIMCOSD']={'-s':'SKIM:all',
                    '--conditions':'auto:com10',
