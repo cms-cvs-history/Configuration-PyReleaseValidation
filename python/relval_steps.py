@@ -655,7 +655,7 @@ steps['HARVESTFS']={'-s':'HARVESTING:validationHarvestingFS',
                    '--mc':'',
                    '--scenario':'pp'}
 steps['HARVESTHI']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
-                   '--conditions':'auto:startup',
+                   '--conditions':'auto:starthi_HIon',
                    '--mc':'',
                    '--scenario':'HeavyIons'}
 
