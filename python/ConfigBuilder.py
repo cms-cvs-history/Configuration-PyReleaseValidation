@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.372.2.21 $"
+__version__ = "$Revision: 1.372.2.22 $"
 __source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -404,7 +404,7 @@ class ConfigBuilder(object):
 			self.process.source.dropDescendantsOfDroppedBranches = cms.untracked.bool(False)
 
 		
-        if 'GEN' in self.stepMap.keys() or (not self._options.filein and hasattr(self._options, "evt_type")):
+        if 'GEN' in self.stepMap or 'LHE' in self.stepMap or (not self._options.filein and hasattr(self._options, "evt_type")):
             if self.process.source is None:
                 self.process.source=cms.Source("EmptySource")
             # if option himix is active, drop possibly duplicate DIGI-RAW info:
@@ -806,9 +806,10 @@ class ConfigBuilder(object):
             self.L1EMDefaultCFF='Configuration/StandardSequences/SimL1EmulatorDM_cff'
 
         self.ALCADefaultSeq=None
-        self.SIMDefaultSeq=None
+	self.LHEDefaultSeq='externalLHEProducer'
         self.GENDefaultSeq='pgen'
-        self.DIGIDefaultSeq='pdigi'
+        self.SIMDefaultSeq=None
+	self.DIGIDefaultSeq='pdigi'
         self.DATAMIXDefaultSeq=None
         self.DIGI2RAWDefaultSeq='DigiToRaw'
         self.HLTDefaultSeq='GRun'
@@ -1115,6 +1116,22 @@ class ConfigBuilder(object):
                 #print "verify your configuration, ignoring for now"
                 raise Exception("The following alcas could not be found "+str(alcaList))
 
+    def prepare_LHE(self, sequence = None):
+	    #load the fragment
+	    ##make it loadable
+	    loadFragment = self._options.evt_type.replace('.py','',).replace('.','_').replace('python/','').replace('/','.')
+	    print "Loading lhe fragment from",loadFragment
+	    __import__(loadFragment)
+	    self.process.load(loadFragment)
+	    ##inline the modules
+	    self._options.inlineObjets+=','+sequence
+
+	    getattr(self.process,sequence).nEvents = int(self._options.number)
+	    
+	    #schedule it
+	    self.process.lhe_step = cms.Path( getattr( self.process,sequence)  )
+	    self.schedule.append( self.process.lhe_step )
+	    
     def prepare_GEN(self, sequence = None):
         """ load the fragment of generator configuration """
 	loadFailure=False
@@ -1158,10 +1175,10 @@ class ConfigBuilder(object):
 				self.productionFilterSequence = 'generator'
 
         """ Enrich the schedule with the rest of the generation step """
-        self.loadDefaultOrSpecifiedCFF(sequence,self.GENDefaultCFF)
-        genSeqName=sequence.split('.')[-1]
+	self.loadDefaultOrSpecifiedCFF(sequence,self.GENDefaultCFF)
+	genSeqName=sequence.split('.')[-1]
 
-        if not 'FASTSIM' in self.stepMap:
+	if not 'FASTSIM' in self.stepMap:
                 try:
 			from Configuration.StandardSequences.VtxSmeared import VtxSmeared
 			self.loadAndRemember(VtxSmeared[self._options.beamspot])
@@ -1697,7 +1714,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.372.2.21 $"),
+                                            (version=cms.untracked.string("$Revision: 1.372.2.22 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
