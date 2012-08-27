@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.381.2.8 $"
+__version__ = "$Revision: 1.381.2.9 $"
 __source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -408,7 +408,7 @@ class ConfigBuilder(object):
 		self.process.source.eventsToProcess=cms.untracked.VEventRange( LumiList.LumiList(self._options.lumiToProcess).getCMSSWString().split(',') )
 
 		
-        if 'GEN' in self.stepMap.keys() or (not self._options.filein and hasattr(self._options, "evt_type")):
+        if 'GEN' in self.stepMap or 'LHE' in self.stepMap or (not self._options.filein and hasattr(self._options, "evt_type")):
             if self.process.source is None:
                 self.process.source=cms.Source("EmptySource")
             # if option himix is active, drop possibly duplicate DIGI-RAW info:
@@ -811,8 +811,9 @@ class ConfigBuilder(object):
             self.L1EMDefaultCFF='Configuration/StandardSequences/SimL1EmulatorDM_cff'
 
         self.ALCADefaultSeq=None
-        self.SIMDefaultSeq=None
+	self.LHEDefaultSeq='externalLHEProducer'
         self.GENDefaultSeq='pgen'
+        self.SIMDefaultSeq=None
         self.DIGIDefaultSeq='pdigi'
         self.DATAMIXDefaultSeq=None
         self.DIGI2RAWDefaultSeq='DigiToRaw'
@@ -1154,6 +1155,22 @@ class ConfigBuilder(object):
                 print "available ",available
                 #print "verify your configuration, ignoring for now"
                 raise Exception("The following alcas could not be found "+str(alcaList))
+
+    def prepare_LHE(self, sequence = None):
+	    #load the fragment
+	    ##make it loadable
+	    loadFragment = self._options.evt_type.replace('.py','',).replace('.','_').replace('python/','').replace('/','.')
+	    print "Loading lhe fragment from",loadFragment
+	    __import__(loadFragment)
+	    self.process.load(loadFragment)
+	    ##inline the modules
+	    self._options.inlineObjets+=','+sequence
+	    
+	    getattr(self.process,sequence).nEvents = int(self._options.number)
+	    
+	    #schedule it
+	    self.process.lhe_step = cms.Path( getattr( self.process,sequence)  )
+	    self.schedule.append( self.process.lhe_step )
 
     def prepare_GEN(self, sequence = None):
         """ load the fragment of generator configuration """
@@ -1739,7 +1756,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.381.2.8 $"),
+                                            (version=cms.untracked.string("$Revision: 1.381.2.9 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
