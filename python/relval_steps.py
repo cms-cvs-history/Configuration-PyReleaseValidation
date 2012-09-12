@@ -140,7 +140,7 @@ step1['Cosmics']=merge([{'cfg':'UndergroundCosmicMu_cfi.py','--relval':'666000,7
 step1['BeamHalo']=merge([{'cfg':'BeamHalo_cfi.py','--scenario':'cosmics'},K9by100,step1Defaults])
 
 
-step1UpgDefaults={'-s':'GEN,SIM',
+step1UpgstdgeomDefaults={'-s':'GEN,SIM',
                   '--conditions':'DESIGN42_V17S::All',
                   '--eventcontent':'FEVTDEBUGHLT',
                   '--beamspot' : 'Gauss',
@@ -148,12 +148,162 @@ step1UpgDefaults={'-s':'GEN,SIM',
                   '--datatier' : 'GEN-SIM'
                   }
 
-step1['MinBiasUPG8']=merge([{'cfg':'MinBias_TuneZ2star_8TeV_pythia6_cff'},K9by100,step1UpgDefaults])
-step1['MinBiasUPG14']=merge([{'cfg':'MinBias_TuneZ2star_14TeV_pythia6_cff'},K9by100,step1UpgDefaults])         
-step1['SingleMuPt10UPG']=merge([{'cfg':'SingleMuPt10_cfi','--relval':'25000,250'},step1UpgDefaults])
-step1['SingleMuPt100UPG']=merge([{'cfg':'SingleMuPt100_cfi','--relval':'9000,250'},step1UpgDefaults])
-step1['SingleMuPt1000UPG']=merge([{'cfg':'SingleMuPt1000_cfi'},K9by100,step1UpgDefaults])
+step1Upgpixphase1Defaults={'-s':'GEN,SIM',
+                  '--conditions':'DESIGN42_V17S::All',
+                  '--eventcontent':'FEVTDEBUGHLT',
+                  '--beamspot' : 'Gauss',
+                  '--slhc' : 'Phase1_R30F12',
+                  '--datatier' : 'GEN-SIM'
+                  }
 
+
+step1['SingleMuPt10_UPGstd']=merge([{'cfg':'SingleMuPt10_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['SingleMuPt100_UPGstd']=merge([{'cfg':'SingleMuPt100_cfi','--relval':'9000,250'},step1UpgstdgeomDefaults])
+step1['SingleMuPt1000_UPGstd']=merge([{'cfg':'SingleMuPt1000_cfi'},K9by100,step1UpgstdgeomDefaults])
+step1['SingleElectronPt10_UPGstd']=merge([{'cfg':'SingleElectronPt10_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['SingleElectronPt35_UPGstd']=merge([{'cfg':'SingleElectronPt35_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['SingleGammaPt10_UPGstd']=merge([{'cfg':'SingleGammaPt10_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['SingleGammaPt35_UPGstd']=merge([{'cfg':'SingleGammaPt35_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+
+step1['FourMuPt1_200_UPGstd']=merge([{'cfg':'FourMuPt1_200_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['FourTauPt1_200_UPGstd']=merge([{'cfg':'FourTauPt1_200_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['FourElectronPt1_50_UPGstd']=merge([{'cfg':'FourElectronPt1_50_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['FourGammaPt1_50_UPGstd']=merge([{'cfg':'FourGammaPt1_50_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['FourPiPt1_50_UPGstd']=merge([{'cfg':'FourPiPt1_50_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+
+step1['H120_bbar_Zll_UPGstd14']=merge([{'cfg':'HERWIGPP_POWHEG_H120_bbar_Z_ll_14TeV_cff','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['H120_bbar_Zmm_UPGstd14']=merge([{'cfg':'HERWIGPP_POWHEG_H120_bbar_Z_mm_14TeV_cff','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['ZZ_MMorBB_UPGstd14']=merge([{'cfg':'ZZ_MMorBB_TuneZ2_14TeV_pythia6_tauola_cff','--relval':'25000,250'},step1UpgstdgeomDefaults])
+
+step1['H130GGgluonfusion_UPGstd14']=merge([{'cfg':'H130GGgluonfusion_14TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['H130GGgluonfusion_UPGstd8']=merge([{'cfg':'H130GGgluonfusion_8TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+
+step1['H200chargedTaus_Tauola_UPGstd14']=merge([{'cfg':'H200chargedTaus_Tauola_14TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['H200chargedTaus_Tauola_UPGstd8']=merge([{'cfg':'H200chargedTaus_Tauola_8TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+
+step1['JpsiMM_UPGstd14']=merge([{'cfg':'JpsiMM_14TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['JpsiMM_UPGstd8']=merge([{'cfg':'JpsiMM_8TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+
+
+step1['LM1_sfts_UPGstd14']=merge([{'cfg':'LM1_sfts_14TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['LM1_sfts_UPGstd8']=merge([{'cfg':'LM1_sfts_8TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+
+step1['MinBias_UPGstd8']=merge([{'cfg':'MinBias_TuneZ2star_8TeV_pythia6_cff'},K9by100,step1UpgstdgeomDefaults])
+step1['MinBias_UPGstd14']=merge([{'cfg':'MinBias_TuneZ2star_14TeV_pythia6_cff'},K9by100,step1UpgstdgeomDefaults])         
+
+step1['PhotonJet_Pt10_UPGstd14']=merge([{'cfg':'PhotonJet_Pt10_14TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['PhotonJet_Pt10_UPGstd8']=merge([{'cfg':'PhotonJet_Pt10_8TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+
+step1['QCDForPF_UPGstd14']=merge([{'cfg':'QCDForPF_14TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['QCDForPF_UPGstd8']=merge([{'cfg':'QCDForPF_8TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+
+step1['QCD_Pt_3000_3500_UPGstd14']=merge([{'cfg':'QCD_Pt_3000_3500_14TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['QCD_Pt_3000_3500_UPGstd8']=merge([{'cfg':'QCD_Pt_3000_3500_8TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+
+step1['QCD_Pt_80_120_UPGstd14']=merge([{'cfg':'QCD_Pt_80_120_14TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['QCD_Pt_80_120_UPGstd8']=merge([{'cfg':'QCD_Pt_80_120_8TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+
+step1['QQH1352T_Tauola_UPGstd14']=merge([{'cfg':'QQH1352T_Tauola_14TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['QQH1352T_Tauola_UPGstd8']=merge([{'cfg':'QQH1352T_Tauola_8TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+
+step1['TTbar_Tauola_UPGstd14']=merge([{'cfg':'TTbar_Tauola_14TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['TTbar_Tauola_UPGstd8']=merge([{'cfg':'TTbar_Tauola_8TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+
+step1['WE_UPGstd14']=merge([{'cfg':'WE_14TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['WE_UPGstd8']=merge([{'cfg':'WE_8TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+
+step1['WM_UPGstd14']=merge([{'cfg':'WM_14TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['WM_UPGstd8']=merge([{'cfg':'WM_8TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+
+step1['WJet_Pt_3000_3500_UPGstd14']=merge([{'cfg':'WJet_Pt_3000_3500_14TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['WJet_Pt_3000_3500_UPGstd8']=merge([{'cfg':'WJet_Pt_3000_3500_8TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+
+step1['WJet_Pt_80_120_UPGstd14']=merge([{'cfg':'WJet_Pt_80_120_14TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['WJet_Pt_80_120_UPGstd8']=merge([{'cfg':'WJet_Pt_80_120_8TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+
+step1['ZEE_UPGstd14']=merge([{'cfg':'ZEE_14TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['ZEE_UPGstd8']=merge([{'cfg':'ZEE_8TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+
+step1['ZMM_UPGstd14']=merge([{'cfg':'ZMM_14TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['ZMM_UPGstd8']=merge([{'cfg':'ZMM_8TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+
+step1['ZTT_UPGstd14']=merge([{'cfg':'ZTT_14TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+step1['ZTT_UPGstd8']=merge([{'cfg':'ZTT_8TeV_cfi','--relval':'25000,250'},step1UpgstdgeomDefaults])
+
+
+
+step1['SingleMuPt10_UPGphase1']=merge([{'cfg':'SingleMuPt10_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['SingleMuPt100_UPGphase1']=merge([{'cfg':'SingleMuPt100_cfi','--relval':'9000,250'},step1Upgpixphase1Defaults])
+step1['SingleMuPt1000_UPGphase1']=merge([{'cfg':'SingleMuPt1000_cfi'},K9by100,step1Upgpixphase1Defaults])
+step1['SingleElectronPt10_UPGphase1']=merge([{'cfg':'SingleElectronPt10_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['SingleElectronPt35_UPGphase1']=merge([{'cfg':'SingleElectronPt35_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['SingleGammaPt10_UPGphase1']=merge([{'cfg':'SingleGammaPt10_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['SingleGammaPt35_UPGphase1']=merge([{'cfg':'SingleGammaPt35_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+
+step1['FourMuPt1_200_UPGphase1']=merge([{'cfg':'FourMuPt1_200_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['FourTauPt1_200_UPGphase1']=merge([{'cfg':'FourTauPt1_200_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['FourElectronPt1_50_UPGphase1']=merge([{'cfg':'FourElectronPt1_50_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['FourGammaPt1_50_UPGphase1']=merge([{'cfg':'FourGammaPt1_50_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['FourPiPt1_50_UPGphase1']=merge([{'cfg':'FourPiPt1_50_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+
+step1['H120_bbar_Zll_UPGphase1_14']=merge([{'cfg':'HERWIGPP_POWHEG_H120_bbar_Z_ll_14TeV_cff','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['H120_bbar_Zmm_UPGphase1_14']=merge([{'cfg':'HERWIGPP_POWHEG_H120_bbar_Z_mm_14TeV_cff','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['ZZ_MMorBB_UPGphase1_14']=merge([{'cfg':'ZZ_MMorBB_TuneZ2_14TeV_pythia6_tauola_cff','--relval':'25000,250'},step1Upgpixphase1Defaults])
+
+step1['H130GGgluonfusion_UPGphase1_14']=merge([{'cfg':'H130GGgluonfusion_14TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['H130GGgluonfusion_UPGphase1_8']=merge([{'cfg':'H130GGgluonfusion_8TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+
+step1['H200chargedTaus_Tauola_UPGphase1_14']=merge([{'cfg':'H200chargedTaus_Tauola_14TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['H200chargedTaus_Tauola_UPGphase1_8']=merge([{'cfg':'H200chargedTaus_Tauola_8TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+
+step1['JpsiMM_UPGphase1_14']=merge([{'cfg':'JpsiMM_14TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['JpsiMM_UPGphase1_8']=merge([{'cfg':'JpsiMM_8TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+
+
+step1['LM1_sfts_UPGphase1_14']=merge([{'cfg':'LM1_sfts_14TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['LM1_sfts_UPGphase1_8']=merge([{'cfg':'LM1_sfts_8TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+
+step1['MinBias_UPGphase1_8']=merge([{'cfg':'MinBias_TuneZ2star_8TeV_pythia6_cff'},K9by100,step1Upgpixphase1Defaults])
+step1['MinBias_UPGphase1_14']=merge([{'cfg':'MinBias_TuneZ2star_14TeV_pythia6_cff'},K9by100,step1Upgpixphase1Defaults])         
+
+step1['PhotonJet_Pt10_UPGphase1_14']=merge([{'cfg':'PhotonJet_Pt10_14TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['PhotonJet_Pt10_UPGphase1_8']=merge([{'cfg':'PhotonJet_Pt10_8TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+
+step1['QCDForPF_UPGphase1_14']=merge([{'cfg':'QCDForPF_14TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['QCDForPF_UPGphase1_8']=merge([{'cfg':'QCDForPF_8TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+
+step1['QCD_Pt_3000_3500_UPGphase1_14']=merge([{'cfg':'QCD_Pt_3000_3500_14TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['QCD_Pt_3000_3500_UPGphase1_8']=merge([{'cfg':'QCD_Pt_3000_3500_8TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+
+step1['QCD_Pt_80_120_UPGphase1_14']=merge([{'cfg':'QCD_Pt_80_120_14TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['QCD_Pt_80_120_UPGphase1_8']=merge([{'cfg':'QCD_Pt_80_120_8TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+
+step1['QQH1352T_Tauola_UPGphase1_14']=merge([{'cfg':'QQH1352T_Tauola_14TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['QQH1352T_Tauola_UPGphase1_8']=merge([{'cfg':'QQH1352T_Tauola_8TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+
+step1['TTbar_Tauola_UPGphase1_14']=merge([{'cfg':'TTbar_Tauola_14TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['TTbar_Tauola_UPGphase1_8']=merge([{'cfg':'TTbar_Tauola_8TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+
+step1['WE_UPGphase1_14']=merge([{'cfg':'WE_14TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['WE_UPGphase1_8']=merge([{'cfg':'WE_8TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+
+step1['WM_UPGphase1_14']=merge([{'cfg':'WM_14TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['WM_UPGphase1_8']=merge([{'cfg':'WM_8TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+
+step1['WJet_Pt_3000_3500_UPGphase1_14']=merge([{'cfg':'WJet_Pt_3000_3500_14TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['WJet_Pt_3000_3500_UPGphase1_8']=merge([{'cfg':'WJet_Pt_3000_3500_8TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+
+step1['WJet_Pt_80_120_UPGphase1_14']=merge([{'cfg':'WJet_Pt_80_120_14TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['WJet_Pt_80_120_UPGphase1_8']=merge([{'cfg':'WJet_Pt_80_120_8TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+
+step1['ZEE_UPGphase1_14']=merge([{'cfg':'ZEE_14TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['ZEE_UPGphase1_8']=merge([{'cfg':'ZEE_8TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+
+step1['ZMM_UPGphase1_14']=merge([{'cfg':'ZMM_14TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['ZMM_UPGphase1_8']=merge([{'cfg':'ZMM_8TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+
+step1['ZTT_UPGphase1_14']=merge([{'cfg':'ZTT_14TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
+step1['ZTT_UPGphase1_8']=merge([{'cfg':'ZTT_8TeV_cfi','--relval':'25000,250'},step1Upgpixphase1Defaults])
 def changeRefRelease(step1s,listOfPairs):
     for s in step1s:
         if ('INPUT' in step1s[s]):
@@ -225,17 +375,28 @@ step2['RECOCOSD']=merge([{'--scenario':'cosmics',
                           },dataReco])
 
 
-step2['RECOUPG']={'cfg' : 'dud',
-                  '-s'  : 'DIGI,L1,DIGI2RAW,RAW2DIGI,L1Reco,RECO,DQM,VALIDATION ',
-                  '--eventcontent' : 'FEVTDEBUGHLT,DQM',
+step2['RECOSTD']={'cfg' : 'dud',
+                  '-s'  : 'DIGI,L1,DIGI2RAW,RAW2DIGI,L1Reco,RECO,VALIDATION,DQM ',
+                  '--eventcontent' : 'FEVTDEBUG,DQM',
                   '--datatier' : 'GEN-SIM-RECO,DQM',
                   '--conditions' : 'DESIGN42_V17S::All',
                   '--slhc' : 'stdgeom',
                   '--customise' : 'SLHCUpgradeSimulations/Geometry/customise_stdgeom.customise'
                   }
 
-step2['RECOUPGPU']=merge([{'--customise':'SLHCUpgradeSimulations/Geometry/customise_stdgeom.customise_pu15_25ns'},step2['RECOUPG']])
+step2['STDPU']=merge([{'--customise':'SLHCUpgradeSimulations/Geometry/customise_stdgeom.customise_pu15_25ns'},step2['RECOSTD']])
 
+
+step2['RECOPHASE1']={'cfg' : 'dud',
+                  '-s'  : 'DIGI,L1,DIGI2RAW,RAW2DIGI,L1Reco,RECO,VALIDATION,DQM ',
+                  '--eventcontent' : 'FEVTDEBUG,DQM',
+                  '--datatier' : 'GEN-SIM-RECO,DQM',
+                  '--conditions' : 'DESIGN42_V17S::All',
+                  '--slhc' : 'Phase1_R30F12',
+                  '--customise' : 'SLHCUpgradeSimulations/Geometry/customise_phase1.customise'
+                  }
+
+step2['PHASE1PU']=merge([{'--customise':'SLHCUpgradeSimulations/Geometry/customise_phase1.customise_pu15_25ns'},step2['RECOPHASE1']])
 # step3 
 step3Defaults = { 'cfg'           : 'step3',
                   '-s'            : 'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
@@ -305,6 +466,18 @@ step3['RECOFROMRECO']=merge([{'-s':'RECO,ALCA:MuAlCalIsolatedMu+DtCalib',
                               '--datatier':'GEN-SIM-RECO',
                               '--eventcontent':'RECOSIM'},
                              stCond,step3Defaults])
+
+#HARVESTING upgrade
+step3upgrade = { '-s':'HARVESTING:validationHarvesting+dqmHarvesting',
+                   '--conditions':'DESIGN42_V17S::All',
+                   '--mc':'',
+                   '--filein':'file:step2_inDQM.root',
+		   '--scenario':'pp',
+		   '--harvesting' : 'AtRunEnd '                }
+
+
+step3['HARVESTUPSTD']=merge([step3upgrade,{"--customise":"SLHCUpgradeSimulations.Geometry.customise_stdgeom",'--inline_cust':''}])
+step3['HARVESTUPPH1']=merge([step3upgrade,{"--customise":"SLHCUpgradeSimulations.Geometry.customise_phase1","--inline_cust":''}])
 
 
 
