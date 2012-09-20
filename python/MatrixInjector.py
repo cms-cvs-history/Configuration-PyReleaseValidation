@@ -52,7 +52,7 @@ class MatrixInjector(object):
             
         self.defaultChain={
             "RequestType" :   "TaskChain",                    #this is how we handle relvals
-            "AcquisitionEra": None,            #Acq Era
+            "AcquisitionEra": {},                             #Acq Era
             "Requestor": self.user,                           #Person responsible
             "Group": self.group,                              #group for the request
             "CMSSWVersion": os.getenv('CMSSW_VERSION'),       #CMSSW Version (used for all tasks in chain)
@@ -163,7 +163,8 @@ class MatrixInjector(object):
                             chainDict['nowmTasklist'][-1]['ConfigCacheID']='%s/%s.py'%(dir,step)
                             chainDict['nowmTasklist'][-1]['GlobalTag']=chainDict['nowmTasklist'][-1]['nowmIO']['GT'] # copy to the proper parameter name
                             chainDict['GlobalTag']=chainDict['nowmTasklist'][-1]['nowmIO']['GT'] #set in general to the last one of the chain
-                            chainDict['AcquisitionEra']=(chainDict['CMSSWVersion']+'-'+chainDict['GlobalTag']).replace('::All','')
+                            #chainDict['AcquisitionEra']=(chainDict['CMSSWVersion']+'-'+chainDict['GlobalTag']).replace('::All','')
+                            chainDict['AcquisitionEra'][step]=(chainDict['CMSSWVersion']+'-'+chainDict['nowmTasklist'][-1]['GlobalTag']).replace('::All','')
                         index+=1
                         
             #wrap up for this one
@@ -187,6 +188,12 @@ class MatrixInjector(object):
                                 t_second['InputFromOutputModule'] = om
                                 #print 't_second',t_second
                                 break
+
+            ## there is in fact only one acquisition era
+            if len(set(chainDict['AcquisitionEra'].values()))==1:
+                chainDict['AcquisitionEra'] = chainDict['AcquisitionEra'].values()[0]
+                
+            ## clean things up now
             for (i,t) in enumerate(chainDict['nowmTasklist']):
                 t.pop('nowmIO')
                 chainDict['Task%d'%(i+1)]=t
