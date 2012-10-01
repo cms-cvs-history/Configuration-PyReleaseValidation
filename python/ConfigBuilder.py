@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.381.2.11 $"
+__version__ = "$Revision: 1.381.2.12 $"
 __source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -405,8 +405,7 @@ class ConfigBuilder(object):
 
 	if self._options.lumiToProcess:
 		import FWCore.PythonUtilities.LumiList as LumiList
-		self.process.source.eventsToProcess=cms.untracked.VEventRange( LumiList.LumiList(self._options.lumiToProcess).getCMSSWString().split(',') )
-
+		self.process.source.lumisToProcess = cms.untracked.VLuminosityBlockRange( LumiList.LumiList(self._options.lumiToProcess).getCMSSWString().split(',') )
 		
         if 'GEN' in self.stepMap or 'LHE' in self.stepMap or (not self._options.filein and hasattr(self._options, "evt_type")):
             if self.process.source is None:
@@ -1753,7 +1752,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.381.2.11 $"),
+                                            (version=cms.untracked.string("$Revision: 1.381.2.12 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
