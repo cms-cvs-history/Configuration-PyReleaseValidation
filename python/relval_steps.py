@@ -351,6 +351,7 @@ steps['QCD_Pt_20_30']=genS('QCD_Pt_20_30_8TeV_cfi',K250by100)
 steps['QCD_Pt_170_230']=genS('QCD_Pt_170_230_8TeV_cfi',K250by100)
 
 ## upgrade dedicated wf
+#PixPhase1
 step1Upgpixphase1Defaults = {'-s' : 'GEN,SIM',
                              '-n' : 10,
                              '--conditions' : 'DESIGN60_V5::All',
@@ -363,6 +364,22 @@ step1Upgpixphase1Defaults = {'-s' : 'GEN,SIM',
 steps['FourMuPt1_200_UPGphase1']=merge([{'cfg':'FourMuPt_1_200_cfi','--relval':'10000,100'},step1Upgpixphase1Defaults])
 steps['MinBias_UPGphase1_14']=merge([{'cfg':'MinBias_TuneZ2star_14TeV_pythia6_cff','--relval':'15000,250'},step1Upgpixphase1Defaults])
 steps['TTbar_Tauola_UPGphase1_14']=merge([{'cfg':'TTbar_Tauola_14TeV_cfi','--relval':'10000,100'},step1Upgpixphase1Defaults])
+
+
+#PostLS1
+step1Upgpostls1Defaults = {'-s' : 'GEN,SIM',
+                             '-n' : 10,
+                             '--conditions' : 'POSTLS161_V1::All',
+                             '--datatier' : 'GEN-SIM',
+                             '--eventcontent': 'RAWSIM',
+                             '--geometry' : 'DBExtendedPostLS1'
+                             }
+
+steps['FourMuPt1_200_UPGpostls1']=merge([{'cfg':'FourMuPt_1_200_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
+steps['MinBias_UPGpostls1_14']=merge([{'cfg':'MinBias_TuneZ2star_14TeV_pythia6_cff','--relval':'15000,250'},step1Upgpostls1Defaults])
+steps['TTbar_Tauola_UPGpostls1_14']=merge([{'cfg':'TTbar_Tauola_14TeV_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
+
+
 
 ## heavy ions tests
 U500by5={'--relval': '500,5'}
