@@ -10,6 +10,12 @@ workflows = {}
 # the name of step1 will be used
 
 
+#PixPhase1
 workflows[3107] = ['', ['FourMuPt1_200_UPGphase1']]
 workflows[3123] = ['', ['MinBias_UPGphase1_14']]
 workflows[3135] = ['', ['TTbar_Tauola_UPGphase1_14']]
+
+#Postls1
+workflows[3207] = ['', ['FourMuPt1_200_UPGpostls1']]
+workflows[3223] = ['', ['MinBias_UPGpostls1_14']]
+workflows[3235] = ['', ['TTbar_Tauola_UPGpostls1_14']]
