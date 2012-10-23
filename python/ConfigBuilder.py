@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.381.2.12 $"
+__version__ = "$Revision: 1.381.2.13 $"
 __source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -862,10 +862,6 @@ class ConfigBuilder(object):
 	if 'reGEN' in self.stepMap:
 		self.GENDefaultSeq='fixGenInfo'
 
-        if self._options.scenario=='nocoll' or self._options.scenario=='cosmics':
-            self.SIMDefaultCFF="Configuration/StandardSequences/SimNOBEAM_cff"
-            self._options.beamspot='NoSmear'
-
         if self._options.scenario=='cosmics':
             self.DIGIDefaultCFF="Configuration/StandardSequences/DigiCosmics_cff"
             self.RECODefaultCFF="Configuration/StandardSequences/ReconstructionCosmics_cff"
@@ -960,6 +956,12 @@ class ConfigBuilder(object):
 	# synchronize the geometry configuration and the FullSimulation sequence to be used
         if simGeometry not in defaultOptions.geometryExtendedOptions:
 		self.SIMDefaultCFF="Configuration/StandardSequences/SimIdeal_cff"
+
+        if self._options.scenario=='nocoll' or self._options.scenario=='cosmics':
+	    print simGeometry
+            self.SIMDefaultCFF="Configuration/StandardSequences/SimNOBEAM_cff"
+            self._options.beamspot='NoSmear'
+
 	    
         # Mixing
 	if self._options.pileup=='default':
@@ -1752,7 +1754,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.381.2.12 $"),
+                                            (version=cms.untracked.string("$Revision: 1.381.2.13 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
