@@ -17,5 +17,15 @@ workflows[3135] = ['', ['TTbar_Tauola_UPGphase1_14']]
 
 #Postls1
 workflows[3207] = ['', ['FourMuPt1_200_UPGpostls1']]
+
 workflows[3223] = ['', ['MinBias_UPGpostls1_14']]
 workflows[3235] = ['', ['TTbar_Tauola_UPGpostls1_14']]
+
+workflows[3201] = ['', ['JpsiMMM_UPGpostls1_14']]
+workflows[3202] = ['', ['WM_UPGpostls1_14']]
+workflows[3203] = ['', ['ZMM_UPGpostls1_14']]
+workflows[3204] = ['', ['SingleMuPt10_UPGpostls1']]
+workflows[3205] = ['', ['SingleMuPt100_UPGpostls1']]
+workflows[3206] = ['', ['SingleMuPt1000_UPGpostls1']]
+
+workflows[3208] = ['', ['ZmumuJets_Pt20_300_UPGpostls1_14']]

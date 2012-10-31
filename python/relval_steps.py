@@ -391,6 +391,17 @@ steps['TTbar_Tauola_UPGpostls1_14']=merge([{'cfg':'TTbar_Tauola_14TeV_cfi','--re
 
 
 
+steps['JpsiMMM_UPGpostls1_14']=merge([{'cfg':'JpsiMM_14TeV_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
+steps['WM_UPGpostls1_14']=merge([{'cfg':'WM_14TeV_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
+steps['ZMM_UPGpostls1_14']=merge([{'cfg':'ZMM_14TeV_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
+steps['ZmumuJets_Pt20_300_UPGpostls1_14']=merge([{'cfg':'ZmumuJets_Pt_20_300_GEN_cfg','--relval':'10000,100'},step1Upgpostls1Defaults])
+
+steps['SingleMuPt10_UPGpostls1']=merge([{'cfg':'SingleMuPt10_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
+steps['SingleMuPt100_UPGpostls1']=merge([{'cfg':'SingleMuPt100_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
+steps['SingleMuPt1000_UPGpostls1']=merge([{'cfg':'SingleMuPt1000_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
+
+
+
 ## heavy ions tests
 U500by5={'--relval': '500,5'}
 U80by2={'--relval': '80,2'}
