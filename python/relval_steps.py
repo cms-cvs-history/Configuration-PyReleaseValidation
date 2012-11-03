@@ -406,6 +406,7 @@ steps['TTbar_Tauola_UPGpostls1_14INPUT']={'INPUT':InputInfo(dataSet='/RelValTTba
 steps['JpsiMM_UPGpostls1_14INPUT']={'INPUT':InputInfo(dataSet='/RelValJpsiMMM_UPGpostls1_14/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
 steps['WM_UPGpostls1_14INPUT']={'INPUT':InputInfo(dataSet='/RelValWM_UPGpostls1_14/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
 steps['ZMM_UPGpostls1_14INPUT']={'INPUT':InputInfo(dataSet='/RelValZMM_UPGpostls1_14/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
+steps['ZmumuJets_Pt20_300_UPGpostls1_14INPUT']={'INPUT':InputInfo(dataSet='/RelValZmumuJets_Pt20_300_UPGpostls1_14/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
 steps['SingleMuPt10_UPGpostls1INPUT']={'INPUT':InputInfo(dataSet='/RelValSingleMuPt10_UPGpostls1/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
 steps['SingleMuPt100_UPGpostls1INPUT']={'INPUT':InputInfo(dataSet='/RelValSingleMuPt100_UPGpostls1/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
 steps['SingleMuPt1000_UPGpostls1INPUT']={'INPUT':InputInfo(dataSet='/RelValSingleMuPt1000_UPGpostls1/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
@@ -536,15 +537,17 @@ steps['DIGI_ID']=merge([{'--restoreRND':'HLT','--process':'HLT2'},steps['DIGI']]
 steps['RESIM']=merge([{'-s':'reGEN,reSIM','-n':10},steps['DIGI']])
 steps['RESIMDIGI']=merge([{'-s':'reGEN,reSIM,DIGI,L1,DIGI2RAW,HLT:@relval,RAW2DIGI,L1Reco','-n':10,'--restoreRNDSeeds':'','--process':'HLT'},steps['DIGI']])
 
-steps['DIGIUP']=merge([{'-s':'DIGI,L1,DIGI2RAW',
-                        '--conditions':'POSTLS161_V10::All',
-                        '--datatier':'GEN-SIM-DIGI-RAW',
-                        '-n':'10',
-                        '--eventcontent':'FEVTDEBUG',
-                        '--geometry':'DBExtendedPostLS1',
-                        '--customise':'SLHCUpgradeSimulations/Configuration/postLS1Customs.digiCustoms'
-                        },
-                       PUUP])
+steps['DIGIUP']={'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'POSTLS161_V10::All',
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUG',
+                 '--geometry':'DBExtendedPostLS1',
+                 '--customise':'SLHCUpgradeSimulations/Configuration/postLS1Customs.digiCustoms'
+                 }
+steps['DIGIPUUP']=merge([PUUP,
+                         steps['DIGIUP']])
+
     
 steps['DIGIHI']=merge([{'--conditions':'auto:starthi_HIon', '-s':'DIGI,L1,DIGI2RAW,HLT:HIon,RAW2DIGI,L1Reco', '--inputCommands':'"keep *","drop *_simEcalPreshowerDigis_*_*"', '-n':10}, hiDefaults, step2Defaults])
 
