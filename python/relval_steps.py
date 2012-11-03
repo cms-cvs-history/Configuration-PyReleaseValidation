@@ -229,7 +229,8 @@ baseDataSetRelease=[
     'CMSSW_6_0_0-START60_V4-v1',
     'CMSSW_6_0_0-STARTHI60_V4-v1',
     'CMSSW_6_0_0-PU_START60_V4-v1',
-    'CMSSW_6_0_0-START60_V4_FastSim-v1'
+    'CMSSW_6_0_0-START60_V4_FastSim-v1',
+    'CMSSW_6_0_1-POSTLS161_V1-v1'
     ]
 
 steps['MinBiasINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBias/%s/GEN-SIM'%(baseDataSetRelease[0],),location='STD')}
@@ -391,7 +392,7 @@ steps['TTbar_Tauola_UPGpostls1_14']=merge([{'cfg':'TTbar_Tauola_14TeV_cfi','--re
 
 
 
-steps['JpsiMMM_UPGpostls1_14']=merge([{'cfg':'JpsiMM_14TeV_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
+steps['JpsiMM_UPGpostls1_14']=merge([{'cfg':'JpsiMM_14TeV_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
 steps['WM_UPGpostls1_14']=merge([{'cfg':'WM_14TeV_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
 steps['ZMM_UPGpostls1_14']=merge([{'cfg':'ZMM_14TeV_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
 steps['ZmumuJets_Pt20_300_UPGpostls1_14']=merge([{'cfg':'ZmumuJets_Pt_20_300_GEN_cfg','--relval':'10000,100'},step1Upgpostls1Defaults])
@@ -400,7 +401,14 @@ steps['SingleMuPt10_UPGpostls1']=merge([{'cfg':'SingleMuPt10_cfi','--relval':'10
 steps['SingleMuPt100_UPGpostls1']=merge([{'cfg':'SingleMuPt100_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
 steps['SingleMuPt1000_UPGpostls1']=merge([{'cfg':'SingleMuPt1000_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
 
-
+steps['MinBias_UPGpostls1_14INPUT']={'INPUT':InputInfo(dataSet='/RelValMinBias_UPGpostls1_14/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
+steps['TTbar_Tauola_UPGpostls1_14INPUT']={'INPUT':InputInfo(dataSet='/RelValTTbar_Tauola_UPGpostls1_14/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
+steps['JpsiMM_UPGpostls1_14INPUT']={'INPUT':InputInfo(dataSet='/RelValJpsiMMM_UPGpostls1_14/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
+steps['WM_UPGpostls1_14INPUT']={'INPUT':InputInfo(dataSet='/RelValWM_UPGpostls1_14/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
+steps['ZMM_UPGpostls1_14INPUT']={'INPUT':InputInfo(dataSet='/RelValZMM_UPGpostls1_14/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
+steps['SingleMuPt10_UPGpostls1INPUT']={'INPUT':InputInfo(dataSet='/RelValSingleMuPt10_UPGpostls1/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
+steps['SingleMuPt100_UPGpostls1INPUT']={'INPUT':InputInfo(dataSet='/RelValSingleMuPt100_UPGpostls1/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
+steps['SingleMuPt1000_UPGpostls1INPUT']={'INPUT':InputInfo(dataSet='/RelValSingleMuPt1000_UPGpostls1/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
 
 ## heavy ions tests
 U500by5={'--relval': '500,5'}
@@ -499,9 +507,9 @@ steps['ZJetsLNu_Tune4C_8TeV_madgraph-pythia8']=genvalid('Hadronizer_MgmMatchTune
 
 PU={'-n':10,'--pileup':'default','--pileup_input':'dbs:/RelValMinBias/%s/GEN-SIM'%(baseDataSetRelease[0],)}
 PUFS={'--pileup':'default'}
-PUFS2={'--pileup':'mix_2012_Startup_inTimeOnly'}
+PUUP={'--pileup':'AVE_50_BX_25ns','--pileup_input':'dbs:/RelValMinBias_UPGpostls1_14/%s/GEN-SIM'%(baseDataSetRelease[4],)}
 steps['TTbarFSPU']=merge([PUFS,steps['TTbarFS']])
-steps['TTbarFSPU2']=merge([PUFS2,steps['TTbarFS']])
+
 ##########################
 
 
@@ -528,6 +536,15 @@ steps['DIGI_ID']=merge([{'--restoreRND':'HLT','--process':'HLT2'},steps['DIGI']]
 steps['RESIM']=merge([{'-s':'reGEN,reSIM','-n':10},steps['DIGI']])
 steps['RESIMDIGI']=merge([{'-s':'reGEN,reSIM,DIGI,L1,DIGI2RAW,HLT:@relval,RAW2DIGI,L1Reco','-n':10,'--restoreRNDSeeds':'','--process':'HLT'},steps['DIGI']])
 
+steps['DIGIUP']=merge([{'-s':'DIGI,L1,DIGI2RAW',
+                        '--conditions':'POSTLS161_V10::All',
+                        '--datatier':'GEN-SIM-DIGI-RAW',
+                        '-n':'10',
+                        '--eventcontent':'FEVTDEBUG',
+                        '--geometry':'DBExtendedPostLS1',
+                        '--customise':'SLHCUpgradeSimulations/Configuration/postLS1Customs.digiCustoms'
+                        },
+                       PUUP])
     
 steps['DIGIHI']=merge([{'--conditions':'auto:starthi_HIon', '-s':'DIGI,L1,DIGI2RAW,HLT:HIon,RAW2DIGI,L1Reco', '--inputCommands':'"keep *","drop *_simEcalPreshowerDigis_*_*"', '-n':10}, hiDefaults, step2Defaults])
 
