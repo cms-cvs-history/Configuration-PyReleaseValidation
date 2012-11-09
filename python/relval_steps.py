@@ -508,8 +508,10 @@ steps['ZJetsLNu_Tune4C_8TeV_madgraph-pythia8']=genvalid('Hadronizer_MgmMatchTune
 
 PU={'-n':10,'--pileup':'default','--pileup_input':'dbs:/RelValMinBias/%s/GEN-SIM'%(baseDataSetRelease[0],)}
 PUFS={'--pileup':'default'}
+PUFS2={'--pileup':'mix_2012_Startup_inTimeOnly'}
 PUUP={'--pileup':'AVE_50_BX_25ns','--pileup_input':'dbs:/RelValMinBias_UPGpostls1_14/%s/GEN-SIM'%(baseDataSetRelease[4],)}
 steps['TTbarFSPU']=merge([PUFS,steps['TTbarFS']])
+steps['TTbarFSPU2']=merge([PUFS2,steps['TTbarFS']])
 
 ##########################
 
