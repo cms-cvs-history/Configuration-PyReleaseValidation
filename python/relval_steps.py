@@ -643,7 +643,7 @@ steps['RECOPU1']=merge([PU,steps['RECO']])
 steps['RECOPUDBG']=merge([{'--eventcontent':'RECODEBUG,DQM'},steps['RECOPU1']])
 steps['RERECOPU1']=merge([{'--hltProcess':'REDIGI'},steps['RECOPU1']])
 
-steps['RECOUP']={'-s':'RAW2DIGI,RECO,DQM,VALIDATION',
+steps['RECOUP']={'-s':'RAW2DIGI,RECO,DQM',
                  '--conditions':'auto:postls1',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUG',
