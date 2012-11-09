@@ -539,13 +539,13 @@ steps['DIGI_ID']=merge([{'--restoreRND':'HLT','--process':'HLT2'},steps['DIGI']]
 steps['RESIM']=merge([{'-s':'reGEN,reSIM','-n':10},steps['DIGI']])
 steps['RESIMDIGI']=merge([{'-s':'reGEN,reSIM,DIGI,L1,DIGI2RAW,HLT:@relval,RAW2DIGI,L1Reco','-n':10,'--restoreRNDSeeds':'','--process':'HLT'},steps['DIGI']])
 
-steps['DIGIUP']={'-s':'DIGI,L1,DIGI2RAW',
+steps['DIGIUP']={'-s':'DIGI,L1,DIGI2RAW,HLT',
                  '--conditions':'auto:postls1',
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUG',
                  '--geometry':'DBExtendedPostLS1',
-                 '--customise':'SLHCUpgradeSimulations/Configuration/postLS1Customs.digiCustoms'
+                 '--customise':'SLHCUpgradeSimulations/Configuration/postLS1Customs.digiCustomsRelVal,SLHCUpgradeSimulations/Configuration/postLS1Customs.hltCustoms'
                  }
 steps['DIGIPUUP']=merge([PUUP,
                          steps['DIGIUP']])
@@ -643,7 +643,7 @@ steps['RECOPU1']=merge([PU,steps['RECO']])
 steps['RECOPUDBG']=merge([{'--eventcontent':'RECODEBUG,DQM'},steps['RECOPU1']])
 steps['RERECOPU1']=merge([{'--hltProcess':'REDIGI'},steps['RECOPU1']])
 
-steps['RECOUP']={'-s':'RAW2DIGI,RECO',
+steps['RECOUP']={'-s':'RAW2DIGI,RECO,DQM,VALIDATION',
                  '--conditions':'auto:postls1',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUG',
