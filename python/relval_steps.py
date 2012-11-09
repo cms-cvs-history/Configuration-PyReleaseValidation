@@ -649,7 +649,7 @@ steps['RECOUP']={'-s':'RAW2DIGI,RECO',
                  '--eventcontent':'FEVTDEBUG',
                  '--datatier':'GEN-SIM-RECO',
                  '--geometry':'DBExtendedPostLS1',
-                 '--cutomise':'SLHCUpgradeSimulations/Configuration/postLS1Customs.recoCustoms'
+                 '--customise':'SLHCUpgradeSimulations/Configuration/postLS1Customs.recoCustoms'
                  }
                  
 
