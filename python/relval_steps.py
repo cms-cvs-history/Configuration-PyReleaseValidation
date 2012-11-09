@@ -380,7 +380,7 @@ steps['TTbar_Tauola_UPGphase1_14']=merge([{'cfg':'TTbar_Tauola_14TeV_cfi','--rel
 #PostLS1
 step1Upgpostls1Defaults = {'-s' : 'GEN,SIM',
                              '-n' : 10,
-                             '--conditions' : 'POSTLS161_V1::All',
+                             '--conditions' : 'auto:postls1',
                              '--datatier' : 'GEN-SIM',
                              '--eventcontent': 'RAWSIM',
                              '--geometry' : 'DBExtendedPostLS1'
@@ -538,7 +538,7 @@ steps['RESIM']=merge([{'-s':'reGEN,reSIM','-n':10},steps['DIGI']])
 steps['RESIMDIGI']=merge([{'-s':'reGEN,reSIM,DIGI,L1,DIGI2RAW,HLT:@relval,RAW2DIGI,L1Reco','-n':10,'--restoreRNDSeeds':'','--process':'HLT'},steps['DIGI']])
 
 steps['DIGIUP']={'-s':'DIGI,L1,DIGI2RAW',
-                 '--conditions':'POSTLS161_V10::All',
+                 '--conditions':'auto:postls1',
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUG',
@@ -640,6 +640,16 @@ steps['RECODDQM']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,DQM:@common+@muon+@hcal+@je
 steps['RECOPU1']=merge([PU,steps['RECO']])
 steps['RECOPUDBG']=merge([{'--eventcontent':'RECODEBUG,DQM'},steps['RECOPU1']])
 steps['RERECOPU1']=merge([{'--hltProcess':'REDIGI'},steps['RECOPU1']])
+
+steps['RECOUP']={'-s':'RAW2DIGI,RECO',
+                 '--conditions':'auto:postls1',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUG',
+                 '--datatier':'GEN-SIM-RECO',
+                 '--geometry':'DBExtendedPostLS1',
+                 '--cutomise':'SLHCUpgradeSimulations/Configuration/postLS1Customs.recoCustoms'
+                 }
+                 
 
 steps['RECO_ID']=merge([{'--hltProcess':'HLT2'},steps['RECO']])
 
