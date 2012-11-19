@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.381.2.14 $"
+__version__ = "$Revision: 1.381.2.15 $"
 __source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -1678,11 +1678,14 @@ class ConfigBuilder(object):
 		# if both HLT and DQM are run in the same process, schedule [HLT]DQM in an EndPath
 		if 'HLT' in self.stepMap.keys():
 			# need to put [HLT]DQM in an EndPath, to access the HLT trigger results
-			setattr(self.process,pathName, cms.EndPath( getattr(self.process, sequence ) ) )
+			#setattr(self.process,pathName, cms.EndPath( getattr(self.process, sequence ) ) )
+			self.scheduleSequence(sequence, pathName, what='EndPath')
+						
 		else:
 			# schedule DQM as a standard Path
-			setattr(self.process,pathName, cms.Path( getattr(self.process, sequence) ) ) 
-		self.schedule.append(getattr(self.process,pathName))
+			#setattr(self.process,pathName, cms.Path( getattr(self.process, sequence) ) )
+			self.scheduleSequence(sequence, pathName, what='Path')
+		#self.schedule.append(getattr(self.process,pathName))
 
 
     def prepare_HARVESTING(self, sequence = None):
@@ -1799,7 +1802,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.381.2.14 $"),
+                                            (version=cms.untracked.string("$Revision: 1.381.2.15 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
