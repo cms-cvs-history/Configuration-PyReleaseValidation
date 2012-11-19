@@ -540,7 +540,7 @@ steps['RESIM']=merge([{'-s':'reGEN,reSIM','-n':10},steps['DIGI']])
 steps['RESIMDIGI']=merge([{'-s':'reGEN,reSIM,DIGI,L1,DIGI2RAW,HLT:@relval,RAW2DIGI,L1Reco','-n':10,'--restoreRNDSeeds':'','--process':'HLT'},steps['DIGI']])
 
 steps['DIGIUP']={'-s':'DIGI,L1,DIGI2RAW,HLT',
-                 '--conditions':'auto:postls1',
+                 '--conditions':'POSTLS161_V12::All',
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUG',
@@ -644,10 +644,10 @@ steps['RECOPUDBG']=merge([{'--eventcontent':'RECODEBUG,DQM'},steps['RECOPU1']])
 steps['RERECOPU1']=merge([{'--hltProcess':'REDIGI'},steps['RECOPU1']])
 
 steps['RECOUP']={'-s':'RAW2DIGI,RECO,VALIDATION,DQM',
-                 '--conditions':'auto:postls1',
+                 '--conditions':'POSTLS161_V12::All',
                  '-n':'10',
-                 '--eventcontent':'FEVTDEBUG',
-                 '--datatier':'GEN-SIM-RECO',
+                 '--eventcontent':'FEVTDEBUG,DQM',
+                 '--datatier':'GEN-SIM-RECO,DQM',
                  '--geometry':'DBExtendedPostLS1',
                  '--customise':'SLHCUpgradeSimulations/Configuration/postLS1Customs.recoCustoms'
                  }
@@ -758,6 +758,11 @@ steps['HARVESTFS']={'-s':'HARVESTING:validationHarvestingFS',
                    '--conditions':'auto:startup',
                    '--mc':'',
                    '--scenario':'pp'}
+steps['HARVESTUP']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
+                   '--conditions':' POSTLS161_V12::All',
+                   '--geometry':'DBExtendedPostLS1'
+		   } ## crashes observed with some of the upgrade workflows -- to be fixed
+		   
 steps['HARVESTHI']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
                    '--conditions':'auto:starthi_HIon',
                    '--mc':'',
