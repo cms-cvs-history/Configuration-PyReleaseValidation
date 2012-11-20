@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.381.2.15 $"
+__version__ = "$Revision: 1.381.2.16 $"
 __source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -1080,6 +1080,8 @@ class ConfigBuilder(object):
             return l
 
     def scheduleSequence(self,seq,prefix,what='Path'):
+	    if not what in ['Path','EndPath']:
+		    raise Exception("Can only schedule a Path or and EndPath."+str(what)+"is not allowed")
 	    if '*' in seq:
 		    #create only one path with all sequences in it
 		    for i,s in enumerate(seq.split('*')):
@@ -1093,7 +1095,7 @@ class ConfigBuilder(object):
 	    else:
 		    #create as many path as many sequences
 		    if not '+' in seq:
-			    if self.nextScheduleIsConditional:
+			    if self.nextScheduleIsConditional and what=='Path':
 				    self.conditionalPaths.append(prefix)
 			    setattr(self.process,prefix,getattr(cms,what)( getattr(self.process, seq) ))
 			    self.schedule.append(getattr(self.process,prefix))
@@ -1802,7 +1804,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.381.2.15 $"),
+                                            (version=cms.untracked.string("$Revision: 1.381.2.16 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
