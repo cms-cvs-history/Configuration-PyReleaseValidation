@@ -652,6 +652,10 @@ steps['RECOUP']={'-s':'RAW2DIGI,RECO,VALIDATION,DQM',
                  '--customise':'SLHCUpgradeSimulations/Configuration/postLS1Customs.recoCustoms'
                  }
                  
+steps['RECOPUUP']=merge([PUUP,
+                         steps['RECOUP']])
+
+                 
 
 steps['RECO_ID']=merge([{'--hltProcess':'HLT2'},steps['RECO']])
 
@@ -759,7 +763,7 @@ steps['HARVESTFS']={'-s':'HARVESTING:validationHarvestingFS',
                    '--mc':'',
                    '--scenario':'pp'}
 steps['HARVESTUP']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
-                   '--conditions':' POSTLS161_V12::All',
+                   '--conditions':'POSTLS161_V12::All',
                    '--geometry':'DBExtendedPostLS1'
 		   } ## crashes observed with some of the upgrade workflows -- to be fixed
 		   
