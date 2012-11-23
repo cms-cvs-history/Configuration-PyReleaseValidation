@@ -16,8 +16,6 @@ workflows = {}
 #workflows[3135] = ['', ['TTbar_Tauola_UPGphase1_14']]
 
 #Postls1
-workflows[3207] = ['FourMuPt1_200', ['FourMuPt1_200_UPGpostls1','DIGIUP','RECOUP']]
-
 workflows[3223] = ['MinBias', ['MinBias_UPGpostls1_14','DIGIUP','RECOUP']]
 workflows[3235] = ['TTbar', ['TTbar_Tauola_UPGpostls1_14','DIGIUP','RECOUP']]
 
@@ -29,3 +27,15 @@ workflows[3205] = ['SingleMuPt100', ['SingleMuPt100_UPGpostls1','DIGIUP','RECOUP
 workflows[3206] = ['SingleMuPt1000', ['SingleMuPt1000_UPGpostls1','DIGIUP','RECOUP']]
 
 workflows[3208] = ['ZmumuJets_Pt20_300', ['ZmumuJets_Pt20_300_UPGpostls1_14','DIGIUP','RECOUP']]
+
+#postsl1 PU
+workflows[4235] = ['TTbar', ['TTbar_Tauola_UPGpostls1_14','DIGIPUUP','RECOPUUP']]
+
+workflows[4201] = ['JpsiMM', ['JpsiMM_UPGpostls1_14','DIGIPUUP','RECOPUUP']]
+workflows[4202] = ['WM', ['WM_UPGpostls1_14','DIGIPUUP','RECOPUUP']]
+workflows[4203] = ['ZMM', ['ZMM_UPGpostls1_14','DIGIPUUP','RECOPUUP']]
+workflows[4204] = ['SingleMuPt10', ['SingleMuPt10_UPGpostls1','DIGIPUUP','RECOPUUP']]
+workflows[4205] = ['SingleMuPt100', ['SingleMuPt100_UPGpostls1','DIGIPUUP','RECOPUUP']]
+workflows[4206] = ['SingleMuPt1000', ['SingleMuPt1000_UPGpostls1','DIGIPUUP','RECOPUUP']]
+
+workflows[4208] = ['ZmumuJets_Pt20_300', ['ZmumuJets_Pt20_300_UPGpostls1_14','DIGIPUUP','RECOPUUP']]
