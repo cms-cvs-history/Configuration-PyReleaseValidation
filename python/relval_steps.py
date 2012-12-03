@@ -386,7 +386,20 @@ step1Upgpostls1Defaults = {'-s' : 'GEN,SIM',
                              '--geometry' : 'DBExtendedPostLS1'
                              }
 
-steps['FourMuPt1_200_UPGpostls1']=merge([{'cfg':'FourMuPt_1_200_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
+##postls1 Single Mu
+
+
+steps['SingleMuPt10_UPGpostls1']=merge([{'cfg':'SingleMuPt10_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
+steps['SingleMuPt100_UPGpostls1']=merge([{'cfg':'SingleMuPt100_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
+steps['SingleMuPt1000_UPGpostls1']=merge([{'cfg':'SingleMuPt1000_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
+
+steps['SingleMuPt10_UPGpostls1INPUT']={'INPUT':InputInfo(dataSet='/RelValSingleMuPt10_UPGpostls1/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
+steps['SingleMuPt100_UPGpostls1INPUT']={'INPUT':InputInfo(dataSet='/RelValSingleMuPt100_UPGpostls1/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
+steps['SingleMuPt1000_UPGpostls1INPUT']={'INPUT':InputInfo(dataSet='/RelValSingleMuPt1000_UPGpostls1/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
+
+##postls1 14TeV
+
+#steps['FourMuPt1_200_UPGpostls1']=merge([{'cfg':'FourMuPt_1_200_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
 steps['MinBias_UPGpostls1_14']=merge([{'cfg':'MinBias_TuneZ2star_14TeV_pythia6_cff','--relval':'15000,250'},step1Upgpostls1Defaults])
 steps['TTbar_Tauola_UPGpostls1_14']=merge([{'cfg':'TTbar_Tauola_14TeV_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
 
@@ -397,9 +410,6 @@ steps['WM_UPGpostls1_14']=merge([{'cfg':'WM_14TeV_cfi','--relval':'10000,100'},s
 steps['ZMM_UPGpostls1_14']=merge([{'cfg':'ZMM_14TeV_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
 steps['ZmumuJets_Pt20_300_UPGpostls1_14']=merge([{'cfg':'ZmumuJets_Pt_20_300_GEN_cfg','--relval':'10000,100'},step1Upgpostls1Defaults])
 
-steps['SingleMuPt10_UPGpostls1']=merge([{'cfg':'SingleMuPt10_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
-steps['SingleMuPt100_UPGpostls1']=merge([{'cfg':'SingleMuPt100_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
-steps['SingleMuPt1000_UPGpostls1']=merge([{'cfg':'SingleMuPt1000_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
 
 steps['MinBias_UPGpostls1_14INPUT']={'INPUT':InputInfo(dataSet='/RelValMinBias_UPGpostls1_14/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
 steps['TTbar_Tauola_UPGpostls1_14INPUT']={'INPUT':InputInfo(dataSet='/RelValTTbar_Tauola_UPGpostls1_14/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
@@ -407,9 +417,27 @@ steps['JpsiMM_UPGpostls1_14INPUT']={'INPUT':InputInfo(dataSet='/RelValJpsiMMM_UP
 steps['WM_UPGpostls1_14INPUT']={'INPUT':InputInfo(dataSet='/RelValWM_UPGpostls1_14/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
 steps['ZMM_UPGpostls1_14INPUT']={'INPUT':InputInfo(dataSet='/RelValZMM_UPGpostls1_14/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
 steps['ZmumuJets_Pt20_300_UPGpostls1_14INPUT']={'INPUT':InputInfo(dataSet='/RelValZmumuJets_Pt20_300_UPGpostls1_14/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
-steps['SingleMuPt10_UPGpostls1INPUT']={'INPUT':InputInfo(dataSet='/RelValSingleMuPt10_UPGpostls1/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
-steps['SingleMuPt100_UPGpostls1INPUT']={'INPUT':InputInfo(dataSet='/RelValSingleMuPt100_UPGpostls1/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
-steps['SingleMuPt1000_UPGpostls1INPUT']={'INPUT':InputInfo(dataSet='/RelValSingleMuPt1000_UPGpostls1/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
+
+
+#Post ls1 8TeV
+#steps['FourMuPt1_200_UPGpostls1']=merge([{'cfg':'FourMuPt_1_200_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
+steps['MinBias_UPGpostls1_8']=merge([{'cfg':'MinBias_TuneZ2star_8TeV_pythia6_cff','--relval':'15000,250'},step1Upgpostls1Defaults])
+steps['TTbar_Tauola_UPGpostls1_8']=merge([{'cfg':'TTbar_Tauola_8TeV_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
+
+
+
+steps['JpsiMM_UPGpostls1_8']=merge([{'cfg':'JpsiMM_8TeV_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
+steps['WM_UPGpostls1_8']=merge([{'cfg':'WM_8TeV_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
+steps['ZMM_UPGpostls1_8']=merge([{'cfg':'ZMM_8TeV_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
+steps['ZmumuJets_Pt20_300_UPGpostls1_8']=merge([{'cfg':'ZmumuJets_Pt_20_300_GEN_8TeV_cfg','--relval':'10000,100'},step1Upgpostls1Defaults])
+
+# GEN-SIM to be recycle once available baseDataSetRelease to be added
+#steps['MinBias_UPGpostls1_8INPUT']={'INPUT':InputInfo(dataSet='/RelValMinBias_UPGpostls1_8/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
+#steps['TTbar_Tauola_UPGpostls1_8INPUT']={'INPUT':InputInfo(dataSet='/RelValTTbar_Tauola_UPGpostls1_8/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
+#steps['JpsiMM_UPGpostls1_8INPUT']={'INPUT':InputInfo(dataSet='/RelValJpsiMMM_UPGpostls1_8/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
+#steps['WM_UPGpostls1_8INPUT']={'INPUT':InputInfo(dataSet='/RelValWM_UPGpostls1_8/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
+#steps['ZMM_UPGpostls1_8INPUT']={'INPUT':InputInfo(dataSet='/RelValZMM_UPGpostls1_8/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
+#steps['ZmumuJets_Pt20_300_UPGpostls1_8INPUT']={'INPUT':InputInfo(dataSet='/RelValZmumuJets_Pt20_300_UPGpostls1_8/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
 
 ## heavy ions tests
 U500by5={'--relval': '500,5'}
@@ -540,10 +568,10 @@ steps['RESIM']=merge([{'-s':'reGEN,reSIM','-n':10},steps['DIGI']])
 steps['RESIMDIGI']=merge([{'-s':'reGEN,reSIM,DIGI,L1,DIGI2RAW,HLT:@relval,RAW2DIGI,L1Reco','-n':10,'--restoreRNDSeeds':'','--process':'HLT'},steps['DIGI']])
 
 steps['DIGIUP']={'-s':'DIGI,L1,DIGI2RAW,HLT',
-                 '--conditions':'POSTLS161_V12::All',
+                 '--conditions':'auto:postls1',
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
-                 '--eventcontent':'FEVTDEBUG',
+                 '--eventcontent':'FEVTDEBUGHLT',
                  '--geometry':'DBExtendedPostLS1',
                  '--customise':'SLHCUpgradeSimulations/Configuration/postLS1Customs.digiCustomsRelVal,SLHCUpgradeSimulations/Configuration/postLS1Customs.hltCustoms'
                  }
@@ -644,9 +672,9 @@ steps['RECOPUDBG']=merge([{'--eventcontent':'RECODEBUG,DQM'},steps['RECOPU1']])
 steps['RERECOPU1']=merge([{'--hltProcess':'REDIGI'},steps['RECOPU1']])
 
 steps['RECOUP']={'-s':'RAW2DIGI,RECO,VALIDATION,DQM',
-                 '--conditions':'POSTLS161_V12::All',
+                 '--conditions':'auto:postls1',
                  '-n':'10',
-                 '--eventcontent':'FEVTDEBUG,DQM',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
                  '--datatier':'GEN-SIM-RECO,DQM',
                  '--geometry':'DBExtendedPostLS1',
                  '--customise':'SLHCUpgradeSimulations/Configuration/postLS1Customs.recoCustoms'
@@ -763,7 +791,7 @@ steps['HARVESTFS']={'-s':'HARVESTING:validationHarvestingFS',
                    '--mc':'',
                    '--scenario':'pp'}
 steps['HARVESTUP']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
-                   '--conditions':'POSTLS161_V12::All',
+                   '--conditions':'auto:postls1',
                    '--geometry':'DBExtendedPostLS1'
 		   } ## crashes observed with some of the upgrade workflows -- to be fixed
 		   
