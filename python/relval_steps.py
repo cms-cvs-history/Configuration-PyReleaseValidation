@@ -402,9 +402,6 @@ steps['SingleMuPt1000_UPGpostls1INPUT']={'INPUT':InputInfo(dataSet='/RelValSingl
 #steps['FourMuPt1_200_UPGpostls1']=merge([{'cfg':'FourMuPt_1_200_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
 steps['MinBias_UPGpostls1_14']=merge([{'cfg':'MinBias_TuneZ2star_14TeV_pythia6_cff','--relval':'15000,250'},step1Upgpostls1Defaults])
 steps['TTbar_Tauola_UPGpostls1_14']=merge([{'cfg':'TTbar_Tauola_14TeV_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
-
-
-
 steps['JpsiMM_UPGpostls1_14']=merge([{'cfg':'JpsiMM_14TeV_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
 steps['WM_UPGpostls1_14']=merge([{'cfg':'WM_14TeV_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
 steps['ZMM_UPGpostls1_14']=merge([{'cfg':'ZMM_14TeV_cfi','--relval':'10000,100'},step1Upgpostls1Defaults])
@@ -417,6 +414,17 @@ steps['JpsiMM_UPGpostls1_14INPUT']={'INPUT':InputInfo(dataSet='/RelValJpsiMMM_UP
 steps['WM_UPGpostls1_14INPUT']={'INPUT':InputInfo(dataSet='/RelValWM_UPGpostls1_14/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
 steps['ZMM_UPGpostls1_14INPUT']={'INPUT':InputInfo(dataSet='/RelValZMM_UPGpostls1_14/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
 steps['ZmumuJets_Pt20_300_UPGpostls1_14INPUT']={'INPUT':InputInfo(dataSet='/RelValZmumuJets_Pt20_300_UPGpostls1_14/%s/GEN-SIM'%(baseDataSetRelease[4]),location='STD')}
+
+#standard WF @14TeV
+steps['MinBias_std_14']=merge([{'cfg':'MinBias_TuneZ2star_14TeV_pythia6_cff','--relval':'15000,250'},step1Defaults])
+steps['TTbar_Tauola_std_14']=merge([{'cfg':'TTbar_Tauola_14TeV_cfi','--relval':'10000,100'},step1Defaults])
+steps['TTbar_std_14']=merge([{'cfg':'TTbar_Tauola_14TeV_cfi','--relval':'10000,100'},step1Defaults])
+steps['JpsiMM_std_14']=merge([{'cfg':'JpsiMM_14TeV_cfi','--relval':'10000,100'},step1Defaults])
+steps['WM_std_14']=merge([{'cfg':'WM_14TeV_cfi','--relval':'10000,100'},step1Defaults])
+steps['ZMM_std_14']=merge([{'cfg':'ZMM_14TeV_cfi','--relval':'10000,100'},step1Defaults])
+steps['ZmumuJets_Pt20_300_std_10']=merge([{'cfg':'ZmumuJets_Pt_20_300_GEN_cfg','--relval':'10000,100'},step1Defaults])
+
+
 
 
 #Post ls1 8TeV

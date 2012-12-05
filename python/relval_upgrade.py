@@ -30,6 +30,15 @@ workflows[3208] = ['ZmumuJets_Pt20_300', ['ZmumuJets_Pt20_300_UPGpostls1_14','DI
 workflows[3223] = ['MinBias', ['MinBias_UPGpostls1_14','DIGIUP','RECOUP']]
 workflows[3235] = ['TTbar', ['TTbar_Tauola_UPGpostls1_14','DIGIUP','RECOUP']]
 
+#std 14TeV for comparison
+
+workflows[5201] = ['JpsiMM', ['JpsiMM_std_14','DIGI','RECO']]
+workflows[5202] = ['WM', ['WM_std_14','DIGI','RECO']]
+workflows[5203] = ['ZMM', ['ZMM_std_14','DIGI','RECO']]
+workflows[5208] = ['ZmumuJets_Pt20_300', ['ZmumuJets_Pt20_300_std_10','DIGI','RECO']]
+workflows[5223] = ['MinBias', ['MinBias_std_14','DIGI','RECO']]
+workflows[5235] = ['TTbar', ['TTbar_Tauola_std_14','DIGI','RECO']]
+
 #postsl1 PU50
 workflows[4204] = ['SingleMuPt10', ['SingleMuPt10_UPGpostls1','DIGIPUUP','RECOPUUP']]
 workflows[4205] = ['SingleMuPt100', ['SingleMuPt100_UPGpostls1','DIGIPUUP','RECOPUUP']]
