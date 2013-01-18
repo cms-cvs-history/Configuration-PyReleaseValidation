@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.381.2.16 $"
+__version__ = "$Revision: 1.381.2.17 $"
 __source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -333,7 +333,7 @@ class ConfigBuilder(object):
 				else:
 					self.process.source.secondaryFileNames.append(self._options.dirin+entry)
 
-        if self._options.filein:
+        if self._options.filein or self._options.dbsquery:
 	   if self._options.filetype == "EDM":
 		   self.process.source=cms.Source("PoolSource",
 						  fileNames = cms.untracked.vstring(),
@@ -1205,7 +1205,8 @@ class ConfigBuilder(object):
 		__import__(loadFragment)
 	except:
 		loadFailure=True
-		if self.process.source and self.process.source.type_()=='EmptySource':
+		#if self.process.source and self.process.source.type_()=='EmptySource':
+		if not (self._options.filein or self._options.dbsquery):
 			raise Exception("Neither gen fragment of input files provided: this is an inconsistent GEN step configuration")
 			
 	if not loadFailure:
@@ -1804,7 +1805,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.381.2.16 $"),
+                                            (version=cms.untracked.string("$Revision: 1.381.2.17 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
