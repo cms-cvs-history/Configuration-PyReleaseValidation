@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.381.2.17 $"
+__version__ = "$Revision: 1.381.2.18 $"
 __source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -1805,7 +1805,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.381.2.17 $"),
+                                            (version=cms.untracked.string("$Revision: 1.381.2.18 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
@@ -1960,6 +1960,8 @@ class ConfigBuilder(object):
 			ioJson[o]=om.fileName.value()
 		#ioJson['GT']=self._options.conditions
 		ioJson['GT']=self.process.GlobalTag.globaltag.value()
+		if self.productionFilterSequence:
+			ioJson['filter']=self.productionFilterSequence
 		import json
 		io.write(json.dumps(ioJson))
 	return
