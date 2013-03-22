@@ -56,10 +56,10 @@ class InputInfo(object):
         query_by = "block" if self.ib_block else "dataset"
         query_source = "{0}#{1}".format(self.dataSet, self.ib_block) if self.ib_block else self.dataSet
         if len(self.run) is not 0:
-            command = ";".join(["das_client.py --limit=0 --query 'file {0}={1} run={2}'".format(query_by, query_source, query_run) for query_run in self.run])
+            command = ";".join(["das_client.py --host='https://dastest.cern.ch' --limit=0 --query 'file {0}={1} run={2}'".format(query_by, query_source, query_run) for query_run in self.run])
             command = "({0})".format(command)
         else:
-            command = "das_client.py --limit=0 --query 'file {0}={1} site=T2_CH_CERN'".format(query_by, query_source)
+            command = "das_client.py --host='https://dastest.cern.ch' --limit=0 --query 'file {0}={1} site=T2_CH_CERN'".format(query_by, query_source)
        
         # Run filter on DAS output 
         if self.ib_blacklist:
@@ -68,6 +68,11 @@ class InputInfo(object):
         command += " | sort -u"
         return command
 
+    def lumiRanges(self):
+        if len(self.run) != 0:
+            return "echo '{\n"+",".join(('"%d":[[1,268435455]]\n'%(x,) for x in self.run))+"}'"
+        return None
+            
     def __str__(self):
         if self.ib_block:
             return "input from: {0} with run {1}#{2}".format(self.dataSet, self.ib_block, self.run)
