@@ -56,7 +56,6 @@ class MatrixInjector(object):
         self.defaultChain={
             "RequestType" :   "TaskChain",                    #this is how we handle relvals
             "AcquisitionEra": {},                             #Acq Era
-            "ProcessingString": {},                           # processing string to label the dataset
             "Requestor": self.user,                           #Person responsible
             "Group": self.group,                              #group for the request
             "CMSSWVersion": os.getenv('CMSSW_VERSION'),       #CMSSW Version (used for all tasks in chain)
@@ -144,26 +143,17 @@ class MatrixInjector(object):
                     index=0
                     splitForThisWf=None
                     thisLabel=self.speciallabel
-                    processStrPrefix=''
                     for step in s[3]:
-                        
                         if 'INPUT' in step or (not isinstance(s[2][index],str)):
                             nextHasDSInput=s[2][index]
 
                         else:
-
                             if (index==0):
                                 #first step and not input -> gen part
                                 chainDict['nowmTasklist'].append(copy.deepcopy(self.defaultScratch))
-                                try:
-                                    chainDict['nowmTasklist'][-1]['nowmIO']=json.loads(open('%s/%s.io'%(dir,step)).read())
-                                except:
-                                    print "Failed to find",'%s/%s.io'%(dir,step),".The workflows were probably not run on cfg not created"
-                                    return -15
-
                                 chainDict['nowmTasklist'][-1]['PrimaryDataset']='RelVal'+s[1].split('+')[0]
                                 if not '--relval' in s[2][index]:
-                                    print 'Impossible to create task from scratch without splitting information with --relval'
+                                    print 'Impossible to create task from scratch'
                                     return -12
                                 else:
                                     arg=s[2][index].split()
@@ -175,11 +165,6 @@ class MatrixInjector(object):
 
                             elif nextHasDSInput:
                                 chainDict['nowmTasklist'].append(copy.deepcopy(self.defaultInput))
-                                try:
-                                    chainDict['nowmTasklist'][-1]['nowmIO']=json.loads(open('%s/%s.io'%(dir,step)).read())
-                                except:
-                                    print "Failed to find",'%s/%s.io'%(dir,step),".The workflows were probably not run on cfg not created"
-                                    return -15
                                 chainDict['nowmTasklist'][-1]['InputDataset']=nextHasDSInput.dataSet
                                 splitForThisWf=nextHasDSInput.split
                                 chainDict['nowmTasklist'][-1]['SplittingArguments']['lumis_per_job']=splitForThisWf
@@ -191,19 +176,10 @@ class MatrixInjector(object):
                                 #print "what is s",s[2][index]
                                 if '--data' in s[2][index] and nextHasDSInput.label:
                                     thisLabel+='_RelVal_%s'%nextHasDSInput.label
-                                if 'filter' in chainDict['nowmTasklist'][-1]['nowmIO']:
-                                    print "This has an input DS and a filter sequence: very likely to be the PyQuen sample"
-                                    processStrPrefix='PU_'
-                                    chainDict['nowmTasklist'][-1]['PrimaryDataset']='RelVal'+s[1].split('+')[0]
                                 nextHasDSInput=None
                             else:
                                 #not first step and no inputDS
                                 chainDict['nowmTasklist'].append(copy.deepcopy(self.defaultTask))
-                                try:
-                                    chainDict['nowmTasklist'][-1]['nowmIO']=json.loads(open('%s/%s.io'%(dir,step)).read())
-                                except:
-                                    print "Failed to find",'%s/%s.io'%(dir,step),".The workflows were probably not run on cfg not created"
-                                    return -15
                                 if splitForThisWf:
                                     chainDict['nowmTasklist'][-1]['SplittingArguments']['lumis_per_job']=splitForThisWf
                                 if step in wmsplit:
@@ -211,21 +187,26 @@ class MatrixInjector(object):
 
                             #print step
                             chainDict['nowmTasklist'][-1]['TaskName']=step
+                            try:
+                                chainDict['nowmTasklist'][-1]['nowmIO']=json.loads(open('%s/%s.io'%(dir,step)).read())
+                            except:
+                                print "Failed to find",'%s/%s.io'%(dir,step),".The workflows were probably not run on cfg not created"
+                                return -15
                             chainDict['nowmTasklist'][-1]['ConfigCacheID']='%s/%s.py'%(dir,step)
                             chainDict['nowmTasklist'][-1]['GlobalTag']=chainDict['nowmTasklist'][-1]['nowmIO']['GT'] # copy to the proper parameter name
                             chainDict['GlobalTag']=chainDict['nowmTasklist'][-1]['nowmIO']['GT'] #set in general to the last one of the chain
                             if 'pileup' in chainDict['nowmTasklist'][-1]['nowmIO']:
                                 chainDict['nowmTasklist'][-1]['MCPileup']=chainDict['nowmTasklist'][-1]['nowmIO']['pileup']
-                            if '--pileup' in s[2][index]:
-                                processStrPrefix='PU_'
-                            if acqEra:
-                                #chainDict['AcquisitionEra'][step]=(chainDict['CMSSWVersion']+'-PU_'+chainDict['nowmTasklist'][-1]['GlobalTag']).replace('::All','')+thisLabel
-                                chainDict['AcquisitionEra'][step]=chainDict['CMSSWVersion']
-                                chainDict['ProcessingString'][step]=processStrPrefix+chainDict['nowmTasklist'][-1]['GlobalTag'].replace('::All','')+thisLabel
+                                if acqEra:
+                                    chainDict['AcquisitionEra'][step]=(chainDict['CMSSWVersion']+'-PU_'+chainDict['nowmTasklist'][-1]['GlobalTag']).replace('::All','')+thisLabel
+                                else:
+                                    chainDict['nowmTasklist'][-1]['AcquisitionEra']=(chainDict['CMSSWVersion']+'-PU_'+chainDict['nowmTasklist'][-1]['GlobalTag']).replace('::All','')+thisLabel
+                                
                             else:
-                                #chainDict['nowmTasklist'][-1]['AcquisitionEra']=(chainDict['CMSSWVersion']+'-PU_'+chainDict['nowmTasklist'][-1]['GlobalTag']).replace('::All','')+thisLabel
-                                chainDict['nowmTasklist'][-1]['AcquisitionEra']=chainDict['CMSSWVersion']
-                                chainDict['nowmTasklist'][-1]['ProcessingString']=processStrPrefix+chainDict['nowmTasklist'][-1]['GlobalTag'].replace('::All','')+thisLabel
+                                if acqEra:
+                                    chainDict['AcquisitionEra'][step]=(chainDict['CMSSWVersion']+'-'+chainDict['nowmTasklist'][-1]['GlobalTag']).replace('::All','')+thisLabel
+                                else:
+                                    chainDict['nowmTasklist'][-1]['AcquisitionEra']=(chainDict['CMSSWVersion']+'-'+chainDict['nowmTasklist'][-1]['GlobalTag']).replace('::All','')+thisLabel
 
                         index+=1
                         
