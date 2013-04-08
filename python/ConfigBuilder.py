@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.381.2.18 $"
+__version__ = "$Revision: 1.381.2.19 $"
 __source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -421,7 +421,20 @@ class ConfigBuilder(object):
             if self._options.himix==True:
                 self.process.source.inputCommands = cms.untracked.vstring('drop *','keep *_generator_*_*','keep *_g4SimHits_*_*')
                 self.process.source.dropDescendantsOfDroppedBranches=cms.untracked.bool(False)
-
+	# modify source in case of run-dependent MC
+	if self._options.runsAndWeightsForMC != None or self._options.runsScenarioForMC != None :
+		# setting run numbers is allowed only for MC
+		if not self._options.isMC :
+			raise Exception("options --runsAndWeightsForMC and --runsScenarioForMC are only valid for MC")
+		self.additionalCommands.append('import SimGeneral.Configuration.ThrowAndSetRandomRun as ThrowAndSetRandomRun')
+		if self._options.runsAndWeightsForMC != None :
+			# ThrowAndSetRandomRun throws a pseudo-random run according to runsAndWeightsForMC specified in input
+			self.additionalCommands.append('ThrowAndSetRandomRun.throwAndSetRandomRun(process.source,'+str(self._options.runsAndWeightsForMC)+')')
+		elif self._options.runsScenarioForMC != None :
+			# ThrowAndSetRandomRun throws a pseudo-random run according to an existing run scenario
+			from Configuration.StandardSequences.RunsAndWeights import RunsAndWeights
+			self.additionalCommands.append('import '+RunsAndWeights[self._options.runsScenarioForMC]+' as RunScenario')
+			self.additionalCommands.append('ThrowAndSetRandomRun.throwAndSetRandomRun(process.source,RunScenario.runProbabilityDistribution)')
         return
 
     def addOutput(self):
@@ -1805,7 +1818,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.381.2.18 $"),
+                                            (version=cms.untracked.string("$Revision: 1.381.2.19 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
