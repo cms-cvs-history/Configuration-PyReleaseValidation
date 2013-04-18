@@ -644,7 +644,60 @@ steps['ZMM_UPG2017_14']=gen2017('ZMM_14TeV_cfi',Kby(18,300))
 #steps['WpM_UPG2017_14']=gen2017('WpM_14TeV_cfi',Kby(9,200))
 
 
-
+step1Up2023_BE_Defaults = {'-s' : 'GEN,SIM',
+                             '-n' : 10,
+                             '--conditions' : 'auto:upgradePLS1', 
+                             '--beamspot' : 'Gauss',
+                             '--datatier' : 'GEN-SIM',
+                             '--eventcontent': 'FEVTDEBUG',
+                             '--geometry' : 'ExtendedPhase2TkBE',
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase2TkCustomsBE.customise'
+                             }
+def gen2023_BE(fragment,howMuch):
+    global step1Up2023_BE_Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2023_BE_Defaults])
+    
+steps['FourMuPt1_200_UPG2023_BE']=gen2023_BE('FourMuPt_1_200_cfi',Kby(10,100))
+steps['MinBias_TuneZ2star_UPG2023_14_BE']=gen2023_BE('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
+steps['TTbar_UPG2023_14_BE']=gen2023_BE('TTbar_Tauola_14TeV_cfi',Kby(9,100))
+  
+    
+step1Up2023_LB4_Defaults = {'-s' : 'GEN,SIM',
+                             '-n' : 10,
+                             '--conditions' : 'auto:upgradePLS1', 
+                             '--beamspot' : 'Gauss',
+                             '--datatier' : 'GEN-SIM',
+                             '--eventcontent': 'FEVTDEBUG',
+                             '--geometry' : 'ExtendedPhase2TkLB_4LPS_2L2S',
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase2TkCustoms_LB_4LPS_2L2S.customise'
+                             }
+def gen2023_LB4(fragment,howMuch):
+    global step1Up2023_LB4_Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2023_LB4_Defaults])
+    
+steps['FourMuPt1_200_UPG2023_LB4']=gen2023_LB4('FourMuPt_1_200_cfi',Kby(10,100))
+steps['MinBias_TuneZ2star_UPG2023_14_LB4']=gen2023_LB4('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
+steps['TTbar_UPG2023_14_LB4']=gen2023_LB4('TTbar_Tauola_14TeV_cfi',Kby(9,100))
+  
+ 
+step1Up2023_LB6_Defaults = {'-s' : 'GEN,SIM',
+                             '-n' : 10,
+                             '--conditions' : 'auto:upgradePLS1', 
+                             '--beamspot' : 'Gauss',
+                             '--datatier' : 'GEN-SIM',
+                             '--eventcontent': 'FEVTDEBUG',
+                             '--geometry' : 'ExtendedPhase2TkLB_6PS',
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase2TkCustoms_LB_6PS.customise'
+                             }
+def gen2023_LB6(fragment,howMuch):
+    global step1Up2023_LB6_Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2023_LB6_Defaults])
+    
+steps['FourMuPt1_200_UPG2023_LB6']=gen2023_LB6('FourMuPt_1_200_cfi',Kby(10,100))
+steps['MinBias_TuneZ2star_UPG2023_14_LB6']=gen2023_LB6('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
+steps['TTbar_UPG2023_14_LB6']=gen2023_LB6('TTbar_Tauola_14TeV_cfi',Kby(9,100))
+   
+ 
 ## pPb tests
 step1PPbDefaults={'--beamspot':'Realistic8TeVCollisionPPbBoost'}
 steps['AMPT_PPb_5020GeV_MinimumBias']=merge([{'-n':10},step1PPbDefaults,genS('AMPT_PPb_5020GeV_MinimumBias_cfi',Kby(9,100))])
@@ -978,6 +1031,45 @@ step3Up2017Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                  }
                              
 steps['RECOUP17']=merge([step3Up2017Defaults])
+
+
+
+#for 2023 BE
+step3Up2023_BE_Defaults = {'-s':'DIGI,L1,DIGI2RAW,L1TrackTrigger,RECO:pixeltrackerlocalreco',
+                 '--conditions':'auto:upgradePLS1', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUG',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase2TkCustomsBE.customise,SLHCUpgradeSimulations/Configuration/phase2TkCustomsBE.l1EventContent',
+                 '--geometry' : 'ExtendedPhase2TkBE'
+                 }
+                             
+steps['RECOUP23_BE']=merge([step3Up2023_BE_Defaults])
+
+
+step3Up2023_LB4_Defaults = {'-s':'DIGI,L1,DIGI2RAW,L1TrackTrigger,RECO:pixeltrackerlocalreco',
+                 '--conditions':'auto:upgradePLS1', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUG',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase2TkCustoms_LB_4LPS_2L2S.customise,SLHCUpgradeSimulations/Configuration/phase2TkCustoms_LB_4LPS_2L2S.l1EventContent',
+		 '--geometry' : 'ExtendedPhase2TkLB_4LPS_2L2S'
+                 }
+                             
+steps['RECOUP23_LB4']=merge([step3Up2023_LB4_Defaults])
+
+step3Up2023_LB6_Defaults = {'-s':'DIGI,L1,DIGI2RAW,L1TrackTrigger,RECO:pixeltrackerlocalreco',
+                 '--conditions':'auto:upgradePLS1', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUG',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase2TkCustoms_LB_6PS.customise,SLHCUpgradeSimulations/Configuration/phase2TkCustoms_LB_6PS.l1EventContent',
+		 '--geometry' : 'ExtendedPhase2TkLB_6PS'
+                 }
+                             
+steps['RECOUP23_LB6']=merge([step3Up2023_LB6_Defaults])
+
+
 
 #add this line when testing from an input file that is not strictly GEN-SIM
 #addForAll(step3,{'--hltProcess':'DIGI'})
