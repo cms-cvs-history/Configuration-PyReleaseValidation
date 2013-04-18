@@ -228,3 +228,19 @@ workflows[3350] = ['', ['ZMM_UPG2017_14','DIGIUP17','RECOUP17','HARVESTUP17']]
 #workflows[3353] = ['', ['WpM_UPG2017_14','DIGIUP17','RECOUP17','HARVESTUP17']]#no gen fragment
 
 
+#2023 BE
+workflows[4100] = ['', ['FourMuPt1_200_UPG2023_BE','RECOUP23_BE']]
+workflows[4101] = ['', ['MinBias_TuneZ2star_UPG2023_14_BE','RECOUP23_BE']]
+workflows[4102] = ['', ['TTbar_UPG2023_14_BE','RECOUP23_BE']]
+
+#2013 Lb6PS
+workflows[4200] = ['', ['FourMuPt1_200_UPG2023_LB6','RECOUP23_LB6']]
+workflows[4201] = ['', ['MinBias_TuneZ2star_UPG2023_14_LB6','RECOUP23_LB6']]
+workflows[4202] = ['', ['TTbar_UPG2023_14_LB6','RECOUP23_LB6']]
+
+
+#2013 Lb4LPS_2L2S
+workflows[4300] = ['', ['FourMuPt1_200_UPG2023_LB4','RECOUP23_LB4']]
+workflows[4301] = ['', ['MinBias_TuneZ2star_UPG2023_14_LB4','RECOUP23_LB4']]
+workflows[4302] = ['', ['TTbar_UPG2023_14_LB4','RECOUP23_LB4']]
+
