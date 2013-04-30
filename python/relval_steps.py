@@ -232,6 +232,7 @@ K9by100={'--relval':'9000,100'}
 K50by100={'--relval':'50000,100'}
 K9by250={'--relval':'9000,250'}
 K25by250={'--relval':'25000,250'}
+M2by100={'--relval':'2000000,100'}
 
 def gen(fragment,howMuch):
     global step1Defaults
@@ -243,6 +244,7 @@ steps['QCD_Pt_80_120']=gen('QCD_Pt_80_120_8TeV_cfi',K9by50)
 steps['SingleElectronPt10']=gen('SingleElectronPt10_cfi',K9by250)
 steps['SingleElectronPt1000']=gen('SingleElectronPt1000_cfi',K9by250)
 steps['SingleElectronPt35']=gen('SingleElectronPt35_cfi',K9by250)
+steps['SingleElectronFlatPt1To100']=gen('SingleElectronFlatPt1To100_cfi',M2by100)
 steps['SingleGammaPt10']=gen('SingleGammaPt10_cfi',K9by100)
 steps['SingleGammaPt35']=gen('SingleGammaPt35_cfi',K9by100)
 steps['SingleMuPt10']=gen('SingleMuPt10_cfi',K25by250)
