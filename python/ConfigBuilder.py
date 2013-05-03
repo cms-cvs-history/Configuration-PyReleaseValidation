@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.381.2.20 $"
+__version__ = "$Revision: 1.381.2.21 $"
 __source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -420,13 +420,7 @@ class ConfigBuilder(object):
 		ThrowAndSetRandomRun.throwAndSetRandomRun(self.process.source,self.runsAndWeights)
 		self.additionalCommands.append('import SimGeneral.Configuration.ThrowAndSetRandomRun as ThrowAndSetRandomRun')
 		self.additionalCommands.append('ThrowAndSetRandomRun.throwAndSetRandomRun(process.source,%s)'%(self.runsAndWeights))
-		
-		if 'HLT' in self.stepMap and type(self.stepMap['HLT'])==tuple and self.stepMap['HLT'][1]=='run':
-			#print self.stepMap['HLT']
-			#print "I am there !", self.stepMap['HLT']
-			self.stepMap['HLT'] = ( [str(self.process.source.setRunNumber.value())], 'run')
-			#print self.stepMap['HLT']
-						
+
         return
 
     def addOutput(self):
@@ -657,7 +651,7 @@ class ConfigBuilder(object):
 		elif type(stepSpec)==list:
 			getattr(self,"prepare_"+stepName)(sequence = '+'.join(stepSpec))
 		elif type(stepSpec)==tuple:
-			getattr(self,"prepare_"+stepName)(sequence = ','.join(['+'.join(stepSpec[0]),stepSpec[1]]))
+			getattr(self,"prepare_"+stepName)(sequence = ','.join([stepSpec[1],'+'.join(stepSpec[0])]))
 		else:
 			raise ValueError("Invalid step definition")
 		
@@ -1378,15 +1372,23 @@ class ConfigBuilder(object):
                   raise ValueError('no HLT mapping key "%s" found in autoHLT' % key)
 
         if ',' in sequence:
-                # case where HLT:something:something was provided
+                # case where HLT:something:something was provided transcribed in sequence = something,something
                 self.executeAndRemember('import HLTrigger.Configuration.Utilities')
                 optionsForHLT = {}
                 if self._options.scenario == 'HeavyIons':
                   optionsForHLT['type'] = 'HIon'
                 else:
                   optionsForHLT['type'] = 'GRun'
-                optionsForHLTConfig = ', '.join('%s=%s' % (key, repr(val)) for (key, val) in optionsForHLT.iteritems())
-                self.executeAndRemember('process.loadHltConfiguration("%s",%s)'%(sequence.replace(',',':'),optionsForHLTConfig))
+		optionsForHLTConfig = ', '.join('%s=%s' % (key, repr(val)) for (key, val) in optionsForHLT.iteritems())
+		if sequence == 'run,fromSource':
+			if hasattr(self.process.source,'firstRun'):
+				self.executeAndRemember('process.loadHltConfiguration("run:%%d"%%(process.source.firstRun.value()),%s)'%(optionsForHLTConfig))
+			elif hasattr(self.process.source,'setRunNumber'):
+				self.executeAndRemember('process.loadHltConfiguration("run:%%d"%%(process.source.setRunNumber.value()),%s)'%(optionsForHLTConfig))
+			else:
+				raise Exception('Cannot replace menu to load %s'%(sequence))
+		else:
+			self.executeAndRemember('process.loadHltConfiguration("%s",%s)'%(sequence.replace(',',':'),optionsForHLTConfig))
         else:
                 if 'FASTSIM' in self.stepMap:
                     self.loadAndRemember('HLTrigger/Configuration/HLT_%s_Famos_cff' % sequence)
@@ -1828,7 +1830,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.381.2.20 $"),
+                                            (version=cms.untracked.string("$Revision: 1.381.2.21 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
