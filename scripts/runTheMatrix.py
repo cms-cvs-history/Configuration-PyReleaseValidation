@@ -4,194 +4,230 @@ import sys
 
 from Configuration.PyReleaseValidation.MatrixReader import MatrixReader
 from Configuration.PyReleaseValidation.MatrixRunner import MatrixRunner
+from Configuration.PyReleaseValidation.MatrixInjector import MatrixInjector,performInjectionOptionTest
         
 # ================================================================================
 
-def showRaw(useInput=None, refRel='', fromScratch=None, what='standard',step1Only=False) :
+def showRaw(opt):
 
-    mrd = MatrixReader()
-    mrd.showRaw(useInput, refRel, fromScratch, what, step1Only)
+    mrd = MatrixReader(opt)
+    mrd.showRaw(opt.useInput, opt.refRel, opt.fromScratch, opt.raw, opt.step1Only, selected=opt.testList)
 
     return 0
         
 # ================================================================================
 
-def runSelected(testList, nThreads=4, show=False, useInput=None, refRel='', fromScratch=None) :
+def runSelected(opt):
 
-    stdList = ['5.2', # SingleMu10 FastSim
-               '7',   # Cosmics+RECOCOS+ALCACOS
-               '8',   # BeamHalo+RECOCOS+ALCABH
-               '25',  # TTbar+RECO2+ALCATT2  STARTUP
-               ]
-    hiStatList = [
-                  '121',   # TTbar_Tauola
-                  '123.3', # TTBar FastSim
-                   ]
-
-    mrd = MatrixReader(noRun=(nThreads==0))
-    mrd.prepare(useInput, refRel, fromScratch)
-
-    if testList == []:
-        testList = stdList+hiStatList
+    mrd = MatrixReader(opt)
+    mrd.prepare(opt.useInput, opt.refRel, opt.fromScratch)
 
     ret = 0
-    if show:
-        mrd.show([float(x) for x in testList])
-        print 'selected items:', testList
+    if opt.show:
+        mrd.show(opt.testList,opt.extended)
+        if opt.testList : print 'testListected items:', opt.testList
     else:
-        mRunnerHi = MatrixRunner(mrd.workFlows, nThreads)
-        ret = mRunnerHi.runTests(testList)
+        mRunnerHi = MatrixRunner(mrd.workFlows, opt.nThreads)
+        ret = mRunnerHi.runTests(opt)
 
-    return ret
-
-# ================================================================================
-
-def runData(testList, nThreads=4, show=False, useInput=None, refRel='', fromScratch=None) :
-
-    mrd = MatrixReader()
-    mrd.prepare(useInput, refRel, fromScratch)
-
-    ret = 0
-    if show:
-        if not testList or testList == ['all']:
-            mrd.show()
+    if opt.wmcontrol:
+        if ret!=0:
+            print 'Cannot go on with wmagent injection with failing workflows'
         else:
-            mrd.show([float(x) for x in testList])
-        print 'selected items:', testList
-    else:
-        mRunnerHi = MatrixRunner(mrd.workFlows, nThreads)
-        if not testList or testList == ['all']:
-            ret = mRunnerHi.runTests()
-        else:
-            ret = mRunnerHi.runTests(testList)
-
+            wfInjector = MatrixInjector(opt,mode=opt.wmcontrol)
+            ret= wfInjector.prepare(mrd,
+                                    mRunnerHi.runDirs)
+            if ret==0:
+                wfInjector.upload()
+                wfInjector.submit()
     return ret
-
-# --------------------------------------------------------------------------------
-
-def runAll(testList=None, nThreads=4, show=False, useInput=None, refRel='', fromScratch=None,what='all') :
-
-    mrd = MatrixReader(noRun=(nThreads==0),what=what)
-    mrd.prepare(useInput, refRel, fromScratch)
-
-    ret = 0
-    
-    if show:
-        mrd.show()
-        print "nThreads = ",nThreads
-    else:
-        mRunnerHi = MatrixRunner(mrd.workFlows, nThreads)
-        ret = mRunnerHi.runTests()
-
-    return ret
-
-
-# --------------------------------------------------------------------------------
-
-def runOnly(only, show, nThreads=4, useInput=None, refRel='', fromScratch=None):
-
-    if not only: return
-    
-    for what in only:
-        print "found request to run relvals only for ",what
-        print "not implemented, nothing done"
-
-# --------------------------------------------------------------------------------
-
-def usage():
-    print "Usage:", sys.argv[0], ' [options] '
-    print """
-Where options is one of the following:
-  -d, --data <list> comma-separated list of workflows to use from the realdata file.
-                    <list> can be "all" to select all data workflows
-  -l, --list <list> comma-separated list of workflows to use from the cmsDriver*.txt files
-  -j, --nproc <n>   run <n> processes in parallel (default: 4 procs)
-  -s, --selected    run a subset of 8 workflows (usually in the CustomIB)
-  -n, -q, --show    show the (selected) workflows
-  -i, --useInput <list>      will use data input (if defined) for the step1 instead of step1. <list> can be "all" for this option
-      --refRelease <refRel>  will use <refRel> as reference release in datasets used for input (replacing the sim step)
-  -r, --raw <what>  in combination with --show will create the old style cmsDriver_<what>_hlt.txt file (in the working dir)
-  
-<list>s should be put in single- or double-quotes to avoid confusion with/by the shell
-"""
 
 # ================================================================================
 
 if __name__ == '__main__':
 
-    import getopt
-    
-    try:
-        opts, args = getopt.getopt(sys.argv[1:], "hj:sl:nqo:d:i:r:", ['help',"nproc=",'selected','list=','showMatrix','only=','data=','useInput=','raw=', 'refRelease=','fromScratch=','step1','what='])
-    except getopt.GetoptError, e:
-        print "unknown option", str(e)
-        sys.exit(2)
+    #this can get out of here
+    predefinedSet={
+        'limited' : [5.1, #FastSim ttbar
+                     8, #BH/Cosmic MC
+                     25, #MC ttbar
+                     4.22, #cosmic data
+                     4.291, #hlt data
+                     1000, #data+prompt
+                     1001, #data+express
+                     4.53, #HI data
+                     40, #HI MC
+                     ],
+        'jetmc': [5.1, 13, 15, 25, 38, 39], #MC
+        'metmc' : [5.1, 15, 25, 37, 38, 39], #MC
+        'muonmc' : [5.1, 124.4, 124.5, 20, 21, 22, 23, 25, 30], #MC
+        }
         
-# check command line parameters
 
-    # set this to None if you want fromScratch as default, set it to 'all' to set the default to from input files.
-    useInput = None  # step1 default is cmsDriver (i.e. "from scratch")
-    # useInput = 'all' # step1 default is reading from input files
+    import optparse
+    usage = 'usage: runTheMatrix.py --show -s '
+
+    parser = optparse.OptionParser(usage)
+
+    parser.add_option('-j','--nproc',
+                      help='number of threads. 0 Will use 4 threads, not execute anything but create the wfs',
+                      dest='nThreads',
+                      default=4
+                     )
+    parser.add_option('-n','--showMatrix',
+                      help='Only show the worflows. Use --ext to show more',
+                      dest='show',
+                      default=False,
+                      action='store_true'
+                      )
+    parser.add_option('-e','--extended',
+                      help='Show details of workflows, used with --show',
+                      dest='extended',
+                      default=False,
+                      action='store_true'
+                      )
+    parser.add_option('-s','--selected',
+                      help='Run a pre-defined selected matrix of wf. Deprecated, please use -l limited',
+                      dest='restricted',
+                      default=False,
+                      action='store_true'
+                      )
+    parser.add_option('-l','--list',
+                     help='Coma separated list of workflow to be shown or ran. Possible keys are also '+str(predefinedSet.keys())+'. and wild card like muon, or mc',
+                     dest='testList',
+                     default=None
+                     )
+    parser.add_option('-r','--raw',
+                      help='Temporary dump the .txt needed for prodAgent interface. To be discontinued soon. Argument must be the name of the set (standard, pileup,...)',
+                      dest='raw'
+                      )
+    parser.add_option('-i','--useInput',
+                      help='Use recyling where available. Either all, or a coma separated list of wf number.',
+                      dest='useInput',
+                      default=None
+                      )
+    parser.add_option('-w','--what',
+                      help='Specify the set to be used. Argument must be the name of the set (standard, pileup,...)',
+                      dest='what',
+                      default='all'
+                      )
+    parser.add_option('--step1',
+                      help='Used with --raw. Limit the production to step1',
+                      dest='step1Only',
+                      default=False
+                      )
+    parser.add_option('--fromScratch',
+                      help='Coma separated list of wf to be run without recycling. all is not supported as default.',
+                      dest='fromScratch',
+                      default=None
+                       )
+    parser.add_option('--refRelease',
+                      help='Allow to modify the recycling dataset version',
+                      dest='refRel',
+                      default=None
+                      )
+    parser.add_option('--wmcontrol',
+                      help='Create the workflows for injection to WMAgent. In the WORKING. -wmcontrol init will create the the workflows, -wmcontrol test will dryRun a test, -wmcontrol submit will submit to wmagent',
+                      choices=['init','test','submit','force'],
+                      dest='wmcontrol',
+                      default=None,
+                      )
+    parser.add_option('--keep',
+                      help='allow to specify for which coma separated steps the output is needed',
+                      default=None)
+    parser.add_option('--label',
+                      help='allow to give a special label to the output dataset name',
+                      default='')
+    parser.add_option('--command',
+                      help='provide a way to add additional command to all of the cmsDriver commands in the matrix',
+                      dest='command',
+                      default=None
+                      )
+    parser.add_option('--apply',
+                      help='allow to use the --command only for 1 coma separeated',
+                      dest='apply',
+                      default=None)
+    parser.add_option('--workflow',
+                      help='define a workflow to be created or altered from the matrix',
+                      action='append',
+                      dest='workflow',
+                      default=None
+                      )
+    parser.add_option('--dryRun',
+                      help='do not run the wf at all',
+                      action='store_true',
+                      dest='dryRun',
+                      default=False
+                      )
+    parser.add_option('--noCafVeto',
+                      help='Run from any source, ignoring the CAF label',
+                      dest='cafVeto',
+                      default=True,
+                      action='store_false'
+                      )
+    parser.add_option('--overWrite',
+                      help='Change the content of a step for another. List of pairs.',
+                      dest='overWrite',
+                      default=None
+                      )
+    parser.add_option('--noRun',
+                      help='Remove all run list selection from wfs',
+                      dest='noRun',
+                      default=False,
+                      action='store_true')
+
 
     
-    np=4 # default: four threads
-    sel = None
-    fromScratch = None
-    show = False
-    only = None
-    data = None
-    raw  = None
-    refRel = ''
-    step1Only=False
-    what = 'all'
-    for opt, arg in opts :
-        if opt in ('-h','--help'):
-            usage()
-            sys.exit(0)
-        if opt in ('-j', "--nproc" ):
-            np=int(arg)
-        if opt in ('-n','-q','--showMatrix', ):
-            show = True
-        if opt in ('-s','--selected',) :
-            sel = []
-        if opt in ('-o','--only',) :
-            only = []
-        if opt in ('-l','--list',) :
-            sel = arg.split(',')
-        if opt in ('--fromScratch',) :
-            fromScratch = arg.split(',')
-        if opt in ('-i','--useInput',) :
-            useInput = arg.split(',')
-        if opt in ('--refRelease',) :
-            refRel = arg
-        if opt in ('-d','--data',) :
-            data = arg.split(',')
-        if opt in ('-r','--raw') :
-            raw = arg
-        if opt in ('-w','--what'):
-            what=arg
-        if opt in ('--step1'):
-            step1Only=True
+    opt,args = parser.parse_args()
+    if opt.restricted:
+        print 'Deprecated, please use -l limited'
+        if opt.testList:            opt.testList+=',limited'
+        else:            opt.testList='limited'
+
+    def stepOrIndex(s):
+        if s.isdigit():
+            return int(s)
+        else:
+            return s
+    if opt.apply:
+        opt.apply=map(stepOrIndex,opt.apply.split(','))
+    if opt.keep:
+        opt.keep=map(stepOrIndex,opt.keep.split(','))
+        
+                
+                
+    if opt.testList:
+        testList=[]
+        for entry in opt.testList.split(','):
+            if not entry: continue
+            mapped=False
+            for k in predefinedSet:
+                if k.lower().startswith(entry.lower()) or k.lower().endswith(entry.lower()):
+                    testList.extend(predefinedSet[k])
+                    mapped=True
+                    break
+            if not mapped:
+                try:
+                    testList.append(float(entry))
+                except:
+                    print entry,'is not a possible selected entry'
             
-    # some sanity checking:
-    if useInput and useInput != 'all' :
-        for item in useInput:
-            if fromScratch and item in fromScratch:
-                print "FATAL error: request to run workflow ",item,'from scratch and using input. '
-                sys.exit(-1)
-        
-    if raw and show:
-        ret = showRaw(useInput=useInput, refRel=refRel,fromScratch=fromScratch, what=raw, step1Only=step1Only)
-        sys.exit(ret)
+        opt.testList = list(set(testList))
 
-    ret = 0
-    if sel != None: # explicit distinguish from empty list (which is also false)
-        ret = runSelected(testList=sel, nThreads=np, show=show, useInput=useInput, refRel=refRel,fromScratch=fromScratch)
-    elif only != None:
-        ret = runOnly(only=only, show=show, nThreads=np, useInput=useInput, refRel=refRel,fromScratch=fromScratch)
-    elif data != None:
-        ret = runData(testList=data, show=show, nThreads=np, useInput=useInput, refRel=refRel,fromScratch=fromScratch)
+
+    if opt.useInput: opt.useInput = opt.useInput.split(',')
+    if opt.fromScratch: opt.fromScratch = opt.fromScratch.split(',')
+    if opt.nThreads: opt.nThreads=int(opt.nThreads)
+
+    if opt.wmcontrol:
+        performInjectionOptionTest(opt)
+    if opt.overWrite:
+        opt.overWrite=eval(opt.overWrite)
+
+    if opt.raw and opt.show: ###prodAgent to be discontinued
+        ret = showRaw(opt)
     else:
-        ret = runAll(show=show, nThreads=np, useInput=useInput, refRel=refRel,fromScratch=fromScratch,what=what)
+        ret = runSelected(opt)
+
 
     sys.exit(ret)

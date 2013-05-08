@@ -584,4 +584,8 @@ step3['RECODFROMRAWRECO']=merge([{'-s':'RAW2DIGI:RawToDigi_noTk,L1Reco,RECO:reco
 # to handle things easier in other places, make a list of all the steps:
 stepList = [step1, step2, step3, step4]
 
-
+steps = {}
+steps.update(step1)
+steps.update(step2)
+steps.update(step3)
+steps.update(step4)
