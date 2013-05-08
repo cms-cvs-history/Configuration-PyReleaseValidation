@@ -616,7 +616,6 @@ steps['ZpMM_UPG2017_8']=gen2017('ZpMM_8TeV_cfi',Kby(9,200))
 steps['WpM_UPG2017_8']=gen2017('WpM_8TeV_cfi',Kby(9,200))
 
 
-
 #14TeV
 #steps['TTbarLepton_UPG2017_14']=gen2017('TTbarLepton_Tauola_14TeV_cfi',Kby(9,100))
 steps['Wjet_Pt_80_120_UPG2017_14']=gen2017('Wjet_Pt_80_120_14TeV_cfi',Kby(9,100))
@@ -645,6 +644,109 @@ steps['ZMM_UPG2017_14']=gen2017('ZMM_14TeV_cfi',Kby(18,300))
 #steps['ZpMM_UPG2017_14']=gen2017('ZpMM_14TeV_cfi',Kby(9,200))
 #steps['WpM_UPG2017_14']=gen2017('WpM_14TeV_cfi',Kby(9,200))
 
+####GENSIM AGING VALIDATION - DESIGN set of reference
+
+step1Up2017_DESIGN_Defaults = {'-s' : 'GEN,SIM',
+                             '-n' : 10,
+                             '--conditions' : 'DES17_61_V4::All', 
+                             '--beamspot' : 'Gauss',
+                             '--datatier' : 'GEN-SIM',
+                             '--eventcontent': 'FEVTDEBUG',
+                             '--geometry' : 'Extended2017',
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise'
+                             }
+def gen2017design(fragment,howMuch):
+    global step1Up2017_DESIGN_Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2017_DESIGN_Defaults])
+
+
+####GENSIM AGING VALIDATION - 300fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @300
+
+step1Up2017_300_Defaults = {'-s' : 'GEN,SIM',
+                             '-n' : 10,
+                             '--conditions' : 'DES17_61_V4::All', 
+                             '--beamspot' : 'Gauss',
+                             '--datatier' : 'GEN-SIM',
+                             '--eventcontent': 'FEVTDEBUG',
+                             '--geometry' : 'Extended2017',
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise,SLHCUpgradeSimulations/Configuration/aging.customise_aging_300'
+                             }
+def gen2017300(fragment,howMuch):
+    global step1Up2017_300_Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2017_300_Defaults])
+
+
+####GENSIM AGING VALIDATION - 500fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @500
+
+step1Up2017_500_Defaults = {'-s' : 'GEN,SIM',
+                             '-n' : 10,
+                             '--conditions' : 'DES17_61_V4::All', 
+                             '--beamspot' : 'Gauss',
+                             '--datatier' : 'GEN-SIM',
+                             '--eventcontent': 'FEVTDEBUG',
+                             '--geometry' : 'Extended2017',
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise,SLHCUpgradeSimulations/Configuration/aging.customise_aging_500'
+                             }
+def gen2017500(fragment,howMuch):
+    global step1Up2017_500_Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2017_500_Defaults])
+
+
+####GENSIM AGING VALIDATION - 1000fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @1000
+
+step1Up2017_1000_Defaults = {'-s' : 'GEN,SIM',
+                             '-n' : 10,
+                             '--conditions' : 'DES17_61_V4::All', 
+                             '--beamspot' : 'Gauss',
+                             '--datatier' : 'GEN-SIM',
+                             '--eventcontent': 'FEVTDEBUG',
+                             '--geometry' : 'Extended2017',
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000'
+                             }
+def gen20171000(fragment,howMuch):
+    global step1Up2017_1000_Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2017_1000_Defaults])
+
+
+####GENSIM AGING VALIDATION - 3000fb-1 
+
+step1Up2017_3000_Defaults = {'-s' : 'GEN,SIM',
+                             '-n' : 10,
+                             '--conditions' : 'START17_61_V2::All', 
+                             '--beamspot' : 'Gauss',
+                             '--datatier' : 'GEN-SIM',
+                             '--eventcontent': 'FEVTDEBUG',
+                             '--geometry' : 'Extended2017',
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise,SLHCUpgradeSimulations/Configuration/aging.customise_aging_3000'
+                             }
+def gen20173000(fragment,howMuch):
+    global step1Up2017_3000_Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2017_3000_Defaults])
+
+steps['FourMuPt1_200_UPG2017_DES']=gen2017design('FourMuPt_1_200_cfi',Kby(10,100))
+steps['FourMuPt1_200_UPG2017_300']=gen2017300('FourMuPt_1_200_cfi',Kby(10,100))
+steps['FourMuPt1_200_UPG2017_500']=gen2017500('FourMuPt_1_200_cfi',Kby(10,100))
+steps['FourMuPt1_200_UPG2017_1000']=gen20171000('FourMuPt_1_200_cfi',Kby(10,100))
+steps['FourMuPt1_200_UPG2017_3000']=gen20173000('FourMuPt_1_200_cfi',Kby(10,100))
+
+
+steps['MinBias_TuneZ2star_UPG2017_14_DES']=gen2017design('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
+steps['MinBias_TuneZ2star_UPG2017_14_300']=gen2017300('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
+steps['MinBias_TuneZ2star_UPG2017_14_500']=gen2017500('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
+steps['MinBias_TuneZ2star_UPG2017_14_1000']=gen20171000('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
+steps['MinBias_TuneZ2star_UPG2017_14_3000']=gen20173000('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
+
+steps['ZEE_UPG2017_14_DES']=gen2017design('ZEE_14TeV_cfi',Kby(9,100))
+steps['ZEE_UPG2017_14_300']=gen2017300('ZEE_14TeV_cfi',Kby(9,100))
+steps['ZEE_UPG2017_14_500']=gen2017500('ZEE_14TeV_cfi',Kby(9,100))
+steps['ZEE_UPG2017_14_1000']=gen20171000('ZEE_14TeV_cfi',Kby(9,100))
+steps['ZEE_UPG2017_14_3000']=gen20173000('ZEE_14TeV_cfi',Kby(9,100))
+
+steps['TTbar_UPG2017_14_DES']=gen2017design('TTbar_Tauola_14TeV_cfi',Kby(9,100))
+steps['TTbar_UPG2017_14_300']=gen2017300('TTbar_Tauola_14TeV_cfi',Kby(9,100))
+steps['TTbar_UPG2017_14_500']=gen2017500('TTbar_Tauola_14TeV_cfi',Kby(9,100))
+steps['TTbar_UPG2017_14_1000']=gen20171000('TTbar_Tauola_14TeV_cfi',Kby(9,100))
+steps['TTbar_UPG2017_14_3000']=gen20173000('TTbar_Tauola_14TeV_cfi',Kby(9,100))
 
 step1Up2023_BE_Defaults = {'-s' : 'GEN,SIM',
                              '-n' : 10,
@@ -882,6 +984,82 @@ step2Upg2017Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '--geometry' : 'Extended2017'
                   }
 steps['DIGIUP17']=merge([step2Upg2017Defaults])
+
+
+
+
+
+####DIGI AGING VALIDATION - DESIGN set of reference
+
+step2Upg2017_DESIGN_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'DES17_61_V4::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+                 '--geometry' : 'Extended2017'
+                  }
+steps['DIGIUP17DES']=merge([step2Upg2017_DESIGN_Defaults])
+
+
+
+####DIGI AGING VALIDATION - 300fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @300
+
+step2Upg2017_300_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'DES17_61_V4::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise,SLHCUpgradeSimulations/Configuration/aging.customise_aging_300',
+                 '--geometry' : 'Extended2017'
+                  }
+steps['DIGIUP17300']=merge([step2Upg2017_300_Defaults])
+
+
+####DIGI AGING VALIDATION - 500fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @500
+
+step2Upg2017_500_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'DES17_61_V4::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise,SLHCUpgradeSimulations/Configuration/aging.customise_aging_500',
+                 '--geometry' : 'Extended2017'
+                  }
+steps['DIGIUP17500']=merge([step2Upg2017_500_Defaults])
+
+
+
+
+####DIGI AGING VALIDATION - 1000fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @1000
+
+step2Upg2017_1000_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'DES17_61_V4::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000',
+                 '--geometry' : 'Extended2017'
+                  }
+steps['DIGIUP171000']=merge([step2Upg2017_1000_Defaults])
+
+
+####DIGI AGING VALIDATION - 3000fb-1 _ 
+
+step2Upg2017_3000_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'START17_61_V2::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise,SLHCUpgradeSimulations/Configuration/aging.customise_aging_3000',
+                 '--geometry' : 'Extended2017'
+                  }
+steps['DIGIUP173000']=merge([step2Upg2017_3000_Defaults])
+
+
+
+
+
 #add this line when testing from an input file that is not strictly GEN-SIM
 #addForAll(step2,{'--process':'DIGI'})
 
@@ -1034,6 +1212,85 @@ step3Up2017Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                              
 steps['RECOUP17']=merge([step3Up2017Defaults])
 
+
+
+
+####RECO AGING VALIDATION - DESIGN set of reference
+
+
+
+step3Up2017_DESIGN_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'DES17_61_V4::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+                 '--geometry' : 'Extended2017'
+                 }
+                             
+steps['RECOUP17DES']=merge([step3Up2017_DESIGN_Defaults])
+
+
+####RECO AGING VALIDATION - 300fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @300
+
+
+
+step3Up2017_300_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'DES17_61_V4::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+                 '--geometry' : 'Extended2017'
+                 }
+                             
+steps['RECOUP17300']=merge([step3Up2017_300_Defaults])
+
+
+####RECO AGING VALIDATION - 500fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @500
+
+
+step3Up2017_500_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'DES17_61_V4::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+                 '--geometry' : 'Extended2017'
+                 }
+                             
+steps['RECOUP17500']=merge([step3Up2017_500_Defaults])
+
+
+
+
+####RECO AGING VALIDATION - 1000fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @1000
+
+
+step3Up2017_1000_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'DES17_61_V4::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+                 '--geometry' : 'Extended2017'
+                 }
+                             
+steps['RECOUP171000']=merge([step3Up2017_1000_Defaults])
+
+####RECO AGING VALIDATION - 3000fb-1 
+
+
+step3Up2017_3000_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'START17_61_V2::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+                 '--geometry' : 'Extended2017'
+                 }
+                             
+steps['RECOUP173000']=merge([step3Up2017_3000_Defaults])
 
 
 #for 2023 BE
@@ -1189,6 +1446,59 @@ steps['HARVESTUP17']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
                    '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
 		   '--geometry' : 'Extended2017'
                    }
+		   
+####HARVEST AGING VALIDATION - DESIGN set of reference
+steps['HARVESTUP17DES']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
+                   '--conditions':'DES17_61_V4::All', 
+                   '--mc':'',
+                   '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+		   '--geometry' : 'Extended2017'
+                   }
+		   
+####HARVEST AGING VALIDATION - 300fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @300
+
+
+steps['HARVESTUP17300']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
+                   '--conditions':'DES17_61_V4::All', 
+                   '--mc':'',
+                   '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+		   '--geometry' : 'Extended2017'
+                   }
+		   
+		   
+####HARVEST AGING VALIDATION - 500fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @500
+
+
+steps['HARVESTUP17500']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
+                   '--conditions':'DES17_61_V4::All', 
+                   '--mc':'',
+                   '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+		   '--geometry' : 'Extended2017'
+                   }
+		   
+		   
+####HARVEST AGING VALIDATION - 1000fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @1000
+
+
+steps['HARVESTUP171000']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
+                   '--conditions':'DES17_61_V4::All', 
+                   '--mc':'',
+                   '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+		   '--geometry' : 'Extended2017'
+                   }
+		   
+####HARVEST AGING VALIDATION - 3000fb-1 
+
+
+steps['HARVESTUP173000']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
+                   '--conditions':'START17_61_V2::All', 
+                   '--mc':'',
+                   '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+		   '--geometry' : 'Extended2017'
+                   }
+		   
+		   
+		   
 steps['ALCASPLIT']={'-s':'ALCAOUTPUT:@allForPrompt',
                     '--conditions':'auto:com10',
                     '--scenario':'pp',
