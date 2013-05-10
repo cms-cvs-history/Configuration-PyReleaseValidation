@@ -293,6 +293,10 @@ expertSettings.add_option("--slhc",
                           help="Specify the SLHC scenario version",
                           default=None,
                           dest="slhc")
+expertSettings.add_option("--io",
+                          help="Create a json file with io informations",
+                          default=None,
+                          dest="io")
 
 (options,args) = parser.parse_args() # by default the arg is sys.argv[1:]
 

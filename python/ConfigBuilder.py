@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.303.2.8 $"
-__source__ = "$Source: /cvs/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
+__version__ = "$Revision: 1.303.2.9 $"
+__source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
 from FWCore.ParameterSet.Modules import _Module
@@ -50,6 +50,7 @@ defaultOptions.outputDefinition =''
 defaultOptions.inputCommands = None
 defaultOptions.inputEventContent = None
 defaultOptions.slhc = None
+defaultOptions.io = None
 
 # some helper routines
 def dumpPython(process,name):
@@ -1423,7 +1424,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.303.2.8 $"),
+                                            (version=cms.untracked.string("$Revision: 1.303.2.9 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
@@ -1546,6 +1547,28 @@ class ConfigBuilder(object):
         # dump customise fragment
         if self._options.customisation_file:
             self.pythonCfgCode += self.addCustomise()
+
+	if self._options.io:
+		#io=open(self._options.python_filename.replace('.py','.io'),'w')
+		if not self._options.io.endswith('.io'): self._option.io+='.io'
+		io=open(self._options.io,'w')
+		ioJson={}
+		if hasattr(self.process.source,"fileNames"):
+			if len(self.process.source.fileNames.value()):
+				ioJson['primary']=self.process.source.fileNames.value()
+		if hasattr(self.process.source,"secondaryFileNames"):
+			if len(self.process.source.secondaryFileNames.value()):
+				ioJson['secondary']=self.process.source.secondaryFileNames.value()
+		if self._options.pileup_input and self._options.pileup_input.startswith('dbs'):
+			ioJson['pileup']=self._options.pileup_input[4:]
+		for (o,om) in self.process.outputModules_().items():
+			ioJson[o]=om.fileName.value()
+		ioJson['GT']=self.process.GlobalTag.globaltag.value()
+		if self.productionFilterSequence:
+			ioJson['filter']=self.productionFilterSequence
+		import json
+		io.write(json.dumps(ioJson))
+
         return
 
 

@@ -8,6 +8,21 @@ class InputInfo(object):
         self.label = label
         self.dataSet = dataSet
 
+    def lumiRanges(self):
+        return None
+
+    def dbs(self):
+        command='dbs search --noheader --query "find file where dataset like '+self.dataSet
+        def requ(r):
+            return 'run=%d'%(r,)
+        if self.run!=0:
+            command+=' and ('+' or '.join(map(requ,self.run))+' )'
+        command+='"'
+        return command
+    
+    def __str__(self):
+        return 'input from: %s with run: %s'%(self.dataSet,str(self.run))
+    
 # merge dictionaries, with prioty on the [0] index
 def merge(dictlist,TELL=False):
     import copy
@@ -484,4 +499,19 @@ step3['HARVESTUPPH1']=merge([step3upgrade,{"--customise":"SLHCUpgradeSimulations
 # to handle things easier in other places, make a list of all the steps:
 stepList = [step1, step2, step3, step4]
 
+steps = {}
 
+def updateme(aDict, anotherOne):
+    for new_key in anotherOne:
+        if not new_key in aDict:
+            aDict[new_key] = anotherOne[new_key]
+        else:
+            print "Redefininig %s ? ==> no"%(new_key)
+    
+updateme(steps,step1)
+updateme(steps,step2)
+updateme(steps,step3)
+updateme(steps,step4)
+
+
+steps['RECO2'].pop('--filein')
