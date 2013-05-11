@@ -708,6 +708,20 @@ def gen20171000(fragment,howMuch):
     return merge([{'cfg':fragment},howMuch,step1Up2017_1000_Defaults])
 
 
+step1Up2017_1000_TkId_Defaults = {'-s' : 'GEN,SIM',
+                                     '-n' : 10,
+                                     '--conditions' : 'START17_61_V3::All', 
+                                     '--beamspot' : 'Gauss',
+                                     '--datatier' : 'GEN-SIM',
+                                     '--eventcontent': 'FEVTDEBUG',
+                                     '--geometry' : 'Extended2017',
+                                     '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000'
+                             }
+def gen20171000TkId(fragment,howMuch):
+    global step1Up2017_1000_TkId_Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2017_1000_TkId_Defaults])
+
+
 ####GENSIM AGING VALIDATION - 3000fb-1 
 
 step1Up2017_3000_Defaults = {'-s' : 'GEN,SIM',
@@ -727,6 +741,7 @@ steps['FourMuPt1_200_UPG2017_DES']=gen2017design('FourMuPt_1_200_cfi',Kby(10,100
 steps['FourMuPt1_200_UPG2017_300']=gen2017300('FourMuPt_1_200_cfi',Kby(10,100))
 steps['FourMuPt1_200_UPG2017_500']=gen2017500('FourMuPt_1_200_cfi',Kby(10,100))
 steps['FourMuPt1_200_UPG2017_1000']=gen20171000('FourMuPt_1_200_cfi',Kby(10,100))
+steps['FourMuPt1_200_UPG2017_1000TkId']=gen20171000TkId('FourMuPt_1_200_cfi',Kby(10,100))
 steps['FourMuPt1_200_UPG2017_3000']=gen20173000('FourMuPt_1_200_cfi',Kby(10,100))
 
 
@@ -734,18 +749,21 @@ steps['MinBias_TuneZ2star_UPG2017_14_DES']=gen2017design('MinBias_TuneZ2star_14T
 steps['MinBias_TuneZ2star_UPG2017_14_300']=gen2017300('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
 steps['MinBias_TuneZ2star_UPG2017_14_500']=gen2017500('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
 steps['MinBias_TuneZ2star_UPG2017_14_1000']=gen20171000('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
+steps['MinBias_TuneZ2star_UPG2017_14_1000TkId']=gen20171000TkId('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
 steps['MinBias_TuneZ2star_UPG2017_14_3000']=gen20173000('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
 
 steps['ZEE_UPG2017_14_DES']=gen2017design('ZEE_14TeV_cfi',Kby(9,100))
 steps['ZEE_UPG2017_14_300']=gen2017300('ZEE_14TeV_cfi',Kby(9,100))
 steps['ZEE_UPG2017_14_500']=gen2017500('ZEE_14TeV_cfi',Kby(9,100))
 steps['ZEE_UPG2017_14_1000']=gen20171000('ZEE_14TeV_cfi',Kby(9,100))
+steps['ZEE_UPG2017_14_1000TkId']=gen20171000TkId('ZEE_14TeV_cfi',Kby(9,100))
 steps['ZEE_UPG2017_14_3000']=gen20173000('ZEE_14TeV_cfi',Kby(9,100))
 
 steps['TTbar_UPG2017_14_DES']=gen2017design('TTbar_Tauola_14TeV_cfi',Kby(9,100))
 steps['TTbar_UPG2017_14_300']=gen2017300('TTbar_Tauola_14TeV_cfi',Kby(9,100))
 steps['TTbar_UPG2017_14_500']=gen2017500('TTbar_Tauola_14TeV_cfi',Kby(9,100))
 steps['TTbar_UPG2017_14_1000']=gen20171000('TTbar_Tauola_14TeV_cfi',Kby(9,100))
+steps['TTbar_UPG2017_14_1000TkId']=gen20171000TkId('TTbar_Tauola_14TeV_cfi',Kby(9,100))
 steps['TTbar_UPG2017_14_3000']=gen20173000('TTbar_Tauola_14TeV_cfi',Kby(9,100))
 
 step1Up2023_BE_Defaults = {'-s' : 'GEN,SIM',
@@ -1043,6 +1061,16 @@ step2Upg2017_1000_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                   }
 steps['DIGIUP171000']=merge([step2Upg2017_1000_Defaults])
 
+step2Upg2017_1000_TkId_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'START17_61_V3::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000',
+                 '--geometry' : 'Extended2017'
+                  }
+steps['DIGIUP171000TkId']=merge([step2Upg2017_1000_TkId_Defaults])
+
 
 ####DIGI AGING VALIDATION - 3000fb-1 _ 
 
@@ -1278,6 +1306,18 @@ step3Up2017_1000_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                              
 steps['RECOUP171000']=merge([step3Up2017_1000_Defaults])
 
+
+step3Up2017_1000_TkId_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'START17_61_V3::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+                 '--geometry' : 'Extended2017'
+                 }
+                             
+steps['RECOUP171000TkId']=merge([step3Up2017_1000_TkId_Defaults])
+
 ####RECO AGING VALIDATION - 3000fb-1 
 
 
@@ -1482,6 +1522,13 @@ steps['HARVESTUP17500']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
 
 steps['HARVESTUP171000']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
                    '--conditions':'DES17_61_V4::All', 
+                   '--mc':'',
+                   '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+		   '--geometry' : 'Extended2017'
+                   }
+
+steps['HARVESTUP171000TkId']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
+                   '--conditions':'START17_61_V3::All', 
                    '--mc':'',
                    '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
 		   '--geometry' : 'Extended2017'
