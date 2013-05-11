@@ -660,11 +660,11 @@ def gen2017design(fragment,howMuch):
     return merge([{'cfg':fragment},howMuch,step1Up2017_DESIGN_Defaults])
 
 
-####GENSIM AGING VALIDATION - 300fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @300
+####GENSIM AGING VALIDATION - 300fb-1
 
 step1Up2017_300_Defaults = {'-s' : 'GEN,SIM',
                              '-n' : 10,
-                             '--conditions' : 'DES17_61_V4::All', 
+                             '--conditions' : 'START17_61_V6::All', 
                              '--beamspot' : 'Gauss',
                              '--datatier' : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
@@ -676,11 +676,11 @@ def gen2017300(fragment,howMuch):
     return merge([{'cfg':fragment},howMuch,step1Up2017_300_Defaults])
 
 
-####GENSIM AGING VALIDATION - 500fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @500
+####GENSIM AGING VALIDATION - 500fb-1
 
 step1Up2017_500_Defaults = {'-s' : 'GEN,SIM',
                              '-n' : 10,
-                             '--conditions' : 'DES17_61_V4::All', 
+                             '--conditions' : 'START17_61_V5::All', 
                              '--beamspot' : 'Gauss',
                              '--datatier' : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
@@ -692,11 +692,11 @@ def gen2017500(fragment,howMuch):
     return merge([{'cfg':fragment},howMuch,step1Up2017_500_Defaults])
 
 
-####GENSIM AGING VALIDATION - 1000fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @1000
+####GENSIM AGING VALIDATION - 1000fb-1
 
 step1Up2017_1000_Defaults = {'-s' : 'GEN,SIM',
                              '-n' : 10,
-                             '--conditions' : 'DES17_61_V4::All', 
+                             '--conditions' : 'START17_61_V4::All', 
                              '--beamspot' : 'Gauss',
                              '--datatier' : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
@@ -1021,10 +1021,10 @@ steps['DIGIUP17DES']=merge([step2Upg2017_DESIGN_Defaults])
 
 
 
-####DIGI AGING VALIDATION - 300fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @300
+####DIGI AGING VALIDATION - 300fb-1
 
 step2Upg2017_300_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
-                 '--conditions':'DES17_61_V4::All', 
+                 '--conditions':'START17_61_V6::All', 
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
@@ -1034,10 +1034,10 @@ step2Upg2017_300_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
 steps['DIGIUP17300']=merge([step2Upg2017_300_Defaults])
 
 
-####DIGI AGING VALIDATION - 500fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @500
+####DIGI AGING VALIDATION - 500fb-1 
 
 step2Upg2017_500_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
-                 '--conditions':'DES17_61_V4::All', 
+                 '--conditions':'START17_61_V5::All', 
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
@@ -1049,10 +1049,10 @@ steps['DIGIUP17500']=merge([step2Upg2017_500_Defaults])
 
 
 
-####DIGI AGING VALIDATION - 1000fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @1000
+####DIGI AGING VALIDATION - 1000fb-1 
 
 step2Upg2017_1000_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
-                 '--conditions':'DES17_61_V4::All', 
+                 '--conditions':'START17_61_V4::All', 
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
@@ -1259,12 +1259,12 @@ step3Up2017_DESIGN_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
 steps['RECOUP17DES']=merge([step3Up2017_DESIGN_Defaults])
 
 
-####RECO AGING VALIDATION - 300fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @300
+####RECO AGING VALIDATION - 300fb-1 
 
 
 
 step3Up2017_300_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
-                 '--conditions':'DES17_61_V4::All', 
+                 '--conditions':'START17_61_V6::All', 
                  '--datatier':'GEN-SIM-RECO,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
@@ -1275,11 +1275,11 @@ step3Up2017_300_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
 steps['RECOUP17300']=merge([step3Up2017_300_Defaults])
 
 
-####RECO AGING VALIDATION - 500fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @500
+####RECO AGING VALIDATION - 500fb-1 
 
 
 step3Up2017_500_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
-                 '--conditions':'DES17_61_V4::All', 
+                 '--conditions':'START17_61_V5::All', 
                  '--datatier':'GEN-SIM-RECO,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
@@ -1292,11 +1292,11 @@ steps['RECOUP17500']=merge([step3Up2017_500_Defaults])
 
 
 
-####RECO AGING VALIDATION - 1000fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @1000
+####RECO AGING VALIDATION - 1000fb-1 
 
 
 step3Up2017_1000_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
-                 '--conditions':'DES17_61_V4::All', 
+                 '--conditions':'START17_61_V4::All', 
                  '--datatier':'GEN-SIM-RECO,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
@@ -1495,33 +1495,33 @@ steps['HARVESTUP17DES']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
 		   '--geometry' : 'Extended2017'
                    }
 		   
-####HARVEST AGING VALIDATION - 300fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @300
+####HARVEST AGING VALIDATION - 300fb-1 
 
 
 steps['HARVESTUP17300']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
-                   '--conditions':'DES17_61_V4::All', 
+                   '--conditions':'START17_61_V6::All', 
                    '--mc':'',
                    '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
 		   '--geometry' : 'Extended2017'
                    }
 		   
 		   
-####HARVEST AGING VALIDATION - 500fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @500
+####HARVEST AGING VALIDATION - 500fb-1 
 
 
 steps['HARVESTUP17500']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
-                   '--conditions':'DES17_61_V4::All', 
+                   '--conditions':'START17_61_V5::All', 
                    '--mc':'',
                    '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
 		   '--geometry' : 'Extended2017'
                    }
 		   
 		   
-####HARVEST AGING VALIDATION - 1000fb-1 _ JR/GIO PLEASE UPDATE WITH the GT @1000
+####HARVEST AGING VALIDATION - 1000fb-1 
 
 
 steps['HARVESTUP171000']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
-                   '--conditions':'DES17_61_V4::All', 
+                   '--conditions':'START17_61_V4::All', 
                    '--mc':'',
                    '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
 		   '--geometry' : 'Extended2017'
