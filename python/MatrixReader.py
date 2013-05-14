@@ -24,7 +24,7 @@ class MatrixReader(object):
         self.apply=opt.apply
         self.commandLineWf=opt.workflow
         self.overWrite=opt.overWrite
-
+        self.step1Only = opt.step1Only
         self.noRun = opt.noRun
         return
 
@@ -202,7 +202,10 @@ class MatrixReader(object):
                         'RECODFROMRAWRECO','SKIMD','SKIMCOSD','SKIMDreHLT'
                         ]:
                         continue
-                    
+
+                if self.step1Only and stepI!=0:
+                    continue
+                
                 #replace stepName is needed
                 #if stepName in self.replaceStep
                 if len(name) > 0 : name += '+'

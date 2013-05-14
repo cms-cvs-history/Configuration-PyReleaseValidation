@@ -114,6 +114,7 @@ if __name__ == '__main__':
     parser.add_option('--step1',
                       help='Used with --raw. Limit the production to step1',
                       dest='step1Only',
+                      action='store_true',
                       default=False
                       )
     parser.add_option('--fromScratch',
