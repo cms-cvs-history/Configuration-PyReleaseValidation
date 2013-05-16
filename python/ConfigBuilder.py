@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.381.2.22 $"
+__version__ = "$Revision: 1.381.2.23 $"
 __source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -412,7 +412,7 @@ class ConfigBuilder(object):
 			self.runsAndWeights = eval(self._options.runsAndWeightsForMC)
 		else:
 			from Configuration.StandardSequences.RunsAndWeights import RunsAndWeights
-			if type(RunsAndWeights[self._options.runsScenarioForMC])=='string':
+			if type(RunsAndWeights[self._options.runsScenarioForMC])==str:
 				__import__(RunsAndWeights[self._options.runsScenarioForMC])
 				self.runsAndWeights = sys.modules[RunsAndWeights[self._options.runsScenarioForMC]].runProbabilityDistribution
 			else:
@@ -1833,7 +1833,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.381.2.22 $"),
+                                            (version=cms.untracked.string("$Revision: 1.381.2.23 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
