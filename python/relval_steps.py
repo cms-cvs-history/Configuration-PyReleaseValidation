@@ -562,11 +562,11 @@ steps['ZMM_UPG2015_14']=gen2015('ZMM_14TeV_cfi',Kby(18,300))
 #steps['ZpMM_UPG2015_14']=gen2015('ZpMM_14TeV_cfi',Kby(9,200))
 #steps['WpM_UPG2015_14']=gen2015('WpM_14TeV_cfi',Kby(9,200))
 
-
+## 2017
 
 step1Up2017Defaults = {'-s' : 'GEN,SIM',
                              '-n' : 10,
-                             '--conditions' : 'auto:upgradePLS1', 
+                             '--conditions' : 'auto:upgrade2017', 
                              '--beamspot' : 'Gauss',
                              '--datatier' : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
@@ -658,6 +658,12 @@ step1Up2017_DESIGN_Defaults = {'-s' : 'GEN,SIM',
 def gen2017design(fragment,howMuch):
     global step1Up2017_DESIGN_Defaults
     return merge([{'cfg':fragment},howMuch,step1Up2017_DESIGN_Defaults])
+
+
+
+
+
+
 
 
 ####GENSIM AGING VALIDATION - 300fb-1
@@ -766,9 +772,94 @@ steps['TTbar_UPG2017_14_1000']=gen20171000('TTbar_Tauola_14TeV_cfi',Kby(9,100))
 steps['TTbar_UPG2017_14_1000TkId']=gen20171000TkId('TTbar_Tauola_14TeV_cfi',Kby(9,100))
 steps['TTbar_UPG2017_14_3000']=gen20173000('TTbar_Tauola_14TeV_cfi',Kby(9,100))
 
+## 2019
+
+step1Up2019Defaults = {'-s' : 'GEN,SIM',
+                             '-n' : 10,
+                             '--conditions' : 'auto:upgrade2019', 
+                             '--beamspot' : 'Gauss',
+                             '--datatier' : 'GEN-SIM',
+                             '--eventcontent': 'FEVTDEBUG',
+                             '--geometry' : 'Extended2019',
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise,SLHCUpgradeSimulations/Configuration/HCalCustoms.customise_HcalPhase1'
+                             }
+def gen2019(fragment,howMuch):
+    global step1Up2019Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2019Defaults])
+
+steps['FourMuPt1_200_UPG2019']=gen2019('FourMuPt_1_200_cfi',Kby(10,100))
+steps['SingleElectronPt10_UPG2019']=gen2019('SingleElectronPt10_cfi',Kby(9,3000))
+steps['SingleElectronPt35_UPG2019']=gen2019('SingleElectronPt35_cfi',Kby(9,500))
+steps['SingleElectronPt1000_UPG2019']=gen2019('SingleElectronPt1000_cfi',Kby(9,50))
+steps['SingleGammaPt10_UPG2019']=gen2019('SingleGammaPt10_cfi',Kby(9,3000))
+steps['SingleGammaPt35_UPG2019']=gen2019('SingleGammaPt35_cfi',Kby(9,500))
+steps['SingleMuPt1_UPG2019']=gen2019('SingleMuPt1_cfi',Kby(25,1000))
+steps['SingleMuPt10_UPG2019']=gen2019('SingleMuPt10_cfi',Kby(25,500))
+steps['SingleMuPt100_UPG2019']=gen2019('SingleMuPt100_cfi',Kby(9,500))
+steps['SingleMuPt1000_UPG2019']=gen2019('SingleMuPt1000_cfi',Kby(9,500))
+
+steps['TTbarLepton_UPG2019_8']=gen2019('TTbarLepton_Tauola_8TeV_cfi',Kby(9,100))
+steps['Wjet_Pt_80_120_UPG2019_8']=gen2019('Wjet_Pt_80_120_8TeV_cfi',Kby(9,100))
+steps['Wjet_Pt_3000_3500_UPG2019_8']=gen2019('Wjet_Pt_3000_3500_8TeV_cfi',Kby(9,50))
+steps['LM1_sfts_UPG2019_8']=gen2019('LM1_sfts_8TeV_cfi',Kby(9,100))
+
+steps['QCD_Pt_3000_3500_UPG2019_8']=gen2019('QCD_Pt_3000_3500_8TeV_cfi',Kby(9,25))
+steps['QCD_Pt_600_800_UPG2019_8']=gen2019('QCD_Pt_600_800_8TeV_cfi',Kby(9,50))
+steps['QCD_Pt_80_120_UPG2019_8']=gen2019('QCD_Pt_80_120_8TeV_cfi',Kby(9,100))
+
+steps['Higgs200ChargedTaus_UPG2019_8']=gen2019('H200ChargedTaus_Tauola_8TeV_cfi',Kby(9,100))
+steps['JpsiMM_UPG2019_8']=gen2019('JpsiMM_8TeV_cfi',Kby(66,1000))
+steps['TTbar_UPG2019_8']=gen2019('TTbar_Tauola_8TeV_cfi',Kby(9,100))
+steps['WE_UPG2019_8']=gen2019('WE_8TeV_cfi',Kby(9,100))
+steps['ZEE_UPG2019_8']=gen2019('ZEE_8TeV_cfi',Kby(9,100))
+steps['ZTT_UPG2019_8']=gen2019('ZTT_Tauola_All_hadronic_8TeV_cfi',Kby(9,150))
+steps['H130GGgluonfusion_UPG2019_8']=gen2019('H130GGgluonfusion_8TeV_cfi',Kby(9,100))
+steps['PhotonJets_Pt_10_UPG2019_8']=gen2019('PhotonJet_Pt_10_8TeV_cfi',Kby(9,150))
+steps['QQH1352T_Tauola_UPG2019_8']=gen2019('QQH1352T_Tauola_8TeV_cfi',Kby(9,100))
+
+steps['MinBias_TuneZ2star_UPG2019_8']=gen2019('MinBias_TuneZ2star_8TeV_pythia6_cff',Kby(9,300))
+steps['WM_UPG2019_8']=gen2019('WM_8TeV_cfi',Kby(9,200))
+steps['ZMM_UPG2019_8']=gen2019('ZMM_8TeV_cfi',Kby(18,300))
+
+steps['ADDMonoJet_d3MD3_UPG2019_8']=gen2019('ADDMonoJet_8TeV_d3MD3_cfi',Kby(9,100))
+steps['ZpMM_UPG2019_8']=gen2019('ZpMM_8TeV_cfi',Kby(9,200))
+steps['WpM_UPG2019_8']=gen2019('WpM_8TeV_cfi',Kby(9,200))
+
+
+#14TeV
+#steps['TTbarLepton_UPG2019_14']=gen2019('TTbarLepton_Tauola_14TeV_cfi',Kby(9,100))
+steps['Wjet_Pt_80_120_UPG2019_14']=gen2019('Wjet_Pt_80_120_14TeV_cfi',Kby(9,100))
+steps['Wjet_Pt_3000_3500_UPG2019_14']=gen2019('Wjet_Pt_3000_3500_14TeV_cfi',Kby(9,50))
+steps['LM1_sfts_UPG2019_14']=gen2019('LM1_sfts_14TeV_cfi',Kby(9,100))
+
+steps['QCD_Pt_3000_3500_UPG2019_14']=gen2019('QCD_Pt_3000_3500_14TeV_cfi',Kby(9,25))
+#steps['QCD_Pt_600_800_UPG2019_14']=gen2019('QCD_Pt_600_800_14TeV_cfi',Kby(9,50))
+steps['QCD_Pt_80_120_UPG2019_14']=gen2019('QCD_Pt_80_120_14TeV_cfi',Kby(9,100))
+
+steps['Higgs200ChargedTaus_UPG2019_14']=gen2019('H200ChargedTaus_Tauola_14TeV_cfi',Kby(9,100))
+steps['JpsiMM_UPG2019_14']=gen2019('JpsiMM_14TeV_cfi',Kby(66,1000))
+steps['TTbar_UPG2019_14']=gen2019('TTbar_Tauola_14TeV_cfi',Kby(9,100))
+steps['WE_UPG2019_14']=gen2019('WE_14TeV_cfi',Kby(9,100))
+steps['ZEE_UPG2019_14']=gen2019('ZEE_14TeV_cfi',Kby(9,100))
+steps['ZTT_UPG2019_14']=gen2019('ZTT_Tauola_All_hadronic_14TeV_cfi',Kby(9,150))
+steps['H130GGgluonfusion_UPG2019_14']=gen2019('H130GGgluonfusion_14TeV_cfi',Kby(9,100))
+steps['PhotonJets_Pt_10_UPG2019_14']=gen2019('PhotonJet_Pt_10_14TeV_cfi',Kby(9,150))
+steps['QQH1352T_Tauola_UPG2019_14']=gen2019('QQH1352T_Tauola_14TeV_cfi',Kby(9,100))
+
+steps['MinBias_TuneZ2star_UPG2019_14']=gen2019('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
+steps['WM_UPG2019_14']=gen2019('WM_14TeV_cfi',Kby(9,200))
+steps['ZMM_UPG2019_14']=gen2019('ZMM_14TeV_cfi',Kby(18,300))
+
+#steps['ADDMonoJet_d3MD3_UPG2019_14']=gen2019('ADDMonoJet_14TeV_d3MD3_cfi',Kby(9,100))
+#steps['ZpMM_UPG2019_14']=gen2019('ZpMM_14TeV_cfi',Kby(9,200))
+#steps['WpM_UPG2019_14']=gen2019('WpM_14TeV_cfi',Kby(9,200))
+
+
+#2023
+
 step1Up2023_BE_Defaults = {'-s' : 'GEN,SIM',
                              '-n' : 10,
-                             '--conditions' : 'auto:upgradePLS1', 
+                             '--conditions' : 'auto:upgradePLS3', 
                              '--beamspot' : 'Gauss',
                              '--datatier' : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
@@ -786,7 +877,7 @@ steps['TTbar_UPG2023_14_BE']=gen2023_BE('TTbar_Tauola_14TeV_cfi',Kby(9,100))
     
 step1Up2023_LB4_Defaults = {'-s' : 'GEN,SIM',
                              '-n' : 10,
-                             '--conditions' : 'auto:upgradePLS1', 
+                             '--conditions' : 'auto:upgradePLS3', 
                              '--beamspot' : 'Gauss',
                              '--datatier' : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
@@ -804,7 +895,7 @@ steps['TTbar_UPG2023_14_LB4']=gen2023_LB4('TTbar_Tauola_14TeV_cfi',Kby(9,100))
  
 step1Up2023_LB6_Defaults = {'-s' : 'GEN,SIM',
                              '-n' : 10,
-                             '--conditions' : 'auto:upgradePLS1', 
+                             '--conditions' : 'auto:upgradePLS3', 
                              '--beamspot' : 'Gauss',
                              '--datatier' : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
@@ -994,7 +1085,7 @@ steps['DIGIUP15']=merge([step2Upg2015Defaults])
 
 #for 2017
 step2Upg2017Defaults = {'-s':'DIGI,L1,DIGI2RAW',
-                 '--conditions':'auto:upgradePLS1', 
+                 '--conditions':'auto:upgrade2017', 
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
@@ -1002,6 +1093,18 @@ step2Upg2017Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '--geometry' : 'Extended2017'
                   }
 steps['DIGIUP17']=merge([step2Upg2017Defaults])
+
+
+#for 2019
+step2Upg2019Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'auto:upgrade2019', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise,SLHCUpgradeSimulations/Configuration/HCalCustoms.customise_HcalPhase1',
+                 '--geometry' : 'Extended2019'
+                  }
+steps['DIGIUP19']=merge([step2Upg2019Defaults])
 
 
 
@@ -1230,7 +1333,7 @@ steps['RECOUP15']=merge([step3Up2015Defaults])
 
 #for 2017
 step3Up2017Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
-                 '--conditions':'auto:upgradePLS1', 
+                 '--conditions':'auto:upgrade2017', 
                  '--datatier':'GEN-SIM-RECO,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
@@ -1240,6 +1343,19 @@ step3Up2017Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                              
 steps['RECOUP17']=merge([step3Up2017Defaults])
 
+
+
+#for 2019
+step3Up2019Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'auto:upgrade2019', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise,SLHCUpgradeSimulations/Configuration/HCalCustoms.customise_HcalPhase1',
+                 '--geometry' : 'Extended2019'
+                 }
+                             
+steps['RECOUP19']=merge([step3Up2019Defaults])
 
 
 
@@ -1335,7 +1451,7 @@ steps['RECOUP173000']=merge([step3Up2017_3000_Defaults])
 
 #for 2023 BE
 step3Up2023_BE_Defaults = {'-s':'DIGI,L1,DIGI2RAW,L1TrackTrigger,RECO:pixeltrackerlocalreco',
-                 '--conditions':'auto:upgradePLS1', 
+                 '--conditions':'auto:upgradePLS3', 
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUG',
@@ -1347,7 +1463,7 @@ steps['RECOUP23_BE']=merge([step3Up2023_BE_Defaults])
 
 
 step3Up2023_LB4_Defaults = {'-s':'DIGI,L1,DIGI2RAW,L1TrackTrigger,RECO:pixeltrackerlocalreco',
-                 '--conditions':'auto:upgradePLS1', 
+                 '--conditions':'auto:upgradePLS3', 
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUG',
@@ -1358,7 +1474,7 @@ step3Up2023_LB4_Defaults = {'-s':'DIGI,L1,DIGI2RAW,L1TrackTrigger,RECO:pixeltrac
 steps['RECOUP23_LB4']=merge([step3Up2023_LB4_Defaults])
 
 step3Up2023_LB6_Defaults = {'-s':'DIGI,L1,DIGI2RAW,L1TrackTrigger,RECO:pixeltrackerlocalreco',
-                 '--conditions':'auto:upgradePLS1', 
+                 '--conditions':'auto:upgradePLS3', 
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUG',
@@ -1481,10 +1597,17 @@ steps['HARVESTUP15']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
 		   '--geometry' : 'Extended2015'
                    }
 steps['HARVESTUP17']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
-                   '--conditions':'auto:upgradePLS1', 
+                   '--conditions':'auto:upgrade2017', 
                    '--mc':'',
                    '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
 		   '--geometry' : 'Extended2017'
+                   }
+		   
+steps['HARVESTUP19']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
+                   '--conditions':'auto:upgrade2019', 
+                   '--mc':'',
+                   '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+		   '--geometry' : 'Extended2019'
                    }
 		   
 ####HARVEST AGING VALIDATION - DESIGN set of reference
