@@ -781,7 +781,7 @@ step1Up2019Defaults = {'-s' : 'GEN,SIM',
                              '--datatier' : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
                              '--geometry' : 'Extended2019',
-                             '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise,SLHCUpgradeSimulations/Configuration/HCalCustoms.customise_HcalPhase1'
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019'
                              }
 def gen2019(fragment,howMuch):
     global step1Up2019Defaults
@@ -1101,7 +1101,7 @@ step2Upg2019Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise,SLHCUpgradeSimulations/Configuration/HCalCustoms.customise_HcalPhase1',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019',
                  '--geometry' : 'Extended2019'
                   }
 steps['DIGIUP19']=merge([step2Upg2019Defaults])
@@ -1351,7 +1351,7 @@ step3Up2019Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                  '--datatier':'GEN-SIM-RECO,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
-                 '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise,SLHCUpgradeSimulations/Configuration/HCalCustoms.customise_HcalPhase1',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019',
                  '--geometry' : 'Extended2019'
                  }
                              
