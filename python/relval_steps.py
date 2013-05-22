@@ -1214,7 +1214,6 @@ steps['DIGIUP17DES']=merge([step2Upg2017_DESIGN_Defaults])
 step2Upg2017_START_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '--conditions':'STAR17_61_V1A::All', 
                  '--datatier':'GEN-SIM-DIGI-RAW',
-		 
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
                  '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom',
