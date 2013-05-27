@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-__version__ = "$Revision: 1.381.2.23 $"
+__version__ = "$Revision: 1.381.2.24 $"
 __source__ = "$Source: /local/reps/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v $"
 
 import FWCore.ParameterSet.Config as cms
@@ -1309,6 +1309,9 @@ class ConfigBuilder(object):
         if self._options.himix==True:
             self.loadAndRemember("SimGeneral/MixingModule/himixDIGI_cff")
 
+	if self._options.restoreRNDSeeds:
+		self.executeAndRemember("process.mix.playback = True")
+
 	self.scheduleSequence(sequence.split('.')[-1],'digitisation_step')
         return
 
@@ -1833,7 +1836,7 @@ class ConfigBuilder(object):
     def build_production_info(self, evt_type, evtnumber):
         """ Add useful info for the production. """
         self.process.configurationMetadata=cms.untracked.PSet\
-                                            (version=cms.untracked.string("$Revision: 1.381.2.23 $"),
+                                            (version=cms.untracked.string("$Revision: 1.381.2.24 $"),
                                              name=cms.untracked.string("PyReleaseValidation"),
                                              annotation=cms.untracked.string(evt_type+ " nevts:"+str(evtnumber))
                                              )
