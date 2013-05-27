@@ -831,6 +831,15 @@ steps['FourMuPt1_200_UPG2017_1000TkId']=gen20171000TkId('FourMuPt_1_200_cfi',Kby
 steps['FourMuPt1_200_UPG2017_3000']=gen20173000('FourMuPt_1_200_cfi',Kby(10,100))
 
 
+steps['TenMuE_0_200_UPG2017_DES']=gen2017design('TenMuE_0_200_cfi',Kby(10,100))
+steps['TenMuE_0_200_UPG2017_STAR']=gen2017design('TenMuE_0_200_cfi',Kby(10,100))
+steps['TenMuE_0_200_UPG2017_300']=gen2017300('TenMuE_0_200_cfi',Kby(10,100))
+steps['TenMuE_0_200_UPG2017_500']=gen2017500('TenMuE_0_200_cfi',Kby(10,100))
+steps['TenMuE_0_200_UPG2017_1000']=gen20171000('TenMuE_0_200_cfi',Kby(10,100))
+steps['TenMuE_0_200_UPG2017_1000TkId']=gen20171000TkId('TenMuE_0_200_cfi',Kby(10,100))
+steps['TenMuE_0_200_UPG2017_3000']=gen20173000('TenMuE_0_200_cfi',Kby(10,100))
+
+
 steps['MinBias_TuneZ2star_UPG2017_14_DES']=gen2017design('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
 steps['MinBias_TuneZ2star_UPG2017_14_STAR']=gen2017design('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
 steps['MinBias_TuneZ2star_UPG2017_14_300']=gen2017300('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
