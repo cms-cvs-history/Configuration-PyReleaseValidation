@@ -701,6 +701,10 @@ class ConfigBuilder(object):
 		#re-order the input commands to put drop first
 		## drop is before keep: so just sort
 		self.process.source.inputCommands.sort()
+		#remove that inconsistency: cannot be dropping * and keeping *
+		if 'keep *' in self.process.source.inputCommands and 'drop *' in self.process.source.inputCommands:
+			self.process.source.inputCommands.remove( 'keep *' )
+
 		
 	    return 
 	    
