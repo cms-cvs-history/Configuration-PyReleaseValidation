@@ -671,7 +671,7 @@ step1Up2017_START_Defaults = {'-s' : 'GEN,SIM',
                              '--datatier' : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
                              '--geometry' : 'Extended2017',
-                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,'
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions'
                              }
 def gen2017start(fragment,howMuch):
     global step1Up2017_START_Defaults
