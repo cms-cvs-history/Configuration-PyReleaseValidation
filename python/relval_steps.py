@@ -1213,7 +1213,7 @@ step2Upg2017_DESIGN_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions',
                  '--geometry' : 'Extended2017'
                   }
 steps['DIGIUP17DES']=merge([step2Upg2017_DESIGN_Defaults])
@@ -1225,7 +1225,7 @@ step2Upg2017_START_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_150',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_150',
                  '--geometry' : 'Extended2017'
                   }
 steps['DIGIUP17STAR']=merge([step2Upg2017_START_Defaults])
@@ -1527,7 +1527,7 @@ step3Up2017_DESIGN_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                  '--datatier':'GEN-SIM-RECO,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
-                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions',
                  '--geometry' : 'Extended2017'
                  }
                              
@@ -1542,7 +1542,7 @@ step3Up2017_START_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                  '--datatier':'GEN-SIM-RECO,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
-                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_150',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_150',
                  '--geometry' : 'Extended2017'
                  }
                              
