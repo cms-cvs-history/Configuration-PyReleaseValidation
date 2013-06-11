@@ -571,7 +571,7 @@ step1Up2017Defaults = {'-s' : 'GEN,SIM',
                              '--datatier' : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
                              '--geometry' : 'Extended2017',
-                             '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise'
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017'
                              }
 def gen2017(fragment,howMuch):
     global step1Up2017Defaults
@@ -653,7 +653,7 @@ step1Up2017_DESIGN_Defaults = {'-s' : 'GEN,SIM',
                              '--datatier' : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
                              '--geometry' : 'Extended2017',
-                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions'
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017'
                              }
 def gen2017design(fragment,howMuch):
     global step1Up2017_DESIGN_Defaults
@@ -671,7 +671,7 @@ step1Up2017_START_Defaults = {'-s' : 'GEN,SIM',
                              '--datatier' : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
                              '--geometry' : 'Extended2017',
-                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions'
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017'
                              }
 def gen2017start(fragment,howMuch):
     global step1Up2017_START_Defaults
@@ -692,7 +692,7 @@ step1Up2017_300_Defaults = {'-s' : 'GEN,SIM',
                              '--datatier' : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
                              '--geometry' : 'Extended2017',
-                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/aging.customise_aging_300'
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_300'
                              }
 def gen2017300(fragment,howMuch):
     global step1Up2017_300_Defaults
@@ -708,7 +708,7 @@ step1Up2017_300comp_Defaults = {'-s' : 'GEN,SIM',
                              '--datatier' : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
                              '--geometry' : 'Extended2017',
-                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/aging.customise_aging_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_300'
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_300'
                              }
 def gen2017300comp(fragment,howMuch):
     global step1Up2017_300comp_Defaults
@@ -723,7 +723,7 @@ step1Up2017_500_Defaults = {'-s' : 'GEN,SIM',
                              '--datatier' : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
                              '--geometry' : 'Extended2017',
-                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/aging.customise_aging_500'
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_500'
                              }
 def gen2017500(fragment,howMuch):
     global step1Up2017_500_Defaults
@@ -739,7 +739,7 @@ step1Up2017_1000_Defaults = {'-s' : 'GEN,SIM',
                              '--datatier' : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
                              '--geometry' : 'Extended2017',
-                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000'
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000'
                              }
 def gen20171000(fragment,howMuch):
     global step1Up2017_1000_Defaults
@@ -754,7 +754,7 @@ step1Up2017_1000comp_Defaults = {'-s' : 'GEN,SIM',
                              '--datatier' : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
                              '--geometry' : 'Extended2017',
-                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_1000'
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_1000'
                              }
 def gen20171000comp(fragment,howMuch):
     global step1Up2017_1000comp_Defaults
@@ -770,7 +770,7 @@ step1Up2017_1000_TkId_Defaults = {'-s' : 'GEN,SIM',
                                      '--datatier' : 'GEN-SIM',
                                      '--eventcontent': 'FEVTDEBUG',
                                      '--geometry' : 'Extended2017',
-                                     '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000'
+                                     '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000'
                              }
 def gen20171000TkId(fragment,howMuch):
     global step1Up2017_1000_TkId_Defaults
@@ -785,7 +785,7 @@ step1Up2017_1000comp_TkId_Defaults = {'-s' : 'GEN,SIM',
                                      '--datatier' : 'GEN-SIM',
                                      '--eventcontent': 'FEVTDEBUG',
                                      '--geometry' : 'Extended2017',
-                                     '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_1000'
+                                     '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_1000'
                              }
 def gen20171000compTkId(fragment,howMuch):
     global step1Up2017_1000comp_TkId_Defaults
@@ -800,7 +800,7 @@ step1Up2017_3000_Defaults = {'-s' : 'GEN,SIM',
                              '--datatier' : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
                              '--geometry' : 'Extended2017',
-                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/aging.customise_aging_3000'
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_3000'
                              }
 def gen20173000(fragment,howMuch):
     global step1Up2017_3000_Defaults
@@ -816,7 +816,7 @@ step1Up2017_3000comp_Defaults = {'-s' : 'GEN,SIM',
                              '--datatier' : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
                              '--geometry' : 'Extended2017',
-                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/aging.customise_aging_3000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_3000'
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_3000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_3000'
                              }
 def gen20173000comp(fragment,howMuch):
     global step1Up2017_3000comp_Defaults
@@ -966,6 +966,245 @@ steps['ZMM_UPG2019_14']=gen2019('ZMM_14TeV_cfi',Kby(18,300))
 #steps['ZpMM_UPG2019_14']=gen2019('ZpMM_14TeV_cfi',Kby(9,200))
 #steps['WpM_UPG2019_14']=gen2019('WpM_14TeV_cfi',Kby(9,200))
 
+####GENSIM AGING VALIDATION - DESIGN set of reference
+
+step1Up2019_DESIGN_Defaults = {'-s' : 'GEN,SIM',
+                             '-n' : 10,
+                             '--conditions' : 'DES19_61_V5::All', 
+                             '--beamspot' : 'Gauss',
+                             '--datatier' : 'GEN-SIM',
+                             '--eventcontent': 'FEVTDEBUG',
+                             '--geometry' : 'Extended2019',
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019'
+                             }
+def gen2019design(fragment,howMuch):
+    global step1Up2019_DESIGN_Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2019_DESIGN_Defaults])
+
+
+
+
+####GENSIM AGING VALIDATION - STARTUP set of reference
+
+step1Up2019_START_Defaults = {'-s' : 'GEN,SIM',
+                             '-n' : 10,
+                             '--conditions' : 'STAR19_61_V1A::All', 
+                             '--beamspot' : 'Gauss',
+                             '--datatier' : 'GEN-SIM',
+                             '--eventcontent': 'FEVTDEBUG',
+                             '--geometry' : 'Extended2019',
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019'
+                             }
+def gen2019start(fragment,howMuch):
+    global step1Up2019_START_Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2019_START_Defaults])
+
+
+
+
+
+
+
+####GENSIM AGING VALIDATION - 300fb-1
+
+step1Up2019_300_Defaults = {'-s' : 'GEN,SIM',
+                             '-n' : 10,
+                             '--conditions' : 'STAR19_61_V6A::All', 
+                             '--beamspot' : 'Gauss',
+                             '--datatier' : 'GEN-SIM',
+                             '--eventcontent': 'FEVTDEBUG',
+                             '--geometry' : 'Extended2019',
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_300'
+                             }
+def gen2019300(fragment,howMuch):
+    global step1Up2019_300_Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2019_300_Defaults])
+
+
+####GENSIM AGING VALIDATION - 300fb-1 COMPLETE ECAL
+
+step1Up2019_300comp_Defaults = {'-s' : 'GEN,SIM',
+                             '-n' : 10,
+                             '--conditions' : 'STAR19_61_V6A::All', 
+                             '--beamspot' : 'Gauss',
+                             '--datatier' : 'GEN-SIM',
+                             '--eventcontent': 'FEVTDEBUG',
+                             '--geometry' : 'Extended2019',
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_300'
+                             }
+def gen2019300comp(fragment,howMuch):
+    global step1Up2019_300comp_Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2019_300comp_Defaults])
+
+####GENSIM AGING VALIDATION - 500fb-1
+
+step1Up2019_500_Defaults = {'-s' : 'GEN,SIM',
+                             '-n' : 10,
+                             '--conditions' : 'STAR19_61_V5A::All', 
+                             '--beamspot' : 'Gauss',
+                             '--datatier' : 'GEN-SIM',
+                             '--eventcontent': 'FEVTDEBUG',
+                             '--geometry' : 'Extended2019',
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_500'
+                             }
+def gen2019500(fragment,howMuch):
+    global step1Up2019_500_Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2019_500_Defaults])
+
+
+####GENSIM AGING VALIDATION - 1000fb-1
+
+step1Up2019_1000_Defaults = {'-s' : 'GEN,SIM',
+                             '-n' : 10,
+                             '--conditions' : 'STAR19_61_V4A::All', 
+                             '--beamspot' : 'Gauss',
+                             '--datatier' : 'GEN-SIM',
+                             '--eventcontent': 'FEVTDEBUG',
+                             '--geometry' : 'Extended2019',
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000'
+                             }
+def gen20191000(fragment,howMuch):
+    global step1Up2019_1000_Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2019_1000_Defaults])
+
+####GENSIM AGING VALIDATION - 1000fb-1 COMPLETE ECAL
+
+step1Up2019_1000comp_Defaults = {'-s' : 'GEN,SIM',
+                             '-n' : 10,
+                             '--conditions' : 'STAR19_61_V4A::All', 
+                             '--beamspot' : 'Gauss',
+                             '--datatier' : 'GEN-SIM',
+                             '--eventcontent': 'FEVTDEBUG',
+                             '--geometry' : 'Extended2019',
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_1000'
+                             }
+def gen20191000comp(fragment,howMuch):
+    global step1Up2019_1000comp_Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2019_1000comp_Defaults])
+
+
+####GENSIM AGING VALIDATION - 1000fb-1 TkId
+
+step1Up2019_1000_TkId_Defaults = {'-s' : 'GEN,SIM',
+                                     '-n' : 10,
+                                     '--conditions' : 'STAR19_61_V3A::All', 
+                                     '--beamspot' : 'Gauss',
+                                     '--datatier' : 'GEN-SIM',
+                                     '--eventcontent': 'FEVTDEBUG',
+                                     '--geometry' : 'Extended2019',
+                                     '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000'
+                             }
+def gen20191000TkId(fragment,howMuch):
+    global step1Up2019_1000_TkId_Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2019_1000_TkId_Defaults])
+
+####GENSIM AGING VALIDATION - 1000fb-1 TkId COMPLETE ECAL
+
+step1Up2019_1000comp_TkId_Defaults = {'-s' : 'GEN,SIM',
+                                     '-n' : 10,
+                                     '--conditions' : 'STAR19_61_V3A::All', 
+                                     '--beamspot' : 'Gauss',
+                                     '--datatier' : 'GEN-SIM',
+                                     '--eventcontent': 'FEVTDEBUG',
+                                     '--geometry' : 'Extended2019',
+                                     '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_1000'
+                             }
+def gen20191000compTkId(fragment,howMuch):
+    global step1Up2019_1000comp_TkId_Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2019_1000comp_TkId_Defaults])
+
+####GENSIM AGING VALIDATION - 3000fb-1 
+
+step1Up2019_3000_Defaults = {'-s' : 'GEN,SIM',
+                             '-n' : 10,
+                             '--conditions' : 'STAR19_61_V2A::All', 
+                             '--beamspot' : 'Gauss',
+                             '--datatier' : 'GEN-SIM',
+                             '--eventcontent': 'FEVTDEBUG',
+                             '--geometry' : 'Extended2019',
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_3000'
+                             }
+def gen20193000(fragment,howMuch):
+    global step1Up2019_3000_Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2019_3000_Defaults])
+
+
+####GENSIM AGING VALIDATION - 3000fb-1 COMPLETE ECAL
+
+step1Up2019_3000comp_Defaults = {'-s' : 'GEN,SIM',
+                             '-n' : 10,
+                             '--conditions' : 'STAR19_61_V2A::All', 
+                             '--beamspot' : 'Gauss',
+                             '--datatier' : 'GEN-SIM',
+                             '--eventcontent': 'FEVTDEBUG',
+                             '--geometry' : 'Extended2019',
+                             '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_3000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_3000'
+                             }
+def gen20193000comp(fragment,howMuch):
+    global step1Up2019_3000comp_Defaults
+    return merge([{'cfg':fragment},howMuch,step1Up2019_3000comp_Defaults])
+
+steps['FourMuPt1_200_UPG2019_DES']=gen2019design('FourMuPt_1_200_cfi',Kby(10,100))
+steps['FourMuPt1_200_UPG2019_STAR']=gen2019design('FourMuPt_1_200_cfi',Kby(10,100))
+steps['FourMuPt1_200_UPG2019_300']=gen2019300('FourMuPt_1_200_cfi',Kby(10,100))
+steps['FourMuPt1_200_UPG2019_500']=gen2019500('FourMuPt_1_200_cfi',Kby(10,100))
+steps['FourMuPt1_200_UPG2019_1000']=gen20191000('FourMuPt_1_200_cfi',Kby(10,100))
+steps['FourMuPt1_200_UPG2019_1000TkId']=gen20191000TkId('FourMuPt_1_200_cfi',Kby(10,100))
+steps['FourMuPt1_200_UPG2019_3000']=gen20193000('FourMuPt_1_200_cfi',Kby(10,100))
+
+steps['FourMuPt1_200_UPG2019PU20_DES']=gen2019design('FourMuPt_1_200_cfi',Kby(10,100))
+steps['FourMuPt1_200_UPG2019PU20_STAR']=gen2019design('FourMuPt_1_200_cfi',Kby(10,100))
+steps['FourMuPt1_200_UPG2019PU20_300']=gen2019300('FourMuPt_1_200_cfi',Kby(10,100))
+steps['FourMuPt1_200_UPG2019PU20_500']=gen2019500('FourMuPt_1_200_cfi',Kby(10,100))
+steps['FourMuPt1_200_UPG2019PU20_1000']=gen20191000('FourMuPt_1_200_cfi',Kby(10,100))
+
+steps['TenMuE_0_200_UPG2019_DES']=gen2019design('TenMuE_0_200_cfi',Kby(10,100))
+steps['TenMuE_0_200_UPG2019_STAR']=gen2019design('TenMuE_0_200_cfi',Kby(10,100))
+steps['TenMuE_0_200_UPG2019_300']=gen2019300('TenMuE_0_200_cfi',Kby(10,100))
+steps['TenMuE_0_200_UPG2019_500']=gen2019500('TenMuE_0_200_cfi',Kby(10,100))
+steps['TenMuE_0_200_UPG2019_1000']=gen20191000('TenMuE_0_200_cfi',Kby(10,100))
+steps['TenMuE_0_200_UPG2019_1000TkId']=gen20191000TkId('TenMuE_0_200_cfi',Kby(10,100))
+steps['TenMuE_0_200_UPG2019_3000']=gen20193000('TenMuE_0_200_cfi',Kby(10,100))
+
+steps['TenMuE_0_200_UPG2019PU20_DES']=gen2019design('TenMuE_0_200_cfi',Kby(10,100))
+steps['TenMuE_0_200_UPG2019PU20_STAR']=gen2019design('TenMuE_0_200_cfi',Kby(10,100))
+steps['TenMuE_0_200_UPG2019PU20_300']=gen2019300('TenMuE_0_200_cfi',Kby(10,100))
+steps['TenMuE_0_200_UPG2019PU20_500']=gen2019500('TenMuE_0_200_cfi',Kby(10,100))
+steps['TenMuE_0_200_UPG2019PU20_1000']=gen20191000('TenMuE_0_200_cfi',Kby(10,100))
+
+steps['MinBias_TuneZ2star_UPG2019_14_DES']=gen2019design('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
+steps['MinBias_TuneZ2star_UPG2019_14_STAR']=gen2019design('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
+steps['MinBias_TuneZ2star_UPG2019_14_300']=gen2019300('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
+steps['MinBias_TuneZ2star_UPG2019_14_500']=gen2019500('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
+steps['MinBias_TuneZ2star_UPG2019_14_1000']=gen20191000('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
+steps['MinBias_TuneZ2star_UPG2019_14_1000TkId']=gen20191000TkId('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
+steps['MinBias_TuneZ2star_UPG2019_14_3000']=gen20193000('MinBias_TuneZ2star_14TeV_pythia6_cff',Kby(9,300))
+
+steps['ZEE_UPG2019_14_DES']=gen2019design('ZEE_14TeV_cfi',Kby(9,100))
+steps['ZEE_UPG2019_14_STAR']=gen2019design('ZEE_14TeV_cfi',Kby(9,100))
+steps['ZEE_UPG2019_14_300']=gen2019300('ZEE_14TeV_cfi',Kby(9,100))
+steps['ZEE_UPG2019_14_300COMP']=gen2019300comp('ZEE_14TeV_cfi',Kby(9,100))
+steps['ZEE_UPG2019_14_500']=gen2019500('ZEE_14TeV_cfi',Kby(9,100))
+steps['ZEE_UPG2019_14_1000']=gen20191000('ZEE_14TeV_cfi',Kby(9,100))
+steps['ZEE_UPG2019_14_1000COMP']=gen20191000comp('ZEE_14TeV_cfi',Kby(9,100))
+steps['ZEE_UPG2019_14_1000TkId']=gen20191000TkId('ZEE_14TeV_cfi',Kby(9,100))
+steps['ZEE_UPG2019_14_1000COMPTkId']=gen20191000compTkId('ZEE_14TeV_cfi',Kby(9,100))
+steps['ZEE_UPG2019_14_3000']=gen20193000('ZEE_14TeV_cfi',Kby(9,100))
+steps['ZEE_UPG2019_14_3000COMP']=gen20193000comp('ZEE_14TeV_cfi',Kby(9,100))
+
+steps['TTbar_UPG2019_14_DES']=gen2019design('TTbar_Tauola_14TeV_cfi',Kby(9,100))
+steps['TTbar_UPG2019_14_STAR']=gen2019design('TTbar_Tauola_14TeV_cfi',Kby(9,100))
+steps['TTbar_UPG2019_14_300']=gen2019300('TTbar_Tauola_14TeV_cfi',Kby(9,100))
+steps['TTbar_UPG2019_14_500']=gen2019500('TTbar_Tauola_14TeV_cfi',Kby(9,100))
+steps['TTbar_UPG2019_14_1000']=gen20191000('TTbar_Tauola_14TeV_cfi',Kby(9,100))
+steps['TTbar_UPG2019_14_1000TkId']=gen20191000TkId('TTbar_Tauola_14TeV_cfi',Kby(9,100))
+steps['TTbar_UPG2019_14_3000']=gen20193000('TTbar_Tauola_14TeV_cfi',Kby(9,100))
+
+steps['TTbar_UPG2019PU20_14_DES']=gen2019design('TTbar_Tauola_14TeV_cfi',Kby(9,100))
+steps['TTbar_UPG2019PU20_14_STAR']=gen2019design('TTbar_Tauola_14TeV_cfi',Kby(9,100))
+steps['TTbar_UPG2019PU20_14_300']=gen2019300('TTbar_Tauola_14TeV_cfi',Kby(9,100))
+steps['TTbar_UPG2019PU20_14_500']=gen2019500('TTbar_Tauola_14TeV_cfi',Kby(9,100))
+steps['TTbar_UPG2019PU20_14_1000']=gen20191000('TTbar_Tauola_14TeV_cfi',Kby(9,100))
 
 #2023
 
@@ -1201,7 +1440,7 @@ step2Upg2017Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017',
                  '--geometry' : 'Extended2017'
                   }
 steps['DIGIUP17']=merge([step2Upg2017Defaults])
@@ -1211,7 +1450,7 @@ step2Upg2017puDefaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
 		 '--pileup': 'AVE_20_BX_25ns',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017',
                  '--geometry' : 'Extended2017',
 		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2017_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
                   }
@@ -1240,7 +1479,7 @@ step2Upg2017_DESIGN_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017',
                  '--geometry' : 'Extended2017'
                   }
 steps['DIGIUP17DES']=merge([step2Upg2017_DESIGN_Defaults])
@@ -1251,7 +1490,7 @@ step2Upg2017pu_DESIGN_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
 		 '--pileup': 'AVE_20_BX_25ns',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017',
                  '--geometry' : 'Extended2017',
 		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2017_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
                   }
@@ -1265,7 +1504,7 @@ step2Upg2017_START_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_150',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_150',
                  '--geometry' : 'Extended2017'
                   }
 steps['DIGIUP17STAR']=merge([step2Upg2017_START_Defaults])
@@ -1278,7 +1517,7 @@ step2Upg2017pu_START_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
 		 '--pileup': 'AVE_20_BX_25ns',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_150',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_150',
                  '--geometry' : 'Extended2017',
 		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2017_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
                   }
@@ -1293,7 +1532,7 @@ step2Upg2017_300_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_300,SLHCUpgradeSimulations/Configuration/aging.customise_aging_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_300',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_300',
                  '--geometry' : 'Extended2017'
                   }
 steps['DIGIUP17300']=merge([step2Upg2017_300_Defaults])
@@ -1304,7 +1543,7 @@ step2Upg2017pu_300_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
 		 '--pileup': 'AVE_20_BX_25ns',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_300,SLHCUpgradeSimulations/Configuration/aging.customise_aging_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_300',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_300',
                  '--geometry' : 'Extended2017',
 		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2017_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
                   }
@@ -1318,7 +1557,7 @@ step2Upg2017_300comp_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_300,SLHCUpgradeSimulations/Configuration/aging.customise_aging_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_300',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_300',
                  '--geometry' : 'Extended2017'
                   }
 steps['DIGIUP17300COMP']=merge([step2Upg2017_300comp_Defaults])
@@ -1330,7 +1569,7 @@ step2Upg2017_500_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_500,SLHCUpgradeSimulations/Configuration/aging.customise_aging_500,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_500',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_500,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_500',
                  '--geometry' : 'Extended2017'
                   }
 steps['DIGIUP17500']=merge([step2Upg2017_500_Defaults])
@@ -1342,7 +1581,7 @@ step2Upg2017pu_500_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
 		 '--pileup': 'AVE_20_BX_25ns',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_500,SLHCUpgradeSimulations/Configuration/aging.customise_aging_500,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_500',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_500,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_500',
                  '--geometry' : 'Extended2017',
 		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2017_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
                   }
@@ -1357,7 +1596,7 @@ step2Upg2017_1000_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_1000,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
                  '--geometry' : 'Extended2017'
                   }
 steps['DIGIUP171000']=merge([step2Upg2017_1000_Defaults])
@@ -1368,7 +1607,7 @@ step2Upg2017pu_1000_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
 		 '--pileup': 'AVE_20_BX_25ns',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_1000,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
                  '--geometry' : 'Extended2017',
 		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2017_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
                   }
@@ -1381,7 +1620,7 @@ step2Upg2017_1000comp_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_1000,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
                  '--geometry' : 'Extended2017'
                   }
 steps['DIGIUP171000COMP']=merge([step2Upg2017_1000comp_Defaults])
@@ -1393,7 +1632,7 @@ step2Upg2017_1000_TkId_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_1000,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
                  '--geometry' : 'Extended2017'
                   }
 steps['DIGIUP171000TkId']=merge([step2Upg2017_1000_TkId_Defaults])
@@ -1405,7 +1644,7 @@ step2Upg2017_1000comp_TkId_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_1000,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
                  '--geometry' : 'Extended2017'
                   }
 steps['DIGIUP171000COMPTkId']=merge([step2Upg2017_1000comp_TkId_Defaults])
@@ -1418,7 +1657,7 @@ step2Upg2017_3000_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_3000,SLHCUpgradeSimulations/Configuration/aging.customise_aging_3000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_3000',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_3000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_3000',
                  '--geometry' : 'Extended2017'
                   }
 steps['DIGIUP173000']=merge([step2Upg2017_3000_Defaults])
@@ -1431,11 +1670,216 @@ step2Upg2017_3000comp_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
                  '--datatier':'GEN-SIM-DIGI-RAW',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT',
-                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_3000,SLHCUpgradeSimulations/Configuration/aging.customise_aging_3000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_3000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_3000',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/aging.customise_aging_3000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_3000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_3000',
                  '--geometry' : 'Extended2017'
                   }
 steps['DIGIUP173000COMP']=merge([step2Upg2017_3000comp_Defaults])
 
+
+
+
+####DIGI AGING VALIDATION 2019 - DESIGN set of reference 
+
+step2Upg2019_DESIGN_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'DES19_61_V5::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019',
+                 '--geometry' : 'Extended2019'
+                  }
+steps['DIGIUP19DES']=merge([step2Upg2019_DESIGN_Defaults])
+
+step2Upg2019pu_DESIGN_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'DES17_61_V5::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+		 '--pileup': 'AVE_20_BX_25ns',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019',
+                 '--geometry' : 'Extended2019',
+		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2019_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
+                  }
+steps['DIGIPUUP19DES']=merge([step2Upg2019pu_DESIGN_Defaults])
+
+
+####DIGI AGING VALIDATION - STARTUP set of reference
+
+step2Upg2019_START_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'STAR19_61_V1A::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_150',
+                 '--geometry' : 'Extended2019'
+                  }
+steps['DIGIUP19STAR']=merge([step2Upg2019_START_Defaults])
+
+
+
+step2Upg2019pu_START_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'STAR19_61_V1A::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+		 '--pileup': 'AVE_20_BX_25ns',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_150',
+                 '--geometry' : 'Extended2019',
+		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2019_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
+                  }
+steps['DIGIPUUP19STAR']=merge([step2Upg2019pu_START_Defaults])
+
+
+
+####DIGI AGING VALIDATION - 300fb-1
+
+step2Upg2019_300_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'STAR19_61_V6A::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_300',
+                 '--geometry' : 'Extended2019'
+                  }
+steps['DIGIUP19300']=merge([step2Upg2019_300_Defaults])
+
+step2Upg2019pu_300_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'STAR19_61_V6A::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+		 '--pileup': 'AVE_20_BX_25ns',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_300',
+                 '--geometry' : 'Extended2019',
+		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2019_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
+                  }
+steps['DIGIPUUP19300']=merge([step2Upg2019pu_300_Defaults])
+
+
+####DIGI AGING VALIDATION - 300fb-1  COMPLETE ECAK
+
+step2Upg2019_300comp_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'STAR19_61_V6A::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_300',
+                 '--geometry' : 'Extended2019'
+                  }
+steps['DIGIUP19300COMP']=merge([step2Upg2019_300comp_Defaults])
+
+####DIGI AGING VALIDATION - 500fb-1 
+
+step2Upg2019_500_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'STAR19_61_V5A::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_500,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_500',
+                 '--geometry' : 'Extended2019'
+                  }
+steps['DIGIUP19500']=merge([step2Upg2019_500_Defaults])
+
+
+step2Upg2019pu_500_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'STAR19_61_V5A::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+		 '--pileup': 'AVE_20_BX_25ns',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_500,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_500',
+                 '--geometry' : 'Extended2019',
+		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2019_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
+                  }
+steps['DIGIPUUP19500']=merge([step2Upg2019pu_500_Defaults])
+
+
+
+####DIGI AGING VALIDATION - 1000fb-1 
+
+step2Upg2019_1000_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'STAR19_61_V4A::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
+                 '--geometry' : 'Extended2019'
+                  }
+steps['DIGIUP191000']=merge([step2Upg2019_1000_Defaults])
+
+step2Upg2019pu_1000_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'STAR19_61_V4A::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+		 '--pileup': 'AVE_20_BX_25ns',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
+                 '--geometry' : 'Extended2019',
+		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2019_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
+                  }
+steps['DIGIPUUP191000']=merge([step2Upg2019pu_1000_Defaults])
+
+####DIGI AGING VALIDATION - 1000fb-1 COMPLETE ECAL
+
+step2Upg2019_1000comp_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'STAR19_61_V4A::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
+                 '--geometry' : 'Extended2019'
+                  }
+steps['DIGIUP191000COMP']=merge([step2Upg2019_1000comp_Defaults])
+
+####DIGI AGING VALIDATION - 1000fb-1 tkid
+
+step2Upg2019_1000_TkId_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'STAR19_61_V3A::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
+                 '--geometry' : 'Extended2019'
+                  }
+steps['DIGIUP191000TkId']=merge([step2Upg2019_1000_TkId_Defaults])
+
+####DIGI AGING VALIDATION - 1000fb-1 tkid COMPLETE ECAL
+
+step2Upg2019_1000comp_TkId_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'STAR19_61_V3A::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
+                 '--geometry' : 'Extended2019'
+                  }
+steps['DIGIUP191000COMPTkId']=merge([step2Upg2019_1000comp_TkId_Defaults])
+
+
+####DIGI AGING VALIDATION - 3000fb-1 _ 
+
+step2Upg2019_3000_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'STAR19_61_V2A::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_3000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_3000',
+                 '--geometry' : 'Extended2019'
+                  }
+steps['DIGIUP193000']=merge([step2Upg2019_3000_Defaults])
+
+
+####DIGI AGING VALIDATION - 3000fb-1 _ COMPLETE ECAL
+
+step2Upg2019_3000comp_Defaults = {'-s':'DIGI,L1,DIGI2RAW',
+                 '--conditions':'STAR19_61_V2A::All', 
+                 '--datatier':'GEN-SIM-DIGI-RAW',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT',
+                 '--customise': 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/aging.customise_aging_3000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_3000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_3000',
+                 '--geometry' : 'Extended2019'
+                  }
+steps['DIGIUP193000COMP']=merge([step2Upg2019_3000comp_Defaults])
 
 
 
@@ -1585,7 +2029,7 @@ step3Up2017Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                  '--datatier':'GEN-SIM-RECO,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
-                 '--customise' : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017',
                  '--geometry' : 'Extended2017'
                  }
                             
@@ -1616,7 +2060,7 @@ step3Up2017_DESIGN_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                  '--datatier':'GEN-SIM-RECO,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
-                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017',
                  '--geometry' : 'Extended2017'
                  }
                              
@@ -1628,7 +2072,7 @@ step3Up2017pu_DESIGN_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                  '-n':'10',
 		 '--pileup': 'AVE_20_BX_25ns',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
-                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017',
                  '--geometry' : 'Extended2017',
 		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2017_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
                  }
@@ -1644,7 +2088,7 @@ step3Up2017_START_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                  '--datatier':'GEN-SIM-RECO,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
-                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_150',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_150',
                  '--geometry' : 'Extended2017'
                  }
                              
@@ -1656,7 +2100,7 @@ step3Up2017pu_START_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
 		 '--pileup': 'AVE_20_BX_25ns',
-                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_150',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_150',
                  '--geometry' : 'Extended2017',
 		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2017_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
                  }
@@ -1673,7 +2117,7 @@ step3Up2017_300_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                  '--datatier':'GEN-SIM-RECO,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
-                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_300',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_300,SLHCUpgradeSimulations/Configuration/aging.customise_aging_300',
                  '--geometry' : 'Extended2017'
                  }
                              
@@ -1685,7 +2129,7 @@ step3Up2017pu_300_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
 		 '--pileup': 'AVE_20_BX_25ns',
-                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_300',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_300,SLHCUpgradeSimulations/Configuration/aging.customise_aging_300',
                  '--geometry' : 'Extended2017',
 		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2017_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
                  }
@@ -1701,7 +2145,7 @@ step3Up2017_300comp_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                  '--datatier':'GEN-SIM-RECO,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
-                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_300',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_300,SLHCUpgradeSimulations/Configuration/aging.customise_aging_300',
                  '--geometry' : 'Extended2017'
                  }
                              
@@ -1716,7 +2160,7 @@ step3Up2017_500_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                  '--datatier':'GEN-SIM-RECO,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
-                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_500,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_500',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_500,SLHCUpgradeSimulations/Configuration/aging.customise_aging_500',
                  '--geometry' : 'Extended2017'
                  }
                              
@@ -1728,7 +2172,7 @@ step3Up2017pu_500_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
 		 '--pileup': 'AVE_20_BX_25ns',
-                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_500,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_500',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_500,SLHCUpgradeSimulations/Configuration/aging.customise_aging_500',
                  '--geometry' : 'Extended2017',
 		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2017_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
                  }
@@ -1746,7 +2190,7 @@ step3Up2017_1000_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                  '--datatier':'GEN-SIM-RECO,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
-                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000',
                  '--geometry' : 'Extended2017'
                  }
                              
@@ -1758,7 +2202,7 @@ step3Up2017pu_1000_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
 		 '--pileup': 'AVE_20_BX_25ns',
-                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000',
                  '--geometry' : 'Extended2017',
 		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2017_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
                  }
@@ -1772,7 +2216,7 @@ step3Up2017_1000comp_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                  '--datatier':'GEN-SIM-RECO,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
-                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000',
                  '--geometry' : 'Extended2017'
                  }
                              
@@ -1785,7 +2229,7 @@ step3Up2017_1000_TkId_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                  '--datatier':'GEN-SIM-RECO,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
-                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000',
                  '--geometry' : 'Extended2017'
                  }
                              
@@ -1798,7 +2242,7 @@ step3Up2017_1000comp_TkId_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM'
                  '--datatier':'GEN-SIM-RECO,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
-                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000,SLHCUpgradeSimulations/Configuration/aging.customise_aging_1000',
                  '--geometry' : 'Extended2017'
                  }
                              
@@ -1812,7 +2256,7 @@ step3Up2017_3000_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                  '--datatier':'GEN-SIM-RECO,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
-                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_3000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_3000',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_3000,SLHCUpgradeSimulations/Configuration/aging.customise_aging_3000',
                  '--geometry' : 'Extended2017'
                  }
                              
@@ -1826,12 +2270,237 @@ step3Up2017_3000comp_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
                  '--datatier':'GEN-SIM-RECO,DQM',
                  '-n':'10',
                  '--eventcontent':'FEVTDEBUGHLT,DQM',
-                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixRPCConditions,SLHCUpgradeSimulations/Configuration/combinedCustoms.reco_aging_hcal_stdgeom_3000,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_3000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_3000',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2017,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_3000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_3000,SLHCUpgradeSimulations/Configuration/aging.customise_aging_3000',
                  '--geometry' : 'Extended2017'
                  }
                              
 steps['RECOUP173000COMP']=merge([step3Up2017_3000comp_Defaults])
 
+
+####RECO AGING VALIDATION 2019 - DESIGN set of reference
+
+
+
+step3Up2019_DESIGN_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'DES19_61_V5::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019',
+                 '--geometry' : 'Extended2019'
+                 }
+                             
+steps['RECOUP19DES']=merge([step3Up2019_DESIGN_Defaults])
+
+step3Up2019pu_DESIGN_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'DES17_61_V5::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+		 '--pileup': 'AVE_20_BX_25ns',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019',
+                 '--geometry' : 'Extended2019',
+		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2019_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
+                 }
+                             
+steps['RECOPUUP19DES']=merge([step3Up2019pu_DESIGN_Defaults])
+
+####RECO AGING VALIDATION - STARTUP set of reference
+
+
+
+step3Up2019_START_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'STAR19_61_V1A::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_150',
+                 '--geometry' : 'Extended2019'
+                 }
+                             
+steps['RECOUP19STAR']=merge([step3Up2019_START_Defaults])
+
+step3Up2019pu_START_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'STAR19_61_V1A::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+		 '--pileup': 'AVE_20_BX_25ns',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_150',
+                 '--geometry' : 'Extended2019',
+		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2019_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
+                 }
+                             
+steps['RECOPUUP19STAR']=merge([step3Up2019pu_START_Defaults])
+
+
+####RECO AGING VALIDATION - 300fb-1 
+
+
+
+step3Up2019_300_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'STAR19_61_V6A::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_300',
+                 '--geometry' : 'Extended2019'
+                 }
+                             
+steps['RECOUP19300']=merge([step3Up2019_300_Defaults])
+
+step3Up2019pu_300_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'STAR19_61_V6A::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+		 '--pileup': 'AVE_20_BX_25ns',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_300',
+                 '--geometry' : 'Extended2019',
+		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2019_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
+                 }
+                             
+steps['RECOPUUP19300']=merge([step3Up2019pu_300_Defaults])
+
+####RECO AGING VALIDATION - 300fb-1 COMPLETE ECAL
+
+
+
+step3Up2019_300comp_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'STAR19_61_V6A::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_300,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_300',
+                 '--geometry' : 'Extended2019'
+                 }
+                             
+steps['RECOUP19300COMP']=merge([step3Up2019_300comp_Defaults])
+
+
+####RECO AGING VALIDATION - 500fb-1 
+
+
+step3Up2019_500_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'STAR19_61_V5A::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_500',
+                 '--geometry' : 'Extended2019'
+                 }
+                             
+steps['RECOUP19500']=merge([step3Up2019_500_Defaults])
+
+step3Up2019pu_500_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'STAR19_61_V5A::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+		 '--pileup': 'AVE_20_BX_25ns',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_500',
+                 '--geometry' : 'Extended2019',
+		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2019_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
+                 }
+                             
+steps['RECOPUUP19500']=merge([step3Up2019pu_500_Defaults])
+
+
+
+
+####RECO AGING VALIDATION - 1000fb-1 
+
+
+step3Up2019_1000_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'STAR19_61_V4A::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
+                 '--geometry' : 'Extended2019'
+                 }
+                             
+steps['RECOUP191000']=merge([step3Up2019_1000_Defaults])
+
+step3Up2019pu_1000_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'STAR19_61_V4A::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+		 '--pileup': 'AVE_20_BX_25ns',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
+                 '--geometry' : 'Extended2019',
+		 '--pileup_input':'dbs:/RelValMinBias_TuneZ2star_UPG2019_14_DES/CMSSW_6_1_2_SLHC4_patch2-DES17_61_V5_NOAGING_REF_DESIGN_27May2013-v1/GEN-SIM'
+                 }
+                             
+steps['RECOPUUP191000']=merge([step3Up2019pu_1000_Defaults])
+####RECO AGING VALIDATION - 1000fb-1 COMPLET ECAL
+
+
+step3Up2019_1000comp_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'STAR19_61_V4A::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
+                 '--geometry' : 'Extended2019'
+                 }
+                             
+steps['RECOUP191000COMP']=merge([step3Up2019_1000comp_Defaults])
+
+####RECO AGING VALIDATION - 1000fb-1 tkId 
+
+step3Up2019_1000_TkId_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'STAR19_61_V3A::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
+                 '--geometry' : 'Extended2019'
+                 }
+                             
+steps['RECOUP191000TkId']=merge([step3Up2019_1000_TkId_Defaults])
+
+####RECO AGING VALIDATION - 1000fb-1 tkId COMPLETE ECAL
+
+step3Up2019_1000comp_TkId_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'STAR19_61_V3A::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_1000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_1000',
+                 '--geometry' : 'Extended2019'
+                 }
+                             
+steps['RECOUP191000COMPTkId']=merge([step3Up2019_1000comp_TkId_Defaults])
+
+####RECO AGING VALIDATION - 3000fb-1 
+
+
+step3Up2019_3000_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'STAR19_61_V2A::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_3000',
+                 '--geometry' : 'Extended2019'
+                 }
+                             
+steps['RECOUP193000']=merge([step3Up2019_3000_Defaults])
+
+####RECO AGING VALIDATION - 3000fb-1 COMPLET ECAL
+
+
+step3Up2019_3000comp_Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+                 '--conditions':'STAR19_61_V2A::All', 
+                 '--datatier':'GEN-SIM-RECO,DQM',
+                 '-n':'10',
+                 '--eventcontent':'FEVTDEBUGHLT,DQM',
+                 '--customise' : 'SLHCUpgradeSimulations/Configuration/combinedCustoms.cust_2019,SLHCUpgradeSimulations/Configuration/combinedCustoms.ecal_complete_aging_3000,SLHCUpgradeSimulations/Configuration/combinedCustoms.fixEcalConditions_3000',
+                 '--geometry' : 'Extended2019'
+                 }
+                             
+steps['RECOUP193000COMP']=merge([step3Up2019_3000comp_Defaults])
 
 #for 2023 BE
 step3Up2023_BE_Defaults = {'-s':'DIGI,L1,DIGI2RAW,L1TrackTrigger,RECO:pixeltrackerlocalreco',
@@ -2052,12 +2721,76 @@ steps['HARVESTUP171000TkId']={'-s':'HARVESTING:validationHarvesting+dqmHarvestin
 
 
 steps['HARVESTUP173000']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
-                   '--conditions':'STAR17_61_V2A::All', 
+                   '--conditions':'STAR19_61_V2A::All', 
                    '--mc':'',
                    '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
 		   '--geometry' : 'Extended2017'
                    }
 		   
+		   
+####HARVEST AGING VALIDATION - DESIGN set of reference
+steps['HARVESTUP19DES']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
+                   '--conditions':'DES17_61_V5::All', 
+                   '--mc':'',
+                   '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+		   '--geometry' : 'Extended2019'
+                   }
+		   
+####HARVEST AGING VALIDATION - STARTUP set of reference
+steps['HARVESTUP19STAR']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
+                   '--conditions':'STAR19_61_V1A::All', 
+                   '--mc':'',
+                   '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+		   '--geometry' : 'Extended2019'
+                   }
+####HARVEST AGING VALIDATION - 300fb-1 
+
+
+steps['HARVESTUP19300']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
+                   '--conditions':'STAR19_61_V6A::All', 
+                   '--mc':'',
+                   '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+		   '--geometry' : 'Extended2019'
+                   }
+		   
+		   
+####HARVEST AGING VALIDATION - 500fb-1 
+
+
+steps['HARVESTUP19500']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
+                   '--conditions':'STAR19_61_V5A::All', 
+                   '--mc':'',
+                   '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+		   '--geometry' : 'Extended2019'
+                   }
+		   
+		   
+####HARVEST AGING VALIDATION - 1000fb-1 
+
+
+steps['HARVESTUP191000']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
+                   '--conditions':'STAR19_61_V4A::All', 
+                   '--mc':'',
+                   '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+		   '--geometry' : 'Extended2019'
+                   }
+
+steps['HARVESTUP191000TkId']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
+                   '--conditions':'STAR19_61_V3A::All', 
+                   '--mc':'',
+                   '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+		   '--geometry' : 'Extended2019'
+                   }
+		   
+####HARVEST AGING VALIDATION - 3000fb-1 
+
+
+steps['HARVESTUP193000']={'-s':'HARVESTING:validationHarvesting+dqmHarvesting',
+                   '--conditions':'STAR19_61_V2A::All', 
+                   '--mc':'',
+                   '--customise' : 'SLHCUpgradeSimulations/Configuration/phase1TkCustoms.customise',
+		   '--geometry' : 'Extended2019'
+                   }
 		   
 		   
 steps['ALCASPLIT']={'-s':'ALCAOUTPUT:@allForPrompt',
